@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <link href="@Url.Content("~/Content/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/css/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="container">
+        @RenderBody()
+        <footer style="text-align: center">
+            <div>
+                Copyright &copy; 2013 <a href="http://www.unosquare.com">Unosquare</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="@Url.Content("~/Content/js/jquery-1.9.1.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/bootstrap.min.js")"></script>
+</body>
+
+</html>

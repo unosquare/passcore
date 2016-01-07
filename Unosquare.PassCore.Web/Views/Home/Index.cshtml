@@ -1,0 +1,102 @@
+﻿@model Unosquare.PassCore.Web.Models.ChangePasswordModel
+@{
+
+    ViewBag.Title = "Password Change Utility - Unosquare";
+    string currentFieldName = null;
+}
+
+@functions{
+        
+    private bool HasErrors(string fieldName)
+    {
+        if (this.ViewData.ModelState[fieldName] == null)
+            return false;
+
+        return this.ViewData.ModelState[fieldName].Errors.Count > 0;
+    }
+
+    private string ErrorMessage(string fieldName)
+    {
+        return this.ViewData.ModelState[fieldName].Errors[0].ErrorMessage;
+    }
+}
+
+<h5><i class="icon-user"></i>&nbsp;Self-Service Password Change Utility - Unosquare</h5>
+<hr />
+
+@if (Request["msg"] == "1" && ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-success">
+        <i class="icon-ok"></i>&nbsp;Your password was changed successfully. It may take up to 30 minutes to propagate the changes across sites.
+    </div>
+}
+
+@if (@ViewData.ModelState.IsValid == false)
+{
+    if (ViewData.ModelState["ActiveDirectory"] == null)
+    {
+    <div class="alert alert-error">
+        <i class="icon-remove"></i>&nbsp;One or more fields contain errors.
+    </div>
+    }
+    else
+    {
+    <div class="alert alert-error">
+        <i class="icon-remove"></i>&nbsp;The password change operation failed with the following message: @ViewData.ModelState["ActiveDirectory"].Errors[0].ErrorMessage
+    </div>
+    }
+}
+<form class="form-horizontal" method="post">
+
+    @{ currentFieldName = "UserPrincipalName"; }
+    <div class="control-group @(this.HasErrors(currentFieldName) ? "error" : string.Empty)">
+        <label class="control-label" for="@currentFieldName">User Principal Name</label>
+        <div class="controls error">
+            <input class="input-xlarge" type="text" id="@currentFieldName" name="@currentFieldName" placeholder="firstname.lastname@unosquare.com" value="@Model.UserPrincipalName" />
+            @if (this.HasErrors(currentFieldName))
+            {
+                <span class="help-inline">@ErrorMessage(currentFieldName)</span>
+            }
+        </div>
+    </div>
+
+    @{ currentFieldName = "CurrentPassword"; }
+    <div class="control-group @(this.HasErrors(currentFieldName) ? "error" : string.Empty)">
+        <label class="control-label" for="@currentFieldName">Current Password</label>
+        <div class="controls">
+            <input class="input-xlarge" type="password" id="@currentFieldName" name="@currentFieldName" value="@Model.CurrentPassword" />
+            @if (this.HasErrors(currentFieldName))
+            {
+                <span class="help-inline">@ErrorMessage(currentFieldName)</span>
+            }
+        </div>
+    </div>
+
+    @{ currentFieldName = "NewPassword"; }
+    <div class="control-group @(this.HasErrors(currentFieldName) ? "error" : string.Empty)">
+        <label class="control-label" for="@currentFieldName">New Password</label>
+        <div class="controls">
+            <input class="input-xlarge" type="password" id="@currentFieldName" name="@currentFieldName" value="@Model.NewPassword" />
+            @if (this.HasErrors(currentFieldName))
+            {
+                <span class="help-inline">@ErrorMessage(currentFieldName)</span>
+            }
+        </div>
+    </div>
+
+    @{ currentFieldName = "ConfirmPassword"; }
+    <div class="control-group @(this.HasErrors(currentFieldName) ? "error" : string.Empty)">
+        <label class="control-label" for="@currentFieldName">Confirm Password</label>
+        <div class="controls">
+            <input class="input-xlarge" type="password" id="@currentFieldName" name="@currentFieldName" value="@Model.ConfirmPassword" />
+            @if (this.HasErrors(currentFieldName))
+            {
+                <span class="help-inline">@ErrorMessage(currentFieldName)</span>
+            }
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn-primary btn" type="submit"><i class="icon-ok icon-white"></i><span>&nbsp;Change Password</span></button>
+    </div>
+</form>
