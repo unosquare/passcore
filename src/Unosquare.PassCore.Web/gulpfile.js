@@ -2,10 +2,12 @@
 "use strict";
 
 var gulp = require("gulp"),
+    fs = require("fs"),
     rimraf = require("rimraf"),
     del = require("del"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
+    merge    = require("merge-stream"),
     uglify = require("gulp-uglify");
 
 var paths = {
@@ -46,14 +48,14 @@ gulp.task("undeploy:lib", function (cb) {
 
 gulp.task("copy:lib", ["undeploy:lib"], function (cb) {
     console.log('Copying Bower Libraries . . .');
-    var lastSrc = null;
+    var streams = new Array();
     for (var destinationDir in paths.bowerLibraries) {
-        lastSrc = gulp.src(paths.bowerLibraries[destinationDir])
+        streams[streams.length] = gulp.src(paths.bowerLibraries[destinationDir])
             .pipe(gulp.dest(paths.libBase + destinationDir));
         console.log("    Copied Library  '" + destinationDir + "'");
     };
 
-    return cb();
+    return merge(streams);
 });
 
 gulp.task("clean:lib", ["copy:lib"], function (cb) {

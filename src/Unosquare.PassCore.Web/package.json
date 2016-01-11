@@ -8,7 +8,9 @@
     "gulp-cssmin": "0.1.7",
     "gulp-uglify": "1.5.1",
     "rimraf": "2.5.0",
-    "del": "2.2.0"
+    "del": "2.2.0",
+    "fs": "0.0.2",
+    "merge-stream": "1.0.0"
   },
   "dependencies": {}
 }
