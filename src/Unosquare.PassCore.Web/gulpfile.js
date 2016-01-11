@@ -2,8 +2,8 @@
 "use strict";
 
 var gulp = require("gulp"),
-    del = require('del'),
     rimraf = require("rimraf"),
+    del = require("del"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify");
@@ -40,7 +40,8 @@ paths.appTargetStyle = paths.appStylesBase + "app.min.css"
 
 gulp.task("undeploy:lib", function (cb) {
     console.log("Removing Folder: " + paths.libBase);
-    return rimraf(paths.libBase, cb);
+    del.sync(paths.libBase);
+    return cb();
 });
 
 gulp.task("copy:lib", ["undeploy:lib"], function (cb) {
@@ -52,24 +53,26 @@ gulp.task("copy:lib", ["undeploy:lib"], function (cb) {
         console.log("    Copied Library  '" + destinationDir + "'");
     };
 
-    return lastSrc;
+    return cb();
 });
 
 gulp.task("clean:lib", ["copy:lib"], function (cb) {
     console.log('Removing Minified Files . . .');
+
+    var targets = new Array();
+    var index = 0;
     for (var destinationDir in paths.bowerLibraries) {
-        var targetDelete = [
-            paths.libBase + destinationDir + "/**/*.min.js",
-            paths.libBase + destinationDir + "/**/*.min.js.map",
-            paths.libBase + destinationDir + "/**/*.min.css",
-        ];
-        console.log("    Deleting: '" + targetDelete + "'");
-        del(targetDelete);
+        targets[targets.length] = paths.libBase + destinationDir + "/**/*.min.js";
+        targets[targets.length] = paths.libBase + destinationDir + "/**/*.min.js.map";
+        targets[targets.length] = paths.libBase + destinationDir + "/**/*.min.css";
     }
+
+    del.sync(targets);
+    return cb();
 });
 
 gulp.task("build:lib", ["clean:lib"], function (cb) {
-
+    return cb();
 });
 
 gulp.task("clean:scripts", function (cb) {
