@@ -5,6 +5,14 @@
     "angular": "1.4.6",
     "bootstrap": "3.3.5",
     "angular-bootstrap": "1.0.0",
+    "angular-animate": "1.4.8",
+    "angular-cookies": "1.4.8",
+    "angular-route": "1.4.8",
+    "angular-local-storage": "0.2.3",
+    "toastr": "2.1.2",
     "Font-Awesome": "4.5.0"
+  },
+  "resolutions": {
+    "angular": "1.4.8"
   }
 }

@@ -10,7 +10,9 @@
     "rimraf": "2.5.0",
     "del": "2.2.0",
     "fs": "0.0.2",
-    "merge-stream": "1.0.0"
+    "merge-stream": "1.0.0",
+    "gulp-replace": "0.5.4",
+    "gulp-flatten": "0.2.0"
   },
   "dependencies": {}
 }

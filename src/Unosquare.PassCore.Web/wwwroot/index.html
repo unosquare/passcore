@@ -1,10 +1,35 @@
 ﻿<!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org/" lang="en" ng-app="app">
 <head>
-    <meta charset="utf-8" />
-    <title>Hello New Application!</title>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title ng-controller="TitleCtrl as title" ng-bind="title.content">Loading . . .</title>
+
+    <link rel="stylesheet" href="vendor/vendor.min.css" />
+    <link rel="stylesheet" href="styles/app.min.css" />
+
+    <script src="vendor/vendor.min.js"></script>
+    <script src="scripts/app.min.js"></script>
+
 </head>
-<body>
-    This is a new application.
+<body ng-cloak>
+    <div class="container">
+        <div class="row" ng-controller="TitleCtrl as ctrl">
+            <div class="col-md-12">
+                {{ctrl.pageTitle}}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ng-view></ng-view>
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>

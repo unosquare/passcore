@@ -98,7 +98,10 @@
             application.UseDefaultFiles();
             application.UseStaticFiles();
 
-            application.UseMvc();
+            application.UseMvc(options =>
+            {
+                options.MapRoute(name: "default", template: "{*url}", defaults: new { controller = "Home", action = "Index" });
+            });
         }
 
         #endregion
