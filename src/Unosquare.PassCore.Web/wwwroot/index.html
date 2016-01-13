@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title ng-controller="TitleCtrl as title" ng-bind="title.content">Loading . . .</title>
+    <title ng-controller="TitleCtrl as ctrl" ng-bind="ctrl.content">Loading . . .</title>
 
     <link rel="stylesheet" href="vendor/vendor.min.css" />
     <link rel="stylesheet" href="styles/app.min.css" />
@@ -16,20 +16,23 @@
 </head>
 <body ng-cloak>
     <div class="container">
-        <div class="row" ng-controller="TitleCtrl as ctrl">
-            <div class="col-md-12">
-                {{ctrl.pageTitle}}
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <ng-view></ng-view>
             </div>
         </div>
     </div>
-    
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    Pwered by <a target="_blank" href="https://github.com/unosquare/passcore">PassCore</a> v2.0 - 
+                    <a target="_blank" href="https://opensource.org/">OSS</a> and 
+                    <a target="_blank" href="https://opensource.org/licenses/MIT">MIT</a> Licensed <br />
+                    Copyright © 2016 <a target="_blank" href="http://unosquare.com">Unosquare</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
