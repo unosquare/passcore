@@ -141,7 +141,7 @@ gulp.task("clean", ["clean:scripts", "clean:styles", "clean:vendor"]);
 gulp.task("build:scripts", ["clean:scripts"], function () {
     return gulp.src([paths.appScriptsWildcard, "!" + paths.appScriptsMinifiedWildcard], { base: "." })
         .pipe(concat(paths.appTargetScript))
-        .pipe(uglify())
+        //.pipe(uglify()) // uncomment this line if you need to enable minification.
         .pipe(gulp.dest(""));
 });
 
