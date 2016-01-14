@@ -14,9 +14,16 @@
             NewPasswordLabel: "New Password",
             NewPasswordPlaceholder: "",
             NewPasswordHelpblock: 'Enter a strong password. You can use <a href="http://passwordsgenerator.net/" target="_blank">this tool</a> to help you create one.',
-            NewPasswordAgainLabel: "Re-enter New Password",
-            NewPasswordAgainPlaceholder: "",
-            NewPasswordAgainHelpblock: "Enter your new password again"
+            NewPasswordVerifyLabel: "Re-enter New Password",
+            NewPasswordVerifyPlaceholder: "",
+            NewPasswordVerifyHelpblock: "Enter your new password again"
+        },
+        ErrorMessages: {
+            0: "General Error",
+            1: "Field is required",
+            2: "Fields don't match",
+            3: "User was not found",
+            4: "The credentials provided are invalid"
         }
     });
 })();

@@ -13,25 +13,37 @@
                 });
             }
         ]).controller('ChangePasswordCtrl', [
-            '$scope', '$http', 'ViewOptions',
-            function ($scope, $http, ViewOptions) {
+            '$scope', '$http', '$sce', 'ViewOptions',
+            function ($scope, $http, $sce, ViewOptions) {
                 var me = this;
 
                 $scope.ViewOptions = ViewOptions;
 
-                $scope.Form = {
+                $scope.FormData = {
                     Username: '',
                     CurrentPassword: '',
                     NewPassword: '',
                     NewPasswordVerify: '',
                 };
 
+                $scope.EmptyFormData = angular.copy($scope.FormData);
+
                 $scope.Submit = function () {
                     $('div.form-overlay').show();
+
+                    $.each($scope.Form, function (index, field) {
+                        if (!field) return;
+                        if (field.$valid == undefined) return;
+
+                        field.Validation = { HasError: false, ErrorMessage: '' };
+                    });
+
+                    $scope.Form.$setUntouched();
+
                     $http({
                         method: 'POST',
                         url: 'api/password',
-                        data: $scope.Form,
+                        data: $scope.FormData,
                         headers: {
                             'Content-Type': 'application/json'
                         }
@@ -39,10 +51,16 @@
                         $('div.form-overlay').hide();
                         // this callback will be called asynchronously
                         // when the response is available
+                        $scope.FormData = angular.copy($scope.EmptyFormData);
                     }, function errorCallback(response) {
                         $('div.form-overlay').hide();
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
+
+                        $.each(response.data.Errors, function (index, errorData) {
+                            if (errorData.ErrorType == 2) {
+                                $scope.Form[errorData.FieldName].Validation.HasError = true;
+                                $scope.Form[errorData.FieldName].Validation.ErrorMessage = $scope.ViewOptions.ErrorMessages[errorData.ErrorCode];
+                            }
+                        });
                     });
                 }
             }
