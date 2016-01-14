@@ -9,6 +9,7 @@
     "angular-cookies": "1.4.8",
     "angular-route": "1.4.8",
     "angular-local-storage": "0.2.3",
+    "angular-recaptcha": "2.2.5",
     "toastr": "2.1.2",
     "Font-Awesome": "4.5.0"
   },

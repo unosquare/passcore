@@ -24,6 +24,10 @@
             2: "Fields don't match",
             3: "User was not found",
             4: "The credentials provided are invalid"
+        },
+        Recaptcha: {
+            IsEnabled: true,
+            SiteKey: "000000000000000000000-000000000000000000"
         }
     });
 })();

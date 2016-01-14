@@ -13,8 +13,8 @@
                 });
             }
         ]).controller('ChangePasswordCtrl', [
-            '$scope', '$http', '$sce', 'ViewOptions',
-            function ($scope, $http, $sce, ViewOptions) {
+            '$scope', '$http', '$sce', 'vcRecaptchaService', 'ViewOptions',
+            function ($scope, $http, $sce, recaptcha, ViewOptions) {
                 var me = this;
 
                 $scope.ViewOptions = ViewOptions;
@@ -24,13 +24,22 @@
                     CurrentPassword: '',
                     NewPassword: '',
                     NewPasswordVerify: '',
+                    Recaptcha: '',
                 };
 
                 $scope.EmptyFormData = angular.copy($scope.FormData);
 
+                $scope.SetRecaptchaResponse = function (response) {
+                    $scope.FormData.Recaptcha = response;
+                };
+
+                $scope.ClearRecaptchaResponse = function () {
+                    $scope.FormData.Recaptcha = '';
+                };
+
                 $scope.Submit = function () {
                     $('div.form-overlay').show();
-
+                    
                     $.each($scope.Form, function (index, field) {
                         if (!field) return;
                         if (field.$valid == undefined) return;
@@ -39,6 +48,7 @@
                     });
 
                     $scope.Form.$setUntouched();
+                    grecaptcha.reset();
 
                     $http({
                         method: 'POST',

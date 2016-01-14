@@ -20,5 +20,7 @@ namespace Unosquare.PassCore.Web.Models
         [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
         [Compare(nameof(NewPassword), ErrorMessage = nameof(ApiErrorCode.FieldMismatch))]
         public string NewPasswordVerify { get; set; }
+
+        public string Recaptcha { get; set; }
     }
 }

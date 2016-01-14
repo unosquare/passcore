@@ -42,6 +42,7 @@ paths.bowerLibraries = {
     "angular-cookies": paths.bowerBase + "angular-cookies/**/*.{js,map,css}",
     "angular-route": paths.bowerBase + "angular-route/**/*.{js,map,css}",
     "angular-local-storage": paths.bowerBase + "angular-local-storage/**/*.{js,map,css}",
+    "angular-recaptcha": paths.bowerBase + "angular-recaptcha/release/**/*.js",
     "toastr": paths.bowerBase + "toastr/**/*.{js,map,css}",
     "font-awesome": paths.bowerBase + "Font-Awesome/**/*.{css,otf,eot,svg,ttf,woff,wof2,woff2}"
 };

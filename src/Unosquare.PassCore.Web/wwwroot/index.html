@@ -5,7 +5,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="unosquare, oss software, password change, active directory, mit license, password, account utilities, user account" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="description" content="PassCore is a self-service password change utility for Active Directory." />
+    <meta name="author" content="Unosquare, LLC" />
+    <meta name="title" content="PassCore" />
+    <meta property="og:image" content="images/passcore-logo.png" />
+    <meta property="og:title" content="PassCore - Self-Service Password Change Utility" />
+
     <title ng-controller="TitleCtrl as ctrl" ng-bind="ctrl.content">Loading . . .</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+
 
     <link rel="stylesheet" href="vendor/vendor.min.css" />
     <link rel="stylesheet" href="styles/app.min.css" />
@@ -13,6 +24,8 @@
     <script src="vendor/vendor.min.js"></script>
     <script src="scripts/app.min.js"></script>
 
+    <!-- Re-Captcha language can be changed by modifying the hl argument. For a list of language codes please refer to: https://developers.google.com/recaptcha/docs/language -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=en" async defer></script>
 </head>
 <body ng-cloak>
     <div class="container">
@@ -25,7 +38,12 @@
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-offset-2 col-md-4 footer-logo">
+                    <a href="https://github.com/unosquare/passcore">
+                        <img src="images/passcore-logo.png" alt="PassCore logo" />
+                    </a>
+                </div>
+                <div class="col-md-4">
                     Powered by <a target="_blank" href="https://github.com/unosquare/passcore">PassCore</a> v2.0 - 
                     <a target="_blank" href="https://opensource.org/">OSS</a> and 
                     <a target="_blank" href="https://opensource.org/licenses/MIT">MIT</a> Licensed <br />
