@@ -25,7 +25,7 @@ namespace Unosquare.PassCore.Web.Models
             result.Errors.Add(new ApiErrorItem()
             {
                 ErrorCode = ApiErrorCode.Generic,
-                ErrorType = ApiErrorType.InvalidRequest,
+                ErrorType = ApiErrorType.GeneralFailure,
                 FieldName = "",
                 Message = "Invalid Request"
             });
@@ -82,7 +82,7 @@ namespace Unosquare.PassCore.Web.Models
             this.Errors.Add(new ApiErrorItem()
             {
                 ErrorCode = errorCode,
-                ErrorType = ApiErrorType.SystemOperation,
+                ErrorType = ApiErrorType.GeneralFailure,
                 FieldName = string.Empty,
                 Message = message
             });

@@ -58,3 +58,7 @@ div.form-overlay-spinner {
 .center-align {
     text-align: center;
 }
+
+.alert-title {
+    font-weight: bold;
+}

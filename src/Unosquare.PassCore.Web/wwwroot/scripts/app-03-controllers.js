@@ -18,6 +18,9 @@
                 var me = this;
 
                 $scope.ViewOptions = ViewOptions;
+                $scope.ShowSuccessAlert = false;
+                $scope.ShowErrorAlert = false;
+                $scope.ErrorAlertMessage = '';
 
                 $scope.FormData = {
                     Username: '',
@@ -48,7 +51,10 @@
                     });
 
                     $scope.Form.$setUntouched();
-                    grecaptcha.reset();
+                    
+                    $scope.ShowSuccessAlert = false;
+                    $scope.ShowErrorAlert = false;
+                    $scope.ErrorAlertMessage = '';
 
                     $http({
                         method: 'POST',
@@ -59,14 +65,25 @@
                         }
                     }).then(function successCallback(response) {
                         $('div.form-overlay').hide();
-                        // this callback will be called asynchronously
-                        // when the response is available
                         $scope.FormData = angular.copy($scope.EmptyFormData);
+                        $scope.ShowSuccessAlert = true;
+
                     }, function errorCallback(response) {
                         $('div.form-overlay').hide();
+                        grecaptcha.reset();
 
                         $.each(response.data.Errors, function (index, errorData) {
-                            if (errorData.ErrorType == 2) {
+                            if (errorData.ErrorType == 1)
+                            {
+                                $scope.ShowErrorAlert = true;
+                                if (errorData.ErrorCode == 0) {
+                                    $scope.ErrorAlertMessage = ViewOptions.Alerts.ErrorAlertBody + errorData.Message;
+                                } else {
+                                    $scope.ErrorAlertMessage = ViewOptions.Alerts.ErrorAlertBody + $scope.ViewOptions.ErrorMessages[errorData.ErrorCode];
+                                }
+                                
+                            }
+                            else if (errorData.ErrorType == 2) {
                                 $scope.Form[errorData.FieldName].Validation.HasError = true;
                                 $scope.Form[errorData.FieldName].Validation.ErrorMessage = $scope.ViewOptions.ErrorMessages[errorData.ErrorCode];
                             }

@@ -1,9 +1,10 @@
-﻿namespace Unosquare.PassCore.Web.Models
+﻿using Newtonsoft.Json.Linq;
+
+namespace Unosquare.PassCore.Web.Models
 {
     public class AppSettings
     {
-        public string ActiveDirectoryRootPath { get; set; } = "LDAP://uno-dc-01.ad.unosquare.com";
-
-        public bool EnablePasswordRecovery { get; set; } = true;
+        public string RecaptchaPrivateKey { get; set; }
+        public JObject ClientSettings { get; set; }
     }
 }

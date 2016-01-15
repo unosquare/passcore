@@ -4,9 +4,8 @@
     public enum ApiErrorType
     {
         Success = 0,
-        InvalidRequest = 1,
+        GeneralFailure = 1,
         FieldValidation = 2,
-        SystemOperation = 3
     }
 
     public enum ApiErrorCode
@@ -16,6 +15,7 @@
         FieldMismatch = 2,
         UserNotFound = 3,
         InvalidCredentials = 4,
+        InvalidCaptcha = 5,
     }
 
 
