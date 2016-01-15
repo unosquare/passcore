@@ -22,6 +22,12 @@ footer {
 
     footer div.footer-logo {
         text-align: left;
+        float: left;
+    }
+
+    footer div.footer-text {
+        padding-top: 10px;
+        float: right;
     }
 
 #changePasswordForm {

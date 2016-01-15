@@ -38,7 +38,7 @@ paths.bowerLibraries = {
     "jquery": paths.bowerBase + "jquery/dist/jquery*.{js,map}",
     "bootstrap": paths.bowerBase + "bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}",
     "angular": paths.bowerBase + "angular/angular*.{js,map}",
-    "angular-bootstrap": paths.bowerBase + "angular-bootstrap/ui-bootstrap*.{js,map,css}",
+    "angular-bootstrap": paths.bowerBase + "angular-bootstrap/ui-bootstrap-tpls*.{js,map,css}",
     "angular-cookies": paths.bowerBase + "angular-cookies/**/*.{js,map,css}",
     "angular-route": paths.bowerBase + "angular-route/**/*.{js,map,css}",
     "angular-local-storage": paths.bowerBase + "angular-local-storage/**/*.{js,map,css}",

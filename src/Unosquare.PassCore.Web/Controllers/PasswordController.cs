@@ -9,6 +9,7 @@
     using Unosquare.PassCore.Web.Models;
     using System.Net.Http;
     using System.DirectoryServices.AccountManagement;
+    using System.Collections.Generic;
     [Route("api/[controller]")]
     public class PasswordController : ControllerBase
     {
@@ -16,6 +17,12 @@
             : base(configuration)
         {
             // placeholder
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Json(Settings.ClientSettings);
         }
 
         // POST api/password
