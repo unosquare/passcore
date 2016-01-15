@@ -25,6 +25,10 @@ footer {
         float: left;
     }
 
+        footer div.footer-logo img {
+            opacity: 0.6;
+        }
+
     footer div.footer-text {
         padding-top: 10px;
         float: right;
