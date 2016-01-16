@@ -1,6 +1,8 @@
 # <img src="https://raw.githubusercontent.com/unosquare/passcore/master/src/Unosquare.PassCore.Web/wwwroot/images/passcore-logo.png"></img>
 **PassCore: A self-service password change utility for Active Directory [![Analytics](https://ga-beacon.appspot.com/UA-8535255-2/unosquare/passcore/)](https://github.com/igrigorik/ga-beacon)**
 
+**If you like this project please star it!**
+
 ## Overview
 
 PassCore is a very simple 1-page web application written in <a target="_blank" href="https://github.com/dotnet/roslyn">C#</a>, using <a href="https://github.com/aspnet" target="_blank">ASP.NET 5</a>, <a href="https://github.com/twbs/bootstrap" target="_blank">Bootstrap</a>, <a href="https://github.com/angular" target="_blank">AngularJS</a> and <a href="https://msdn.microsoft.com/en-us/library/system.directoryservices.activedirectory(v=vs.110).aspx" target="_blank">Microsoft Directory Services</a>. It allows users to change their Active Directory password on their own, provided the user is not disabled.
@@ -23,4 +25,4 @@ PassCore is easily localizable (i.e. you can customize all of the strings in the
 
 ## License
 
-PassCore is open source software and MIT licensed. Please share and recommend this project!
+PassCore is open source software and MIT licensed.
