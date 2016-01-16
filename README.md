@@ -1,5 +1,5 @@
 # <img src="https://raw.githubusercontent.com/unosquare/passcore/master/src/Unosquare.PassCore.Web/wwwroot/images/passcore-logo.png"></img>
-**PassCore: A self-service password change utility for Active Directory**
+**PassCore: A self-service password change utility for Active Directory [![Analytics](https://ga-beacon.appspot.com/UA-8535255-2/unosquare/passcore/)](https://github.com/igrigorik/ga-beacon)**
 
 ## Overview
 
