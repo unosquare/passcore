@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Unosquare.PassCore.Web.Models
+﻿namespace Unosquare.PassCore.Web.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class ChangePasswordModel
     {
         [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]

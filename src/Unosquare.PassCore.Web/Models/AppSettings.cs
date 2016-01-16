@@ -2,6 +2,9 @@
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents all of the strongly-typed application settings loaded from a JSON file
+    /// </summary>
     public class AppSettings
     {
         public string RecaptchaPrivateKey { get; set; }

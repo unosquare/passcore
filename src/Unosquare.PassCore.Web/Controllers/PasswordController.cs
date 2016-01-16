@@ -4,12 +4,16 @@
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using System;
+    using System.DirectoryServices.AccountManagement;
     using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using Unosquare.PassCore.Web.Models;
-    using System.Net.Http;
-    using System.DirectoryServices.AccountManagement;
-    using System.Collections.Generic;
+
+
+    /// <summary>
+    /// Represents a controller class holding all of the server-side functionality of this tool.
+    /// </summary>
     [Route("api/[controller]")]
     public class PasswordController : ControllerBase
     {
@@ -19,19 +23,26 @@
             // placeholder
         }
 
+        /// <summary>
+        /// Returns the ClientSettings object as a JSON string
+        /// </summary>
         [HttpGet]
         public IActionResult Get()
         {
             return Json(Settings.ClientSettings);
         }
 
-        // POST api/password
+        /// <summary>
+        /// Given a POST request, processes and changes a User's password.
+        /// </summary>
+        /// <param name="model">The value.</param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]ChangePasswordModel value)
+        public async Task<IActionResult> Post([FromBody]ChangePasswordModel model)
         {
 
             // Validate the request
-            if (value == null)
+            if (model == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json(ApiResult.InvalidRequest());
@@ -50,7 +61,7 @@
             // Validate the Captcha
             try
             {
-                if (await ValidateRecaptcha(value.Recaptcha) == false)
+                if (await ValidateRecaptcha(model.Recaptcha) == false)
                     result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCaptcha });
             }
             catch (Exception ex)
@@ -69,7 +80,7 @@
             try
             {
                 var principalContext = new PrincipalContext(ContextType.Domain);
-                var userPrincipal = UserPrincipal.FindByIdentity(principalContext, value.Username);
+                var userPrincipal = UserPrincipal.FindByIdentity(principalContext, model.Username);
 
                 if (userPrincipal == null)
                 {
@@ -78,7 +89,7 @@
                     return Json(result);
                 }
 
-                userPrincipal.ChangePassword(value.CurrentPassword, value.NewPassword);
+                userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
                 userPrincipal.Save();
             }
             catch (Exception ex)

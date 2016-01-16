@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace Unosquare.PassCore.Web.Controllers
+﻿namespace Unosquare.PassCore.Web.Controllers
 {
+    using Microsoft.AspNet.Mvc;
+
+    /// <summary>
+    /// This controller is simply a placeholder to redirect any non-matching URL
+    /// to provide the context of the SPA (single page application) index
+    /// Examine the routing configuration in the Startup class
+    /// </summary>
     public class HomeController : Controller
     {
         // GET: /<controller>/

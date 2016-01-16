@@ -5,9 +5,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.OptionsModel;
-    using System;
-    using Unosquare.PassCore.Web.Models;
 
     /// <summary>
     /// Represents this application's main class
@@ -98,6 +95,8 @@
             application.UseDefaultFiles();
             application.UseStaticFiles();
 
+            // The default route for all non-api routes is the Home controller which in turn, simply outputs the contents of the root 
+            // index.html file. This makes the SPA always get back to the index route.
             application.UseMvc(options =>
             {
                 options.MapRoute(name: "default", template: "{*url}", defaults: new { controller = "Home", action = "Index" });
