@@ -32,7 +32,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 - To enable reCAPTCHA
   - Find the <code>RecaptchaPrivateKey</code> entry and enter your private key within double quotes (")
   - Find the <code>IsEnabled</code> entry and enter the word <code>true</code> (note this should be done _without_ double quotes
-  - Finde the <code>SiteKey</code> entry and enter your Site Key within double quotes (")
+  - Find the <code>SiteKey</code> entry and enter your Site Key within double quotes (")
 - To enable the password meter
   - Find the <code>ShowPasswordMeter</code> entry and set it to <code>true</code> (without quotes)
 - To disable the password meter
