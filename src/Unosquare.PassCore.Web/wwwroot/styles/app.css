@@ -72,3 +72,8 @@ div.form-overlay-spinner {
 .alert-title {
     font-weight: bold;
 }
+
+div.progress {
+    margin-bottom: 2px;
+    height: 12px;
+}

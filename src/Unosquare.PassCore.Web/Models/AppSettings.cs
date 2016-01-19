@@ -18,6 +18,7 @@
         public ChangePasswordForm ChangePasswordForm { get; set; }
         public List<string> ErrorMessages { get; set; }
         public Recaptcha Recaptcha { get; set; }
+        public bool ShowPasswordMeter { get; set; }
         public Alerts Alerts { get; set; }
     }
     public class ChangePasswordForm
