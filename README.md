@@ -30,9 +30,9 @@ All server-side settings and client-side settings are stored in the <code>appset
 The most relevant configuration entries are shown below. Make sure you make your changes to the <code>appsettings.json</code> file using a regular text editor like <a href="https://atom.io/">Atom</a>.
 
 - To enable reCAPTCHA
-  - Find the <code>RecaptchaPrivateKey</code> entry and enter your private key within double quotes (")
-  - Find the <code>IsEnabled</code> entry and enter the word <code>true</code> (note this should be done _without_ double quotes
-  - Find the <code>SiteKey</code> entry and enter your Site Key within double quotes (")
+  - Find the <code>RecaptchaPrivateKey</code> entry and enter your private key within double quotes (<code>"</code>)
+  - Find the <code>IsEnabled</code> entry and enter the word <code>true</code> (note this should be done _without_ double quotes)
+  - Find the <code>SiteKey</code> entry and enter your Site Key within double quotes (<code>"</code>)
 - To change the language of the reCAPTCHA widget
   - Open the <code>index.html</code> file using a text editor
   - Find the line ```<script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=en" async defer></script> ```
