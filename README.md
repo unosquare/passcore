@@ -11,18 +11,35 @@ PassCore does not require any configuration, as it obtains the principal context
 
 ### Features
 
-PassCore is easily localizable (i.e. you can customize all of the strings in the UI -- see the section on Customization), supports <a href="https://www.google.com/recaptcha/intro/index.html">reCAPTCHA</a>, and works on mobiles, tablets, and desktops.
+PassCore has the following features:
+- Easily localizable (i.e. you can customize all of the strings in the UI -- see the section on Customization)
+- Supports <a href="https://www.google.com/recaptcha/intro/index.html">reCAPTCHA</a>
+- Has a built-in password meter (thanks to <a href="https://github.com/subarroca/ng-password-strength">ng-password-strength</a> 
+- Responsive design that works on mobiles, tablets, and desktops.
 
 <img align="center" src="https://raw.githubusercontent.com/unosquare/passcore/master/passcore-screenshot-01.png" alt="PassCore Screenshot"></img>
 
 ## Installation
 
-(Working on it ...)
+_There is no binary release yet because ASP.NET 5 is still in its RC stage_
+ASP.NET 5 is still in RC and I'm having trouble creating a release version as the Publish feature is not yet working properly. See: <a href="http://forums.asp.net/p/2082720/6010940.aspx">Publish Dialog not Showing Up</a>. Hopefully someone is able to help out.
 
 ## Customization
 
-(Working on it ...)
+All server-side settings and client-side settings are stored in the <code>appsettings.json</code> file.
+The most relevant configuration entries are shown below. Make sure you make your changes to the <code>appsettings.json</code> file using a regular text editor like <a href="https://atom.io/">Atom</a>.
+
+- To enable reCAPTCHA
+  - Find the <code>RecaptchaPrivateKey</code> entry and enter your private key within double quotes (")
+  - Find the <code>IsEnabled</code> entry and enter the word <code>true</code> (note this should be done _without_ double quotes
+  - Finde the <code>SiteKey</code> entry and enter your Site Key within double quotes (")
+- To enable the password meter
+  - Find the <code>ShowPasswordMeter</code> entry and set it to <code>true</code> (without quotes)
+- To disable the password meter
+  - Find the <code>ShowPasswordMeter</code> entry and set it to <code>false</code> (without quotes)
+- The rest of the configuration entries are all pretty much all UI strings.
+  - Change them to localize or brand this utility to meet your needs
 
 ## License
 
-PassCore is open source software and MIT licensed.
+PassCore is open source software and MIT licensed. Please star this project if you like it.
