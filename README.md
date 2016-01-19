@@ -14,7 +14,7 @@ PassCore does not require any configuration, as it obtains the principal context
 PassCore has the following features:
 - Easily localizable (i.e. you can customize all of the strings in the UI -- see the section on Customization)
 - Supports <a href="https://www.google.com/recaptcha/intro/index.html">reCAPTCHA</a>
-- Has a built-in password meter (thanks to <a href="https://github.com/subarroca/ng-password-strength">ng-password-strength</a> 
+- Has a built-in password meter (thanks to <a href="https://github.com/subarroca/ng-password-strength">ng-password-strength</a>) 
 - Responsive design that works on mobiles, tablets, and desktops.
 
 <img align="center" src="https://raw.githubusercontent.com/unosquare/passcore/master/passcore-screenshot-01.png" alt="PassCore Screenshot"></img>
