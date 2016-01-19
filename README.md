@@ -33,6 +33,10 @@ The most relevant configuration entries are shown below. Make sure you make your
   - Find the <code>RecaptchaPrivateKey</code> entry and enter your private key within double quotes (")
   - Find the <code>IsEnabled</code> entry and enter the word <code>true</code> (note this should be done _without_ double quotes
   - Find the <code>SiteKey</code> entry and enter your Site Key within double quotes (")
+- To change the language of the reCAPTCHA widget
+  - Open the <code>index.html</code> file using a text editor
+  - Find the line ```<script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=en" async defer></script> ```
+  - Change the <code>hl=en</code> part to <code>hl=es</code> to use Spanish for example. Or use any of the different <a href="https://developers.google.com/recaptcha/docs/language">language codes</a> to match your locale. 
 - To enable the password meter
   - Find the <code>ShowPasswordMeter</code> entry and set it to <code>true</code> (without quotes)
 - To disable the password meter
