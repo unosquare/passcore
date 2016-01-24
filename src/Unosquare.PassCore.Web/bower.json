@@ -12,10 +12,10 @@
     "angular-recaptcha": "2.2.5",
     "lodash": "4.0.0",
     "ng-password-strength": "0.2.1",
-    "toastr": "2.1.2",
     "Font-Awesome": "4.5.0"
   },
   "resolutions": {
-    "angular": "1.4.8"
+    "angular": "1.4.8",
+    "lodash": "4.0.0"
   }
 }
