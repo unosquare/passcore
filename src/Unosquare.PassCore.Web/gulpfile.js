@@ -45,7 +45,6 @@ paths.bowerLibraries = {
     "angular-recaptcha": paths.bowerBase + "angular-recaptcha/release/**/*.js",
     "lodash": paths.bowerBase + "lodash/lodash.js",
     "ng-password-strength": paths.bowerBase + "ng-password-strength/dist/scripts/ng-password-strength.js",
-    "toastr": paths.bowerBase + "toastr/**/*.{js,map,css}",
     "font-awesome": paths.bowerBase + "Font-Awesome/**/*.{css,otf,eot,svg,ttf,woff,wof2,woff2}"
 };
 
