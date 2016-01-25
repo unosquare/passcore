@@ -19,14 +19,22 @@ PassCore has the following features:
 
 <img align="center" src="https://raw.githubusercontent.com/unosquare/passcore/master/passcore-screenshot-01.png" alt="PassCore Screenshot"></img>
 
-## Installation
+## Installation on IIS
 
-_There is no binary release yet because ASP.NET 5 is still in its RC stage_
-ASP.NET 5 is still in RC and I'm having trouble creating a release version as the Publish feature is not yet working properly. See: <a href="http://forums.asp.net/p/2082720/6010940.aspx">Publish Dialog not Showing Up</a>. Hopefully someone is able to help out.
+1. Ensure the server running IIS is domain-joined. To setermine if the computer is domain-joined Go to the Start menu, right click on Computer, then select properties, and make sure the Domain field contains the correct setting.
+2. Download the latest binary release of **<a href="https://github.com/unosquare/passcore/releases/download/v2.0.0/passcore-2.0-2016-01-24.zip">PassCore 2.0.0</a>** -- Extract the contents of the zip file to the directory where you will be serving the website from.
+3. Install the **<a href="http://www.iis.net/downloads/microsoft/httpplatformhandler">HttpPlatformHandler</a>** via Web Platform Installer.
+4. Go to your IIS Manager, Right click on Application Pools and select Add Application Pool
+5. A dialog appears. Under Name enter **PassCore Application Pool**, Under.NET CLR Version select **No Managed Code** and finally, under Managed pipeline mode selecr **Integrated** Click OK after all fields have been set.
+6. Back on your IIS Manager, Right click on Sites and select Add Website
+7. A dialog appears. Under Site name, enter **PassCore Website**. Under Application pool click on Select and ensure you select **PassCore Application Pool**. Under Physical path, click on the ellispsis (...), navigate to the folder where you extracted PassCore and select the **wwwroot** folder. *MAKE SURE THE PHYSICAL PATH POINTS TO THE <code>wwwroot</code> FOLDER AND NOT TO THE FOLDER CONTAINING THE <code>approot</code>, <code>logs</code> AND <code>wwwroot</code> FOLDERS*
+8. Under the Binding section, configure the Type to be **https**, set IP Address to **All Unassigned**, the Port to **443** and the Host name to something like **password.yourdomain.com**. Under SSL Certificate select a certificate that matches the Hostname you provided above. If you don't know how to install a certificate, please refer to <a href="https://www.digicert.com/ssl-certificate-installation-microsoft-iis-8.htm">SSL Certificate Install</a> in order to install your certificate. **NOTE: ** Do not serve this website without an SSL certificate because requests and responses will be transmitted in cleartext and an attacker could easily retrieve these messages and collect usernames and passwords.
+9. Click OK and navigate to https://password.yourdomain.com (the host name you previously set).
+10. If all is set then you should be able to see the PassCore tool show up in your browser. If you encountered 500 error page, then you need to refer to the *Resolving Errors* part of <a href="http://www.strathweb.com/2015/12/running-asp-net-5-website-on-iis/">Running ASP.NET websites on IIS</a>
 
-## Customization
+## Customization and Configuration
 
-All server-side settings and client-side settings are stored in the <code>appsettings.json</code> file.
+All server-side settings and client-side settings are stored in the <code>/approot/src/Unosquare.PassCore.Web/appsettings.json</code> file.
 The most relevant configuration entries are shown below. Make sure you make your changes to the <code>appsettings.json</code> file using a regular text editor like <a href="https://atom.io/">Atom</a>.
 
 - To enable reCAPTCHA
@@ -34,7 +42,7 @@ The most relevant configuration entries are shown below. Make sure you make your
   - Find the <code>IsEnabled</code> entry and enter the word <code>true</code> (note this should be done _without_ double quotes)
   - Find the <code>SiteKey</code> entry and enter your Site Key within double quotes (<code>"</code>)
 - To change the language of the reCAPTCHA widget
-  - Open the <code>index.html</code> file using a text editor
+  - Open the <code>/wwwroot/index.html</code> file using a text editor
   - Find the line ```<script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=en" async defer></script> ```
   - Change the <code>hl=en</code> part to <code>hl=es</code> to use Spanish for example. Or use any of the different <a href="https://developers.google.com/recaptcha/docs/language">language codes</a> to match your locale. 
 - To enable the password meter
