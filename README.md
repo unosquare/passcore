@@ -52,6 +52,10 @@ The most relevant configuration entries are shown below. Make sure you make your
 - The rest of the configuration entries are all pretty much all UI strings.
   - Change them to localize or brand this utility to meet your needs
 
+## Troubleshooting
+
+Please see **<a href="https://github.com/unosquare/passcore/issues/1">this post</a>** if you can't get the application to work.
+
 ## License
 
 PassCore is open source software and MIT licensed. Please star this project if you like it.
