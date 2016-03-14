@@ -79,18 +79,49 @@
             // perform the password change
             try
             {
-                var principalContext = new PrincipalContext(ContextType.Domain);
-                var userPrincipal = UserPrincipal.FindByIdentity(principalContext, model.Username);
-
-                if (userPrincipal == null)
+                using (var principalContext = AcquirePrincipalContext())
                 {
-                    result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound });
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Json(result);
+                    var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
+
+                    // Check if the user principal exists
+                    if (userPrincipal == null)
+                    {
+                        result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound });
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Json(result);
+                    }
+                    
+                    // Check if password change is allowed
+                    if (userPrincipal.UserCannotChangePassword)
+                    {
+                        throw new Exception(Settings.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                    }
+
+                    // Validate user credentials
+                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword))
+                    {
+                        throw new Exception(Settings.ClientSettings.Alerts.ErrorInvalidCredentials);
+                    }
+
+                    // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
+                    try
+                    {
+                        // Try by regular ChangePassword method
+                        userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
+                    }
+                    catch (Exception ex2)
+                    {
+                        // If the previous attempt failed, use the SetPassword method.
+                        if (Settings.PasswordChangeOptions.UseAutomaticContext == false)
+                            userPrincipal.SetPassword(model.NewPassword);
+                        else
+                            throw ex2;
+                    }
+
+                    userPrincipal.Save();
+
                 }
 
-                userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
-                userPrincipal.Save();
             }
             catch (Exception ex)
             {
@@ -104,6 +135,30 @@
 
             return Json(result);
 
+        }
+
+        private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
+        {
+            return UserPrincipal.FindByIdentity(context, username);
+        }
+
+        private PrincipalContext AcquirePrincipalContext()
+        {
+            PrincipalContext principalContext = null;
+            if (Settings.PasswordChangeOptions.UseAutomaticContext)
+            {
+                principalContext = new PrincipalContext(ContextType.Domain);
+            }
+            else
+            {
+                principalContext = new PrincipalContext(
+                    ContextType.Domain,
+                    $"{Settings.PasswordChangeOptions.LdapHostname}:{Settings.PasswordChangeOptions.LdapPort.ToString()}",
+                    Settings.PasswordChangeOptions.LdapUsername,
+                    Settings.PasswordChangeOptions.LdapPassword);
+            }
+
+            return principalContext;
         }
 
         public async Task<bool> ValidateRecaptcha(string recaptchaResponse)

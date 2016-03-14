@@ -8,7 +8,18 @@
     public class AppSettings
     {
         public string RecaptchaPrivateKey { get; set; }
+        public PasswordChangeOptions PasswordChangeOptions { get; set; }
         public ClientSettings ClientSettings { get; set; }
+    }
+
+    public class PasswordChangeOptions
+    {
+        public bool UseAutomaticContext { get; set; } = true;
+        public string LdapHostname { get; set; }
+        public int LdapPort { get; set; } = 389;
+        public string LdapUsername { get; set; }
+        public string LdapPassword { get; set; }
+
     }
 
     public class ClientSettings
@@ -51,6 +62,8 @@
         public string SuccessAlertBody { get; set; }
         public string ErrorAlertTitle { get; set; }
         public string ErrorAlertBody { get; set; }
+        public string ErrorPasswordChangeNotAllowed { get; set; }
+        public string ErrorInvalidCredentials { get; set; }
     }
 
 
