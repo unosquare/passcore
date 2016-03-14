@@ -22,7 +22,7 @@ PassCore has the following features:
 ## Installation on IIS
 
 1. Ensure the server running IIS is domain-joined. To setermine if the computer is domain-joined Go to the *Start* menu, right click on *Computer*, then select *Properties*, and make sure the *Domain* field contains the correct setting.
-2. Download the latest binary release of **<a href="https://github.com/unosquare/passcore/releases/download/v2.0.0/passcore-2.0-2016-01-24.zip">PassCore 2.0.0</a>** -- Extract the contents of the zip file to the directory where you will be serving the website from.
+2. Download the latest binary release of **<a href="https://github.com/unosquare/passcore/releases/download/v2.0.2.beta.2/passcore-2.0.2.beta.2-2016-03-14.zip">PassCore 2.0.2.beta.2</a>** -- **NOTE:** Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.
 3. Install the **<a href="http://www.iis.net/downloads/microsoft/httpplatformhandler">HttpPlatformHandler</a>** via Web Platform Installer.
 4. Go to your *IIS Manager*, Right click on *Application Pools* and select *Add Application Pool*.
 5. A dialog appears. Under Name enter **PassCore Application Pool**, Under.NET CLR Version select **No Managed Code** and finally, under Managed pipeline mode select **Integrated**. Click OK after all fields have been set.
