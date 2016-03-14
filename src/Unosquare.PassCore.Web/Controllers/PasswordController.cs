@@ -98,7 +98,7 @@
                     }
 
                     // Validate user credentials
-                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword))
+                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
                         throw new Exception(Settings.ClientSettings.Alerts.ErrorInvalidCredentials);
                     }
