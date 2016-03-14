@@ -70,7 +70,9 @@
 
                     }, function errorCallback(response) {
                         $('div.form-overlay').hide();
-                        //grecaptcha.reset();
+                        if (ViewOptions.Recaptcha.IsEnabled === true) {
+                            grecaptcha.reset();
+                        }
 
                         $.each(response.data.Errors, function (index, errorData) {
                             if (errorData.ErrorType == 1)
