@@ -42,9 +42,7 @@ The most relevant configuration entries are shown below. Make sure you make your
   - Find the <code>IsEnabled</code> entry and enter the word <code>true</code> (note this should be done _without_ double quotes)
   - Find the <code>SiteKey</code> entry and enter your Site Key within double quotes (<code>"</code>)
 - To change the language of the reCAPTCHA widget
-  - Open the <code>/wwwroot/index.html</code> file using a text editor
-  - Find the line ```<script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=en" async defer></script> ```
-  - Change the <code>hl=en</code> part to <code>hl=es</code> to use Spanish for example. Or use any of the different <a href="https://developers.google.com/recaptcha/docs/language">language codes</a> to match your locale. 
+  - Find the <code>LanguageCode</code> entry and enter <a href="https://developers.google.com/recaptcha/docs/language">one of the options listed here</a>. By default this is set to <code>en</code>
 - To enable the password meter
   - Find the <code>ShowPasswordMeter</code> entry and set it to <code>true</code> (without quotes)
 - To disable the password meter
@@ -54,7 +52,11 @@ The most relevant configuration entries are shown below. Make sure you make your
 
 ## Troubleshooting
 
-Please see **<a href="https://github.com/unosquare/passcore/issues/1">this post</a>** if you can't get the application to work.
+- Please see **<a href="https://github.com/unosquare/passcore/issues/1">this post</a>** if you can't get the application to work.
+- If your users are having trouble changing passwords as in issues **<a href="https://github.com/unosquare/passcore/issues/8">#8</a>** or **<a href="https://github.com/unosquare/passcore/issues/9">#9</a>** then try configuring the section <code>PasswordChangeOption</code> in the <code>/approot/src/Unosquare.PassCore.Web/appsettings.json</code> file. Here are some guidelines:
+  - Ensure <code>UseAutomaticContext</code> is set to <code>false</code>
+  - Ensure <code>LdapUsername</code> is set to an AD user with enough permissions to reset user passwords
+  - Ensure <code>LdapPassword</code> is set to the correct password for the admin user mentioned above
 
 ## License
 
