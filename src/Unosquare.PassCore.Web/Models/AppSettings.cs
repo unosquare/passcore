@@ -54,6 +54,7 @@
     {
         public bool IsEnabled { get; set; }
         public string SiteKey { get; set; }
+        public string LanguageCode { get; set; }
     }
 
     public class Alerts
