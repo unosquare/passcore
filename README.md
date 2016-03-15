@@ -57,6 +57,7 @@ The most relevant configuration entries are shown below. Make sure you make your
   - Ensure <code>UseAutomaticContext</code> is set to <code>false</code>
   - Ensure <code>LdapUsername</code> is set to an AD user with enough permissions to reset user passwords
   - Ensure <code>LdapPassword</code> is set to the correct password for the admin user mentioned above
+  - User @gadams65 suggests the following: FQDN of your LDAP host. I also put the LDAP username in without any other info such as domain or @domain. Only the username.
 
 ## License
 
