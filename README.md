@@ -53,7 +53,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 ## Troubleshooting
 
 - Please see **<a href="https://github.com/unosquare/passcore/issues/1">this post</a>** if you can't get the application to work.
-- If your users are having trouble changing passwords as in issues **<a href="https://github.com/unosquare/passcore/issues/8">#8</a>** or **<a href="https://github.com/unosquare/passcore/issues/9">#9</a>** then try configuring the section <code>PasswordChangeOption</code> in the <code>/approot/src/Unosquare.PassCore.Web/appsettings.json</code> file. Here are some guidelines:
+- If your users are having trouble changing passwords as in issues **<a href="https://github.com/unosquare/passcore/issues/8">#8</a>** or **<a href="https://github.com/unosquare/passcore/issues/9">#9</a>** then try configuring the section <code>PasswordChangeOptions</code> in the <code>/approot/src/Unosquare.PassCore.Web/appsettings.json</code> file. Here are some guidelines:
   - Ensure <code>UseAutomaticContext</code> is set to <code>false</code>
   - Ensure <code>LdapUsername</code> is set to an AD user with enough permissions to reset user passwords
   - Ensure <code>LdapPassword</code> is set to the correct password for the admin user mentioned above
