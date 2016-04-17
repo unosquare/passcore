@@ -195,3 +195,4 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 /src/Unosquare.PassCore.Web/wwwroot/vendor
+/src/Unosquare.PassCore.Web/project.lock.json
