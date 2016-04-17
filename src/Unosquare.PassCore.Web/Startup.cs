@@ -5,6 +5,9 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Models;
+    using System;
+    using System.Diagnostics;
 
     /// <summary>
     /// Represents this application's main class
@@ -91,6 +94,22 @@
             application.UseApplicationInsightsRequestTelemetry();
 
             application.UseApplicationInsightsExceptionTelemetry();
+
+            application.Use(async (context, next) =>
+            {
+                var settings = new AppSettings();
+                ConfigurationBinder.Bind(Configuration.GetSection(AppSettingsSectionName), settings);
+
+                if (context.Request.IsHttps || Debugger.IsAttached || settings.EnableHttpsRedirect == false)
+                {
+                    await next();
+                }
+                else
+                {
+                    var secureRedirectUrl = $"{Uri.UriSchemeHttps}{Uri.SchemeDelimiter}{context.Request.Host}{context.Request.Path}";
+                    context.Response.Redirect(secureRedirectUrl);
+                }
+            });
 
             application.UseDefaultFiles();
             application.UseStaticFiles();

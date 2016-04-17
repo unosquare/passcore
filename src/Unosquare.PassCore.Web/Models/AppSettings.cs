@@ -7,6 +7,7 @@
     /// </summary>
     public class AppSettings
     {
+        public bool EnableHttpsRedirect { get; set; } = true;
         public string RecaptchaPrivateKey { get; set; }
         public PasswordChangeOptions PasswordChangeOptions { get; set; }
         public ClientSettings ClientSettings { get; set; }
@@ -48,6 +49,7 @@
         public string NewPasswordVerifyLabel { get; set; }
         public string NewPasswordVerifyPlaceholder { get; set; }
         public string NewPasswordVerifyHelpblock { get; set; }
+        public string ChangePasswordButtonLabel { get; set; }
     }
 
     public class Recaptcha
