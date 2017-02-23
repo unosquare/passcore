@@ -29,13 +29,14 @@ paths.appStylesWildcard = paths.appStylesBase + "**/*.css";
 paths.appStylesMinifiedWildcard = paths.appStylesBase + "**/*.min.css";
 
 paths.appTargetScript = paths.appScriptsBase + "app.min.js";
-paths.appTargetStyle = paths.appStylesBase + "app.min.css"
+paths.appTargetStyle = paths.appStylesBase + "app.min.css";
 
 paths.libTargetScript = paths.libBase + "vendor.min.js";
 paths.libTargetStyle = paths.libBase + "vendor.min.css";
 
 paths.bowerLibraries = {
     "jquery": paths.bowerBase + "jquery/dist/jquery*.{js,map}",
+    "tether": paths.bowerBase + "tether/dist/**/*{js,css}",
     "bootstrap": paths.bowerBase + "bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}",
     "angular": paths.bowerBase + "angular/angular*.{js,map}",
     "angular-bootstrap": paths.bowerBase + "angular-bootstrap/ui-bootstrap-tpls*.{js,map,css}",
