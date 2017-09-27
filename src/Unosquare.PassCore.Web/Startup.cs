@@ -35,9 +35,12 @@
         /// <summary>
         /// Application's entry point
         /// </summary>
-        public static void Main(string[] args) => BuildWebHost(args).Run();
-
-        public static IWebHost BuildWebHost(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().Build();
+        public static void Main(string[] args) => WebHost
+            .CreateDefaultBuilder(args)
+            .UseIISIntegration()
+            .UseStartup<Startup>()
+            .Build()
+            .Run();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -47,7 +50,7 @@
         public Startup(IHostingEnvironment environment)
         {
             // Set up configuration sources.
-            var builder = new ConfigurationBuilder().AddJsonFile(AppSettingsJsonFilename);
+            var builder = new ConfigurationBuilder().AddJsonFile(AppSettingsJsonFilename, false, true);
 
             if (environment.IsEnvironment(DevelopmentEnvironmentName))
             {
@@ -91,8 +94,6 @@
         {
             loggerFactory.AddConsole(Configuration.GetSection(LoggingSectionName));
             loggerFactory.AddDebug();
-
-            application.UseIISPlatformHandler();
 
             application.UseApplicationInsightsRequestTelemetry();
 
