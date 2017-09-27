@@ -1,7 +1,8 @@
 ﻿namespace Unosquare.PassCore.Web
 {
-    using Microsoft.AspNet.Builder;
-    using Microsoft.AspNet.Hosting;
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -34,7 +35,9 @@
         /// <summary>
         /// Application's entry point
         /// </summary>
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        public static void Main(string[] args) => BuildWebHost(args).Run();
+
+        public static IWebHost BuildWebHost(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().Build();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -53,7 +56,7 @@
             }
 
             builder.AddEnvironmentVariables();
-            Configuration = builder.Build().ReloadOnChanged(AppSettingsJsonFilename);
+            Configuration = builder.Build();
         }
 
         #endregion

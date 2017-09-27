@@ -1,6 +1,6 @@
 ﻿namespace Unosquare.PassCore.Web.Controllers
 {
-    using Microsoft.AspNet.Mvc;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using System;
