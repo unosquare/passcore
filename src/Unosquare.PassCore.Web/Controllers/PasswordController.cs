@@ -4,11 +4,14 @@
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using System;
-    using System.DirectoryServices.AccountManagement;
+    using System.Collections;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Unosquare.PassCore.Web.Models;
+    using Unosquare.Swan;
+    using Unosquare.Swan.Networking.Ldap;
 
 
     /// <summary>
@@ -79,49 +82,67 @@
             // perform the password change
             try
             {
-                using (var principalContext = AcquirePrincipalContext())
+                //using (var principalContext = AcquirePrincipalContext())
+                //{
+                //    var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
+
+                //    // Check if the user principal exists
+                //    if (userPrincipal == null)
+                //    {
+                //        result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound });
+                //        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //        return Json(result);
+                //    }
+
+                //    // Check if password change is allowed
+                //    if (userPrincipal.UserCannotChangePassword)
+                //    {
+                //        throw new Exception(Settings.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                //    }
+
+                //    // Validate user credentials
+                //    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
+                //    {
+                //        throw new Exception(Settings.ClientSettings.Alerts.ErrorInvalidCredentials);
+                //    }
+
+                //    // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
+                //    try
+                //    {
+                //        // Try by regular ChangePassword method
+                //        userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
+                //    }
+                //    catch (Exception ex2)
+                //    {
+                //        // If the previous attempt failed, use the SetPassword method.
+                //        if (Settings.PasswordChangeOptions.UseAutomaticContext == false)
+                //            userPrincipal.SetPassword(model.NewPassword);
+                //        else
+                //            throw ex2;
+                //    }
+
+                //    userPrincipal.Save();
+
+                //}
+
+                var distinguishedName = await GetDN(model.Username);
+
+                if (string.IsNullOrEmpty(distinguishedName))
                 {
-                    var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
-
-                    // Check if the user principal exists
-                    if (userPrincipal == null)
-                    {
-                        result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound });
-                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        return Json(result);
-                    }
-                    
-                    // Check if password change is allowed
-                    if (userPrincipal.UserCannotChangePassword)
-                    {
-                        throw new Exception(Settings.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
-                    }
-
-                    // Validate user credentials
-                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
-                    {
-                        throw new Exception(Settings.ClientSettings.Alerts.ErrorInvalidCredentials);
-                    }
-
-                    // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
-                    try
-                    {
-                        // Try by regular ChangePassword method
-                        userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
-                    }
-                    catch (Exception ex2)
-                    {
-                        // If the previous attempt failed, use the SetPassword method.
-                        if (Settings.PasswordChangeOptions.UseAutomaticContext == false)
-                            userPrincipal.SetPassword(model.NewPassword);
-                        else
-                            throw ex2;
-                    }
-
-                    userPrincipal.Save();
-
+                    result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCredentials, Message = "Invalid Username or Password" });
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 }
 
+                var cn = new LdapConnection();
+
+                await cn.Connect(Settings.PasswordChangeOptions.LdapHostname, Settings.PasswordChangeOptions.LdapPort);
+                await cn.Bind(Settings.PasswordChangeOptions.LdapUsername, Settings.PasswordChangeOptions.LdapPassword);
+                var modList = new ArrayList();
+                var attribute = new LdapAttribute("userPassword", model.NewPassword);
+                modList.Add(new LdapModification(LdapModificationOp.Replace, attribute));
+                var mods = (LdapModification[])modList.ToArray(typeof(LdapModification));
+                await cn.Modify(distinguishedName, mods);
+                cn.Disconnect();
             }
             catch (Exception ex)
             {
@@ -137,29 +158,71 @@
 
         }
 
-        private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
+        private string GetBase()
         {
-            return UserPrincipal.FindByIdentity(context, username);
+            var _base = string.Empty;
+            var hostName = Settings.PasswordChangeOptions.LdapHostname.Split('.');
+
+            foreach (var part in hostName)
+            {
+                if (part == hostName.Last())
+                    _base += $"dc={_base}";
+                else
+                    _base += $"dc={_base},";
+            }
+            return _base;
         }
 
-        private PrincipalContext AcquirePrincipalContext()
+        private async Task<string> GetDN(string username)
         {
-            PrincipalContext principalContext = null;
-            if (Settings.PasswordChangeOptions.UseAutomaticContext)
+            try
             {
-                principalContext = new PrincipalContext(ContextType.Domain);
-            }
-            else
-            {
-                principalContext = new PrincipalContext(
-                    ContextType.Domain,
-                    $"{Settings.PasswordChangeOptions.LdapHostname}:{Settings.PasswordChangeOptions.LdapPort.ToString()}",
-                    Settings.PasswordChangeOptions.LdapUsername,
-                    Settings.PasswordChangeOptions.LdapPassword);
-            }
+                var cn = new LdapConnection();
+                var distinguishedName = string.Empty;
+                await cn.Connect(Settings.PasswordChangeOptions.LdapHostname, Settings.PasswordChangeOptions.LdapPort);
+                await cn.Bind(Settings.PasswordChangeOptions.LdapUsername, Settings.PasswordChangeOptions.LdapPassword);
+                var lsc = await cn.Search($"{GetBase()}", LdapConnection.ScopeSub, $"(mail={username})");
 
-            return principalContext;
+                while (lsc.HasMore())
+                {
+                    var entry = lsc.Next();
+                    var ldapAttributes = entry.GetAttributeSet();
+                    distinguishedName = ldapAttributes.GetAttribute("distinguishedName")?.StringValue ?? string.Empty;
+                }
+
+                cn.Disconnect();
+                return distinguishedName;
+            }
+            catch (Exception ex)
+            {
+                ex.Error(nameof(GetDN), "Error LDAP");
+                return string.Empty;
+            }
         }
+
+        //private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
+        //{
+        //    return UserPrincipal.FindByIdentity(context, username);
+        //}
+
+        //private PrincipalContext AcquirePrincipalContext()
+        //{
+        //    PrincipalContext principalContext = null;
+        //    if (Settings.PasswordChangeOptions.UseAutomaticContext)
+        //    {
+        //        principalContext = new PrincipalContext(ContextType.Domain);
+        //    }
+        //    else
+        //    {
+        //        principalContext = new PrincipalContext(
+        //            ContextType.Domain,
+        //            $"{Settings.PasswordChangeOptions.LdapHostname}:{Settings.PasswordChangeOptions.LdapPort.ToString()}",
+        //            Settings.PasswordChangeOptions.LdapUsername,
+        //            Settings.PasswordChangeOptions.LdapPassword);
+        //    }
+
+        //    return principalContext;
+        //}
 
         public async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
