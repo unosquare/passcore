@@ -13,7 +13,7 @@
             app.constant("ViewOptions", response.data);
 
             // Insert recaptcha if necessary
-            if (response.data.Recaptcha.IsEnabled === true) {
+            if (response.data.recaptcha.isEnabled === true) {
                 var sp = document.createElement('script'); sp.type = 'text/javascript'; sp.async = true; sp.defer = true;
                 sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + response.data.Recaptcha.LanguageCode;
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sp, s);

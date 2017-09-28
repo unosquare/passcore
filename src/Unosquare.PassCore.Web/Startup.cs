@@ -97,10 +97,6 @@
             loggerFactory.AddConsole(Configuration.GetSection(LoggingSectionName));
             loggerFactory.AddDebug();
 
-            application.UseApplicationInsightsRequestTelemetry();
-
-            application.UseApplicationInsightsExceptionTelemetry();
-
             application.Use(async (context, next) =>
             {
                 var settings = new AppSettings();

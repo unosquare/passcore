@@ -123,9 +123,9 @@
             foreach (var part in hostName)
             {
                 if (part == hostName.Last())
-                    _base += $"dc={_base}";
+                    _base += $"dc={part}";
                 else
-                    _base += $"dc={_base},";
+                    _base += $"dc={part},";
             }
             return _base;
         }
@@ -134,11 +134,12 @@
         {
             try
             {
+                var bs = GetBase();
                 var cn = new LdapConnection();
                 var distinguishedName = string.Empty;
                 await cn.Connect(Settings.PasswordChangeOptions.LdapHostname, Settings.PasswordChangeOptions.LdapPort);
                 await cn.Bind(Settings.PasswordChangeOptions.LdapUsername, Settings.PasswordChangeOptions.LdapPassword);
-                var lsc = await cn.Search($"{GetBase()}", LdapConnection.ScopeSub, $"(mail={username})");
+                var lsc = await cn.Search($"{bs}", LdapConnection.ScopeSub, $"(mail={username})");
 
                 while (lsc.HasMore())
                 {
@@ -156,30 +157,6 @@
                 return string.Empty;
             }
         }
-
-        //private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
-        //{
-        //    return UserPrincipal.FindByIdentity(context, username);
-        //}
-
-        //private PrincipalContext AcquirePrincipalContext()
-        //{
-        //    PrincipalContext principalContext = null;
-        //    if (Settings.PasswordChangeOptions.UseAutomaticContext)
-        //    {
-        //        principalContext = new PrincipalContext(ContextType.Domain);
-        //    }
-        //    else
-        //    {
-        //        principalContext = new PrincipalContext(
-        //            ContextType.Domain,
-        //            $"{Settings.PasswordChangeOptions.LdapHostname}:{Settings.PasswordChangeOptions.LdapPort.ToString()}",
-        //            Settings.PasswordChangeOptions.LdapUsername,
-        //            Settings.PasswordChangeOptions.LdapPassword);
-        //    }
-
-        //    return principalContext;
-        //}
 
         public async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
