@@ -82,49 +82,6 @@
             // perform the password change
             try
             {
-                //using (var principalContext = AcquirePrincipalContext())
-                //{
-                //    var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
-
-                //    // Check if the user principal exists
-                //    if (userPrincipal == null)
-                //    {
-                //        result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound });
-                //        Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                //        return Json(result);
-                //    }
-
-                //    // Check if password change is allowed
-                //    if (userPrincipal.UserCannotChangePassword)
-                //    {
-                //        throw new Exception(Settings.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
-                //    }
-
-                //    // Validate user credentials
-                //    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
-                //    {
-                //        throw new Exception(Settings.ClientSettings.Alerts.ErrorInvalidCredentials);
-                //    }
-
-                //    // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
-                //    try
-                //    {
-                //        // Try by regular ChangePassword method
-                //        userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
-                //    }
-                //    catch (Exception ex2)
-                //    {
-                //        // If the previous attempt failed, use the SetPassword method.
-                //        if (Settings.PasswordChangeOptions.UseAutomaticContext == false)
-                //            userPrincipal.SetPassword(model.NewPassword);
-                //        else
-                //            throw ex2;
-                //    }
-
-                //    userPrincipal.Save();
-
-                //}
-
                 var distinguishedName = await GetDN(model.Username);
 
                 if (string.IsNullOrEmpty(distinguishedName))
