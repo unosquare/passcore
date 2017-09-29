@@ -134,12 +134,11 @@
         {
             try
             {
-                var bs = GetBase();
                 var cn = new LdapConnection();
                 var distinguishedName = string.Empty;
                 await cn.Connect(Settings.PasswordChangeOptions.LdapHostname, Settings.PasswordChangeOptions.LdapPort);
                 await cn.Bind(Settings.PasswordChangeOptions.LdapUsername, Settings.PasswordChangeOptions.LdapPassword);
-                var lsc = await cn.Search($"{bs}", LdapConnection.ScopeSub, $"(mail={username})");
+                var lsc = await cn.Search($"{GetBase()}", LdapConnection.ScopeSub, $"(mail={username})");
 
                 while (lsc.HasMore())
                 {
