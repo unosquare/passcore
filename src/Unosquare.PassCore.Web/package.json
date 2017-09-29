@@ -3,6 +3,9 @@
   "name": "ASP.NET",
   "private": true,
   "devDependencies": {
+    "@angular/cli": "1.4.4",
+    "@angular/compiler-cli": "^4.2.4",
+    "@angular/language-service": "^4.2.4",
     "@types/node": "^8.0.31",
     "@types/webpack": "^3.0.12",
     "del": "2.2.0",
@@ -19,5 +22,18 @@
     "typescript": "^2.5.3",
     "webpack": "^3.6.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@angular/animations": "^4.2.4",
+    "@angular/common": "^4.2.4",
+    "@angular/compiler": "^4.2.4",
+    "@angular/core": "^4.2.4",
+    "@angular/forms": "^4.2.4",
+    "@angular/http": "^4.2.4",
+    "@angular/platform-browser": "^4.2.4",
+    "@angular/platform-browser-dynamic": "^4.2.4",
+    "@angular/router": "^4.2.4",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.4.2",
+    "zone.js": "^0.8.14"
+  }
 }
