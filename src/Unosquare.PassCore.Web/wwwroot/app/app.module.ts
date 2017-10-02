@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { ChangePasswordComponent } from './app.change-password';
 import { MaterialModule } from './app.material-module'
@@ -10,7 +11,8 @@ import { MaterialModule } from './app.material-module'
   ],
   imports: [
     BrowserModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [ChangePasswordComponent]

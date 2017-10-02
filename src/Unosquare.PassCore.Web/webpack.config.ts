@@ -3,7 +3,6 @@ import * as path from 'path';
 
 const config: webpack.Configuration  = {
     entry: {
-        polyfills: './wwwroot/polyfills.ts',
         app: './wwwroot/main.ts'
     },
     resolve: {
