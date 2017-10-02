@@ -2,10 +2,22 @@
 import * as path from 'path';
 
 const config: webpack.Configuration = {
-    entry: { foo:'./foo.js'},
+    entry: path.resolve('./wwwroot/app/app.module.ts'),
+    devtool:'inline-source-map',
+    module:{
+        rules:
+        [{
+            test: /\.tsx?$/,
+            use:'ts-loader',
+            exclude: /node_modules/
+        }]
+    },
+    resolve:{
+        extensions:[".tsx", ".ts", ".js"]
+    },
     output: {
-        path: '../wwwroot/scripts',
-        filename: 'app.min.js'
+        path: path.resolve('./wwwroot/scripts'),
+        filename: 'app.min-typescript.js'
     }
 };
 

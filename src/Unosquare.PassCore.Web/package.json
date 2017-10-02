@@ -36,6 +36,7 @@
     "@angular/router": "^4.2.4",
     "core-js": "^2.4.1",
     "rxjs": "^5.4.2",
+    "ts-loader": "^2.3.7",
     "zone.js": "^0.8.14"
   }
 }
