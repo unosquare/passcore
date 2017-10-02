@@ -2,6 +2,9 @@
   "version": "1.0.0",
   "name": "ASP.NET",
   "private": true,
+  "scripts": {
+    "build" : "./node_modules/.bin/webpack"
+  },
   "devDependencies": {
     "@angular/cli": "1.4.4",
     "@angular/compiler-cli": "^4.2.4",
