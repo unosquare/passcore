@@ -20,15 +20,16 @@
     <link rel="stylesheet" href="vendor/vendor.min.css" />
     <link rel="stylesheet" href="styles/app.min.css" />
 
-    <script src="vendor/vendor.min.js"></script>
-    <script src="scripts/app.min.js"></script>
+    <!-- <script src="vendor/vendor.min.js"></script> -->
+    <script src="scripts/tsscripts/app.typescript.js"></script>
+    <script src="scripts/tsscripts/polyfills.typescript.js"></script>
 
 </head>
 <body ng-cloak>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <ng-view></ng-view>
+                <app-root>Loading...</app-root>
             </div>
         </div>
     </div>

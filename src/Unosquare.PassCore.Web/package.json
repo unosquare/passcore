@@ -3,7 +3,7 @@
   "name": "ASP.NET",
   "private": true,
   "scripts": {
-    "build" : "./node_modules/.bin/webpack"
+    "build": "./node_modules/.bin/webpack"
   },
   "devDependencies": {
     "@angular/cli": "1.4.4",

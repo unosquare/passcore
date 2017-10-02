@@ -1,23 +1,28 @@
 ﻿import * as webpack from 'webpack';
 import * as path from 'path';
 
-const config: webpack.Configuration = {
-    entry: path.resolve('./wwwroot/app/app.module.ts'),
-    devtool:'inline-source-map',
-    module:{
-        rules:
-        [{
-            test: /\.tsx?$/,
-            use:'ts-loader',
-            exclude: /node_modules/
-        }]
+const config: webpack.Configuration  = {
+    entry: {
+        polyfills: './wwwroot/polyfills.ts',
+        app: './wwwroot/main.ts'
     },
-    resolve:{
-        extensions:[".tsx", ".ts", ".js"]
+    resolve: {
+        extensions: ['.ts', '.js']
     },
+    devtool: 'source-map',
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                loader: 'ts-loader',
+            }
+        ]
+    },
+
     output: {
-        path: path.resolve('./wwwroot/scripts'),
-        filename: 'app.min-typescript.js'
+        path: path.resolve('./wwwroot/scripts/tsscripts'),
+        filename: '[name].typescript.js',
+        sourceMapFilename: '[name].map',
     }
 };
 
