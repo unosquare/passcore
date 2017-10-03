@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
 import { ViewOptions } from './models/view-options.model';
-import { Alerts } from  './models/alerts.model';
+import { Alerts } from './models/alerts.model';
 import { Recaptcha } from './models/recaptcha.model';
 import { ChangePasswordForm } from './models/change-password-form.model';
+import { Errors } from './models/error-data.model';
+import { error } from './models/error.model';
 
 import 'rxjs/add/operator/map';
 
@@ -14,29 +16,32 @@ import 'rxjs/add/operator/map';
 })
 export class ChangePasswordComponent implements OnInit {
   ViewOptions: ViewOptions;
+  ErrorData: Errors;
   ShowSuccessAlert;
   ShowErrorAlert;
   ErrorAlertMessage;
   FormData = {
     Username: '',
-    CurrentPassword:'',
-    NewPassword:'',
-    NewPasswordVerify:'',
-    Recaptcha:''
+    CurrentPassword: '',
+    NewPassword: '',
+    NewPasswordVerify: '',
+    Recaptcha: ''
   };
 
-  constructor(private http: Http) { 
+  constructor(private http: Http) {
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
+    this.ErrorData = new Errors;
+    this.ErrorData.errors = new Array<error>();
   }
 
   ngOnInit(): void {
     this.GetData();
   }
 
-  private GetData(): void{
+  private GetData(): void {
     this.http.get('api/password').subscribe(values => {
       this.ViewOptions = values.json();
       if (this.ViewOptions.recaptcha.isEnabled == true) {
@@ -47,39 +52,40 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   EmptyFormData = Object.assign({}, this.FormData);
-  
-  SetRecaptchaResponse(response: any){
-      this.FormData.Recaptcha = response;
+
+  SetRecaptchaResponse(response) {
+    this.FormData.Recaptcha = response;
   }
 
-  ClearRecaptchaResponse(){
+  ClearRecaptchaResponse() {
     this.FormData.Recaptcha = '';
   }
 
-  Submit(){
+  Submit() {
     this.ShowSuccessAlert = false;
     this.ShowErrorAlert = false;
     this.ErrorAlertMessage = '';
     this.http.post('api/password', this.FormData)
-      .subscribe((response: any) => {
+      .subscribe((response) => {
         this.FormData = Object.assign({}, this.EmptyFormData);
         this.ShowSuccessAlert = true;
-      }, (error: any) => {
-        if(this.ViewOptions.recaptcha.isEnabled == true){
+      }, (error) => {
+        if (this.ViewOptions.recaptcha.isEnabled == true) {
           grecaptcha.reset();
         }
 
-        error.data.Errors.map((index, errorData) => {
-          if(errorData.ErrorType == 1){
+        this.ErrorData = error.json() as Errors;
+        this.ErrorData.errors.map((index, errData) => {
+          if (index.errorType == 1) {
             this.ShowErrorAlert = true;
-            if(errorData.ErrorCode == 0){
-              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errorData.Message;
+            if (index.errorCode == 0) {
+              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + index.message;
             }
-            else{
-              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + this.ViewOptions.errorMessages[errorData.ErrorCode];
+            else {
+              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + this.ViewOptions.errorMessages[index.errorCode];
             }
           }
-          else if(errorData.ErrorType == 2){
+          else if (index.errorType == 2) {
             //todo erros in view
           }
         });
