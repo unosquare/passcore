@@ -5,7 +5,7 @@ import { ViewOptions } from './models/view-options.model';
 import { Alerts } from './models/alerts.model';
 import { Recaptcha } from './models/recaptcha.model';
 import { ChangePasswordForm } from './models/change-password-form.model';
-import { Errors } from './models/error-data.model';
+import { Result } from './models/error-data.model';
 import { error } from './models/error.model';
 
 import 'rxjs/add/operator/map';
@@ -16,7 +16,7 @@ import 'rxjs/add/operator/map';
 })
 export class ChangePasswordComponent implements OnInit {
   ViewOptions: ViewOptions;
-  ErrorData: Errors;
+  ErrorData: Result;
   Form;
   ShowSuccessAlert;
   ShowErrorAlert;
@@ -34,8 +34,6 @@ export class ChangePasswordComponent implements OnInit {
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
-    this.ErrorData = new Errors;
-    this.ErrorData.errors = new Array<error>();
   }
 
   ngOnInit(): void {
@@ -79,7 +77,7 @@ export class ChangePasswordComponent implements OnInit {
           grecaptcha.reset();
         }
 
-        this.ErrorData = error.json() as Errors;
+        this.ErrorData = error.json() as Result;
         this.ErrorData.errors.map((errData, index) => {
           if (errData.errorType == 1) {
             this.ShowErrorAlert = true;
