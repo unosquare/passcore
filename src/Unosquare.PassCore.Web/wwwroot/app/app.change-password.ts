@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, RequestOptions } from '@angular/http';
 import { ViewOptions } from './app.view-options';
-
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -10,12 +9,15 @@ import 'rxjs/add/operator/map';
 })
 export class ChangePasswordComponent implements OnInit {
   ViewOptions: ViewOptions;
+  ShowSuccessAlert;
+  ShowErrorAlert;
+  ErrorAlertMessage;
   FormData = {
     Username: '',
-    CurrentPassword:'',
-    NewPassword:'',
-    NewPasswordVerify:'',
-    Recaptcha:''
+    CurrentPassword: '',
+    NewPassword: '',
+    NewPasswordVerify: '',
+    Recaptcha: ''
   };
 
   constructor(private http: Http) { this.ViewOptions = new ViewOptions; }
@@ -24,7 +26,7 @@ export class ChangePasswordComponent implements OnInit {
     this.GetData();
   }
 
-  private GetData(): void{
+  private GetData(): void {
     this.http.get('api/password').subscribe(values => {
       this.ViewOptions = values.json();
       if (this.ViewOptions.recaptcha.isEnabled == true) {
@@ -35,16 +37,43 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   EmptyFormData = Object.assign({}, this.FormData);
-  
-  SetRecaptchaResponse(response: any){
-      this.FormData.Recaptcha = response;
+
+  SetRecaptchaResponse(response: any) {
+    this.FormData.Recaptcha = response;
   }
 
-  ClearRecaptchaResponse(){
+  ClearRecaptchaResponse() {
     this.FormData.Recaptcha = '';
   }
 
-  Submit(){
-    //todo submit
+  Submit() {
+    this.ShowSuccessAlert = false;
+    this.ShowErrorAlert = false;
+    this.ErrorAlertMessage = '';
+    this.http.post('api/password', this.FormData)
+      .subscribe((response: any) => {
+        this.FormData = Object.assign({}, this.EmptyFormData);
+        this.ShowSuccessAlert = true;
+      }, (error: any) => {
+        if(this.ViewOptions.recaptcha.isEnabled == true){
+          grecaptcha.reset();
+        }
+
+        error.data.Errors.map((index, errorData) => {
+          if(errorData.ErrorType == 1){
+            this.ShowErrorAlert = true;
+            if(errorData.ErrorCode == 0){
+              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errorData.Message;
+            }
+            else{
+              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + this.ViewOptions.errorMessages[errorData.ErrorCode];
+            }
+          }
+          else if(errorData.ErrorType == 2){
+            //todo erros in view
+          }
+        });
+
+      });
   }
 }
