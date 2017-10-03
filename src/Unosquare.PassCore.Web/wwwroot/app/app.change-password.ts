@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response, RequestOptions } from '@angular/http';
+import { Http, Response } from '@angular/http';
+
 import { ViewOptions } from './app.view-options';
+import { Alerts } from  './app.alerts';
+import { Recaptcha } from './app.recaptcha';
+import { ChangePasswordForm } from './app.change-password-form';
+
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -14,19 +19,24 @@ export class ChangePasswordComponent implements OnInit {
   ErrorAlertMessage;
   FormData = {
     Username: '',
-    CurrentPassword: '',
-    NewPassword: '',
-    NewPasswordVerify: '',
-    Recaptcha: ''
+    CurrentPassword:'',
+    NewPassword:'',
+    NewPasswordVerify:'',
+    Recaptcha:''
   };
 
-  constructor(private http: Http) { this.ViewOptions = new ViewOptions; }
+  constructor(private http: Http) { 
+    this.ViewOptions = new ViewOptions;
+    this.ViewOptions.alerts = new Alerts;
+    this.ViewOptions.recaptcha = new Recaptcha;
+    this.ViewOptions.changePasswordForm = new ChangePasswordForm;
+  }
 
   ngOnInit(): void {
     this.GetData();
   }
 
-  private GetData(): void {
+  private GetData(): void{
     this.http.get('api/password').subscribe(values => {
       this.ViewOptions = values.json();
       if (this.ViewOptions.recaptcha.isEnabled == true) {
@@ -37,16 +47,16 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   EmptyFormData = Object.assign({}, this.FormData);
-
-  SetRecaptchaResponse(response: any) {
-    this.FormData.Recaptcha = response;
+  
+  SetRecaptchaResponse(response: any){
+      this.FormData.Recaptcha = response;
   }
 
-  ClearRecaptchaResponse() {
+  ClearRecaptchaResponse(){
     this.FormData.Recaptcha = '';
   }
 
-  Submit() {
+  Submit(){
     this.ShowSuccessAlert = false;
     this.ShowErrorAlert = false;
     this.ErrorAlertMessage = '';
@@ -73,7 +83,6 @@ export class ChangePasswordComponent implements OnInit {
             //todo erros in view
           }
         });
-
       });
   }
 }
