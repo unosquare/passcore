@@ -3,6 +3,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http'
+import { RecaptchaModule } from 'ng2-recaptcha';
 
 import { MaterialModule } from './app.material-module';
 
@@ -19,7 +20,8 @@ import { ChangePasswordComponent } from './app.change-password';
     FormsModule,
     MaterialModule,
     HttpModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    RecaptchaModule.forRoot()
   ],
   providers: [],
   bootstrap: [ChangePasswordComponent]
