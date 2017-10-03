@@ -12,7 +12,9 @@ import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-root',
-  templateUrl: '../views/change-password.html'
+  templateUrl: '../views/change-password.html',
+  styleUrls: [ '../styles/app.change-password.css' ]
+  
 })
 export class ChangePasswordComponent implements OnInit {
   ViewOptions: ViewOptions;
@@ -43,6 +45,7 @@ export class ChangePasswordComponent implements OnInit {
   private GetData(): void {
     this.http.get('api/password').subscribe(values => {
       this.ViewOptions = values.json();
+      console.log(this.ViewOptions);
       if (this.ViewOptions.recaptcha.isEnabled == true) {
         let sp = document.createElement('script'); sp.type = 'text/javascript'; sp.async = true; sp.defer = true;
         sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
