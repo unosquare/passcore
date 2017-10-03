@@ -61,7 +61,11 @@ export class ChangePasswordComponent implements OnInit {
     this.FormData.Recaptcha = '';
   }
 
-  Submit() {
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response ${captchaResponse}:`);
+  }
+
+  Submit(){
     this.ShowSuccessAlert = false;
     this.ShowErrorAlert = false;
     this.ErrorAlertMessage = '';
