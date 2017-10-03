@@ -10,6 +10,14 @@ import 'rxjs/add/operator/map';
 })
 export class ChangePasswordComponent implements OnInit {
   ViewOptions: ViewOptions;
+  FormData = {
+    Username: '',
+    CurrentPassword:'',
+    NewPassword:'',
+    NewPasswordVerify:'',
+    Recaptcha:''
+  };
+
   constructor(private http: Http) { this.ViewOptions = new ViewOptions; }
 
   ngOnInit(): void {
@@ -24,6 +32,16 @@ export class ChangePasswordComponent implements OnInit {
         sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
       }
     });
+  }
+
+  EmptyFormData = Object.assign({}, this.FormData);
+  
+  SetRecaptchaResponse(response: any){
+      this.FormData.Recaptcha = response;
+  }
+
+  ClearRecaptchaResponse(){
+    this.FormData.Recaptcha = '';
   }
 
   Submit(){
