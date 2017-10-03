@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { ViewOptions } from './app.view-options';
 
 import 'rxjs/add/operator/map';
 
@@ -24,46 +25,8 @@ export class ChangePasswordComponent implements OnInit {
       }
     });
   }
-}
 
-export class ViewOptions {
-  public alerts: Alerts;
-  public applicationTitle: string;
-  public changePasswordForm: ChangePasswordForm;
-  public changePasswordTitle: string;
-  public errorMessages: string[];
-  public recaptcha: Recaptcha;
-  public showPasswordMeter: boolean;
-}
-
-export class Recaptcha{
-  public isEnabled: boolean;
-  public languageCode: string;
-  public siteKey: string;
-}
-
-export class ChangePasswordForm{
-  public changePasswordButtonLabel:string;
-  public currentPasswordHelpblock:string;
-  public currentPasswordLabel:string;
-  public currentPasswordPlaceholder:string;
-  public helpText:string;
-  public helpTitle:string;
-  public newPasswordHelpblock:string;
-  public newPasswordLabel:string;
-  public newPasswordPlaceholder:string;
-  public newPasswordVerifyHelpblock:string;
-  public newPasswordVerifyLabel:string;
-  public newPasswordVerifyPlaceholder:string;
-  public usernameHelpblock:string;
-  public usernameLabel:string;
-  public usernamePlaceholder:string;
-}
-export class Alerts {
-  public errorAlertBody: string;
-  public errorAlertTitle: string;
-  public errorInvalidCredentials: string;
-  public errorPasswordChangeNotAllowed :string;
-  public successAlertBody: string;
-  public successAlertTitle: string;
+  Submit(){
+    //todo submit
+  }
 }
