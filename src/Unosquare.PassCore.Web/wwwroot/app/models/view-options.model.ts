@@ -1,6 +1,6 @@
-import { Alerts } from './app.alerts';
-import { ChangePasswordForm } from './app.change-password-form';
-import { Recaptcha } from "./app.recaptcha";
+import { Alerts } from './alerts.model';
+import { ChangePasswordForm } from './change-password-form.model';
+import { Recaptcha } from "./recaptcha.model";
 
 export class ViewOptions {
     public alerts: Alerts;

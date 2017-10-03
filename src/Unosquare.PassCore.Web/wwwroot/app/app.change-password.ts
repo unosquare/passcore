@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
-import { ViewOptions } from './app.view-options';
-import { Alerts } from  './app.alerts';
-import { Recaptcha } from './app.recaptcha';
-import { ChangePasswordForm } from './app.change-password-form';
+import { ViewOptions } from './models/view-options.model';
+import { Alerts } from  './models/alerts.model';
+import { Recaptcha } from './models/recaptcha.model';
+import { ChangePasswordForm } from './models/change-password-form.model';
 
 import 'rxjs/add/operator/map';
 
