@@ -17,6 +17,7 @@ import 'rxjs/add/operator/map';
 export class ChangePasswordComponent implements OnInit {
   ViewOptions: ViewOptions;
   ErrorData: Errors;
+  Form;
   ShowSuccessAlert;
   ShowErrorAlert;
   ErrorAlertMessage;
@@ -79,18 +80,19 @@ export class ChangePasswordComponent implements OnInit {
         }
 
         this.ErrorData = error.json() as Errors;
-        this.ErrorData.errors.map((index, errData) => {
-          if (index.errorType == 1) {
+        this.ErrorData.errors.map((errData, index) => {
+          if (errData.errorType == 1) {
             this.ShowErrorAlert = true;
-            if (index.errorCode == 0) {
-              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + index.message;
+            if (errData.errorCode == 0) {
+              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
             }
             else {
-              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + this.ViewOptions.errorMessages[index.errorCode];
+              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + this.ViewOptions.errorMessages[errData.errorCode];
             }
           }
-          else if (index.errorType == 2) {
-            //todo erros in view
+          else if (errData.errorType == 2) {
+           this.Form[errData.fieldName].Validation.HasError = true;
+           this.Form[errData.fieldName].Validation.ErrorMessage = this.ViewOptions.errorMessages[errData.errorCode];
           }
         });
       });
