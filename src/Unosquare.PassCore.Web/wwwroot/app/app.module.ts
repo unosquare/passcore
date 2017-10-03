@@ -9,10 +9,12 @@ import { MaterialModule } from './app.material-module';
 
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { ChangePasswordComponent } from './app.change-password';
+import { FooterComponent } from './app.footer';
 
 @NgModule({
   declarations: [
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
