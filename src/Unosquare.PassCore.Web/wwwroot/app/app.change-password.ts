@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
+
 import { ViewOptions } from './app.view-options';
+import { Alerts } from  './app.alerts';
+import { Recaptcha } from './app.recaptcha';
+import { ChangePasswordForm } from './app.change-password-form';
 
 import 'rxjs/add/operator/map';
 
@@ -18,7 +22,12 @@ export class ChangePasswordComponent implements OnInit {
     Recaptcha:''
   };
 
-  constructor(private http: Http) { this.ViewOptions = new ViewOptions; }
+  constructor(private http: Http) { 
+    this.ViewOptions = new ViewOptions;
+    this.ViewOptions.alerts = new Alerts;
+    this.ViewOptions.recaptcha = new Recaptcha;
+    this.ViewOptions.changePasswordForm = new ChangePasswordForm;
+  }
 
   ngOnInit(): void {
     this.GetData();
