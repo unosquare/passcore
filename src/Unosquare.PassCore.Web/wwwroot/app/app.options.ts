@@ -4,14 +4,15 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class Options {
-    constructor(private http: Http) {}
+
+    constructor(private _httpService: Http) {}
+
+    apiValues: string;
 
     GetData(){
-        return this.http.get('api/password').map(this.ExtractData);
-    }
-
-    private ExtractData(res: Response){
-        let body = res.text();
-        return body;
+        return this._httpService.get('api/password').subscribe(values => {
+            this.apiValues = values.json() as string;
+            console.log(this.apiValues);
+        });
     }
 }
