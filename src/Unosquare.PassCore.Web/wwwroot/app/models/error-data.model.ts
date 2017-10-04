@@ -1,13 +1,12 @@
-import { error } from './error.model'
+import { Error } from './error.model'
 
-export class Result{
-    constructor(hasErrors:boolean, errors:error[], payload:any)
-    {
+export class Result {
+    constructor(hasErrors: boolean, errors: Error[], payload: any) {
         this.errors = errors;
         this.hasErrors = hasErrors;
         this.payload = payload;
     }
-    public hasErrors:boolean;
-    public errors:error[];
-    public payload:any;
+    public hasErrors: boolean;
+    public errors: Error[];
+    public payload: any;
 }

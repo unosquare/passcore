@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { MdSnackBar } from '@angular/material';
 
 import { ViewOptions } from './models/view-options.model';
 import { Alerts } from './models/alerts.model';
 import { Recaptcha } from './models/recaptcha.model';
 import { ChangePasswordForm } from './models/change-password-form.model';
 import { Result } from './models/error-data.model';
-import { error } from './models/error.model';
+import { Error } from './models/error.model';
 
 import 'rxjs/add/operator/map';
 
@@ -31,7 +32,7 @@ export class ChangePasswordComponent implements OnInit {
     Recaptcha: ''
   };
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private snackBar: MdSnackBar) {
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
@@ -40,6 +41,12 @@ export class ChangePasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetData();
+  }
+
+  private openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 30000,
+    });
   }
 
   private GetData(): void {
@@ -85,9 +92,11 @@ export class ChangePasswordComponent implements OnInit {
             this.ShowErrorAlert = true;
             if (errData.errorCode == 0) {
               this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
+              this.openSnackBar(this.ErrorAlertMessage,'OK');
             }
             else {
               this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + this.ViewOptions.errorMessages[errData.errorCode];
+              this.openSnackBar(this.ErrorAlertMessage,'OK');
             }
           }
           else if (errData.errorType == 2) {
