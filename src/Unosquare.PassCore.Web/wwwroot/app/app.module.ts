@@ -23,7 +23,8 @@ import { FooterComponent } from './app.footer';
     MaterialModule,
     HttpModule,
     FlexLayoutModule,
-    RecaptchaModule.forRoot()
+    RecaptchaModule.forRoot(),
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [ChangePasswordComponent]
