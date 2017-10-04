@@ -1,0 +1,11 @@
+footer {
+    margin: 3%;
+}
+
+.footer-logo{
+    opacity: 50;
+}
+
+.footer-text {
+    text-align: right;
+}
