@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { MdSnackBar } from '@angular/material';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ViewOptions } from './models/view-options.model';
 import { Alerts } from './models/alerts.model';
@@ -14,7 +14,7 @@ import { PasswordValidatior } from './passwordValidator';
 
 import 'rxjs/add/operator/map';
 
-const EMAIL_REGEX = '/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/';
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
   selector: 'app-root',
@@ -22,19 +22,20 @@ const EMAIL_REGEX = '/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/';
   styleUrls: ['../styles/app.change-password.css']
 })
 export class ChangePasswordComponent implements OnInit {
-
   // Form Controls
-  username = new FormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)]);
-  currentPassword = new FormControl('', [Validators.required]);
-  newPassword = new FormControl('', [Validators.required]);
-  newPasswordVerify = new FormControl('', [Validators.required]);
+  FormGroup = new FormGroup({
+    username : new FormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)]),
+    currentPassword : new FormControl('', [Validators.required]),
+    newPassword : new FormControl('', [Validators.required]),
+    newPasswordVerify : new FormControl('', [Validators.required]),
+  },  PasswordValidatior.MatchPassword);
   // Variables
   ViewOptions: ViewOptions;
   ErrorData: Result;
-  Form;
-  ShowSuccessAlert;
-  ShowErrorAlert;
-  ErrorAlertMessage;
+  Loading: boolean = false;
+  ErrorAlertMessage : string = '';
+  ShowSuccessAlert: boolean;
+  ShowErrorAlert: boolean;
   FormData = {
     Username: '',
     CurrentPassword: '',
@@ -44,6 +45,7 @@ export class ChangePasswordComponent implements OnInit {
   };
 
   constructor(private http: Http, private snackBar: MdSnackBar) {
+
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
@@ -56,7 +58,7 @@ export class ChangePasswordComponent implements OnInit {
 
   private openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 30000,
+      duration: 5000,
     });
   }
 
@@ -85,52 +87,26 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   Submit() {
+    this.Loading = true;
     this.ShowSuccessAlert = false;
     this.ShowErrorAlert = false;
-    this.ErrorAlertMessage = '';
     this.http.post('api/password', this.FormData)
       .subscribe((response) => {
+        this.Loading = false;
         this.FormData = Object.assign({}, this.EmptyFormData);
         this.ShowSuccessAlert = true;
       }, (error) => {
+        this.Loading = false;
         if (this.ViewOptions.recaptcha.isEnabled == true) {
           grecaptcha.reset();
         }
 
         this.ErrorData = error.json() as Result;
-        this.ErrorData.errors.map((errData, index) => {          
-          switch(errData.errorType){
-            case 0: // Success
-              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
-            break;
-            case 1: // GeneralFailure
-              this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
-            break;
-            case 2: // FieldValidation
-              switch(errData.errorCode){
-                case 0: // Generic
-                  this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
-                break;
-                case 1: // FieldRequired
-                  this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
-                break;
-                case 2: // FieldMismatch
-                  this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
-                break;
-                case 3: // UserNotFound
-                  this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
-                break;
-                case 4: // InvalidCredentials
-                  this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
-                break;
-                case 5: // InvalidCaptcha
-                  this.ErrorAlertMessage = this.ViewOptions.alerts.errorAlertBody + errData.message;
-                break;
-              }              
-            break;
-          }
-          this.openSnackBar(this.ErrorAlertMessage,'OK');
+        this.ErrorData.errors.map((errData, index) => {
+          this.ErrorAlertMessage += errData.message + '. ';
         });
+        this.openSnackBar(this.ErrorAlertMessage,'OK');
+        this.ErrorAlertMessage = '';
       });
   }
 }

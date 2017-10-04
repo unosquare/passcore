@@ -2,14 +2,12 @@ import { AbstractControl } from '@angular/forms';
 export class PasswordValidatior {
 
     static MatchPassword(AC: AbstractControl) {
-        let password = AC.get('NewPassword').value; // to get value in input tag
-        let confirmPassword = AC.get('PasswordVerify').value; // to get value in input tag
+        let password = AC.get('newPassword').value; // to get value in input tag
+        let confirmPassword = AC.get('newPasswordVerify').value; // to get value in input tag
         if (password != confirmPassword) {
-            console.log('false');
-            AC.get('confirmPassword').setErrors({ MatchPassword: true })
+            AC.get('newPasswordVerify').setErrors({ MatchPassword: true });
         } else {
-            console.log('true');
-            return null
+            return null;
         }
     }
 }
