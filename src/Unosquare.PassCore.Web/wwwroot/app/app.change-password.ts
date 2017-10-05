@@ -1,3 +1,4 @@
+import * as stream from 'stream';
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
@@ -10,8 +11,10 @@ import { Recaptcha } from './models/recaptcha.model';
 import { ChangePasswordForm } from './models/change-password-form.model';
 import { Result } from './models/result-data.model';
 import { Error } from './models/error.model';
-import { PasswordValidatior } from './passwordValidator';
 import { PasswordModel } from './models/password.model';
+
+import { PasswordValidatior } from './helpers/passwordValidator';
+import { PasswordStrength } from './helpers/passwordStrength';
 
 import 'rxjs/add/operator/map';
 
@@ -37,17 +40,37 @@ export class ChangePasswordComponent implements OnInit {
   Loading: boolean = false;
   ErrorAlertMessage: string = '';
   FormData: PasswordModel;
+  color: string = '';
+  value: number = 0;
 
-  constructor(private http: Http, private snackBar: MdSnackBar, private titleService: Title) {
+  constructor(private http: Http, private snackBar: MdSnackBar,
+     private titleService: Title) {
     this.FormData = new PasswordModel;
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
+    this.FormGroup.valueChanges.subscribe(data => {
+      if(data.newPassword != null)
+        this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
+    });
   }
 
   ngOnInit(): void {
     this.GetData();
+  }
+
+  private changeProgressBar(strength: number){
+    this.value = strength;
+    if(strength < 25){
+      this.color = 'warn';
+    } else if(strength < 50){
+      this.color = 'accent';
+    } else if(strength < 75){
+      this.color = 'primary';
+    } else {
+      this.color = 'green';
+    }
   }
 
   private openSnackBar(message: string, action: string) {
