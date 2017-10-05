@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { MdSnackBar } from '@angular/material';
@@ -11,6 +10,7 @@ import { ChangePasswordForm } from './models/change-password-form.model';
 import { Result } from './models/error-data.model';
 import { Error } from './models/error.model';
 import { PasswordValidatior } from './passwordValidator';
+import { PasswordModel } from './models/password.model';
 
 import 'rxjs/add/operator/map';
 
@@ -28,24 +28,17 @@ export class ChangePasswordComponent implements OnInit {
     currentPassword : new FormControl('', [Validators.required]),
     newPassword : new FormControl('', [Validators.required]),
     newPasswordVerify : new FormControl('', [Validators.required]),
+    reCaptcha: new FormControl('', [Validators.required])
   },  PasswordValidatior.MatchPassword);
   // Variables
   ViewOptions: ViewOptions;
   ErrorData: Result;
   Loading: boolean = false;
-  ErrorAlertMessage : string = '';
-  ShowSuccessAlert: boolean;
-  ShowErrorAlert: boolean;
-  FormData = {
-    Username: '',
-    CurrentPassword: '',
-    NewPassword: '',
-    NewPasswordVerify: '',
-    Recaptcha: ''
-  };
+  ErrorAlertMessage : string;
+  FormData: PasswordModel;
 
   constructor(private http: Http, private snackBar: MdSnackBar) {
-
+    this.FormData = new PasswordModel;
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
@@ -62,6 +55,14 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
+  private clean(){
+    this.Loading = false;
+    this.FormGroup.reset();
+    if (this.ViewOptions.recaptcha.isEnabled == true) {
+      grecaptcha.reset();
+    }
+  }
+
   private GetData(): void {
     this.http.get('api/password').subscribe(values => {
       this.ViewOptions = values.json();
@@ -72,34 +73,19 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
-  EmptyFormData = Object.assign({}, this.FormData);
-
-  SetRecaptchaResponse(response) {
-    this.FormData.Recaptcha = response;
-  }
-
-  ClearRecaptchaResponse() {
-    this.FormData.Recaptcha = '';
-  }
-
-  resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response ${captchaResponse}:`);
+  SetRecaptchaResponse(captchaResponse: string) {
+    this.FormData.Recaptcha = captchaResponse;
   }
 
   Submit() {
     this.Loading = true;
-    this.ShowSuccessAlert = false;
-    this.ShowErrorAlert = false;
     this.http.post('api/password', this.FormData)
       .subscribe((response) => {
-        this.Loading = false;
-        this.FormData = Object.assign({}, this.EmptyFormData);
-        this.ShowSuccessAlert = true;
+        this.clean();
+        // TODO: Handle the success message
+
       }, (error) => {
-        this.Loading = false;
-        if (this.ViewOptions.recaptcha.isEnabled == true) {
-          grecaptcha.reset();
-        }
+        this.clean();
 
         this.ErrorData = error.json() as Result;
         this.ErrorData.errors.map((errData, index) => {

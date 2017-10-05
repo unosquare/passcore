@@ -88,6 +88,7 @@
                 {
                     result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCredentials, Message = "Invalid Username or Password" });
                     Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Json(result);
                 }
 
                 var cn = new LdapConnection();
