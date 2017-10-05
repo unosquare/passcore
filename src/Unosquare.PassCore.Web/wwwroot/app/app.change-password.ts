@@ -62,14 +62,12 @@ export class ChangePasswordComponent implements OnInit {
 
   private changeProgressBar(strength: number){
     this.value = strength;
-    if(strength < 25){
+    if(strength < 33){
       this.color = 'warn';
-    } else if(strength < 50){
+    } else if(strength > 33 && strength < 66){
       this.color = 'accent';
-    } else if(strength < 75){
-      this.color = 'primary';
     } else {
-      this.color = 'green';
+      this.color = 'primary';
     }
   }
 
