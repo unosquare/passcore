@@ -1,8 +1,8 @@
-import * as stream from 'stream';
+import { DialogOverview } from './app.dialog';
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialog } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ViewOptions } from './models/view-options.model';
@@ -40,18 +40,18 @@ export class ChangePasswordComponent implements OnInit {
   Loading: boolean = false;
   ErrorAlertMessage: string = '';
   FormData: PasswordModel;
-  color: string = '';
+  color: string = 'warn';
   value: number = 0;
 
   constructor(private http: Http, private snackBar: MdSnackBar,
-     private titleService: Title) {
+    private titleService: Title, public dialog: MdDialog) {
     this.FormData = new PasswordModel;
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
     this.FormGroup.valueChanges.subscribe(data => {
-      if(data.newPassword != null)
+      if (data.newPassword != null)
         this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
     });
   }
@@ -60,11 +60,11 @@ export class ChangePasswordComponent implements OnInit {
     this.GetData();
   }
 
-  private changeProgressBar(strength: number){
+  private changeProgressBar(strength: number) {
     this.value = strength;
-    if(strength < 33){
+    if (strength < 33) {
       this.color = 'warn';
-    } else if(strength > 33 && strength < 66){
+    } else if (strength > 33 && strength < 66) {
       this.color = 'accent';
     } else {
       this.color = 'primary';
@@ -77,10 +77,28 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
-  private clean() {
+  private openDialog(title: string, message: string) {
+    let refDialog = this.dialog.open(DialogOverview, {
+      width: '300px',
+      data: { Title: title, Message: message }
+    });
+  }
+
+  private clean(submited: string) {
     this.Loading = false;
     this.ErrorAlertMessage = '';
-    this.FormGroup.reset();
+    this.color = 'warn';
+    this.value = 0;
+
+    if (submited == 'success') {
+      this.FormGroup.reset();
+    } else {
+      for (let formControl in this.FormGroup.controls) {
+        if (formControl != 'username') 
+          this.FormGroup.controls[formControl].reset();        
+      }
+    }
+
     if (this.ViewOptions.recaptcha.isEnabled == true) {
       grecaptcha.reset();
     }
@@ -105,10 +123,9 @@ export class ChangePasswordComponent implements OnInit {
     this.Loading = true;
     this.http.post('api/password', this.FormData)
       .subscribe((response) => {
-        this.ErrorAlertMessage = this.ViewOptions.alerts.successAlertTitle + ' ' + this.ViewOptions.alerts.successAlertBody;
-        this.openSnackBar(this.ErrorAlertMessage, 'OK');
+        this.openDialog(this.ViewOptions.alerts.successAlertTitle, this.ViewOptions.alerts.successAlertBody);
 
-        this.clean();
+        this.clean('success');
       }, (error) => {
         this.ResultData = error.json() as Result;
         this.ResultData.errors.map((errData, index) => {
@@ -116,7 +133,7 @@ export class ChangePasswordComponent implements OnInit {
         });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
 
-        this.clean();
+        this.clean('error');
       });
   }
 }

@@ -10,11 +10,13 @@ import { RecaptchaModule } from 'ng2-recaptcha';
 import { MaterialModule } from './app.material-module';
 import { ChangePasswordComponent } from './app.change-password';
 import { FooterComponent } from './app.footer';
+import { DialogOverview } from './app.dialog';
 
 @NgModule({
   declarations: [
     ChangePasswordComponent,
-    FooterComponent
+    FooterComponent,
+    DialogOverview
   ],
   imports: [
     BrowserModule,
@@ -24,9 +26,10 @@ import { FooterComponent } from './app.footer';
     HttpModule,
     FlexLayoutModule,
     RecaptchaModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [ChangePasswordComponent]
+  bootstrap: [ChangePasswordComponent],
+  entryComponents: [DialogOverview]
 })
 export class AppModule { }
