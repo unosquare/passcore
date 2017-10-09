@@ -94,8 +94,8 @@ export class ChangePasswordComponent implements OnInit {
       this.FormGroup.reset();
     } else {
       for (let formControl in this.FormGroup.controls) {
-        if (formControl != 'username') 
-          this.FormGroup.controls[formControl].reset();        
+        if (formControl != 'username')
+          this.FormGroup.controls[formControl].reset();
       }
     }
 
@@ -115,7 +115,7 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
-  SetRecaptchaResponse(captchaResponse: string) {
+  private SetRecaptchaResponse(captchaResponse: string) {
     this.FormData.Recaptcha = captchaResponse;
   }
 

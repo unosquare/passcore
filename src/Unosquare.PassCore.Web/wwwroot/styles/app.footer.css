@@ -8,12 +8,12 @@ footer div{
 }
 
 .footer-logo img {
-    width: 100px;
+    width: 110px;
 }
 
 .footer-text {
     text-align: right;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 @media screen and (min-width: 600px) {
