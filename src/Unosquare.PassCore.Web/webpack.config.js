@@ -20,6 +20,7 @@ const {
 const {
   CommonsChunkPlugin
 } = require('webpack').optimize;
+const { AotPlugin } = require('@ngtools/webpack');
 
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
@@ -171,7 +172,7 @@ module.exports = {
       },
       {
         "test": /\.ts$/,
-        "loader": "ts-loader"
+        "loader": "@ngtools/webpack"
       }
     ]
   },
@@ -273,7 +274,17 @@ module.exports = {
       "minChunks": 2,
       "async": "common"
     }),
-    new NamedModulesPlugin({})
+    new NamedModulesPlugin({}),
+    new AotPlugin({
+      "mainPath": "main.ts",
+      "replaceExport": false,
+      "hostReplacementPaths": {
+        "environments\\environment.ts": "environments\\environment.ts"
+      },
+      "exclude": [],
+      "tsConfigPath": "ClientApp\\tsconfig.app.json",
+      "skipCodeGeneration": true
+    })
   ],
   "node": {
     "fs": "empty",

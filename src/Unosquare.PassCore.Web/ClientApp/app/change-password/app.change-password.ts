@@ -1,7 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { MdSnackBar, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ViewOptions } from '../models/view-options.model';
@@ -44,8 +44,8 @@ export class ChangePasswordComponent implements OnInit {
   color: string = 'warn';
   value: number = 0;
 
-  constructor(private http: Http, private snackBar: MdSnackBar,
-    private titleService: Title, public dialog: MdDialog) {
+  constructor(private http: Http, private snackBar: MatSnackBar,
+    private titleService: Title, public dialog: MatDialog) {
     this.FormData = new PasswordModel;
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;

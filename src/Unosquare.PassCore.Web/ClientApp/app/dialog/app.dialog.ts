@@ -1,4 +1,4 @@
-import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Component, Inject } from '@angular/core';
 
 @Component({
@@ -8,8 +8,8 @@ import { Component, Inject } from '@angular/core';
 export class DialogOverview {
 
     constructor(
-        public dialogRef: MdDialogRef<DialogOverview>,
-        @Inject(MD_DIALOG_DATA) public data: any) { }
+        public dialogRef: MatDialogRef<DialogOverview>,
+        @Inject(MAT_DIALOG_DATA) public data: any) { }
 
     close(): void {
         this.dialogRef.close();
