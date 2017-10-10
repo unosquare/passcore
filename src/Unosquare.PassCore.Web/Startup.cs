@@ -36,8 +36,10 @@
         /// <summary>
         /// Application's entry point
         /// </summary>
-        public static void Main(string[] args) => WebHost
-            .CreateDefaultBuilder(args)
+        public static void Main(string[] args) => new WebHostBuilder()
+            .UseKestrel()
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .UseIISIntegration()
             .UseStartup<Startup>()
             .Build()
             .Run();

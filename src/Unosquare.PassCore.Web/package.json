@@ -29,11 +29,19 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "@ngtools/webpack": "1.5.0",
+    "angular2-template-loader": "0.6.2",
+    "awesome-typescript-loader": "3.2.1",
+    "bootstrap": "3.3.7",
+    "css-loader": "0.28.4",
     "core-js": "^2.4.1",
+    "html-loader": "0.4.5",
     "ng-recaptcha": "^3.0.1",
     "ng2-recaptcha": "^1.7.0",
     "rxjs": "^5.4.2",
+    "to-string-loader": "1.1.5",
     "ts-loader": "^2.3.7",
+    "url-loader": "0.5.9",
     "zone.js": "^0.8.14"
   }
 }
