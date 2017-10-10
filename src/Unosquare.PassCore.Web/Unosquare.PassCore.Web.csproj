@@ -6,8 +6,8 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);**\bower_components\**;bower_components\**</DefaultItemExcludes>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Unosquare.PassCore.Web</AssemblyName>
-    <OutputType>Exe</OutputType>
     <PackageId>Unosquare.PassCore.Web</PackageId>
+    <OutputType>Exe</OutputType>
     <StartupObject></StartupObject>
   </PropertyGroup>
 
@@ -15,6 +15,11 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Unosquare.Swan" Version="0.16.1" />
   </ItemGroup>
+
+  <Target Name="MyPreCompileTarget" BeforeTargets="Build;Publish">
+  <Message Text="Running webpack"/>
+    <Exec Command="node_modules/.bin/webpack" />
+  </Target>
 
   <ItemGroup>
     <None Update="appsettings.json">
@@ -25,12 +30,5 @@
   <ItemGroup>
     <Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="wwwroot\app\**" />
-    <Content Remove="wwwroot\app\**" />
-    <EmbeddedResource Remove="wwwroot\app\**" />
-    <None Remove="wwwroot\app\**" />
-  </ItemGroup>
-  
+ 
 </Project>
