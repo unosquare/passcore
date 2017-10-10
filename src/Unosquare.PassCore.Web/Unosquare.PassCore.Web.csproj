@@ -1,20 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;node_modules\**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**\jspm_packages\**;jspm_packages\**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**\bower_components\**;bower_components\**</DefaultItemExcludes>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Unosquare.PassCore.Web</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Unosquare.PassCore.Web</PackageId>
     <StartupObject></StartupObject>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="wwwroot\**\*;node_modules\**\*;bower_components\**\*" />
-    <EmbeddedResource Remove="wwwroot\**\*;node_modules\**\*;bower_components\**\*" />
-    <None Update="**.user;**.vspscc">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
@@ -25,6 +20,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
 
   <ItemGroup>
