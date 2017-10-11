@@ -1,5 +1,5 @@
-footer div{
-    margin: 2% 0 2% 0;
+footer > div{
+    margin-top: 1%;
     width: 95%;
 }
 
@@ -12,12 +12,34 @@ footer div{
 }
 
 .footer-text {
-    text-align: right;
+    text-align: center;
     font-size: 11px;
+    margin-bottom: 2%;
+    width: 100%;
+}
+
+.footer-img img {
+    max-height: 30px;
+}
+
+a:link {
+    text-decoration: blue;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: lightblue;
+}
+
+a:active {
+    text-decoration: none;
 }
 
 @media screen and (min-width: 600px) {
-    footer div{
+    footer > div{
         width: 85%;
     }
 
@@ -27,14 +49,13 @@ footer div{
     
 
     .footer-text {
-        text-align: right;
         font-size: 12px;
     }
 }
 
 
 @media screen and (min-width: 960px) {
-    footer div{
+    footer > div{
         width: 65%;
     }
 

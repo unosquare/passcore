@@ -32,8 +32,7 @@ export class ChangePasswordComponent implements OnInit {
     username: new FormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)]),
     currentPassword: new FormControl('', [Validators.required]),
     newPassword: new FormControl('', [Validators.required]),
-    newPasswordVerify: new FormControl('', [Validators.required]),
-    reCaptcha: new FormControl('', [Validators.required])
+    newPasswordVerify: new FormControl('', [Validators.required])
   }, PasswordValidatior.MatchPassword);
   // Variables
   ViewOptions: ViewOptions;
@@ -110,6 +109,7 @@ export class ChangePasswordComponent implements OnInit {
       this.ViewOptions = values.json();
       this.titleService.setTitle(this.ViewOptions.applicationTitle);
       if (this.ViewOptions.recaptcha.isEnabled == true) {
+        this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
         let sp = document.createElement('script'); sp.type = 'text/javascript'; sp.async = true; sp.defer = true;
         sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
       }
