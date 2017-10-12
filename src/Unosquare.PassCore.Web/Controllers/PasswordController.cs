@@ -4,14 +4,18 @@
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using System;
-    using System.Collections;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Unosquare.PassCore.Web.Models;
+#if NET461
+    using System.DirectoryServices.AccountManagement;
+#else
+    using System.Collections;
+    using System.Linq;
     using Unosquare.Swan;
     using Unosquare.Swan.Networking.Ldap;
+#endif
 
 
     /// <summary>
@@ -82,6 +86,50 @@
             // perform the password change
             try
             {
+#if NET461
+                using (var principalContext = AcquirePrincipalContext())
+                {
+                    var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
+
+                    // Check if the user principal exists
+                    if (userPrincipal == null)
+                    {
+                        result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound });
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Json(result);
+                    }
+
+                    // Check if password change is allowed
+                    if (userPrincipal.UserCannotChangePassword)
+                    {
+                        throw new Exception(Settings.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                    }
+
+                    // Validate user credentials
+                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
+                    {
+                        throw new Exception(Settings.ClientSettings.Alerts.ErrorInvalidCredentials);
+                    }
+
+                    // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
+                    try
+                    {
+                        // Try by regular ChangePassword method
+                        userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
+                    }
+                    catch (Exception ex2)
+                    {
+                        // If the previous attempt failed, use the SetPassword method.
+                        if (Settings.PasswordChangeOptions.UseAutomaticContext == false)
+                            userPrincipal.SetPassword(model.NewPassword);
+                        else
+                            throw ex2;
+                    }
+
+                    userPrincipal.Save();
+
+                }
+#else
                 var distinguishedName = await GetDN(model.Username);
 
                 if (string.IsNullOrEmpty(distinguishedName))
@@ -101,6 +149,7 @@
                 var mods = (LdapModification[])modList.ToArray(typeof(LdapModification));
                 await cn.Modify(distinguishedName, mods);
                 cn.Disconnect();
+#endif
             }
             catch (Exception ex)
             {
@@ -116,6 +165,31 @@
 
         }
 
+#if NET461
+        private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
+        {
+            return UserPrincipal.FindByIdentity(context, username);
+        }
+
+        private PrincipalContext AcquirePrincipalContext()
+        {
+            PrincipalContext principalContext = null;
+            if (Settings.PasswordChangeOptions.UseAutomaticContext)
+            {
+                principalContext = new PrincipalContext(ContextType.Domain);
+            }
+            else
+            {
+                principalContext = new PrincipalContext(
+                    ContextType.Domain,
+                    $"{Settings.PasswordChangeOptions.LdapHostname}:{Settings.PasswordChangeOptions.LdapPort.ToString()}",
+                    Settings.PasswordChangeOptions.LdapUsername,
+                    Settings.PasswordChangeOptions.LdapPassword);
+            }
+
+            return principalContext;
+        }
+#else
         private string GetBase()
         {
             var _base = string.Empty;
@@ -157,7 +231,7 @@
                 return string.Empty;
             }
         }
-
+#endif
         public async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha

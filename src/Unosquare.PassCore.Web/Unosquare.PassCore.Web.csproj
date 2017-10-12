@@ -4,15 +4,15 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;node_modules\**</DefaultItemExcludes>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\jspm_packages\**;jspm_packages\**</DefaultItemExcludes>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\bower_components\**;bower_components\**</DefaultItemExcludes>
-    <TargetFrameworks>netcoreapp2.0;net452</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
     <AssemblyName>Unosquare.PassCore.Web</AssemblyName>
     <PackageId>Unosquare.PassCore.Web</PackageId>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <DefineConstants>NETCOREAPP2_0;NET452</DefineConstants>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <DefineConstants>NET461</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +23,21 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <!--<PackageReference Include="" Version="" />-->
+    <PackageReference Include="Microsoft.AspNetCore.ApplicationInsights.HostingStartup" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
     <Reference Include="System.DirectoryServices" Version="4.0.0.0" />
     <Reference Include="System.DirectoryServices.AccountManagement" Version="4.0.0.0" />
   </ItemGroup>
