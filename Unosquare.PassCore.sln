@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0A003964-77CA-4779-BD97-BADDD710A745}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3EA980E1-D295-4E61-B2EE-29CFE1EDB2F1}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		preview.png = preview.png
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unosquare.PassCore.Web", "src\Unosquare.PassCore.Web\Unosquare.PassCore.Web.csproj", "{22E2F79B-7816-4FAB-894D-112759551796}"
 EndProject

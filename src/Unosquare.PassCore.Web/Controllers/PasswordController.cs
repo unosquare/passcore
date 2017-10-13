@@ -8,15 +8,13 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using Unosquare.PassCore.Web.Models;
-#if NET461
     using System.DirectoryServices.AccountManagement;
-#else
+#if false // This is using swan LDAP
     using System.Collections;
     using System.Linq;
     using Unosquare.Swan;
     using Unosquare.Swan.Networking.Ldap;
 #endif
-
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -86,7 +84,6 @@
             // perform the password change
             try
             {
-#if NET461
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
@@ -129,7 +126,7 @@
                     userPrincipal.Save();
 
                 }
-#else
+#if false // This is using swan LDAP
                 var distinguishedName = await GetDN(model.Username);
 
                 if (string.IsNullOrEmpty(distinguishedName))
@@ -165,7 +162,6 @@
 
         }
 
-#if NET461
         private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
         {
             return UserPrincipal.FindByIdentity(context, username);
@@ -189,7 +185,7 @@
 
             return principalContext;
         }
-#else
+#if false // This is using swan LDAP
         private string GetBase()
         {
             var _base = string.Empty;
