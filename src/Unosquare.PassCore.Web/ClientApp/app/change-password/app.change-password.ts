@@ -130,7 +130,7 @@ export class ChangePasswordComponent implements OnInit {
       }, (error) => {
         this.ResultData = error.json() as Result;
         this.ResultData.errors.map((errData, index) => {
-          this.ErrorAlertMessage += errData.message + '. ';
+          this.ErrorAlertMessage += errData.message;
         });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
 
