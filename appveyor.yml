@@ -4,7 +4,8 @@ platform: Any CPU
 install:
 # Latest version of node and npm
 - ps: Install-Product node 6
-- ps: Install-Product npm 3
+- npm -g install npm@3.10.10
+- set PATH=%APPDATA%\npm;%PATH%
 before_build:
 - dotnet restore
 - node -v
