@@ -1,0 +1,8 @@
+version: '3.0.{build}'
+image: Visual Studio 2017
+platform: Any CPU
+before_build:
+- dotnet restore
+build_script:
+- dotnet build -f net461
+- dotnet build -f netcoreapp2

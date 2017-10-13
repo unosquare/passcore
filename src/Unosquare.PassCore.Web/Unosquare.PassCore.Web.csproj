@@ -16,15 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Unosquare.Swan" Version="0.16.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
-    <!--<PackageReference Include="" Version="" />-->
     <PackageReference Include="Microsoft.AspNetCore.ApplicationInsights.HostingStartup" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
@@ -38,6 +29,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
+    <PackageReference Include="Unosquare.Swan" Version="0.16.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
     <Reference Include="System.DirectoryServices" Version="4.0.0.0" />
     <Reference Include="System.DirectoryServices.AccountManagement" Version="4.0.0.0" />
   </ItemGroup>
