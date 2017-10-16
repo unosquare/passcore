@@ -91,7 +91,7 @@
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound });
+                        result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound, Message = "Invalid Username or Password" });
                         Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         return Json(result);
                     }
