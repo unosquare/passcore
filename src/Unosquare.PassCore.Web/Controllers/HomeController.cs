@@ -13,12 +13,7 @@
         // GET: /<controller>/
         public IActionResult Index()
         {
-            // return Json(new { result = "Hello World!!!!" });
-            try{
-                return File("~/index.html", "text/html");
-            }catch(FileNotFoundException ex){
-                return Json(new { result = ex.Message });
-            }
+            return File("~/index.html", "text/html");
         }
     }
 }
