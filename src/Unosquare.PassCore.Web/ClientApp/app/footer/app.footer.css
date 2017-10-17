@@ -1,5 +1,8 @@
+footer:first-child {
+    margin-top: 30px;
+}
+
 footer > div{
-    margin-top: 1%;
     width: 95%;
 }
 
@@ -30,10 +33,6 @@ a:visited {
     text-decoration: none;
 }
 
-a:hover {
-    background-color: lightblue;
-}
-
 a:active {
     text-decoration: none;
 }
@@ -41,30 +40,14 @@ a:active {
 @media screen and (min-width: 600px) {
     footer > div{
         width: 85%;
+        width: 600px;
     }
 
     .footer-logo img {
         width: 125px;
     }
     
-
     .footer-text {
         font-size: 12px;
     }
-}
-
-
-@media screen and (min-width: 960px) {
-    footer > div{
-        width: 65%;
-    }
-
-    .footer-logo img {
-        width: 150px;
-    }
-    
-    .footer-text {
-        font-size: 12px;
-    }
-
 }
