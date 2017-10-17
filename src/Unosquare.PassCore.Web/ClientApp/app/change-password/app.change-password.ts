@@ -99,7 +99,7 @@ export class ChangePasswordComponent implements OnInit {
       }
     }
 
-    if (this.ViewOptions.recaptcha.isEnabled == true) {
+    if (this.ViewOptions.recaptcha.isEnabled) {
       grecaptcha.reset();
     }
   }
@@ -108,7 +108,7 @@ export class ChangePasswordComponent implements OnInit {
     this.http.get('api/password').subscribe(values => {
       this.ViewOptions = values.json();
       this.titleService.setTitle(this.ViewOptions.applicationTitle);
-      if (this.ViewOptions.recaptcha.isEnabled == true) {
+      if (this.ViewOptions.recaptcha.isEnabled) {
         this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
         let sp = document.createElement('script'); sp.type = 'text/javascript'; sp.async = true; sp.defer = true;
         sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
