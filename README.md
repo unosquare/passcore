@@ -35,7 +35,7 @@ PassCore has the following features:
 
 ## Customization and Configuration
 
-All server-side settings and client-side settings are stored in the <code>/approot/src/Unosquare.PassCore.Web/appsettings.json</code> file.
+All server-side settings and client-side settings are stored in the <code>/src/Unosquare.PassCore.Web/appsettings.json</code> file.
 The most relevant configuration entries are shown below. Make sure you make your changes to the <code>appsettings.json</code> file using a regular text editor like <a href="https://code.visualstudio.com">Visual Studio Code</a>.
 
 - To enable reCAPTCHA
