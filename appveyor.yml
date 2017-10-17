@@ -1,15 +1,9 @@
 version: '3.0.{build}'
 image: Visual Studio 2017
 platform: Any CPU
-install:
-# Latest version of node and npm
-- ps: Install-Product node 6
-- npm -g install npm@3.10.10
-- set PATH=%APPDATA%\npm;%PATH%
 before_build:
 - dotnet restore
 - node -v
 - npm -v
 build_script:
 - dotnet build -f net461
-- dotnet build -f netcoreapp2
