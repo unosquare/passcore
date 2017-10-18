@@ -1,6 +1,5 @@
 ﻿namespace Unosquare.PassCore.Web.Controllers
 {
-    using System.IO;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>

@@ -5,6 +5,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using Models;
     using System;
     using System.Diagnostics;
@@ -18,30 +19,12 @@
         #region Constant Definitions
 
         private const string AppSettingsJsonFilename = "appsettings.json";
-        private const string AppSettingsSectionName = "AppSettings";
         private const string LoggingSectionName = "Logging";
         private const string DevelopmentEnvironmentName = "Development";
 
         #endregion
-
-        #region Properties
-
-        public IConfigurationRoot Configuration { get; set; }
-
-        #endregion
-
+        
         #region Constructors and Initializers
-
-        /// <summary>
-        /// Application's entry point
-        /// </summary>
-        public static void Main(string[] args) => new WebHostBuilder()
-            .UseKestrel()
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseIISIntegration()
-            .UseStartup<Startup>()
-            .Build()
-            .Run();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -63,6 +46,20 @@
             Configuration = builder.Build();
         }
 
+        public IConfigurationRoot Configuration { get; set; }
+
+        /// <summary>
+        /// Application's entry point
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        public static void Main(string[] args) => new WebHostBuilder()
+            .UseKestrel()
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .UseIISIntegration()
+            .UseStartup<Startup>()
+            .Build()
+            .Run();
+
         #endregion
 
         #region Methods
@@ -76,10 +73,8 @@
         {
             services.AddOptions();
 
-            // TODO: wait for release version that has additional parameter trackChanges
-            //services.Configure<AppSettings>(Configuration.GetSection(AppSettingsSectionName)); 
-
-            services.AddSingleton<IConfigurationRoot>(sp => { return Configuration; });
+            // Register the IConfiguration instance which MyOptions binds against.
+            services.Configure<AppSettings>(Configuration);
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
         }
@@ -91,23 +86,26 @@
         /// <param name="application">The application.</param>
         /// <param name="environment">The environment.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public void Configure(IApplicationBuilder application, IHostingEnvironment environment, ILoggerFactory loggerFactory)
+        /// <param name="settings">The settings.</param>
+        public void Configure(
+            IApplicationBuilder application, 
+            IHostingEnvironment environment,
+            ILoggerFactory loggerFactory, 
+            IOptions<AppSettings> settings)
         {
             loggerFactory.AddConsole(Configuration.GetSection(LoggingSectionName));
             loggerFactory.AddDebug();
 
             application.Use(async (context, next) =>
             {
-                var settings = new AppSettings();
-                ConfigurationBinder.Bind(Configuration.GetSection(AppSettingsSectionName), settings);
-
-                if (context.Request.IsHttps || Debugger.IsAttached || settings.EnableHttpsRedirect == false)
+                if (context.Request.IsHttps || Debugger.IsAttached || settings.Value.EnableHttpsRedirect == false)
                 {
                     await next();
                 }
                 else
                 {
-                    var secureRedirectUrl = $"{Uri.UriSchemeHttps}{Uri.SchemeDelimiter}{context.Request.Host}{context.Request.Path}";
+                    var secureRedirectUrl =
+                        $"{Uri.UriSchemeHttps}{Uri.SchemeDelimiter}{context.Request.Host}{context.Request.Path}";
                     context.Response.Redirect(secureRedirectUrl);
                 }
             });
@@ -119,11 +117,13 @@
             // index.html file. This makes the SPA always get back to the index route.
             application.UseMvc(options =>
             {
-                options.MapRoute(name: "default", template: "{*url}", defaults: new { controller = "Home", action = "Index" });
+                options.MapRoute(
+                    name: "default", 
+                    template: "{*url}",
+                    defaults: new {controller = "Home", action = "Index"});
             });
         }
 
         #endregion
-
     }
 }

@@ -20,7 +20,6 @@
         public int LdapPort { get; set; } = 389;
         public string LdapUsername { get; set; }
         public string LdapPassword { get; set; }
-
     }
 
     public class ClientSettings
@@ -33,6 +32,7 @@
         public bool ShowPasswordMeter { get; set; }
         public Alerts Alerts { get; set; }
     }
+
     public class ChangePasswordForm
     {
         public string HelpTitle { get; set; }
@@ -68,6 +68,4 @@
         public string ErrorPasswordChangeNotAllowed { get; set; }
         public string ErrorInvalidCredentials { get; set; }
     }
-
-
 }

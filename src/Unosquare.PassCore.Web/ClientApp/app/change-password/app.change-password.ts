@@ -1,35 +1,33 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http } from '@angular/http';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ViewOptions } from '../models/view-options.model';
-import { Alerts } from '../models/alerts.model';
-import { Recaptcha } from '../models/recaptcha.model';
-import { ChangePasswordForm } from '../models/change-password-form.model';
-import { Result } from '../models/result-data.model';
-import { Error } from '../models/error.model';
-import { PasswordModel } from '../models/password.model';
-import { DialogOverview } from '../dialog/app.dialog'
+import ViewOptions from '../models/view-options.model';
+import Alerts from '../models/alerts.model';
+import Recaptcha from '../models/recaptcha.model';
+import ChangePasswordForm from '../models/change-password-form.model';
+import Result from '../models/result-data.model';
+import PasswordModel from '../models/password.model';
+import DialogOverview from '../dialog/app.dialog'
 
-
-import { PasswordValidatior } from '../helpers/passwordValidator';
-import { PasswordStrength } from '../helpers/passwordStrength';
+import PasswordValidatior from '../helpers/passwordValidator';
+import PasswordStrength from '../helpers/passwordStrength';
 
 import 'rxjs/add/operator/map';
 
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
   selector: 'app-root',
   templateUrl: './change-password.html',
   styleUrls: ['./app.change-password.css']
 })
-export class ChangePasswordComponent implements OnInit {
+export default class ChangePasswordComponent implements OnInit {
   // Form Controls
   FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)]),
+    username: new FormControl('', [Validators.required, Validators.pattern(emailRegex)]),
     currentPassword: new FormControl('', [Validators.required]),
     newPassword: new FormControl('', [Validators.required]),
     newPasswordVerify: new FormControl('', [Validators.required])
@@ -90,7 +88,7 @@ export class ChangePasswordComponent implements OnInit {
     this.color = 'warn';
     this.value = 0;
 
-    if (submited == 'success') {
+    if (submited === 'success') {
       this.FormGroup.reset();
     } else {
       for (let formControl in this.FormGroup.controls) {
@@ -110,7 +108,10 @@ export class ChangePasswordComponent implements OnInit {
       this.titleService.setTitle(this.ViewOptions.applicationTitle);
       if (this.ViewOptions.recaptcha.isEnabled) {
         this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
-        let sp = document.createElement('script'); sp.type = 'text/javascript'; sp.async = true; sp.defer = true;
+        const sp = document.createElement('script');
+        sp.type = 'text/javascript';
+        sp.async = true;
+        sp.defer = true;
         sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
       }
     });
@@ -129,7 +130,7 @@ export class ChangePasswordComponent implements OnInit {
         this.clean('success');
       }, (error) => {
         this.ResultData = error.json() as Result;
-        this.ResultData.errors.map((errData, index) => {
+        this.ResultData.errors.map(errData => {
           this.ErrorAlertMessage += errData.message;
         });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');

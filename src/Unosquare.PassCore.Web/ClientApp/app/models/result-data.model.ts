@@ -1,6 +1,6 @@
-import { Error } from './error.model'
+import Error from './error.model'
 
-export class Result {
+export default class Result {
     public hasErrors: boolean;
     public errors: Error[];
     public payload: any;

@@ -5,7 +5,7 @@ import { Component, Inject } from '@angular/core';
     selector: 'dialog-overview',
     templateUrl: './dialog.html'
 })
-export class DialogOverview {
+export default class DialogOverview {
 
     constructor(
         public dialogRef: MatDialogRef<DialogOverview>,

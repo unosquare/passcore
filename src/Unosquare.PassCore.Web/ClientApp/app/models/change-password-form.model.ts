@@ -1,4 +1,4 @@
-export class ChangePasswordForm{
+export default class ChangePasswordForm{
     public changePasswordButtonLabel:string;
     public currentPasswordHelpblock:string;
     public currentPasswordLabel:string;

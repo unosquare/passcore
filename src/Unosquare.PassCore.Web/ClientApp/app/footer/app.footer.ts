@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
     templateUrl: './footer.html',
     styleUrls: [ './app.footer.css' ]
   })
-export class FooterComponent { }
+export default class FooterComponent { }

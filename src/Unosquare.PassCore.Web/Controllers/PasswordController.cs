@@ -1,5 +1,6 @@
 ﻿namespace Unosquare.PassCore.Web.Controllers
 {
+    using Microsoft.Extensions.Options;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
@@ -7,9 +8,9 @@
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Unosquare.PassCore.Web.Models;
+    using Models;
     using System.DirectoryServices.AccountManagement;
-#if false // This is using swan LDAP
+#if SWAN
     using System.Collections;
     using System.Linq;
     using Unosquare.Swan;
@@ -20,12 +21,13 @@
     /// Represents a controller class holding all of the server-side functionality of this tool.
     /// </summary>
     [Route("api/[controller]")]
-    public class PasswordController : ControllerBase
+    public class PasswordController : Controller
     {
-        public PasswordController(IConfigurationRoot configuration)
-            : base(configuration)
+        private readonly AppSettings _options;
+
+        public PasswordController(IOptions<AppSettings> optionsAccessor)
         {
-            // placeholder
+            _options = optionsAccessor.Value;
         }
 
         /// <summary>
@@ -34,7 +36,7 @@
         [HttpGet]
         public IActionResult Get()
         {
-            return Json(Settings.ClientSettings);
+            return Json(_options.ClientSettings);
         }
 
         /// <summary>
@@ -45,7 +47,6 @@
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]ChangePasswordModel model)
         {
-
             // Validate the request
             if (model == null)
             {
@@ -74,7 +75,6 @@
                 result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
             }
 
-
             if (result.HasErrors)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -99,13 +99,13 @@
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
-                        throw new Exception(Settings.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                        throw new Exception(_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
                     }
 
                     // Validate user credentials
                     if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
-                        throw new Exception(Settings.ClientSettings.Alerts.ErrorInvalidCredentials);
+                        throw new Exception(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
                     }
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
@@ -117,7 +117,7 @@
                     catch (Exception ex2)
                     {
                         // If the previous attempt failed, use the SetPassword method.
-                        if (Settings.PasswordChangeOptions.UseAutomaticContext == false)
+                        if (_options.PasswordChangeOptions.UseAutomaticContext == false)
                             userPrincipal.SetPassword(model.NewPassword);
                         else
                             throw ex2;
@@ -126,7 +126,7 @@
                     userPrincipal.Save();
 
                 }
-#if false // This is using swan LDAP
+#if SWAN
                 var distinguishedName = await GetDN(model.Username);
 
                 if (string.IsNullOrEmpty(distinguishedName))
@@ -138,8 +138,8 @@
 
                 var cn = new LdapConnection();
 
-                await cn.Connect(Settings.PasswordChangeOptions.LdapHostname, Settings.PasswordChangeOptions.LdapPort);
-                await cn.Bind(Settings.PasswordChangeOptions.LdapUsername, Settings.PasswordChangeOptions.LdapPassword);
+                await cn.Connect(_options.PasswordChangeOptions.LdapHostname, _options.PasswordChangeOptions.LdapPort);
+                await cn.Bind(_options.PasswordChangeOptions.LdapUsername, _options.PasswordChangeOptions.LdapPassword);
                 var modList = new ArrayList();
                 var attribute = new LdapAttribute("userPassword", model.NewPassword);
                 modList.Add(new LdapModification(LdapModificationOp.Replace, attribute));
@@ -159,7 +159,6 @@
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             return Json(result);
-
         }
 
         private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
@@ -170,7 +169,7 @@
         private PrincipalContext AcquirePrincipalContext()
         {
             PrincipalContext principalContext = null;
-            if (Settings.PasswordChangeOptions.UseAutomaticContext)
+            if (_options.PasswordChangeOptions.UseAutomaticContext)
             {
                 principalContext = new PrincipalContext(ContextType.Domain);
             }
@@ -178,9 +177,9 @@
             {
                 principalContext = new PrincipalContext(
                     ContextType.Domain,
-                    $"{Settings.PasswordChangeOptions.LdapHostname}:{Settings.PasswordChangeOptions.LdapPort.ToString()}",
-                    Settings.PasswordChangeOptions.LdapUsername,
-                    Settings.PasswordChangeOptions.LdapPassword);
+                    $"{_options.PasswordChangeOptions.LdapHostname}:{_options.PasswordChangeOptions.LdapPort.ToString()}",
+                    _options.PasswordChangeOptions.LdapUsername,
+                    _options.PasswordChangeOptions.LdapPassword);
             }
 
             return principalContext;
@@ -228,15 +227,15 @@
             }
         }
 #endif
-        public async Task<bool> ValidateRecaptcha(string recaptchaResponse)
+        private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(Settings.RecaptchaPrivateKey)) return true;
+            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey)) return true;
 
             // immediately return false because we don't 
             if (string.IsNullOrEmpty(recaptchaResponse)) return false;
 
-            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={Settings.RecaptchaPrivateKey}&response={recaptchaResponse}";
+            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.RecaptchaPrivateKey}&response={recaptchaResponse}";
 
             using (var client = new HttpClient())
             {

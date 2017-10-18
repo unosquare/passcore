@@ -1,4 +1,4 @@
-export class Alerts {
+export default class Alerts {
     public errorAlertBody: string;
     public errorAlertTitle: string;
     public errorInvalidCredentials: string;
