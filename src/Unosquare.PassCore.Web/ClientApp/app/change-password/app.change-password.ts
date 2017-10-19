@@ -105,7 +105,7 @@ export default class ChangePasswordComponent implements OnInit {
   private GetData(): void {
     this.http.get('api/password').subscribe(values => {
       this.ViewOptions = values.json();
-      this.titleService.setTitle(this.ViewOptions.applicationTitle);
+      this.titleService.setTitle(this.ViewOptions.changePasswordTitle);
       if (this.ViewOptions.recaptcha.isEnabled) {
         this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
         const sp = document.createElement('script');
