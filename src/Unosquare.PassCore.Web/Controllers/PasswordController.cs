@@ -2,7 +2,6 @@
 {
     using Microsoft.Extensions.Options;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using System;
     using System.Net;
@@ -50,8 +49,7 @@
             // Validate the request
             if (model == null)
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(ApiResult.InvalidRequest());
+                return BadRequest(ApiResult.InvalidRequest());
             }
 
             var result = new ApiResult();
@@ -60,30 +58,50 @@
             if (ModelState.IsValid == false)
             {
                 result.AddModelStateErrors(ModelState);
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(result);
+
+                return BadRequest(result);
             }
 
             // Validate the Captcha
             try
             {
                 if (await ValidateRecaptcha(model.Recaptcha) == false)
-                    result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCaptcha });
+                    result.Errors.Add(new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCaptcha });
             }
             catch (Exception ex)
             {
-                result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
+                result.Errors.Add(new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
             }
 
             if (result.HasErrors)
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(result);
+                return BadRequest(result);
             }
 
             // perform the password change
             try
             {
+#if SWAN
+                var distinguishedName = await GetDN(model.Username);
+
+                if (string.IsNullOrEmpty(distinguishedName))
+                {
+                    result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCredentials, Message = "Invalid Username or Password" });
+                    
+                    return BadRequest(result);
+                }
+
+                var cn = new LdapConnection();
+
+                await cn.Connect(_options.PasswordChangeOptions.LdapHostname, _options.PasswordChangeOptions.LdapPort);
+                await cn.Bind(_options.PasswordChangeOptions.LdapUsername, _options.PasswordChangeOptions.LdapPassword);
+                var modList = new ArrayList();
+                var attribute = new LdapAttribute("userPassword", model.NewPassword);
+                modList.Add(new LdapModification(LdapModificationOp.Replace, attribute));
+                var mods = (LdapModification[])modList.ToArray(typeof(LdapModification));
+                await cn.Modify(distinguishedName, mods);
+                cn.Disconnect();
+#else
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
@@ -91,9 +109,9 @@
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound, Message = "Invalid Username or Password" });
-                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        return Json(result);
+                        result.Errors.Add(new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound, Message = "Invalid Username or Password" });
+                        
+                        return BadRequest(result);
                     }
 
                     // Check if password change is allowed
@@ -124,35 +142,14 @@
                     }
 
                     userPrincipal.Save();
-
                 }
-#if SWAN
-                var distinguishedName = await GetDN(model.Username);
-
-                if (string.IsNullOrEmpty(distinguishedName))
-                {
-                    result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCredentials, Message = "Invalid Username or Password" });
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Json(result);
-                }
-
-                var cn = new LdapConnection();
-
-                await cn.Connect(_options.PasswordChangeOptions.LdapHostname, _options.PasswordChangeOptions.LdapPort);
-                await cn.Bind(_options.PasswordChangeOptions.LdapUsername, _options.PasswordChangeOptions.LdapPassword);
-                var modList = new ArrayList();
-                var attribute = new LdapAttribute("userPassword", model.NewPassword);
-                modList.Add(new LdapModification(LdapModificationOp.Replace, attribute));
-                var mods = (LdapModification[])modList.ToArray(typeof(LdapModification));
-                await cn.Modify(distinguishedName, mods);
-                cn.Disconnect();
 #endif
             }
             catch (Exception ex)
             {
-                result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(result);
+                result.Errors.Add(new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
+                
+                return BadRequest(result);
             }
 
             if (result.HasErrors)
@@ -168,7 +165,7 @@
 
         private PrincipalContext AcquirePrincipalContext()
         {
-            PrincipalContext principalContext = null;
+            PrincipalContext principalContext;
             if (_options.PasswordChangeOptions.UseAutomaticContext)
             {
                 principalContext = new PrincipalContext(ContextType.Domain);
@@ -177,14 +174,15 @@
             {
                 principalContext = new PrincipalContext(
                     ContextType.Domain,
-                    $"{_options.PasswordChangeOptions.LdapHostname}:{_options.PasswordChangeOptions.LdapPort.ToString()}",
+                    $"{_options.PasswordChangeOptions.LdapHostname}:{_options.PasswordChangeOptions.LdapPort}",
                     _options.PasswordChangeOptions.LdapUsername,
                     _options.PasswordChangeOptions.LdapPassword);
             }
 
             return principalContext;
         }
-#if false // This is using swan LDAP
+
+#if SWAN
         private string GetBase()
         {
             var _base = string.Empty;
@@ -197,6 +195,7 @@
                 else
                     _base += $"dc={part},";
             }
+
             return _base;
         }
 
