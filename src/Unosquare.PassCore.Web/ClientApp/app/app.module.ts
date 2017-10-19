@@ -7,7 +7,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { RecaptchaModule } from 'ng2-recaptcha';
 
-import MaterialModule from './app.material-module';
+import { MaterialModule } from './app.material-module';
 import ChangePasswordComponent  from './change-password/app.change-password';
 import FooterComponent from './footer/app.footer';
 import DialogOverview from './dialog/app.dialog';
@@ -32,4 +32,4 @@ import DialogOverview from './dialog/app.dialog';
   bootstrap: [ChangePasswordComponent],
   entryComponents: [DialogOverview]
 })
-export default class AppModule { }
+export class AppModule { }

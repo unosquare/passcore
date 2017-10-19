@@ -1,6 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 
-export default class PasswordValidatior {
+export default class PasswordValidator {
 
     static MatchPassword(ac: AbstractControl) {
         const password = ac.get('newPassword').value; // to get value in input tag

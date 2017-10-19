@@ -12,7 +12,7 @@ import Result from '../models/result-data.model';
 import PasswordModel from '../models/password.model';
 import DialogOverview from '../dialog/app.dialog'
 
-import PasswordValidatior from '../helpers/passwordValidator';
+import PasswordValidator from '../helpers/passwordValidator';
 import PasswordStrength from '../helpers/passwordStrength';
 
 import 'rxjs/add/operator/map';
@@ -31,7 +31,7 @@ export default class ChangePasswordComponent implements OnInit {
     currentPassword: new FormControl('', [Validators.required]),
     newPassword: new FormControl('', [Validators.required]),
     newPasswordVerify: new FormControl('', [Validators.required])
-  }, PasswordValidatior.MatchPassword);
+  }, PasswordValidator.MatchPassword);
   // Variables
   ViewOptions: ViewOptions;
   ResultData: Result;

@@ -39,4 +39,4 @@ import {
     MatDialogModule
   ]
 })
-export default class MaterialModule {}
+export class MaterialModule {}

@@ -65,6 +65,9 @@ const postcssPlugins = function () {
   ].concat(minimizeCss ? [cssnano(minimizeOptions)] : []);
 };
 
+
+
+
 module.exports = {
   "resolve": {
     "extensions": [
@@ -91,7 +94,7 @@ module.exports = {
       "./ClientApp\\polyfills.ts"
     ],
     "styles": [
-      "./ClientApp\\styles.css",
+      "./ClientApp/assets/styles\\styles.css",
       "./ClientApp/assets/styles\\indigo-pink.css"
     ]
   },
@@ -123,7 +126,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "ClientApp\\assets\\styles\\styles.css")
+          path.join(process.cwd(), "ClientApp/assets/styles\\styles.css")
         ],
         "test": /\.css$/,
         "use": [
@@ -146,7 +149,7 @@ module.exports = {
       },
       {
         "include": [
-            path.join(process.cwd(), "ClientApp\\assets\\styles\\styles.css")
+          path.join(process.cwd(), "ClientApp/assets/styles\\styles.css")
         ],
         "test": /\.css$/,
         "use": [
