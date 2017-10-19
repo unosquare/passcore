@@ -74,7 +74,7 @@
             services.AddOptions();
 
             // Register the IConfiguration instance which MyOptions binds against.
-            services.Configure<AppSettings>(Configuration);
+            services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
         }
