@@ -263,12 +263,7 @@ module.exports = {
       "name": [
         "vendor"
       ],
-      "minChunks": (module) => {
-        return module.resource &&
-          (module.resource.startsWith(nodeModules) ||
-            module.resource.startsWith(genDirNodeModules) ||
-            module.resource.startsWith(realNodeModules));
-      },
+      "minChunks": (module) => module.resource,
       "chunks": [
         "main"
       ]
