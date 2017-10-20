@@ -94,7 +94,6 @@ module.exports = {
       "./ClientApp\\polyfills.ts"
     ],
     "styles": [
-      "./ClientApp/assets/styles\\styles.css",
       "./ClientApp/assets/styles\\indigo-pink.css"
     ]
   },
@@ -226,7 +225,7 @@ module.exports = {
       "showErrors": true,
       "chunks": "all",
       "excludeChunks": [],
-      "title": "Webpack App",
+      "title": "Passcore App",
       "xhtml": true,
       "chunksSortMode": function sort(left, right) {
         let leftIndex = entryPoints.indexOf(left.names[0]);

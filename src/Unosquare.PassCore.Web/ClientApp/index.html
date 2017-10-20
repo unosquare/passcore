@@ -23,8 +23,51 @@
 </head>
 
 <body>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
     <app-root>
-        <h1>Loading Passcore ...</h1>
+        <style>
+            app-root {
+                font-family: 'Roboto', sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                font-size: 2em;
+            }
+
+            @keyframes dots {
+                50% {
+                    transform: translateY(-.4rem);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+
+            .d {
+                animation: dots 1.5s ease-out infinite;
+            }
+
+            .d-2 {
+                animation-delay: .5s;   
+            }
+
+            .d-3 {
+                animation-delay: 1s;
+            }
+        </style>
+        Loading Pass
+        <strong class="core">core</strong>
+        <span class="d">.</span>
+        <span class="d d-2">.</span>
+        <span class="d d-3">.</span>
     </app-root>
 </body>
 
