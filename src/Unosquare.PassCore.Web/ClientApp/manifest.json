@@ -1,0 +1,29 @@
+{
+    "name": "Passcore",
+    "author": "Unosquare, LLC",
+    "homepage_url": "https://github.com/unosquare/passcore",
+
+    "start_url": ".",
+    "display": "standalone",
+    
+    "default_locale": "en",
+    "descritpion": "PassCore is a self-service password change utility for Active Directory.",
+    "icons": [
+        {
+            "src": "assets/images/passcore-logo.png",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/images/logo.png",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/images/License_icon-mit.svg.png",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/images/osi.png",
+            "type": "image/png"
+        }
+    ]
+}
