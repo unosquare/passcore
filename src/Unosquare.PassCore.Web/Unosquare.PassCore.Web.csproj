@@ -49,25 +49,26 @@
     </None>
   </ItemGroup>
 
-  <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">
+<Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\package-lock.json')">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-
     <!-- Running npm install -->
     <Message Importance="high" Text="Performing first-run npm install..." />
     <Exec Command="npm install" />
+  </Target>
 
+  <Target Name="Webpack" DependsOnTargets="NpmInstall" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
     <!-- Running webpack -->
-    <Message Importance="high" Text="Performing first-run Webpack build..." />
+    <Message Importance="high" Text="Performing run Webpack build..." />
     <Exec Command="node_modules/.bin/webpack" />
   </Target>
    
-  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+  <Target Name="PublishRunWebpack" DependsOnTargets="NpmInstall" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec Command="npm install" />
+    <Message Importance="high" Text="Performing run Webpack pusblish..." />
     <Exec Command="node_modules/.bin/webpack -p" />
 
     <!-- Include the newly-built files in the publish output -->
