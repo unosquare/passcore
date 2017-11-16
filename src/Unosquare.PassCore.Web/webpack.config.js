@@ -7,7 +7,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
 const cssnano = require('cssnano');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const {
   NoEmitOnErrorsPlugin,
@@ -174,14 +173,6 @@ module.exports = {
     ]
   },
   "plugins": [
-    new UglifyJSPlugin({
-      "uglifyOptions": {
-        "output": {
-            "comments": false,
-            "beautify": false,
-          }
-      }
-    }),
     new NoEmitOnErrorsPlugin(),
     new CopyWebpackPlugin([{
       "context": "ClientApp",
