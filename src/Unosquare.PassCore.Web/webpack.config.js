@@ -91,8 +91,7 @@ module.exports = {
       "./ClientApp\\polyfills.ts"
     ],
     "styles": [
-        "./ClientApp/assets/styles\\indigo-pink.css",
-        "./ClientApp/assets/styles\\Roboto.css"
+        "./ClientApp/assets/styles\\indigo-pink.css"
     ]
   },
   "output": {
