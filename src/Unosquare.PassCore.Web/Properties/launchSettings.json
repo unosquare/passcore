@@ -20,6 +20,9 @@
       "environmentVariables": {
         "Hosting:Environment": "Development"
       }
+    },
+    "test": {
+      "commandName": "Executable"
     }
   }
 }

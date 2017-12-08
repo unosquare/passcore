@@ -23,8 +23,7 @@
         InvalidCredentials = 4,
         InvalidCaptcha = 5,
     }
-
-
+    
     /// <summary>
     /// Defines the fields contained in one of the items of Api Errors
     /// </summary>

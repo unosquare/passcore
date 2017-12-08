@@ -1,0 +1,19 @@
+{
+    "name": "PassCore - Self-Service Password Change Utility",
+    "short_name": "Passcore",
+    "descritpion": "PassCore is a self-service password change utility for Active Directory.",
+    "homepage_url": "https://github.com/unosquare/passcore",
+    "default_locale": "en",   
+
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "indigo",
+    "background_color": "#fafafa",
+
+    "icons": [
+        {
+            "src": "assets/images/passcore-logo.png",
+            "type": "image/png"
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 ﻿namespace Unosquare.PassCore.Web.Controllers
 {
-    using Microsoft.AspNet.Mvc;
+    using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
     /// This controller is simply a placeholder to redirect any non-matching URL

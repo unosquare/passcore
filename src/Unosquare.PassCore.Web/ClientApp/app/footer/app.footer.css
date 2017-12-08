@@ -1,0 +1,53 @@
+footer:first-child {
+    margin-top: 30px;
+}
+
+footer > div{
+    width: 95%;
+}
+
+.footer-logo{
+    opacity: 50;
+}
+
+.footer-logo img {
+    width: 110px;
+}
+
+.footer-text {
+    text-align: center;
+    font-size: 11px;
+    margin-bottom: 2%;
+    width: 100%;
+}
+
+.footer-img img {
+    max-height: 30px;
+}
+
+a:link {
+    text-decoration: blue;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+@media screen and (min-width: 600px) {
+    footer > div{
+        width: 85%;
+        width: 600px;
+    }
+
+    .footer-logo img {
+        width: 125px;
+    }
+    
+    .footer-text {
+        font-size: 12px;
+    }
+}
