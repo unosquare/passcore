@@ -20,7 +20,7 @@ PassCore has the following features:
 - Has a built-in password meter
 - Responsive design that works on mobiles, tablets, and desktops.
 
-<img align="center" src="https://raw.githubusercontent.com/unosquare/passcore/NetCoreSupport/preview.png"></img>
+<img align="center" src="https://github.com/unosquare/passcore/raw/master/preview.png"></img>
 
 ## Installation on IIS
 
