@@ -1,7 +1,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/76nxqw893mk7xfb9/branch/master?svg=true)](https://ci.appveyor.com/project/geoperez/passcore/branch/master)[![Analytics](https://ga-beacon.appspot.com/UA-8535255-2/unosquare/passcore/)](https://github.com/igrigorik/ga-beacon)
 
-# <img src="https://raw.githubusercontent.com/unosquare/passcore/master/src/Unosquare.PassCore.Web/wwwroot/images/passcore-logo.png"></img>
-**PassCore: A self-service password change utility for Active Directory **
+# <img src="https://github.com/unosquare/passcore/raw/master/src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png"></img>
+
+**PassCore: A self-service password change utility for Active Directory**
 
 *:star:Please star this project if you find it useful!*
 
