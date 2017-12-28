@@ -24,9 +24,15 @@ PassCore has the following features:
 
 ## Installation on IIS
 
-1. Ensure the server running IIS is domain-joined. To setermine if the computer is domain-joined Go to the *Start* menu, right click on *Computer*, then select *Properties*, and make sure the *Domain* field contains the correct setting.
-2. If you dowload the project yo need to run the fallowing command
-`dotnet publish --framework net461 --output "<path>" --configuration Release`, the path is the directory where you will be serving the website from, or you can download the latest binary release of **<a href="https://github.com/unosquare/passcore/releases/download/3.0/Passcore-3.0.0.zip">PassCore</a>** -- **NOTE:** Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.
+1. Ensure the server running IIS is domain-joined. To determine if the computer is domain-joined:
+* Go to the *Start* menu, right click on *Computer*, then select *Properties*
+* Make sure the *Domain* field contains the correct setting.
+2. If you download the project you need to run the following command via an Command Prompt:
+    * Make sure you start the Command Prompt with the Administrator option.
+      * `dotnet publish --framework net461 --output "<path>" --configuration Release`
+      * The `<path>` is the directory where you will be serving the website from.
+  * Alternatively, you can download the latest binary release of **<a href="https://github.com/unosquare/passcore/releases/download/3.0/Passcore-3.0.0.zip">PassCore</a>**
+    * **NOTE:** Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.
 3. Install the **<a href="https://docs.microsoft.com/en-us/aspnet/core/publishing/iis?tabs=aspnetcore2x#install-the-net-core-windows-server-hosting-bundle">.NET Core Windows Server Hosting bundle </a>**.
 4. Go to your *IIS Manager*, Right click on *Application Pools* and select *Add Application Pool*.
 5. A dialog appears. Under Name enter **PassCore Application Pool**, Under .NET CLR Version select **No Managed Code** and finally, under Managed pipeline mode select **Integrated**. Click OK after all fields have been set.
