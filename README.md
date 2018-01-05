@@ -27,13 +27,14 @@ PassCore has the following features:
 1. Ensure the server running IIS is domain-joined. To determine if the computer is domain-joined:
 * Go to the *Start* menu, right click on *Computer*, then select *Properties*
 * Make sure the *Domain* field contains the correct setting.
-2. If you download the project you need to run the following command via an Command Prompt:
-    * Make sure you start the Command Prompt with the Administrator option.
+2. You need a Passcore copy to continue. We recommed to downloadhe latest binary release of [PassCore](https://github.com/unosquare/passcore/releases/download/3.0/Passcore-3.0.0.zip). 
+   * **NOTE:** Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.
+
+If you download the source code you need to run the following command via an Command Prompt:
+   * Make sure you start the Command Prompt with the Administrator option.
       * `dotnet publish --framework net461 --output "<path>" --configuration Release`
       * The `<path>` is the directory where you will be serving the website from.
-  * Alternatively, you can download the latest binary release of **<a href="https://github.com/unosquare/passcore/releases/download/3.0/Passcore-3.0.0.zip">PassCore</a>**
-    * **NOTE:** Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.
-3. Install the **<a href="https://docs.microsoft.com/en-us/aspnet/core/publishing/iis?tabs=aspnetcore2x#install-the-net-core-windows-server-hosting-bundle">.NET Core Windows Server Hosting bundle </a>**.
+3. Install the [.NET Core Windows Server Hosting bundle](https://docs.microsoft.com/en-us/aspnet/core/publishing/iis?tabs=aspnetcore2x#install-the-net-core-windows-server-hosting-bundle).
 4. Go to your *IIS Manager*, Right click on *Application Pools* and select *Add Application Pool*.
 5. A dialog appears. Under Name enter **PassCore Application Pool**, Under .NET CLR Version select **No Managed Code** and finally, under Managed pipeline mode select **Integrated**. Click OK after all fields have been set.
 6. Now, right click on the application pool you just created in the previous step and select *Advanced Settings ...*. Change the *Start Mode* to **AlwaysRunning**, and the *Idle Time-out (minutes)* to **0**. Click on *OK*. This will ensure PassCore stays responsive even after long periods of inactivity.
