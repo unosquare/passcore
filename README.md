@@ -56,6 +56,9 @@ The most relevant configuration entries are shown below. Make sure you make your
   - Find the <code>ShowPasswordMeter</code> entry and set it to <code>true</code> (without quotes)
 - To disable the password meter
   - Find the <code>ShowPasswordMeter</code> entry and set it to <code>false</code> (without quotes)
+- To enable restricted group checking
+  - Find the <code>CheckRestrictedAdGroups</code> entry and set it to <code>true</code> (without quotes)
+  - Find the <code>RestrictedADGroups</code> entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.
 - The rest of the configuration entries are all pretty much all UI strings.
   - Change them to localize or brand this utility to meet your needs
 

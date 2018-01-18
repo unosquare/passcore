@@ -31,6 +31,8 @@
         public Recaptcha Recaptcha { get; set; }
         public bool ShowPasswordMeter { get; set; }
         public Alerts Alerts { get; set; }
+        public bool CheckRestrictedAdGroups { get; set; }
+        public List<string> RestrictedADGroups { get; set; }
     }
 
     public class ChangePasswordForm

@@ -9,6 +9,7 @@
     using System.Threading.Tasks;
     using Models;
     using System.DirectoryServices.AccountManagement;
+    using System.Collections.Generic;
 #if SWAN
     using System.Collections;
     using System.Linq;
@@ -113,17 +114,40 @@
                         
                         return BadRequest(result);
                     }
-
+                    else
+                    {
+                        Console.WriteLine("Attempting to change password for: " + userPrincipal.Name);
+                    }
+                    
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
+                        Console.WriteLine("ERROR: " + userPrincipal.Name + " is not allowed to change their password");
                         throw new Exception(_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
                     }
 
                     // Validate user credentials
                     if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
+                        Console.WriteLine("ERROR: " + userPrincipal.Name + " entered invalid current credentials.");
                         throw new Exception(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
+                    }
+
+                    // Verify user is not a member of an excluded group
+                    if (_options.ClientSettings.CheckRestrictedAdGroups)
+                    {
+                        Console.WriteLine("Checking for restricted group membership.");
+
+                        foreach (Principal userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                        {
+                            Console.WriteLine(userPrincipal.Name + " is a member of " + userPrincipalAuthGroup.Name + ".");
+
+                            if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                            {
+                                Console.WriteLine("ERROR: " + userPrincipal.Name + " is a member of " + userPrincipalAuthGroup.Name + "!");
+                                throw new Exception(_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                            }
+                        }
                     }
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
@@ -131,17 +155,24 @@
                     {
                         // Try by regular ChangePassword method
                         userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
+                        Console.WriteLine("SUCCESS: " + userPrincipal.Name + " has changed their password.");
                     }
                     catch (Exception ex2)
                     {
                         // If the previous attempt failed, use the SetPassword method.
                         if (_options.PasswordChangeOptions.UseAutomaticContext == false)
+                        {
                             userPrincipal.SetPassword(model.NewPassword);
+                            Console.WriteLine("SUCCESS: " + userPrincipal.Name + " has changed their password.");
+                        }
                         else
+                        {
                             throw ex2;
+                        }                            
                     }
 
                     userPrincipal.Save();
+                    userPrincipal.Dispose();
                 }
 #endif
             }
