@@ -149,17 +149,12 @@
                     {
                         // If the previous attempt failed, use the SetPassword method.
                         if (_options.PasswordChangeOptions.UseAutomaticContext == false)
-                        {
                             userPrincipal.SetPassword(model.NewPassword);
-                        }
                         else
-                        {
                             throw ex2;
-                        }                            
                     }
 
                     userPrincipal.Save();
-                    userPrincipal.Dispose();
                 }
 #endif
             }
