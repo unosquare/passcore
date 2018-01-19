@@ -44,9 +44,6 @@
   <ItemGroup>
     <!-- Files not to publish-->
     <Content Remove="ClientApp\**" />
-    <None Include="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\package-lock.json')">
