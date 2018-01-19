@@ -46,6 +46,12 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\package-lock.json')">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
