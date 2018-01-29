@@ -66,7 +66,9 @@ The most relevant configuration entries are shown below. Make sure you make your
   - Change them to localize or brand this utility to meet your needs
 
 ## Troubleshooting
-- If you find a <a href="https://stackoverflow.com/questions/45415832/http-error-500-19-in-iis-10-and-visual-studio-2017">HTTP Error 500</a> you can try
+- If you find a HTTP Error 502.5
+  - Ensure you have installed [.NET Framework 4.6.1](https://www.microsoft.com/en-us/download/details.aspx?id=49982) or better
+- If you find a [HTTP Error 500](https://stackoverflow.com/questions/45415832/http-error-500-19-in-iis-10-and-visual-studio-2017) you can try
   - Press Win Key+R to Open Run Window
   - in the Run Window, enter "OptionalFeatures.exe"
   - in the features window, Click: "Internet Information Services"
