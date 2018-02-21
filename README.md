@@ -59,6 +59,11 @@ The most relevant configuration entries are shown below. Make sure you make your
 - The rest of the configuration entries are all pretty much all UI strings.
   - Change them to localize or brand this utility to meet your needs
 
+## Running as a sub application
+To run as a sub application you need to modify the `base href="/"` value in the `wwwroot/index.html` file to be the base url for PassCore. For example you might have PassCore setup at /PassCore so you would put
+```
+<base href="/PassCore/" />
+```
 ## Troubleshooting
 - If you find a <a href="https://stackoverflow.com/questions/45415832/http-error-500-19-in-iis-10-and-visual-studio-2017">HTTP Error 500</a> you can try
   - Press Win Key+R to Open Run Window
