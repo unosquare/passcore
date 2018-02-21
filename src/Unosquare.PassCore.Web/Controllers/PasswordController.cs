@@ -123,7 +123,36 @@
                     // Validate user credentials
                     if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
-                        throw new Exception(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
+                        // Your new authenticate code snippet
+                        IntPtr token = IntPtr.Zero;
+                        try
+                        {
+                            var parts = userPrincipal.UserPrincipalName.Split(new [] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                            string domain = parts.Length > 1 ? parts[1] : null;
+
+                            if (domain == null)
+                            {
+                                throw new Exception(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
+                            }
+
+                            if (!PasswordChangeFallBack.LogonUser(model.Username, domain, model.CurrentPassword, PasswordChangeFallBack.LogonTypes.Network, PasswordChangeFallBack.LogonProviders.Default, out token))
+                            {
+                                int errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                                switch (errorCode)
+                                {
+                                    case PasswordChangeFallBack.ERROR_PASSWORD_MUST_CHANGE:
+                                    case PasswordChangeFallBack.ERROR_PASSWORD_EXPIRED:
+                                        // Both of these means that the password CAN change and that we got the correct password
+                                        break;
+                                    default:
+                                        throw new Exception(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            PasswordChangeFallBack.CloseHandle(token);
+                        }
                     }
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
@@ -242,6 +271,56 @@
                 dynamic validationResponse = JsonConvert.DeserializeObject(response);
                 return validationResponse.success;
             }
+        }
+
+        /// <summary>
+        /// This code is taken from the answer https://stackoverflow.com/a/1766203 from https://stackoverflow.com/questions/1394025/active-directory-ldap-check-account-locked-out-password-expired
+        /// </summary>
+        internal static class PasswordChangeFallBack
+        {
+            // See http://support.microsoft.com/kb/155012
+            internal readonly const int ERROR_PASSWORD_MUST_CHANGE = 1907;
+            internal readonly const int ERROR_LOGON_FAILURE = 1326;
+            internal readonly const int ERROR_ACCOUNT_RESTRICTION = 1327;
+            internal readonly const int ERROR_ACCOUNT_DISABLED = 1331;
+            internal readonly const int ERROR_INVALID_LOGON_HOURS = 1328;
+            internal readonly const int ERROR_NO_LOGON_SERVERS = 1311;
+            internal readonly const int ERROR_INVALID_WORKSTATION = 1329;
+            internal readonly const int ERROR_ACCOUNT_LOCKED_OUT = 1909; //It gives this error if the account is locked, REGARDLESS OF WHETHER VALID CREDENTIALS WERE PROVIDED!!!
+            internal readonly const int ERROR_ACCOUNT_EXPIRED = 1793;
+            internal readonly const int ERROR_PASSWORD_EXPIRED = 1330;
+
+            // here are enums
+            internal enum LogonTypes : uint
+            {
+                Interactive = 2,
+                Network = 3,
+                Batch = 4,
+                Service = 5,
+                Unlock = 7,
+                NetworkCleartext = 8,
+                NewCredentials = 9
+            }
+
+            internal enum LogonProviders : uint
+            {
+                Default = 0, // default for platform (use this!)
+                WinNT35,     // sends smoke signals to authority
+                WinNT40,     // uses NTLM
+                WinNT50      // negotiates Kerb or NTLM
+            }
+
+            [System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError = true)]
+            internal static extern bool LogonUser(
+                     string principal,
+                     string authority,
+                     string password,
+                     LogonTypes logonType,
+                     LogonProviders logonProvider,
+                     out IntPtr token);
+
+            [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+            internal static extern bool CloseHandle(IntPtr handle);
         }
     }
 }
