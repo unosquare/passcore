@@ -68,6 +68,11 @@ The most relevant configuration entries are shown below. Make sure you make your
 - The rest of the configuration entries are all pretty much all UI strings.
   - Change them to localize or brand this utility to meet your needs
 
+## Running as a sub application
+To run as a sub application you need to modify the `base href="/"` value in the `wwwroot/index.html` file to be the base url for PassCore. For example you might have PassCore setup at /PassCore so you would put
+```
+<base href="/PassCore/" />
+```
 ## Troubleshooting
 - If you find a HTTP Error 502.5
   - Ensure you have installed [.NET Framework 4.6.1](https://www.microsoft.com/en-us/download/details.aspx?id=49982) or better
