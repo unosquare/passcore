@@ -9,6 +9,7 @@
     using System.Threading.Tasks;
     using Models;
     using System.DirectoryServices.AccountManagement;
+    using System.Collections.Generic;
 #if SWAN
     using System.Collections;
     using System.Linq;
@@ -113,7 +114,7 @@
                         
                         return BadRequest(result);
                     }
-
+                    
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
@@ -124,6 +125,18 @@
                     if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
                         throw new Exception(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
+                    }
+
+                    // Verify user is not a member of an excluded group
+                    if (_options.ClientSettings.CheckRestrictedAdGroups)
+                    {
+                        foreach (Principal userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                        {
+                            if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                            {
+                                throw new Exception(_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                            }
+                        }
                     }
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
