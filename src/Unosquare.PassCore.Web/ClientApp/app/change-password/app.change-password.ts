@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import ViewOptions from '../models/view-options.model';
 import Alerts from '../models/alerts.model';
@@ -15,6 +16,7 @@ import DialogOverview from '../dialog/app.dialog'
 import PasswordValidator from '../helpers/passwordValidator';
 import PasswordStrength from '../helpers/passwordStrength';
 
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -25,6 +27,8 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-
   styleUrls: ['./app.change-password.css']
 })
 export default class ChangePasswordComponent implements OnInit {
+  subscription: Subscription;
+
   // Form Controls
   FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.pattern(emailRegex)]),
@@ -42,7 +46,7 @@ export default class ChangePasswordComponent implements OnInit {
   value: number = 0;
 
   constructor(private http: Http, private snackBar: MatSnackBar,
-    private titleService: Title, public dialog: MatDialog) {
+      private titleService: Title, public dialog: MatDialog, private r: ActivatedRoute) {
     this.FormData = new PasswordModel;
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
@@ -55,7 +59,10 @@ export default class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.GetData();
+      this.subscription = this.r.queryParams.subscribe((params: Params) => {
+          let userId = params['userName'] || "";
+          this.GetData(userId);
+      });
   }
 
   private changeProgressBar(strength: number) {
@@ -102,7 +109,8 @@ export default class ChangePasswordComponent implements OnInit {
     }
   }
 
-  private GetData(): void {
+  private GetData(queryParam: string): void {
+    this.FormData.Username = queryParam;
     this.http.get('api/password').subscribe(values => {
       this.ViewOptions = values.json();
       this.titleService.setTitle(this.ViewOptions.changePasswordTitle + " - " + this.ViewOptions.applicationTitle);
