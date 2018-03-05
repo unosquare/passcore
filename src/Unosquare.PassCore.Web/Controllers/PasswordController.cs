@@ -9,7 +9,6 @@
     using System.Threading.Tasks;
     using Models;
     using System.DirectoryServices.AccountManagement;
-    using System.Collections.Generic;
 #if SWAN
     using System.Collections;
     using System.Linq;
@@ -292,16 +291,16 @@
         internal static class PasswordChangeFallBack
         {
             // See http://support.microsoft.com/kb/155012
-            internal readonly const int ERROR_PASSWORD_MUST_CHANGE = 1907;
-            internal readonly const int ERROR_LOGON_FAILURE = 1326;
-            internal readonly const int ERROR_ACCOUNT_RESTRICTION = 1327;
-            internal readonly const int ERROR_ACCOUNT_DISABLED = 1331;
-            internal readonly const int ERROR_INVALID_LOGON_HOURS = 1328;
-            internal readonly const int ERROR_NO_LOGON_SERVERS = 1311;
-            internal readonly const int ERROR_INVALID_WORKSTATION = 1329;
-            internal readonly const int ERROR_ACCOUNT_LOCKED_OUT = 1909; //It gives this error if the account is locked, REGARDLESS OF WHETHER VALID CREDENTIALS WERE PROVIDED!!!
-            internal readonly const int ERROR_ACCOUNT_EXPIRED = 1793;
-            internal readonly const int ERROR_PASSWORD_EXPIRED = 1330;
+            internal const int ERROR_PASSWORD_MUST_CHANGE = 1907;
+            internal const int ERROR_LOGON_FAILURE = 1326;
+            internal const int ERROR_ACCOUNT_RESTRICTION = 1327;
+            internal const int ERROR_ACCOUNT_DISABLED = 1331;
+            internal const int ERROR_INVALID_LOGON_HOURS = 1328;
+            internal const int ERROR_NO_LOGON_SERVERS = 1311;
+            internal const int ERROR_INVALID_WORKSTATION = 1329;
+            internal const int ERROR_ACCOUNT_LOCKED_OUT = 1909; //It gives this error if the account is locked, REGARDLESS OF WHETHER VALID CREDENTIALS WERE PROVIDED!!!
+            internal const int ERROR_ACCOUNT_EXPIRED = 1793;
+            internal const int ERROR_PASSWORD_EXPIRED = 1330;
 
             // here are enums
             internal enum LogonTypes : uint
@@ -320,7 +319,7 @@
                 Default = 0, // default for platform (use this!)
                 WinNT35,     // sends smoke signals to authority
                 WinNT40,     // uses NTLM
-                WinNT50      // negotiates Kerb or NTLM
+                WinNT50 // negotiates Kerb or NTLM
             }
 
             [System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError = true)]
