@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from "@angular/flex-layout";
 
-import { RecaptchaModule } from 'ng2-recaptcha';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { AppRoutingModule } from './app.routing-module';
 
 import { MaterialModule } from './app.material-module';
@@ -27,8 +28,9 @@ import DialogOverview from './dialog/app.dialog';
     HttpModule,
     FlexLayoutModule,
     RecaptchaModule.forRoot(),
-      ReactiveFormsModule,
-      AppRoutingModule
+    RecaptchaFormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [ChangePasswordComponent],
