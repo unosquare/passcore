@@ -8,6 +8,7 @@
     public class AppSettings
     {
         public bool EnableHttpsRedirect { get; set; } = true;
+        public bool EnableLetsEncrypt { get; set; } = false;
         public string RecaptchaPrivateKey { get; set; }
         public PasswordChangeOptions PasswordChangeOptions { get; set; }
         public ClientSettings ClientSettings { get; set; }
