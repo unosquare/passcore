@@ -65,6 +65,9 @@ The most relevant configuration entries are shown below. Make sure you make your
 - To enable restricted group checking
   - Find the <code>CheckRestrictedAdGroups</code> entry and set it to <code>true</code> (without quotes)
   - Find the <code>RestrictedADGroups</code> entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.
+- To enable Let's Encrypt support
+  - Find the <code>EnableLetsEncrypt</code> entry and set it to <code>true</code> (without quotes)
+  - Create .well-known/acme-challenge folders in wwwroot directory
 - To provide an optional paramerter to the URL to set the username text box automatically
   - <code>http://mypasscore.com/?userName=someusername</code> 
   - This helps the user incase they forgot thier username and, also comes in handy when sending a link to the application or having it embeded into another application were the user is all ready signed in.  
