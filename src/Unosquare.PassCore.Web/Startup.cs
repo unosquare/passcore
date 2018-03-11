@@ -2,6 +2,8 @@
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Routing;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -112,6 +114,20 @@
 
             application.UseDefaultFiles();
             application.UseStaticFiles();
+            
+            // Handle Lets Encrypt Route (before MVC processing!)
+            if (settings.Value.EnableLetsEncrypt)
+            {
+                application.UseRouter(r =>
+                {
+                    r.MapGet(".well-known/acme-challenge/{id}", async (request, response, routeData) =>
+                    {
+                        var id = routeData.Values["id"] as string;
+                        var file = Path.Combine(environment.WebRootPath, ".well-known","acme-challenge", id);
+                        await response.SendFileAsync(file);
+                    });
+                });
+            }
 
             // The default route for all non-api routes is the Home controller which in turn, simply outputs the contents of the root 
             // index.html file. This makes the SPA always get back to the index route.
