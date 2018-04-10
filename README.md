@@ -32,9 +32,9 @@ PassCore has the following features:
 2. You need a Passcore copy to continue. We recommed to download the latest binary release of [PassCore](https://github.com/unosquare/passcore/releases/download/3.0.2/passcore.zip). 
    * **NOTE:** Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.
   * If you download the source code you need to run the following command via an Command Prompt. Make sure you start the Command Prompt with the Administrator option.
-      * `dotnet publish --framework net461 --output "<path>" --configuration Release`
+      * `dotnet publish --framework netcoreapp2.0 --output "<path>" --configuration Release`
       * The `<path>` is the directory where you will be serving the website from.
-3. Install the [.NET Core Windows Server Hosting bundle](https://docs.microsoft.com/en-us/aspnet/core/publishing/iis?tabs=aspnetcore2x#install-the-net-core-windows-server-hosting-bundle).
+3. Install the [.NET Core Windows Server Hosting bundle](https://docs.microsoft.com/en-us/aspnet/core/publishing/iis?tabs=aspnetcore2x#install-the-net-core-windows-server-hosting-bundle). You will need at least [.NET Core Runtime 2.0.6 / SDK 2.1.2](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.6-download.md).
 4. Go to your *IIS Manager*, Right click on *Application Pools* and select *Add Application Pool*.
 5. A dialog appears. Under Name enter **PassCore Application Pool**, Under .NET CLR Version select **No Managed Code** and finally, under Managed pipeline mode select **Integrated**. Click OK after all fields have been set.
 6. Now, right click on the application pool you just created in the previous step and select *Advanced Settings ...*. Change the *Start Mode* to **AlwaysRunning**, and the *Idle Time-out (minutes)* to **0**. Click on *OK*. This will ensure PassCore stays responsive even after long periods of inactivity.
@@ -65,6 +65,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 - To enable restricted group checking
   - Find the <code>CheckRestrictedAdGroups</code> entry and set it to <code>true</code> (without quotes)
   - Find the <code>RestrictedADGroups</code> entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.
+- Find the <code>DefaultDomain</code> entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names.- 
 - To provide an optional paramerter to the URL to set the username text box automatically
   - <code>http://mypasscore.com/?userName=someusername</code> 
   - This helps the user incase they forgot thier username and, also comes in handy when sending a link to the application or having it embeded into another application were the user is all ready signed in.  
@@ -78,7 +79,7 @@ To run as a sub application you need to modify the `base href="/"` value in the 
 ```
 ## Troubleshooting
 - If you find a HTTP Error 502.5
-  - Ensure you have installed [.NET Framework 4.6.1](https://www.microsoft.com/en-us/download/details.aspx?id=49982) or better
+  - Ensure you have installed [.NET Core Runtime 2.0.6 / SDK 2.1.2](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.6-download.md), or better.
 - If you find a [HTTP Error 500](https://stackoverflow.com/questions/45415832/http-error-500-19-in-iis-10-and-visual-studio-2017) you can try
   - Press Win Key+R to Open Run Window
   - in the Run Window, enter "OptionalFeatures.exe"

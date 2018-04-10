@@ -1,22 +1,19 @@
-import { Title } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
-import { MatSnackBar, MatDialog } from '@angular/material';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
-
-import ViewOptions from '../models/view-options.model';
 import Alerts from '../models/alerts.model';
-import Recaptcha from '../models/recaptcha.model';
 import ChangePasswordForm from '../models/change-password-form.model';
-import Result from '../models/result-data.model';
+import DialogOverview from '../dialog/app.dialog';
 import PasswordModel from '../models/password.model';
-import DialogOverview from '../dialog/app.dialog'
-
-import PasswordValidator from '../helpers/passwordValidator';
 import PasswordStrength from '../helpers/passwordStrength';
-
+import PasswordValidator from '../helpers/passwordValidator';
+import Recaptcha from '../models/recaptcha.model';
+import Result from '../models/result-data.model';
+import ViewOptions from '../models/view-options.model';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Http } from '@angular/http';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
+import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/map';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

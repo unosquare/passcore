@@ -1,8 +1,6 @@
-﻿import { NgModule } from '@angular/core';
+﻿import ChangePasswordComponent from './change-password/app.change-password';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import ChangePasswordComponent from './change-password/app.change-password';
-
 
 const appRoutes: Routes = [
     { path: '', component: ChangePasswordComponent },
