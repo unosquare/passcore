@@ -57,7 +57,7 @@
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
     <!-- Running npm install -->
     <Message Importance="high" Text="Performing first-run npm install..." />
-    <Exec Command="npm install" />
+    <Exec Command="npm install -q" />
   </Target>
 
   <Target Name="Webpack" DependsOnTargets="NpmInstall" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
