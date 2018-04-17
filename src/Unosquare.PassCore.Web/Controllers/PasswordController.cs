@@ -9,12 +9,6 @@
     using System.Threading.Tasks;
     using Models;
     using System.DirectoryServices.AccountManagement;
-#if SWAN
-    using System.Collections;
-    using System.Linq;
-    using Unosquare.Swan;
-    using Unosquare.Swan.Networking.Ldap;
-#endif
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -80,28 +74,7 @@
 
             // perform the password change
             try
-            {
-#if SWAN
-                var distinguishedName = await GetDN(model.Username);
-
-                if (string.IsNullOrEmpty(distinguishedName))
-                {
-                    result.Errors.Add(new ApiErrorItem() { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCredentials, Message = "Invalid Username or Password" });
-                    
-                    return BadRequest(result);
-                }
-
-                var cn = new LdapConnection();
-
-                await cn.Connect(_options.PasswordChangeOptions.LdapHostname, _options.PasswordChangeOptions.LdapPort);
-                await cn.Bind(_options.PasswordChangeOptions.LdapUsername, _options.PasswordChangeOptions.LdapPassword);
-                var modList = new ArrayList();
-                var attribute = new LdapAttribute("userPassword", model.NewPassword);
-                modList.Add(new LdapModification(LdapModificationOp.Replace, attribute));
-                var mods = (LdapModification[])modList.ToArray(typeof(LdapModification));
-                await cn.Modify(distinguishedName, mods);
-                cn.Disconnect();
-#else
+            { 
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
@@ -183,8 +156,7 @@
                     }
 
                     userPrincipal.Save();
-                }
-#endif
+                } 
             }
             catch (Exception ex)
             {
@@ -223,50 +195,6 @@
             return principalContext;
         }
 
-#if SWAN
-        private string GetBase()
-        {
-            var _base = string.Empty;
-            var hostName = Settings.PasswordChangeOptions.LdapHostname.Split('.');
-
-            foreach (var part in hostName)
-            {
-                if (part == hostName.Last())
-                    _base += $"dc={part}";
-                else
-                    _base += $"dc={part},";
-            }
-
-            return _base;
-        }
-
-        private async Task<string> GetDN(string username)
-        {
-            try
-            {
-                var cn = new LdapConnection();
-                var distinguishedName = string.Empty;
-                await cn.Connect(Settings.PasswordChangeOptions.LdapHostname, Settings.PasswordChangeOptions.LdapPort);
-                await cn.Bind(Settings.PasswordChangeOptions.LdapUsername, Settings.PasswordChangeOptions.LdapPassword);
-                var lsc = await cn.Search(GetBase(), LdapConnection.ScopeSub, $"(mail={username})");
-
-                while (lsc.HasMore())
-                {
-                    var entry = lsc.Next();
-                    var ldapAttributes = entry.GetAttributeSet();
-                    distinguishedName = ldapAttributes.GetAttribute("distinguishedName")?.StringValue ?? string.Empty;
-                }
-
-                cn.Disconnect();
-                return distinguishedName;
-            }
-            catch (Exception ex)
-            {
-                ex.Error(nameof(GetDN), "Error LDAP");
-                return string.Empty;
-            }
-        }
-#endif
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
