@@ -8,9 +8,9 @@
     internal class PasswordChangeProvider : IPasswordChangeProvider
     {
         private AppSettings _options;
-        public PasswordChangeProvider(AppSettings options)
+        public PasswordChangeProvider(IOptions<AppSettings> options)
         {
-            _options = options;
+            _options = options.Value;
         }
 
         public ApiErrorItem PerformPasswordChange(ChangePasswordModel model)
