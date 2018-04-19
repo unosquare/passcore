@@ -71,6 +71,11 @@
                 result.Errors.Add(new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
             }
 
+            if (result.HasErrors)
+            {
+                return BadRequest(result);
+            }
+
             var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(model);
 
             if (resultPasswordChange!=null)
