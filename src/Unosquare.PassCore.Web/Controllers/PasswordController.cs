@@ -19,12 +19,12 @@
     {
         private readonly AppSettings _options;
 
-        private readonly IPasswordChangeProvider _iPasswordChangeProvider;
+        private readonly IPasswordChangeProvider _passwordChangeProvider;
 
-        public PasswordController(IOptions<AppSettings> optionsAccessor, IPasswordChangeProvider iPasswordChangeProvider)
+        public PasswordController(IOptions<AppSettings> optionsAccessor, IPasswordChangeProvider _passwordChangeProvider)
         {
             _options = optionsAccessor.Value;
-            _iPasswordChangeProvider = iPasswordChangeProvider;
+            _passwordChangeProvider = _passwordChangeProvider;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@
                 result.Errors.Add(new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
             }
 
-            var resultPasswordChange = _iPasswordChangeProvider.PerformPasswordChange(model, _options);
+            var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(model);
 
             if (resultPasswordChange!=null)
             {

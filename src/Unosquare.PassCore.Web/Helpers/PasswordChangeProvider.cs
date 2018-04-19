@@ -8,10 +8,13 @@
     internal class PasswordChangeProvider : IPasswordChangeProvider
     {
         private AppSettings _options;
-
-        public ApiErrorItem PerformPasswordChange(ChangePasswordModel model, AppSettings options)
+        public PasswordChangeProvider(AppSettings options)
         {
             _options = options;
+        }
+
+        public ApiErrorItem PerformPasswordChange(ChangePasswordModel model)
+        {
             // perform the password change
             try
             {
@@ -104,7 +107,7 @@
             return null;
         }
 
-        public PrincipalContext AcquirePrincipalContext()
+        private PrincipalContext AcquirePrincipalContext()
         {
             PrincipalContext principalContext;
             if (_options.PasswordChangeOptions.UseAutomaticContext)
@@ -123,10 +126,9 @@
             return principalContext;
         }
 
-        public UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
+        private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
         {
             return UserPrincipal.FindByIdentity(context, username);
         }
-
     }
 }
