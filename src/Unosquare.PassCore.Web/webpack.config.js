@@ -1,5 +1,4 @@
-﻿const fs = require('fs')
-const path = require('path')
+﻿const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ProgressPlugin = require('webpack/lib/ProgressPlugin')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
@@ -8,27 +7,30 @@ const autoprefixer = require('autoprefixer')
 const postcssUrl = require('postcss-url')
 const cssnano = require('cssnano')
 
+// TODO: might need to use https://github.com/s-panferov/awesome-typescript-loader ?
+
 const {
   NoEmitOnErrorsPlugin,
   SourceMapDevToolPlugin,
   NamedModulesPlugin
 } = require('webpack')
-const {
-  NamedLazyChunksWebpackPlugin,
-  BaseHrefWebpackPlugin
-} = require('@angular/cli/plugins/webpack')
+
+const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin')
+
+const AngularNamedLazyChunksWebpackPlugin = require('angular-named-lazy-chunks-webpack-plugin')
+
 const {
   CommonsChunkPlugin
 } = require('webpack').optimize
-const { AotPlugin } = require('@ngtools/webpack')
+const AotPlugin = require('@ngtools/webpack').AngularCompilerPlugin
 
-const nodeModules = path.join(process.cwd(), 'node_modules')
-const realNodeModules = fs.realpathSync(nodeModules)
-const genDirNodeModules = path.join(process.cwd(), 'ClientApp', '$$_gendir', 'node_modules')
+// The value 'production' depends on what NODE_ENV is set when running Webpack
+// to compile the production bundle
+const IS_DEV = process.env.NODE_ENV !== 'production'
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'vendor', 'main']
-const minimizeCss = false
-const baseHref = ''
-const deployUrl = ''
+const nodeModulesRegEx = [ /(\\|\/)node_modules(\\|\/)/ ]
+const nodeModulesStr = [ 'node_modules' ]
+const minimizeCss = true
 const postcssPlugins = function () {
   // safe settings based on: https://github.com/ben-eb/cssnano/issues/358#issuecomment-283696193
   const importantCommentRe = /@preserve|@license|[@#]\s*source(?:Mapping)?URL|^!/i
@@ -41,6 +43,7 @@ const postcssPlugins = function () {
     }
   }
   return [
+    /*
     postcssUrl({
       url: (URL) => {
         // Only convert root relative URLs, which CSS-Loader won't process into require().
@@ -60,38 +63,27 @@ const postcssPlugins = function () {
           return `/${baseHref}/${deployUrl}/${URL}`.replace(/\/\/+/g, '/')
         }
       }
-    }),
+    }), */
+    postcssUrl({ url: 'rebase' }), // https://github.com/postcss/postcss-url
     autoprefixer()
   ].concat(minimizeCss ? [cssnano(minimizeOptions)] : [])
 }
 
 module.exports = {
-  'resolve': {
-    'extensions': [
-      '.ts',
-      '.js'
-    ],
-    'modules': [
-      './node_modules',
-      './node_modules'
-    ],
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    'modules': nodeModulesStr,
     'symlinks': true
   },
-  'resolveLoader': {
-    'modules': [
-      './node_modules',
-      './node_modules'
-    ]
+  resolveLoader: {
+    modules: nodeModulesStr
   },
-  'entry': {
-    'main': [
-      './ClientApp\\main.ts'
-    ],
-    'polyfills': [
-      './ClientApp\\polyfills.ts'
+  entry: {
+    main: [
+      './ClientApp/main.ts'
     ],
     'styles': [
-      './ClientApp/assets/styles\\indigo-pink.css'
+      './ClientApp/assets/styles/indigo-pink.css'
     ]
   },
   'output': {
@@ -104,9 +96,7 @@ module.exports = {
       'enforce': 'pre',
       'test': /\.js$/,
       'loader': 'source-map-loader',
-      'exclude': [
-        /(\\|\/)node_modules(\\|\/)/
-      ]
+      'exclude': nodeModulesRegEx
     },
     {
       'test': /\.html$/,
@@ -122,7 +112,7 @@ module.exports = {
     },
     {
       'exclude': [
-        path.join(process.cwd(), 'ClientApp/assets/styles\\styles.css')
+        path.join(process.cwd(), 'ClientApp/assets/styles/styles.css')
       ],
       'test': /\.css$/,
       'use': [
@@ -145,7 +135,7 @@ module.exports = {
     },
     {
       'include': [
-        path.join(process.cwd(), 'ClientApp/assets/styles\\styles.css')
+        path.join(process.cwd(), 'ClientApp/assets/styles/styles.css')
       ],
       'test': /\.css$/,
       'use': [
@@ -167,8 +157,9 @@ module.exports = {
       ]
     },
     {
-      'test': /\.ts$/,
-      'loader': '@ngtools/webpack'
+      test: /\.tsx?$/,
+      use: IS_DEV ? ['ts-loader', 'angular2-template-loader'] : '@ngtools/webpack',
+      exclude: IS_DEV ? nodeModulesRegEx : []
     }
     ]
   },
@@ -213,12 +204,12 @@ module.exports = {
     }),
     new ProgressPlugin(),
     new CircularDependencyPlugin({
-      'exclude': /(\\|\/)node_modules(\\|\/)/,
+      'exclude': nodeModulesRegEx,
       'failOnError': false
     }),
-    new NamedLazyChunksWebpackPlugin(),
+    new AngularNamedLazyChunksWebpackPlugin(),
     new HtmlWebpackPlugin({
-      'template': './ClientApp\\index.html',
+      'template': './ClientApp/index.html',
       'filename': './index.html',
       'hash': false,
       'inject': true,
@@ -243,21 +234,14 @@ module.exports = {
         }
       }
     }),
-    new BaseHrefWebpackPlugin({}),
+    new BaseHrefWebpackPlugin({ baseHref: '/' }),
     new CommonsChunkPlugin({
-      'name': [
-        'inline'
-      ],
-      'minChunks': null
+      'name': 'inline'
     }),
     new CommonsChunkPlugin({
-      'name': [
-        'vendor'
-      ],
+      'name': 'vendor',
       'minChunks': (module) => module.resource,
-      'chunks': [
-        'main'
-      ]
+      'chunks': ['main']
     }),
     new SourceMapDevToolPlugin({
       'filename': '[file].map[query]',
@@ -266,22 +250,18 @@ module.exports = {
       'sourceRoot': 'webpack:///'
     }),
     new CommonsChunkPlugin({
-      'name': [
-        'main'
-      ],
+      'name': 'main',
       'minChunks': 2,
       'async': 'common'
     }),
-    new NamedModulesPlugin({}),
+    new NamedModulesPlugin(),
     new AotPlugin({
       'mainPath': 'main.ts',
-      'replaceExport': false,
       'hostReplacementPaths': {
-        'environments\\environment.ts': 'environments\\environment.ts'
+        'environments/environment.ts': 'environments/environment.ts'
       },
-      'exclude': [],
-      'tsConfigPath': 'ClientApp\\tsconfig.app.json',
-      'skipCodeGeneration': true
+      'tsConfigPath': 'ClientApp/tsconfig.app.json',
+      'entryModule': path.resolve(__dirname, 'ClientApp/app/app.module.ts')
     })
   ],
   'node': {

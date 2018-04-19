@@ -1,4 +1,4 @@
-export default class Error{
+export class Error{
     public errorCode: number;
     public errorType: number;
     public message: string;

@@ -1,7 +1,9 @@
+import 'core-js/library'; // Provides polyfills
+import 'zone.js/dist/zone';  // Included with Angular CLI.
 import { AppModule } from './app/app.module';
 import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { platformBrowser } from '@angular/platform-browser';
 
-enableProdMode();
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+// enableProdMode();
+const platform = platformBrowser();
+platform.bootstrapModule(AppModule);

@@ -1,19 +1,26 @@
 ﻿{
-  "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./app",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
+    "allowJs": false, //set true for debugging
+    "checkJs": false, //set true for debugging
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "inlineSources": false,
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./app",
+    "sourceMap": true,
+    "strictNullChecks": false, //set true for debugging; Angular 5.2+ supposed to "fix" this
+    "target": "es5",
+    "suppressImplicitAnyIndexErrors": false,
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "angularCompilerOptions": {
+    "genDir": "aot", // Specify where Angular can create temporary AOT files
+    "skipMetadataEmit": true, // Don't generate not necessary metadata files. They are useful only if you're publishing an Angular UI library
+    "entryModule": "./app/app.module#AppModule"
   }
 }

@@ -1,20 +1,18 @@
-import Alerts from '../models/alerts.model';
-import ChangePasswordForm from '../models/change-password-form.model';
-import DialogOverview from '../dialog/app.dialog';
-import PasswordModel from '../models/password.model';
-import PasswordStrength from '../helpers/passwordStrength';
-import PasswordValidator from '../helpers/passwordValidator';
-import Recaptcha from '../models/recaptcha.model';
-import Result from '../models/result-data.model';
-import ViewOptions from '../models/view-options.model';
+import { Alerts } from '../models/alerts.model';
+import { ChangePasswordForm } from '../models/change-password-form.model';
+import { DialogOverview } from '../dialog/app.dialog';
+import { PasswordModel } from '../models/password.model';
+import { PasswordStrength } from '../helpers/passwordStrength';
+import { Recaptcha } from '../models/recaptcha.model';
+import { Result } from '../models/result-data.model';
+import { ViewOptions } from '../models/view-options.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Http } from '@angular/http';
+import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Rx';
 import { Title } from '@angular/platform-browser';
-import 'rxjs/add/operator/map';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -23,27 +21,29 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-
   templateUrl: './change-password.html',
   styleUrls: ['./app.change-password.css']
 })
-export default class ChangePasswordComponent implements OnInit {
-  subscription: Subscription;
+export class ChangePasswordComponent implements OnInit {
 
-  // Form Controls
+  // Properties
+  color: string = 'warn';
+  ErrorAlertMessage: string = '';
+  FormData: PasswordModel;
+  Loading: boolean = false;
+  ResultData: Result;
+  subscription: Subscription;
+  value: number = 0;
+  ViewOptions: ViewOptions;
+
+  // Form Controls  
   FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.pattern(emailRegex)]),
     currentPassword: new FormControl('', [Validators.required]),
     newPassword: new FormControl('', [Validators.required]),
     newPasswordVerify: new FormControl('', [Validators.required])
-  }, PasswordValidator.MatchPassword);
-  // Variables
-  ViewOptions: ViewOptions;
-  ResultData: Result;
-  Loading: boolean = false;
-  ErrorAlertMessage: string = '';
-  FormData: PasswordModel;
-  color: string = 'warn';
-  value: number = 0;
+  }, Validators.compose([Validators.required, this.matchingPasswords]));
 
-  constructor(private http: Http, private snackBar: MatSnackBar,
-      private titleService: Title, public dialog: MatDialog, private r: ActivatedRoute) {
+  // Constructor
+  constructor(public http: HttpClient, public snackBar: MatSnackBar,
+    public titleService: Title, public dialog: MatDialog, public r: ActivatedRoute) {
     this.FormData = new PasswordModel;
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
@@ -55,14 +55,25 @@ export default class ChangePasswordComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-      this.subscription = this.r.queryParams.subscribe((params: Params) => {
-          let userId = params['userName'] || "";
-          this.GetData(userId);
-      });
+  // Password matching validator
+  matchingPasswords(): ValidatorFn {
+    let passwordInput = this.FormGroup.value('newPassword');
+    let passwordConfirmationInput = this.FormGroup.value('newPasswordVerify');
+    return (passwordInput.value !== passwordConfirmationInput.value) ?
+      passwordConfirmationInput.setErrors({ notEquivalent: true }) :
+      passwordConfirmationInput.setErrors({ notEquivalent: false })
   }
 
-  private changeProgressBar(strength: number) {
+  // Angular init?
+  ngOnInit(): void {
+    this.subscription = this.r.queryParams.subscribe((params: Params) => {
+      let userId = params['userName'] || "";
+      this.GetData(userId);
+    });
+  }
+
+  // Progress bar for password strength
+  changeProgressBar(strength: number) {
     this.value = strength;
     if (strength < 33) {
       this.color = 'warn';
@@ -73,20 +84,21 @@ export default class ChangePasswordComponent implements OnInit {
     }
   }
 
-  private openSnackBar(message: string, action: string) {
+  openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 5000
     });
   }
 
-  private openDialog(title: string, message: string) {
+  openDialog(title: string, message: string) {
     let refDialog = this.dialog.open(DialogOverview, {
       width: '300px',
       data: { Title: title, Message: message }
     });
   }
 
-  private clean(submited: string) {
+  // Reset form
+  clean(submited: string) {
     this.Loading = false;
     this.ErrorAlertMessage = '';
     this.color = 'warn';
@@ -106,10 +118,11 @@ export default class ChangePasswordComponent implements OnInit {
     }
   }
 
-  private GetData(queryParam: string): void {
+  // Get data from the form
+  GetData(queryParam: string): void {
     this.FormData.Username = queryParam;
     this.http.get('api/password').subscribe(values => {
-      this.ViewOptions = values.json();
+      this.ViewOptions = <ViewOptions>values;
       this.titleService.setTitle(this.ViewOptions.changePasswordTitle + " - " + this.ViewOptions.applicationTitle);
       if (this.ViewOptions.recaptcha.isEnabled) {
         this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
@@ -122,16 +135,16 @@ export default class ChangePasswordComponent implements OnInit {
     });
   }
 
-  private SetRecaptchaResponse(captchaResponse: string) {
+  SetRecaptchaResponse(captchaResponse: string) {
     this.FormData.Recaptcha = captchaResponse;
   }
 
+  // Form submission
   Submit() {
     this.Loading = true;
     this.http.post('api/password', this.FormData)
       .subscribe((response) => {
         this.openDialog(this.ViewOptions.alerts.successAlertTitle, this.ViewOptions.alerts.successAlertBody);
-
         this.clean('success');
       }, (error) => {
         this.ResultData = error.json() as Result;
@@ -139,7 +152,6 @@ export default class ChangePasswordComponent implements OnInit {
           this.ErrorAlertMessage += errData.message;
         });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
-
         this.clean('error');
       });
   }

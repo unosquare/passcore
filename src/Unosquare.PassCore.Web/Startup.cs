@@ -61,11 +61,8 @@
 
         public static IWebHost BuildWebHost (string[] args) =>
             WebHost.CreateDefaultBuilder (args)
-            .UseKestrel ()
-            .UseContentRoot (Directory.GetCurrentDirectory ())
-            .UseIISIntegration ()
+            .UseApplicationInsights ()
             .UseStartup<Startup> ()
-            .UseApplicationInsights()
             .Build ();
 
         /// <summary>
@@ -76,7 +73,7 @@
         public void ConfigureServices (IServiceCollection services) {
             services.AddOptions ();
             // Register the IConfiguration instance which MyOptions binds against.
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettingsSectionName"));
+            services.Configure<AppSettings> (Configuration.GetSection ("AppSettingsSectionName"));
             services.AddApplicationInsightsTelemetry (Configuration);
             services.AddMvc ();
         }
@@ -90,9 +87,13 @@
         /// <param name="log">The logger factory.</param>
         /// <param name="settings">The settings.</param>
         public void Configure (IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions<AppSettings> settings) {
+
+            // Logging
             log.AddConsole (Configuration.GetSection (LoggingSectionName));
             log.AddDebug ();
 
+            // HTTPS redirect: IIS is supposed to be handling this....
+            /*
             app.Use (async (context, next) => {
                 if (context.Request.IsHttps || Debugger.IsAttached || settings.Value.EnableHttpsRedirect == false) {
                     await next ();
@@ -102,18 +103,16 @@
                     context.Response.Redirect (secureRedirectUrl);
                 }
             });
+             */
 
-            app.UseDefaultFiles ();
+            // Enable static files
             app.UseStaticFiles ();
 
             // The default route for all non-api routes is the Home controller which in turn, simply outputs the contents of the root
             // index.html file. This makes the SPA always get back to the index route.
-            app.UseMvc (options => {
-                options.MapRoute (
-                    name: "default",
-                    template: "{*url}",
-                    defaults : new { controller = "Home", action = "Index" });
-            });
+            // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.0
+            app.UseMvcWithDefaultRoute ();
+
         }
 
         #endregion

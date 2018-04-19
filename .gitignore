@@ -201,3 +201,6 @@ FakesAssemblies/
 /src/Unosquare.PassCore.Web/.vscode/tasks.json
 /src/Unosquare.PassCore.Web/wwwroot/**
 /src/Unosquare.PassCore.Web/package-lock.json
+
+# AOT results
+aot/*

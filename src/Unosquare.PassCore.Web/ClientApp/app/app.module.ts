@@ -1,37 +1,38 @@
-import ChangePasswordComponent from './change-password/app.change-password';
-import DialogOverview from './dialog/app.dialog';
-import FooterComponent from './footer/app.footer';
+import { ChangePasswordComponent } from './change-password/app.change-password';
+import { DialogOverview } from './dialog/app.dialog';
+import { FooterComponent } from './footer/app.footer';
 import { AppRoutingModule } from './app.routing-module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { FlexLayoutModule } from '@angular/flex-layout';
+// import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './app.material-module';
 import { NgModule } from '@angular/core';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
+  bootstrap: [ChangePasswordComponent],
   declarations: [
     ChangePasswordComponent,
-    FooterComponent,
-    DialogOverview
+    DialogOverview,
+    FooterComponent
   ],
+  entryComponents: [DialogOverview],
   imports: [
+    AppRoutingModule,
+    // BrowserAnimationsModule,
     BrowserModule,
-    BrowserAnimationsModule,
     FormsModule,
+    // FlexLayoutModule,
+    HttpClientModule,
     MaterialModule,
-    HttpModule,
-    FlexLayoutModule,
     RecaptchaModule.forRoot(),
     RecaptchaFormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    RouterModule
   ],
-  providers: [],
-  bootstrap: [ChangePasswordComponent],
-  entryComponents: [DialogOverview]
 })
 export class AppModule { }

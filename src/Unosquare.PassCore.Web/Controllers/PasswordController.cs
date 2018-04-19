@@ -1,4 +1,7 @@
-﻿namespace Unosquare.PassCore.Web.Controllers {
+﻿// For using .NET 2.0, we need Microsoft.Windows.Compatibility installed in the dev-process.
+// https://blogs.msdn.microsoft.com/dotnet/2017/11/16/announcing-the-windows-compatibility-pack-for-net-core/
+
+namespace Unosquare.PassCore.Web.Controllers {
     using System.DirectoryServices.AccountManagement;
     using System.Net.Http;
     using System.Net;
@@ -8,12 +11,6 @@
     using Microsoft.Extensions.Options;
     using Models;
     using Newtonsoft.Json;
-#if SWAN
-    using System.Collections;
-    using System.Linq;
-    using Unosquare.Swan.Networking.Ldap;
-    using Unosquare.Swan;
-#endif
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -69,26 +66,6 @@
 
             // perform the password change
             try {
-#if SWAN
-                var distinguishedName = await GetDN (model.Username);
-
-                if (string.IsNullOrEmpty (distinguishedName)) {
-                    result.Errors.Add (new ApiErrorItem () { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCredentials, Message = "Invalid Username or Password" });
-
-                    return BadRequest (result);
-                }
-
-                var cn = new LdapConnection ();
-
-                await cn.Connect (_options.PasswordChangeOptions.LdapHostname, _options.PasswordChangeOptions.LdapPort);
-                await cn.Bind (_options.PasswordChangeOptions.LdapUsername, _options.PasswordChangeOptions.LdapPassword);
-                var modList = new ArrayList ();
-                var attribute = new LdapAttribute ("userPassword", model.NewPassword);
-                modList.Add (new LdapModification (LdapModificationOp.Replace, attribute));
-                var mods = (LdapModification[]) modList.ToArray (typeof (LdapModification));
-                await cn.Modify (distinguishedName, mods);
-                cn.Disconnect ();
-#else
                 using (var principalContext = AcquirePrincipalContext ()) {
                     var userPrincipal = AcquireUserPricipal (principalContext, model.Username);
 
@@ -112,7 +89,7 @@
                             var parts = userPrincipal.UserPrincipalName.Split (new [] { '@' }, StringSplitOptions.RemoveEmptyEntries);
                             // Use default domain, if none given
                             var domain = _options.ClientSettings.DefaultDomain ?? null;
-                            if(domain == null) domain = parts.Length > 1 ? parts[1] : throw new Exception (_options.ClientSettings.Alerts.ErrorInvalidCredentials);
+                            if (domain == null) domain = parts.Length > 1 ? parts[1] : throw new Exception (_options.ClientSettings.Alerts.ErrorInvalidCredentials);
 
                             if (!PasswordChangeFallBack.LogonUser (model.Username, domain, model.CurrentPassword, PasswordChangeFallBack.LogonTypes.Network, PasswordChangeFallBack.LogonProviders.Default, out token)) {
                                 int errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error ();
@@ -153,7 +130,6 @@
 
                     userPrincipal.Save ();
                 }
-#endif
             } catch (Exception ex) {
                 result.Errors.Add (new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
 
