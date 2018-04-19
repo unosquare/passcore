@@ -10,6 +10,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using Unosquare.PassCore.Web.Helpers;
 
     /// <summary>
     /// Represents this application's main class
@@ -77,6 +78,8 @@
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
+
+            services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
         }
 
         /// <summary>
