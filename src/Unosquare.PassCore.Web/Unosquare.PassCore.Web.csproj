@@ -44,6 +44,8 @@
   <ItemGroup>
     <!-- Files not to publish-->
     <Content Remove="ClientApp\**" />
+    <Content Include="ClientApp\manifest.json" />
+    <Content Include="ClientApp\tsconfig.app.json" />
     <None Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
