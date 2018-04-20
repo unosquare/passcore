@@ -10,7 +10,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
-    using Unosquare.PassCore.Web.Helpers;
+    using Helpers;
 
     /// <summary>
     /// Represents this application's main class

@@ -1,6 +1,6 @@
 ﻿namespace Unosquare.PassCore.Web.Helpers
 {
-    using Unosquare.PassCore.Web.Models;
+    using Models;
 
     public interface IPasswordChangeProvider
     {

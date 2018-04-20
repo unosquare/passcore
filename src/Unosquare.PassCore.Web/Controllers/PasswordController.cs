@@ -1,15 +1,14 @@
 ﻿namespace Unosquare.PassCore.Web.Controllers
 {
-    using Microsoft.Extensions.Options;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
+    using Models;
     using Newtonsoft.Json;
     using System;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Models;
-    using System.DirectoryServices.AccountManagement;
-    using Unosquare.PassCore.Web.Helpers;
+    using Helpers;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -18,13 +17,17 @@
     public class PasswordController : Controller
     {
         private readonly AppSettings _options;
-
         private readonly IPasswordChangeProvider _passwordChangeProvider;
 
-        public PasswordController(IOptions<AppSettings> optionsAccessor, IPasswordChangeProvider _passwordChangeProvider)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PasswordController"/> class.
+        /// </summary>
+        /// <param name="optionsAccessor">The options accessor.</param>
+        /// <param name="passwordChangeProvider">The password change provider.</param>
+        public PasswordController(IOptions<AppSettings> optionsAccessor, IPasswordChangeProvider passwordChangeProvider)
         {
             _options = optionsAccessor.Value;
-            _passwordChangeProvider = _passwordChangeProvider;
+            _passwordChangeProvider = passwordChangeProvider;
         }
 
         /// <summary>
@@ -42,7 +45,7 @@
         /// <param name="model">The value.</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]ChangePasswordModel model)
+        public async Task<IActionResult> Post([FromBody] ChangePasswordModel model)
         {
             // Validate the request
             if (model == null)
@@ -62,13 +65,22 @@
 
             // Validate the Captcha
             try
-            {                
+            {
                 if (await ValidateRecaptcha(model.Recaptcha) == false)
-                    result.Errors.Add(new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCaptcha });
+                    result.Errors.Add(new ApiErrorItem
+                    {
+                        ErrorType = ApiErrorType.GeneralFailure,
+                        ErrorCode = ApiErrorCode.InvalidCaptcha
+                    });
             }
             catch (Exception ex)
             {
-                result.Errors.Add(new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message });
+                result.Errors.Add(new ApiErrorItem
+                {
+                    ErrorType = ApiErrorType.GeneralFailure,
+                    ErrorCode = ApiErrorCode.Generic,
+                    Message = ex.Message
+                });
             }
 
             if (result.HasErrors)
@@ -78,13 +90,13 @@
 
             var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(model);
 
-            if (resultPasswordChange!=null)
+            if (resultPasswordChange != null)
             {
                 result.Errors.Add(resultPasswordChange);
             }
 
             if (result.HasErrors)
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
 
             return Json(result);
         }

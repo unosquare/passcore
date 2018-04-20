@@ -1,13 +1,14 @@
 ﻿namespace Unosquare.PassCore.Web.Helpers
 {
     using Microsoft.Extensions.Options;
+    using Models;
     using System;
     using System.DirectoryServices.AccountManagement;
-    using Unosquare.PassCore.Web.Models;
 
     internal class PasswordChangeProvider : IPasswordChangeProvider
     {
-        private AppSettings _options;
+        private readonly AppSettings _options;
+
         public PasswordChangeProvider(IOptions<AppSettings> options)
         {
             _options = options.Value;
@@ -20,7 +21,7 @@
             {
                 using (var principalContext = AcquirePrincipalContext())
                 {
-                    var userPrincipal = AcquireUserPricipal(principalContext, model.Username);
+                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, model.Username);
 
                     // Check if the user principal exists
                     if (userPrincipal == null)
@@ -38,11 +39,11 @@
                     if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
                         // Your new authenticate code snippet
-                        IntPtr token = IntPtr.Zero;
+                        var token = IntPtr.Zero;
                         try
                         {
                             var parts = userPrincipal.UserPrincipalName.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                            string domain = parts.Length > 1 ? parts[1] : null;
+                            var domain = parts.Length > 1 ? parts[1] : null;
 
                             if (domain == null)
                             {
@@ -51,7 +52,7 @@
 
                             if (!PasswordChangeFallBack.LogonUser(model.Username, domain, model.CurrentPassword, PasswordChangeFallBack.LogonTypes.Network, PasswordChangeFallBack.LogonProviders.Default, out token))
                             {
-                                int errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                                var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
                                 switch (errorCode)
                                 {
                                     case PasswordChangeFallBack.ERROR_PASSWORD_MUST_CHANGE:
@@ -72,7 +73,7 @@
                     // Verify user is not a member of an excluded group
                     if (_options.ClientSettings.CheckRestrictedAdGroups)
                     {
-                        foreach (Principal userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
                         {
                             if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
                             {
@@ -87,13 +88,13 @@
                         // Try by regular ChangePassword method
                         userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
                     }
-                    catch (Exception ex2)
+                    catch
                     {
+                        if (_options.PasswordChangeOptions.UseAutomaticContext)
+                            throw;
+                        
                         // If the previous attempt failed, use the SetPassword method.
-                        if (_options.PasswordChangeOptions.UseAutomaticContext == false)
-                            userPrincipal.SetPassword(model.NewPassword);
-                        else
-                            throw ex2;
+                        userPrincipal.SetPassword(model.NewPassword);
                     }
 
                     userPrincipal.Save();
@@ -110,6 +111,7 @@
         private PrincipalContext AcquirePrincipalContext()
         {
             PrincipalContext principalContext;
+
             if (_options.PasswordChangeOptions.UseAutomaticContext)
             {
                 principalContext = new PrincipalContext(ContextType.Domain);
@@ -124,11 +126,6 @@
             }
 
             return principalContext;
-        }
-
-        private static UserPrincipal AcquireUserPricipal(PrincipalContext context, string username)
-        {
-            return UserPrincipal.FindByIdentity(context, username);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace Unosquare.PassCore.Web.Helpers
+﻿#pragma warning disable SA1310 // Field names must not contain underscore
+namespace Unosquare.PassCore.Web.Helpers
 {
     using System;
 
@@ -15,7 +16,9 @@
         internal const int ERROR_INVALID_LOGON_HOURS = 1328;
         internal const int ERROR_NO_LOGON_SERVERS = 1311;
         internal const int ERROR_INVALID_WORKSTATION = 1329;
-        internal const int ERROR_ACCOUNT_LOCKED_OUT = 1909; //It gives this error if the account is locked, REGARDLESS OF WHETHER VALID CREDENTIALS WERE PROVIDED!!!
+
+        // It gives this error if the account is locked, REGARDLESS OF WHETHER VALID CREDENTIALS WERE PROVIDED!!!
+        internal const int ERROR_ACCOUNT_LOCKED_OUT = 1909;
         internal const int ERROR_ACCOUNT_EXPIRED = 1793;
         internal const int ERROR_PASSWORD_EXPIRED = 1330;
 
@@ -52,3 +55,4 @@
         internal static extern bool CloseHandle(IntPtr handle);
     }
 }
+#pragma warning restore SA1310 // Field names must not contain underscore

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "name": "Passcore",
+  "name": "passcore",
   "private": true,
   "scripts": {
     "build": "./node_modules/.bin/webpack",

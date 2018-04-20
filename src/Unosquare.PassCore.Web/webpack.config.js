@@ -10,7 +10,7 @@ const path = require('path');
 
 module.exports = {
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.js']
     },
     entry: {
         'polyfills': './ClientApp/polyfills.ts',
@@ -26,7 +26,7 @@ module.exports = {
         rules: [
             { test: /\.ts$/, loader: '@ngtools/webpack'  },
             { test: /\.html$/, loader: 'raw-loader' },
-            { test: /\.css$/, loader: 'raw-loader' },
+            { test: /\.css$/, loader: 'raw-loader' }
         ]
     },
     plugins: [
@@ -38,10 +38,10 @@ module.exports = {
             template: './ClientApp/index.html'
         }),
         new SourceMapDevToolPlugin({
-            "filename": "[file].map[query]",
-            "moduleFilenameTemplate": "[resource-path]",
-            "fallbackModuleFilenameTemplate": "[resource-path]?[hash]",
-            "sourceRoot": "webpack:///"
+            "filename": '[file].map[query]',
+            "moduleFilenameTemplate": '[resource-path]',
+            "fallbackModuleFilenameTemplate": '[resource-path]?[hash]',
+            "sourceRoot": 'webpack:///'
         }),
         new AotPlugin({
             'mainPath': 'main.ts',
@@ -85,6 +85,6 @@ module.exports = {
                 '.gitkeep'
             ],
             'debug': 'warning'
-        }),
+        })
     ]
 }
