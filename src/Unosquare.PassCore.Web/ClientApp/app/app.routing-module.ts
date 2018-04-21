@@ -2,7 +2,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const appRoutes: Routes = [{ path: '', component: ChangePasswordComponent }];
+//const appRoutes: Routes = [{ path: '', component: ChangePasswordComponent }];
+
+export const appRoutes: Routes = [{ path: '', loadChildren: './change-password/app.change-password#ChangePasswordComponent' }];
 
 @NgModule({
     imports: [RouterModule.forRoot(appRoutes)],

@@ -4,23 +4,31 @@
     "checkJs": false, //set true for debugging
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "inlineSources": false,
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017","dom"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "./app",
+    "noImplicitAny": false,    
+    "removeComments": false,
     "sourceMap": true,
     "strictNullChecks": false, //set true for debugging; Angular 5.2+ supposed to "fix" this
     "target": "es5",
     "suppressImplicitAnyIndexErrors": false,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["../node_modules/@types"],
+    "outDir": "./aot"    
   },
+  "compileOnSave": true,
+  "files": [
+    "./vendor-aot.ts",
+    "./boot-aot.ts",
+    "./app/app.module.ts",
+    "./app/change-password/app.change-password.ts"
+  ],
+  "exclude": [
+    "../node_modules/*",
+    "./aot"
+  ],
   "angularCompilerOptions": {
-    "genDir": "aot", // Specify where Angular can create temporary AOT files
-    "skipMetadataEmit": true, // Don't generate not necessary metadata files. They are useful only if you're publishing an Angular UI library
-    "entryModule": "./app/app.module#AppModule"
-  }
+    "genDir": "aot",
+    "skipMetadataEmit": true
+  }  
 }

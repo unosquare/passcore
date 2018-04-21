@@ -1,15 +1,16 @@
+import { AppRoutingModule } from './app.routing-module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 import { ChangePasswordComponent } from './change-password/app.change-password';
 import { DialogOverview } from './dialog/app.dialog';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from './footer/app.footer';
-import { AppRoutingModule } from './app.routing-module';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-// import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from './app.material-module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgModule } from '@angular/core';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RouterModule } from '@angular/router';
 
@@ -23,16 +24,19 @@ import { RouterModule } from '@angular/router';
   entryComponents: [DialogOverview],
   imports: [
     AppRoutingModule,
-    // BrowserAnimationsModule,
+    BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
-    // FlexLayoutModule,
+    FlexLayoutModule,
     HttpClientModule,
     MaterialModule,
+    MatDialogModule,
+    MatSnackBarModule,
     RecaptchaModule.forRoot(),
-    RecaptchaFormsModule,
     ReactiveFormsModule,
     RouterModule
   ],
+  exports: [
+  ]
 })
 export class AppModule { }

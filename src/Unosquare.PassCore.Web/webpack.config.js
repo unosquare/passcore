@@ -1,281 +1,119 @@
-﻿const path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ProgressPlugin = require('webpack/lib/ProgressPlugin')
-const CircularDependencyPlugin = require('circular-dependency-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const autoprefixer = require('autoprefixer')
-const postcssUrl = require('postcss-url')
-const cssnano = require('cssnano')
-
-// TODO: might need to use https://github.com/s-panferov/awesome-typescript-loader ?
-
-const {
-  NoEmitOnErrorsPlugin,
-  SourceMapDevToolPlugin,
-  NamedModulesPlugin
-} = require('webpack')
-
-const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin')
-
+﻿// Imports
+const { AngularCompilerPlugin } = require('@ngtools/webpack')
 const AngularNamedLazyChunksWebpackPlugin = require('angular-named-lazy-chunks-webpack-plugin')
+const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
+const HappyPack = require('happypack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MinifyPlugin = require('babel-minify-webpack-plugin')
+const path = require('path')
 
-const {
-  CommonsChunkPlugin
-} = require('webpack').optimize
-const AotPlugin = require('@ngtools/webpack').AngularCompilerPlugin
+// Vars
+let nodeModulesRegEx = /(\\|\/)node_modules(\\|\/)/
+let happyThreadPool = HappyPack.ThreadPool({ size: 6 })
 
-// The value 'production' depends on what NODE_ENV is set when running Webpack
-// to compile the production bundle
-const IS_DEV = process.env.NODE_ENV !== 'production'
-const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'vendor', 'main']
-const nodeModulesRegEx = [ /(\\|\/)node_modules(\\|\/)/ ]
-const nodeModulesStr = [ 'node_modules' ]
-const minimizeCss = true
-const postcssPlugins = function () {
-  // safe settings based on: https://github.com/ben-eb/cssnano/issues/358#issuecomment-283696193
-  const importantCommentRe = /@preserve|@license|[@#]\s*source(?:Mapping)?URL|^!/i
-  const minimizeOptions = {
-    autoprefixer: false,
-    safe: true,
-    mergeLonghand: false,
-    discardComments: {
-      remove: (comment) => !importantCommentRe.test(comment)
-    }
-  }
-  return [
-    /*
-    postcssUrl({
-      url: (URL) => {
-        // Only convert root relative URLs, which CSS-Loader won't process into require().
-        if (!URL.startsWith('/') || URL.startsWith('//')) {
-          return URL
-        }
-        if (deployUrl.match(/:\/\//)) {
-          // If deployUrl contains a scheme, ignore baseHref use deployUrl as is.
-          return `${deployUrl.replace(/\/$/, '')}${URL}`
-        } else if (baseHref.match(/:\/\//)) {
-          // If baseHref contains a scheme, include it as is.
-          return baseHref.replace(/\/$/, '') +
-            `/${deployUrl}/${URL}`.replace(/\/\/+/g, '/')
-        } else {
-          // Join together base-href, deploy-url and the original URL.
-          // Also dedupe multiple slashes into single ones.
-          return `/${baseHref}/${deployUrl}/${URL}`.replace(/\/\/+/g, '/')
-        }
-      }
-    }), */
-    postcssUrl({ url: 'rebase' }), // https://github.com/postcss/postcss-url
-    autoprefixer()
-  ].concat(minimizeCss ? [cssnano(minimizeOptions)] : [])
-}
-
+// Webpack configuration
 module.exports = {
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    'modules': nodeModulesStr,
-    'symlinks': true
-  },
-  resolveLoader: {
-    modules: nodeModulesStr
-  },
+  mode: 'production',
   entry: {
-    main: [
-      './ClientApp/main.ts'
-    ],
-    'styles': [
-      './ClientApp/assets/styles/indigo-pink.css'
+    vendor: './ClientApp/vendor-aot.ts',
+    app: './ClientApp/boot-aot.ts'
+  },
+  resolve: {
+    extensions: ['.js', '.ts']
+  },
+  output: {
+    path: path.join(process.cwd(), './wwwroot'),
+    publicPath: '/',
+    filename: '[name].bundle.js',
+    chunkFilename: '[id].chunk.js'
+  },
+  module: {
+    rules: [
+      // AOT TS-compile-to-JS
+      {
+        test: /\.ts$/,
+        enforce: 'pre',
+        use: '@ngtools/webpack',
+        exclude: nodeModulesRegEx
+      },
+      // Async loader
+      {
+        test: /\.async\.(html|css)$/,
+        use: 'happypack/loader?id=async',
+        exclude: nodeModulesRegEx
+      },
+      // URL file loader
+      {
+        test: /\.(eot|svg|cur)$/,
+        use: 'happypack/loader?id=urls',
+        exclude: nodeModulesRegEx
+      },
+      // Raw file loader
+      {
+        test: /\.(jpg|png|webp|gif|otf|ttf|woff|woff2|ani|html|css)$/,
+        use: 'happypack/loader?id=files',
+        exclude: [nodeModulesRegEx, /\.async\.(html|css)$/]
+      },
+      // Render JS into usable browser content
+      {
+        test: /\.js$/,
+        enforce: 'post',
+        loaders: 'happypack/loader?id=js',
+        exclude: [nodeModulesRegEx]
+      }
     ]
   },
-  'output': {
-    'path': path.join(process.cwd(), './wwwroot'),
-    'filename': '[name].bundle.js',
-    'chunkFilename': '[id].chunk.js'
-  },
-  'module': {
-    'rules': [{
-      'enforce': 'pre',
-      'test': /\.js$/,
-      'loader': 'source-map-loader',
-      'exclude': nodeModulesRegEx
-    },
-    {
-      'test': /\.html$/,
-      'loader': 'raw-loader'
-    },
-    {
-      'test': /\.(eot|svg|cur)$/,
-      'loader': 'file-loader?name=[name].[hash:20].[ext]'
-    },
-    {
-      'test': /\.(jpg|png|webp|gif|otf|ttf|woff|woff2|ani)$/,
-      'loader': 'url-loader?name=[name].[hash:20].[ext]&limit=10000'
-    },
-    {
-      'exclude': [
-        path.join(process.cwd(), 'ClientApp/assets/styles/styles.css')
-      ],
-      'test': /\.css$/,
-      'use': [
-        'exports-loader?module.exports.toString()',
-        {
-          'loader': 'css-loader',
-          'options': {
-            'sourceMap': false,
-            'importLoaders': 1
-          }
-        },
-        {
-          'loader': 'postcss-loader',
-          'options': {
-            'ident': 'postcss',
-            'plugins': postcssPlugins
-          }
-        }
-      ]
-    },
-    {
-      'include': [
-        path.join(process.cwd(), 'ClientApp/assets/styles/styles.css')
-      ],
-      'test': /\.css$/,
-      'use': [
-        'style-loader',
-        {
-          'loader': 'css-loader',
-          'options': {
-            'sourceMap': false,
-            'importLoaders': 1
-          }
-        },
-        {
-          'loader': 'postcss-loader',
-          'options': {
-            'ident': 'postcss',
-            'plugins': postcssPlugins
-          }
-        }
-      ]
-    },
-    {
-      test: /\.tsx?$/,
-      use: IS_DEV ? ['ts-loader', 'angular2-template-loader'] : '@ngtools/webpack',
-      exclude: IS_DEV ? nodeModulesRegEx : []
-    }
-    ]
-  },
-  'plugins': [
-    new NoEmitOnErrorsPlugin(),
-    new CopyWebpackPlugin([{
-      'context': 'ClientApp',
-      'to': '',
-      'from': {
-        'glob': 'manifest.json',
-        'dot': true
-      }
-    }, {
-      'context': 'ClientApp',
-      'to': '',
-      'from': {
-        'glob': 'assets/**/*',
-        'dot': true
-      }
-    },
-    {
-      'context': 'ClientApp',
-      'to': '',
-      'from': {
-        'glob': 'favicon.ico',
-        'dot': true
-      }
-    },
-    {
-      'context': 'ClientApp',
-      'to': '',
-      'from': {
-        'glob': 'web.config',
-        'dot': true
-      }
-    }
-    ], {
-      'ignore': [
-        '.gitkeep'
-      ],
-      'debug': 'warning'
-    }),
-    new ProgressPlugin(),
-    new CircularDependencyPlugin({
-      'exclude': nodeModulesRegEx,
-      'failOnError': false
+  plugins: [
+    new AngularCompilerPlugin({
+      tsConfigPath: './ClientApp/tsconfig.json',
+      entryModule: './ClientApp/app/app.module#AppModule',
+      sourceMap: true
     }),
     new AngularNamedLazyChunksWebpackPlugin(),
     new HtmlWebpackPlugin({
-      'template': './ClientApp/index.html',
-      'filename': './index.html',
-      'hash': false,
-      'inject': true,
-      'compile': true,
-      'favicon': false,
-      'minify': false,
-      'cache': true,
-      'showErrors': true,
-      'chunks': 'all',
-      'excludeChunks': [],
-      'title': 'Passcore App',
-      'xhtml': true,
-      'chunksSortMode': function sort (left, right) {
-        let leftIndex = entryPoints.indexOf(left.names[0])
-        let rightindex = entryPoints.indexOf(right.names[0])
-        if (leftIndex > rightindex) {
-          return 1
-        } else if (leftIndex < rightindex) {
-          return -1
-        } else {
-          return 0
-        }
-      }
+      template: './ClientApp/index.html',
+      filename: './wwwroot/index.html'
     }),
     new BaseHrefWebpackPlugin({ baseHref: '/' }),
-    new CommonsChunkPlugin({
-      'name': 'inline'
+    new HappyPack({
+      id: 'files',
+      threadPool: happyThreadPool,
+      loaders: ['file-loader?name=[name].[hash].[ext]']
     }),
-    new CommonsChunkPlugin({
-      'name': 'vendor',
-      'minChunks': (module) => module.resource,
-      'chunks': ['main']
+    new HappyPack({
+      id: 'async',
+      threadPool: happyThreadPool,
+      loaders: ['file-loader?name=[name].[hash].[ext]']
     }),
-    new SourceMapDevToolPlugin({
-      'filename': '[file].map[query]',
-      'moduleFilenameTemplate': '[resource-path]',
-      'fallbackModuleFilenameTemplate': '[resource-path]?[hash]',
-      'sourceRoot': 'webpack:///'
+    new HappyPack({
+      id: 'urls',
+      threadPool: happyThreadPool,
+      loaders: ['url-loader?name=[name].[hash].[ext]&limit=10000']
     }),
-    new CommonsChunkPlugin({
-      'name': 'main',
-      'minChunks': 2,
-      'async': 'common'
+    new HappyPack({
+      id: 'js',
+      threadPool: happyThreadPool,
+      loaders: ['babel-loader?presets[]=es2015', 'angular-router-loader?aot=true&genDir=aot/', 'angular2-template-loader?keepUrl=true']
     }),
-    new NamedModulesPlugin(),
-    new AotPlugin({
-      'mainPath': 'main.ts',
-      'hostReplacementPaths': {
-        'environments/environment.ts': 'environments/environment.ts'
-      },
-      'tsConfigPath': 'ClientApp/tsconfig.app.json',
-      'entryModule': path.resolve(__dirname, 'ClientApp/app/app.module.ts')
-    })
+    new MinifyPlugin(),
+    new CompressionPlugin({minRatio: 0.8})
   ],
-  'node': {
-    'fs': 'empty',
-    'global': true,
-    'crypto': 'empty',
-    'tls': 'empty',
-    'net': 'empty',
-    'process': true,
-    'module': false,
-    'clearImmediate': false,
-    'setImmediate': false
+  node: {
+    fs: 'empty',
+    global: true,
+    crypto: 'empty',
+    tls: 'empty',
+    net: 'empty',
+    process: true,
+    module: false,
+    clearImmediate: false,
+    setImmediate: false
   },
-  'devServer': {
-    'historyApiFallback': true
+  devServer: {
+    historyApiFallback: true
+  },
+  optimization: {
+    runtimeChunk: 'single'
   }
 }

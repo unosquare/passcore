@@ -3,7 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
     selector: 'dialog-overview',
-    templateUrl: './dialog.html'
+    templateUrl: './dialog.html',
+    providers:[DialogOverview]
 })
 export class DialogOverview {
 
