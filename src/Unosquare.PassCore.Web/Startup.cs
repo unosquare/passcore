@@ -53,11 +53,11 @@
 
         #endregion
 
-        #region Methods
-
         public static void Main (string[] args) {
             BuildWebHost (args).Run ();
         }
+
+        #region Methods
 
         public static IWebHost BuildWebHost (string[] args) =>
             WebHost.CreateDefaultBuilder (args)
@@ -105,7 +105,11 @@
             });
              */
 
+            // Let IIS deal with HTTPS redirection (for now anyway)
+            app.Use(async (context, next) => await next());
+
             // Enable static files
+            app.UseDefaultFiles();
             app.UseStaticFiles ();
 
             // The default route for all non-api routes is the Home controller which in turn, simply outputs the contents of the root

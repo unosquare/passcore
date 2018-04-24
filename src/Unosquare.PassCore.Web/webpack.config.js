@@ -1,119 +1,117 @@
-﻿// Imports
-const { AngularCompilerPlugin } = require('@ngtools/webpack')
-const AngularNamedLazyChunksWebpackPlugin = require('angular-named-lazy-chunks-webpack-plugin')
-const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin')
-const CompressionPlugin = require('compression-webpack-plugin')
-const HappyPack = require('happypack')
+﻿// const { AngularCompilerPlugin } = require('@ngtools/webpack')
+// const { AotPlugin } = require('@ngtools/webpack')
+const { CommonsChunkPlugin } = require('webpack').optimize
+const { SourceMapDevToolPlugin } = require('webpack')
+const CircularDependencyPlugin = require('circular-dependency-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MinifyPlugin = require('babel-minify-webpack-plugin')
 const path = require('path')
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const webpack = require('webpack')
 
-// Vars
-let nodeModulesRegEx = /(\\|\/)node_modules(\\|\/)/
-let happyThreadPool = HappyPack.ThreadPool({ size: 6 })
-
-// Webpack configuration
 module.exports = {
-  mode: 'production',
-  entry: {
-    vendor: './ClientApp/vendor-aot.ts',
-    app: './ClientApp/boot-aot.ts'
-  },
+  devtool: 'source-map',
   resolve: {
-    extensions: ['.js', '.ts']
+    extensions: ['.ts', '.js']
+  },
+  entry: {
+    'main': './ClientApp/main.ts',
+    'vendor': './ClientApp/vendor.ts'
   },
   output: {
     path: path.join(process.cwd(), './wwwroot'),
-    publicPath: '/',
     filename: '[name].bundle.js',
     chunkFilename: '[id].chunk.js'
   },
   module: {
     rules: [
-      // AOT TS-compile-to-JS
-      {
-        test: /\.ts$/,
-        enforce: 'pre',
-        use: '@ngtools/webpack',
-        exclude: nodeModulesRegEx
-      },
-      // Async loader
-      {
-        test: /\.async\.(html|css)$/,
-        use: 'happypack/loader?id=async',
-        exclude: nodeModulesRegEx
-      },
-      // URL file loader
-      {
-        test: /\.(eot|svg|cur)$/,
-        use: 'happypack/loader?id=urls',
-        exclude: nodeModulesRegEx
-      },
-      // Raw file loader
-      {
-        test: /\.(jpg|png|webp|gif|otf|ttf|woff|woff2|ani|html|css)$/,
-        use: 'happypack/loader?id=files',
-        exclude: [nodeModulesRegEx, /\.async\.(html|css)$/]
-      },
-      // Render JS into usable browser content
+      // { test: /\.ts$/, loader: '@ngtools/webpack' },
       {
         test: /\.js$/,
-        enforce: 'post',
-        loaders: 'happypack/loader?id=js',
-        exclude: [nodeModulesRegEx]
+        exclude: /node_modules$/,
+        loader: 'babel-loader'
+      },
+      {
+        test: /\.ts$/,
+        exclude: /node_modules$/,
+        loaders: ['awesome-typescript-loader?useBabel=true', 'angular2-template-loader']
+      },
+      {
+        test: /\.html|\.css$/,
+        loader: 'raw-loader',
+        exclude: [/node_modules$/, /\.async\.(html|css)$/]
+      },
+      {
+        test: /\.async\.(html|css)$/,
+        loaders: ['file?name=[name].[hash].[ext]', 'extract']
       }
     ]
   },
   plugins: [
-    new AngularCompilerPlugin({
-      tsConfigPath: './ClientApp/tsconfig.json',
-      entryModule: './ClientApp/app/app.module#AppModule',
-      sourceMap: true
+    new WebpackCleanupPlugin(),
+    new CircularDependencyPlugin({
+      exclude: /node_modules$/, // exclude detection of files based on a RegExp
+      failOnError: true, // add errors to webpack instead of warnings
+      cwd: process.cwd() // set the current working directory for displaying module paths
     }),
-    new AngularNamedLazyChunksWebpackPlugin(),
+    new CommonsChunkPlugin({
+      name: ['main', 'vendor']
+    }),
     new HtmlWebpackPlugin({
-      template: './ClientApp/index.html',
-      filename: './wwwroot/index.html'
+      template: './ClientApp/index.html'
     }),
-    new BaseHrefWebpackPlugin({ baseHref: '/' }),
-    new HappyPack({
-      id: 'files',
-      threadPool: happyThreadPool,
-      loaders: ['file-loader?name=[name].[hash].[ext]']
+    new SourceMapDevToolPlugin({
+      'filename': '[file].map[query]',
+      'moduleFilenameTemplate': '[resource-path]',
+      'fallbackModuleFilenameTemplate': '[resource-path]?[hash]',
+      'sourceRoot': 'webpack:///'
     }),
-    new HappyPack({
-      id: 'async',
-      threadPool: happyThreadPool,
-      loaders: ['file-loader?name=[name].[hash].[ext]']
-    }),
-    new HappyPack({
-      id: 'urls',
-      threadPool: happyThreadPool,
-      loaders: ['url-loader?name=[name].[hash].[ext]&limit=10000']
-    }),
-    new HappyPack({
-      id: 'js',
-      threadPool: happyThreadPool,
-      loaders: ['babel-loader?presets[]=es2015', 'angular-router-loader?aot=true&genDir=aot/', 'angular2-template-loader?keepUrl=true']
-    }),
-    new MinifyPlugin(),
-    new CompressionPlugin({minRatio: 0.8})
-  ],
-  node: {
-    fs: 'empty',
-    global: true,
-    crypto: 'empty',
-    tls: 'empty',
-    net: 'empty',
-    process: true,
-    module: false,
-    clearImmediate: false,
-    setImmediate: false
-  },
-  devServer: {
-    historyApiFallback: true
-  },
-  optimization: {
-    runtimeChunk: 'single'
-  }
+    /* new AotPlugin({
+      'mainPath': 'main.ts',
+      'replaceExport': false,
+      'tsConfigPath': 'ClientApp\\tsconfig.app.json',
+      'skipCodeGeneration': true
+    }), */
+    /* new AngularCompilerPlugin({
+      'tsConfigPath': 'ClientApp\\tsconfig.app.json'
+    }), */
+    new webpack.ContextReplacementPlugin(/@angular(\\|\/)core(\\|\/)esm5/, path.join(__dirname, './client')),
+    new CopyWebpackPlugin([{
+      'context': 'ClientApp',
+      'to': '',
+      'from': {
+        'glob': 'manifest.json',
+        'dot': true
+      }
+    }, {
+      'context': 'ClientApp',
+      'to': '',
+      'from': {
+        'glob': 'assets/**/*',
+        'dot': true
+      }
+    },
+    {
+      'context': 'ClientApp',
+      'to': '',
+      'from': {
+        'glob': 'favicon.ico',
+        'dot': true
+      }
+    },
+    {
+      'context': 'ClientApp',
+      'to': '',
+      'from': {
+        'glob': 'web.config',
+        'dot': true
+      }
+    }
+    ], {
+      'ignore': [
+        '.gitkeep'
+      ],
+      'debug': 'warning'
+    })
+  ]
 }

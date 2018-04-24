@@ -110,7 +110,7 @@ export class ChangePasswordComponent implements OnInit {
       this.FormGroup.reset();
     } else {
       for (let formControl in this.FormGroup.controls) {
-        if (formControl != 'username')
+        if (formControl !== 'username')
           this.FormGroup.controls[formControl].reset();
       }
     }

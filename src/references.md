@@ -11,6 +11,7 @@
 - https://angular.io/guide/http
 - https://blog.angularindepth.com/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5
 - https://github.com/angular/angular/issues/20219
+- https://github.com/babel/babel/issues/7206
 - https://github.com/angular/material.angular.io/blob/master/src/app/app-module.ts
 - https://github.com/ngrx/platform/issues/549
 - https://github.com/qdouble/angular-webpack-starter/issues/314
