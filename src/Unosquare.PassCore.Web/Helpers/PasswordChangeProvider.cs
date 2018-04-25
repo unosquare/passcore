@@ -33,7 +33,8 @@
                         var token = IntPtr.Zero;
                         try {
                             var parts = userPrincipal.UserPrincipalName.Split (new [] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                            var domain = parts.Length > 1 ? parts[1] : null;
+                            // Check for default domain, if none given
+                            var domain = _options.ClientSettings.DefaultDomain ?? (parts.Length > 1 ? parts[1] : null);
 
                             if (domain == null) {
                                 throw new ArgumentOutOfRangeException (_options.ClientSettings.Alerts.ErrorInvalidCredentials);
