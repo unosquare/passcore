@@ -1,9 +1,9 @@
-﻿// const { AngularCompilerPlugin } = require('@ngtools/webpack')
-// const { AotPlugin } = require('@ngtools/webpack')
-const { CommonsChunkPlugin } = require('webpack').optimize
-const { SourceMapDevToolPlugin } = require('webpack')
+﻿const { CommonsChunkPlugin } = require('webpack').optimize
+const BrotliPlugin = require('brotli-webpack-plugin')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CssoWebpackPlugin = require('csso-webpack-plugin').default
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
@@ -11,39 +11,52 @@ const webpack = require('webpack')
 
 module.exports = {
   devtool: 'source-map',
+  devServer: {
+    historyApiFallback: true
+  },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.css']
   },
   entry: {
     'main': './ClientApp/main.ts',
-    'vendor': './ClientApp/vendor.ts'
+    'vendor': './ClientApp/vendor.ts',
+    'polyfills': './ClientApp/polyfills.ts'
   },
   output: {
     path: path.join(process.cwd(), './wwwroot'),
     filename: '[name].bundle.js',
-    chunkFilename: '[id].chunk.js'
+    chunkFilename: '[id].chunk.js',
+    sourceMapFilename: '[file].map'
   },
   module: {
     rules: [
-      // { test: /\.ts$/, loader: '@ngtools/webpack' },
       {
-        test: /\.js$/,
-        exclude: /node_modules$/,
-        loader: 'babel-loader'
+        test: /\.json$/,
+        loader: 'json-loader',
+        exclude: [/node_modules$/]
+      },
+      {
+        test: /\.css$/,
+        loaders: ['to-string-loader'].concat(ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader?sourceMap', 'postcss-loader']
+        })),
+        exclude: [/node_modules$/]
       },
       {
         test: /\.ts$/,
-        exclude: /node_modules$/,
-        loaders: ['awesome-typescript-loader?useBabel=true', 'angular2-template-loader']
+        loaders: ['awesome-typescript-loader?useBabel=false', 'angular2-template-loader'],
+        exclude: [/node_modules$/]
       },
       {
-        test: /\.html|\.css$/,
+        test: /\.(html)$/,
         loader: 'raw-loader',
         exclude: [/node_modules$/, /\.async\.(html|css)$/]
       },
       {
-        test: /\.async\.(html|css)$/,
-        loaders: ['file?name=[name].[hash].[ext]', 'extract']
+        test: /\.async\.(html)$/,
+        loaders: ['file?name=[name].[hash].[ext]', 'extract'],
+        exclude: [/node_modules$/]
       }
     ]
   },
@@ -55,27 +68,25 @@ module.exports = {
       cwd: process.cwd() // set the current working directory for displaying module paths
     }),
     new CommonsChunkPlugin({
-      name: ['main', 'vendor']
+      name: ['main', 'vendor', 'polyfills', 'styles']
     }),
     new HtmlWebpackPlugin({
       template: './ClientApp/index.html'
     }),
-    new SourceMapDevToolPlugin({
-      'filename': '[file].map[query]',
-      'moduleFilenameTemplate': '[resource-path]',
-      'fallbackModuleFilenameTemplate': '[resource-path]?[hash]',
-      'sourceRoot': 'webpack:///'
-    }),
-    /* new AotPlugin({
-      'mainPath': 'main.ts',
-      'replaceExport': false,
-      'tsConfigPath': 'ClientApp\\tsconfig.app.json',
-      'skipCodeGeneration': true
-    }), */
-    /* new AngularCompilerPlugin({
-      'tsConfigPath': 'ClientApp\\tsconfig.app.json'
-    }), */
-    new webpack.ContextReplacementPlugin(/@angular(\\|\/)core(\\|\/)esm5/, path.join(__dirname, './client')),
+    new webpack.ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
+      /angular(\\|\/)core(\\|\/)@angular/,
+      './ClientApp', // location of your src
+      {} // a map of your routes
+    ),
+    new webpack.ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
+      /@angular(\\|\/)core(\\|\/)esm5/,
+      './ClientApp', // location of your src
+      {} // a map of your routes
+    ),
+    new ExtractTextPlugin('assets/styles/styles.css'),
+    new CssoWebpackPlugin(),
     new CopyWebpackPlugin([{
       'context': 'ClientApp',
       'to': '',
@@ -95,14 +106,6 @@ module.exports = {
       'context': 'ClientApp',
       'to': '',
       'from': {
-        'glob': 'favicon.ico',
-        'dot': true
-      }
-    },
-    {
-      'context': 'ClientApp',
-      'to': '',
-      'from': {
         'glob': 'web.config',
         'dot': true
       }
@@ -112,6 +115,12 @@ module.exports = {
         '.gitkeep'
       ],
       'debug': 'warning'
+    }),
+    new BrotliPlugin({
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg|map)$/,
+      threshold: 10240,
+      minRatio: 0.8
     })
   ]
 }

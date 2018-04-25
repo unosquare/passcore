@@ -106,10 +106,10 @@
              */
 
             // Let IIS deal with HTTPS redirection (for now anyway)
-            app.Use(async (context, next) => await next());
+            app.Use (async (context, next) => await next ());
 
             // Enable static files
-            app.UseDefaultFiles();
+            app.UseDefaultFiles ();
             app.UseStaticFiles ();
 
             // The default route for all non-api routes is the Home controller which in turn, simply outputs the contents of the root

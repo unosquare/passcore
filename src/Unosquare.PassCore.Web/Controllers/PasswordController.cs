@@ -45,6 +45,7 @@ namespace Unosquare.PassCore.Web.Controllers {
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Post ([FromBody] ChangePasswordModel model) {
+
             // Validate the request
             if (model == null) {
                 return BadRequest (ApiResult.InvalidRequest ());
@@ -53,19 +54,20 @@ namespace Unosquare.PassCore.Web.Controllers {
             var result = new ApiResult ();
 
             // Validate the model
-            if (ModelState.IsValid == false) {
+            if (!ModelState.IsValid) {
                 result.AddModelStateErrors (ModelState);
-
                 return BadRequest (result);
             }
 
             // Validate the Captcha
             try {
-                if (await ValidateRecaptcha (model.Recaptcha) == false)
+                //if (await ValidateRecaptcha (model.Recaptcha) == false)
+                if (await ValidateRecaptcha (model.Recaptcha).ConfigureAwait (false)) {
                     result.Errors.Add (new ApiErrorItem {
                         ErrorType = ApiErrorType.GeneralFailure,
                             ErrorCode = ApiErrorCode.InvalidCaptcha
                     });
+                }
             } catch (Exception ex) {
                 result.Errors.Add (new ApiErrorItem {
                     ErrorType = ApiErrorType.GeneralFailure,
@@ -75,27 +77,22 @@ namespace Unosquare.PassCore.Web.Controllers {
             }
 
             if (result.HasErrors) {
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return BadRequest (result);
             }
 
             var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange (model);
-
-            if (resultPasswordChange != null) {
-                result.Errors.Add (resultPasswordChange);
-            }
-
-            if (result.HasErrors)
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            if (resultPasswordChange != null) { result.Errors.Add (resultPasswordChange); }
 
             return Json (result);
         }
 
         private async Task<bool> ValidateRecaptcha (string recaptchaResponse) {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace (_options.RecaptchaPrivateKey)) return true;
+            if (string.IsNullOrWhiteSpace (_options.RecaptchaPrivateKey)) { return true; }
 
             // immediately return false because we don't 
-            if (string.IsNullOrEmpty (recaptchaResponse)) return false;
+            if (string.IsNullOrEmpty (recaptchaResponse)) { return false; }
 
             var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.RecaptchaPrivateKey}&response={recaptchaResponse}";
 

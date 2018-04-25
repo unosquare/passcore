@@ -24,7 +24,7 @@
 
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword) {
-                        throw new Exception (_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                        throw new ArgumentOutOfRangeException (_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
                     }
 
                     // Validate user credentials
@@ -36,7 +36,7 @@
                             var domain = parts.Length > 1 ? parts[1] : null;
 
                             if (domain == null) {
-                                throw new Exception (_options.ClientSettings.Alerts.ErrorInvalidCredentials);
+                                throw new ArgumentOutOfRangeException (_options.ClientSettings.Alerts.ErrorInvalidCredentials);
                             }
 
                             if (!PasswordChangeFallBack.LogonUser (model.Username, domain, model.CurrentPassword, PasswordChangeFallBack.LogonTypes.Network, PasswordChangeFallBack.LogonProviders.Default, out token)) {
@@ -47,7 +47,7 @@
                                         // Both of these means that the password CAN change and that we got the correct password
                                         break;
                                     default:
-                                        throw new Exception (_options.ClientSettings.Alerts.ErrorInvalidCredentials);
+                                        throw new ArgumentOutOfRangeException (_options.ClientSettings.Alerts.ErrorInvalidCredentials);
                                 }
                             }
                         } finally {
@@ -69,9 +69,7 @@
                         // Try by regular ChangePassword method
                         userPrincipal.ChangePassword (model.CurrentPassword, model.NewPassword);
                     } catch {
-                        if (_options.PasswordChangeOptions.UseAutomaticContext)
-                            throw;
-
+                        if (_options.PasswordChangeOptions.UseAutomaticContext) { throw; }
                         // If the previous attempt failed, use the SetPassword method.
                         userPrincipal.SetPassword (model.NewPassword);
                     }

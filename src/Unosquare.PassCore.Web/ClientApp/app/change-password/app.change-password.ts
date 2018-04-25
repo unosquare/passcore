@@ -13,6 +13,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Rx';
 import { Title } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
+import { PasswordMatch } from '../helpers/passwordMatch';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -32,6 +33,7 @@ export class ChangePasswordComponent implements OnInit {
   subscription: Subscription;
   value: number = 0;
   ViewOptions: ViewOptions;
+  passwordMatcher: PasswordMatch;
 
   // Form Controls  
   FormGroup = new FormGroup({
@@ -39,7 +41,7 @@ export class ChangePasswordComponent implements OnInit {
     currentPassword: new FormControl('', [Validators.required]),
     newPassword: new FormControl('', [Validators.required]),
     newPasswordVerify: new FormControl('', [Validators.required])
-  }, Validators.compose([Validators.required, this.matchingPasswords]));
+  }, Validators.compose([Validators.required, this.passwordMatcher.validate]));
 
   // Constructor
   constructor(public http: HttpClient, public snackBar: MatSnackBar,
@@ -53,15 +55,6 @@ export class ChangePasswordComponent implements OnInit {
       if (data.newPassword != null)
         this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
     });
-  }
-
-  // Password matching validator
-  matchingPasswords(): ValidatorFn {
-    let passwordInput = this.FormGroup.value('newPassword');
-    let passwordConfirmationInput = this.FormGroup.value('newPasswordVerify');
-    return (passwordInput.value !== passwordConfirmationInput.value) ?
-      passwordConfirmationInput.setErrors({ notEquivalent: true }) :
-      passwordConfirmationInput.setErrors({ notEquivalent: false })
   }
 
   // Angular init
@@ -151,9 +144,9 @@ export class ChangePasswordComponent implements OnInit {
         this.clean('success');
       },
       (error: HttpErrorResponse) => {
-          this.ErrorAlertMessage = error.message ? error.message : "Password Submission Error";
-          this.openSnackBar(this.ErrorAlertMessage, 'OK');
-          this.clean('error');
+        this.ErrorAlertMessage = error.message ? error.message : "Password Submission Error";
+        this.openSnackBar(this.ErrorAlertMessage, 'OK');
+        this.clean('error');
       }
     );
   }
