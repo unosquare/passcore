@@ -1,0 +1,34 @@
+﻿{
+  "compilerOptions": {
+    "allowJs": false, //set true for debugging
+    "checkJs": false, //set true for debugging
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es2017","dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": false,    
+    "removeComments": false,
+    "sourceMap": true,
+    "strictNullChecks": false, //set true for debugging; Angular 5.2+ supposed to "fix" this
+    "target": "es5",
+    "suppressImplicitAnyIndexErrors": false,
+    "typeRoots": ["../node_modules/@types"],
+    "outDir": "./aot"    
+  },
+  "compileOnSave": true,
+  "files": [
+    "./vendor-aot.ts",
+    "./boot-aot.ts",
+    "./app/app.module.ts",
+    "./app/change-password/app.change-password.ts"
+  ],
+  "exclude": [
+    "../node_modules/*",
+    "./aot"
+  ],
+  "angularCompilerOptions": {
+    "genDir": "aot",
+    "skipMetadataEmit": true
+  }  
+}

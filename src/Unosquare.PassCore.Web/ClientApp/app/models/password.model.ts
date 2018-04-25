@@ -1,4 +1,4 @@
-export default class PasswordModel{
+export class PasswordModel{
     Username: string;
     CurrentPassword: string;
     NewPassword: string;

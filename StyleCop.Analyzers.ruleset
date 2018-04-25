@@ -74,14 +74,18 @@
     <Rule Id="SA1305" Action="Warning" />
     <Rule Id="SA1412" Action="Warning" />
     <Rule Id="SA1600" Action="None" />
+    <Rule Id="SA1000" Action="None" />
     <Rule Id="SA1001" Action="None" />
     <Rule Id="SA1003" Action="None" />
+    <Rule Id="SA1008" Action="None" />
     <Rule Id="SA1009" Action="None" />
-    <Rule Id="SA1028" Action="None" />
     <Rule Id="SA1011" Action="None" />
     <Rule Id="SA1012" Action="None" />
     <Rule Id="SA1013" Action="None" />
+    <Rule Id="SA1015" Action="None" />
     <Rule Id="SA1021" Action="None" />
+    <Rule Id="SA1026" Action="None" />
+    <Rule Id="SA1028" Action="None" />
     <Rule Id="SA1101" Action="None" />
     <Rule Id="SA1208" Action="None" />
     <Rule Id="SA1116" Action="None" />
@@ -91,13 +95,19 @@
     <Rule Id="SA1210" Action="None" />
     <Rule Id="SA1308" Action="None" />
     <Rule Id="SA1309" Action="None" />
+    <Rule Id="SA1310" Action="None" />
     <Rule Id="SA1402" Action="None" />
+    <Rule Id="SA1500" Action="None" />
     <Rule Id="SA1501" Action="None" />
     <Rule Id="SA1503" Action="None" />
+    <Rule Id="SA1505" Action="None" />
     <Rule Id="SA1507" Action="Error" />
+    <Rule Id="SA1508" Action="None" />
+    <Rule Id="SA1515" Action="None" />
     <Rule Id="SA1516" Action="None" />
     <Rule Id="SA1633" Action="None" />
     <Rule Id="SA1609" Action="None" />
     <Rule Id="SA1623" Action="None" />
+    <Rule Id="SA1652" Action="None" />
   </Rules>
 </RuleSet>
