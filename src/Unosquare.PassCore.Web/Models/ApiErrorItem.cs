@@ -1,9 +1,10 @@
-﻿namespace Unosquare.PassCore.Web.Models {
-
+﻿namespace Unosquare.PassCore.Web.Models
+{
     /// <summary>
     /// Represent error types
     /// </summary>
-    public enum ApiErrorType {
+    public enum ApiErrorType
+    {
         Success = 0,
         GeneralFailure = 1,
         FieldValidation = 2,
@@ -12,7 +13,8 @@
     /// <summary>
     /// Represents error codes
     /// </summary>
-    public enum ApiErrorCode {
+    public enum ApiErrorCode
+    {
         Generic = 0,
         FieldRequired = 1,
         FieldMismatch = 2,
@@ -24,7 +26,8 @@
     /// <summary>
     /// Defines the fields contained in one of the items of Api Errors
     /// </summary>
-    public class ApiErrorItem {
+    public class ApiErrorItem
+    {
         /// <summary>
         /// Gets or sets the type of the error.
         /// </summary>
@@ -56,6 +59,5 @@
         /// The message.
         /// </value>
         public string Message { get; set; }
-
     }
 }
