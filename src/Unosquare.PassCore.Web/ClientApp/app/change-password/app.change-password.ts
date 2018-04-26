@@ -33,7 +33,6 @@ export class ChangePasswordComponent implements OnInit {
   subscription: Subscription;
   value: number = 0;
   ViewOptions: ViewOptions;
-  passwordMatcher: PasswordMatch;
 
   // Form Controls  
   FormGroup = new FormGroup({
@@ -41,7 +40,7 @@ export class ChangePasswordComponent implements OnInit {
     currentPassword: new FormControl('', [Validators.required]),
     newPassword: new FormControl('', [Validators.required]),
     newPasswordVerify: new FormControl('', [Validators.required])
-  }, Validators.compose([Validators.required, this.passwordMatcher.validate]));
+  }, PasswordMatch);
 
   // Constructor
   constructor(public http: HttpClient, public snackBar: MatSnackBar,
