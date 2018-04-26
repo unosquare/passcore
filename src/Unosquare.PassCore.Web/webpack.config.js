@@ -1,9 +1,8 @@
 ﻿const { CommonsChunkPlugin } = require('webpack').optimize
-const { SourceMapDevToolPlugin } = require('webpack')
-
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin
 
 const webpack = require('webpack')
 const path = require('path')
@@ -33,11 +32,19 @@ module.exports = {
       {
         test: /\.ts$/,
         loaders: ['awesome-typescript-loader?useBabel=false', 'angular2-template-loader']
+      },
+      {
+        test: /\.js$/,
+        loader: '@angular-devkit/build-optimizer/webpack-loader',
+        options: {
+          sourceMap: true
+        }
       }
     ]
   },
   plugins: [
     new WebpackCleanupPlugin(),
+    new PurifyPlugin(),
     new CommonsChunkPlugin({
       name: ['main', 'vendor', 'polyfills']
     }),
@@ -56,13 +63,6 @@ module.exports = {
       './ClientApp', // location of your src
       {} // a map of your routes
     ),
-    // this seems redundant to devtool use
-    /* new SourceMapDevToolPlugin({
-      'filename': '[file].map[query]',
-      'moduleFilenameTemplate': '[resource-path]',
-      'fallbackModuleFilenameTemplate': '[resource-path]?[hash]',
-      'sourceRoot': 'webpack:///'
-    }), */
     new CopyWebpackPlugin([{
       'context': 'ClientApp',
       'to': '',
