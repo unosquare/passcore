@@ -8,7 +8,6 @@
     "watch": "./node_modules/.bin/webpack --watch"
   },
   "devDependencies": {
-    "@angular-devkit/build-optimizer": "^0.5.8",
     "@angular/cli": "^1.7.0",
     "@angular/compiler-cli": "^5.2.10",
     "@angular/language-service": "^5.0.0",

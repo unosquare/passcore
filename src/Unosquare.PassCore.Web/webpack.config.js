@@ -1,11 +1,12 @@
-﻿const { CommonsChunkPlugin } = require('webpack').optimize;
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin;
+﻿const { CommonsChunkPlugin } = require('webpack').optimize
 
-const webpack = require('webpack');
-const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin
+
+const webpack = require('webpack')
+const path = require('path')
 
 module.exports = {
     devtool: 'source-map',
@@ -13,7 +14,7 @@ module.exports = {
         historyApiFallback: true
     },
     resolve: {
-        extensions: ['.ts', '.js', '.css']
+        extensions: ['.ts', '.js']
     },
     entry: {
         'main': './ClientApp/main.ts',
@@ -29,17 +30,7 @@ module.exports = {
         rules: [
             { test: /\.html$/, loader: 'raw-loader' },
             { test: /\.css$/, loader: 'raw-loader' },
-            {
-                test: /\.ts$/,
-                loaders: ['awesome-typescript-loader?useBabel=false', 'angular2-template-loader']
-            },
-            {
-                test: /\.js$/,
-                loader: '@angular-devkit/build-optimizer/webpack-loader',
-                options: {
-                    sourceMap: true
-                }
-            }
+            { test: /\.ts$/, loaders: ['awesome-typescript-loader?useBabel=false', 'angular2-template-loader'] }
         ]
     },
     plugins: [
@@ -87,10 +78,10 @@ module.exports = {
             }
         }
         ], {
-                'ignore': [
-                    '.gitkeep'
-                ],
-                'debug': 'warning'
-            })
+            'ignore': [
+                '.gitkeep'
+            ],
+            'debug': 'warning'
+        })
     ]
 };
