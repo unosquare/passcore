@@ -14,43 +14,43 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.*"/>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.*"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.*"/>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.0-preview2-26406-04"/>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.*">
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.*" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.5.0-preview2-26406-04" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.*"/>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.*"/>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.*" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="ClientApp\**"/>
-    <Content Include="ClientApp\manifest.json"/>
-    <Content Include="ClientApp\tsconfig.app.json"/>
+    <Content Remove="ClientApp\**" />
+    <Content Include="ClientApp\manifest.json" />
+    <Content Include="ClientApp\tsconfig.app.json" />
     <None Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\package-lock.json')">
     <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
-    <Exec Command="npm install"/>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE."/>
-    <Message Importance="high" Text="Performing first-run npm install..."/>
+    <Exec Command="npm install" />
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Performing first-run npm install..." />
   </Target>
   <Target Name="Webpack" DependsOnTargets="NpmInstall" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
-    <Message Importance="high" Text="Performing run Webpack build..."/>
-    <Exec Command="node_modules/.bin/webpack"/>
+    <Message Importance="high" Text="Performing run Webpack build..." />
+    <Exec Command="node_modules/.bin/webpack" />
   </Target>
   <Target Name="PublishRunWebpack" DependsOnTargets="NpmInstall" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
-    <Message Importance="high" Text="Performing run Webpack publish..."/>
-    <Exec Command="node_modules/.bin/webpack -p"/>
+    <Message Importance="high" Text="Performing run Webpack publish..." />
+    <Exec Command="node_modules/.bin/webpack -p" />
     <ItemGroup>
-      <DistFiles Include="wwwroot\**"/>
+      <DistFiles Include="wwwroot\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
