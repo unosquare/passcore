@@ -1,4 +1,4 @@
-﻿namespace Unosquare.PassCore.Web.Controllers
+namespace Unosquare.PassCore.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
 

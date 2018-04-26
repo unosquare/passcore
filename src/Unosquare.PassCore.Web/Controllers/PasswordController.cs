@@ -1,14 +1,14 @@
-﻿namespace Unosquare.PassCore.Web.Controllers
+namespace Unosquare.PassCore.Web.Controllers
 {
+    using System.Net.Http;
+    using System.Net;
+    using System.Threading.Tasks;
+    using System;
+    using Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Models;
     using Newtonsoft.Json;
-    using System;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using Helpers;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -66,12 +66,12 @@
             // Validate the Captcha
             try
             {
-                if (await ValidateRecaptcha(model.Recaptcha) == false)
+                if (await ValidateRecaptcha(model.Recaptcha)== false)
                 {
                     result.Errors.Add(new ApiErrorItem
                     {
                         ErrorType = ApiErrorType.GeneralFailure,
-                        ErrorCode = ApiErrorCode.InvalidCaptcha
+                            ErrorCode = ApiErrorCode.InvalidCaptcha
                     });
                 }
             }
@@ -80,8 +80,8 @@
                 result.Errors.Add(new ApiErrorItem
                 {
                     ErrorType = ApiErrorType.GeneralFailure,
-                    ErrorCode = ApiErrorCode.Generic,
-                    Message = ex.Message
+                        ErrorCode = ApiErrorCode.Generic,
+                        Message = ex.Message
                 });
             }
 
@@ -106,10 +106,10 @@
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey)) return true;
+            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey))return true;
 
             // immediately return false because we don't 
-            if (string.IsNullOrEmpty(recaptchaResponse)) return false;
+            if (string.IsNullOrEmpty(recaptchaResponse))return false;
 
             var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.RecaptchaPrivateKey}&response={recaptchaResponse}";
 

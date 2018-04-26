@@ -1,4 +1,4 @@
-﻿namespace Unosquare.PassCore.Web.Models
+namespace Unosquare.PassCore.Web.Models
 {
     using System.Collections.Generic;
 

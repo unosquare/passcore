@@ -22,9 +22,8 @@ bld/
 [Bb]in/
 [Oo]bj/
 
-# Visual Studo (Code) cache/options directory
+# Visual Studo cache/options directory
 .vs/
-.vscode/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

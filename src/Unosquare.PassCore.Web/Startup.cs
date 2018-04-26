@@ -1,10 +1,10 @@
-﻿namespace Unosquare.PassCore.Web
+namespace Unosquare.PassCore.Web
 {
     using Helpers;
-    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Rewrite;
+    using Microsoft.AspNetCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -22,7 +22,6 @@
         private const string LoggingSectionName = "Logging";
 
         #endregion
-
         #region Constructors and Initializers
 
         /// <summary>
@@ -34,7 +33,6 @@
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder().AddJsonFile(AppSettingsJsonFilename, false, true);
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -45,17 +43,15 @@
         /// Application's entry point
         /// </summary>
         /// <param name="args">The arguments.</param>
-
-        #endregion
-
         public static void Main(string[] args)
         {
             BuildWebHost(args).Run();
         }
 
+        #endregion
         #region Methods
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHost BuildWebHost(string[] args)=>
             WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
             .Build();
@@ -68,12 +64,9 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-
-            // Register the IConfiguration instance which MyOptions binds against.
             services.Configure<AppSettings>(Configuration.GetSection("AppSettingsSectionName"));
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
-
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
         }
 
@@ -91,14 +84,13 @@
             log.AddConsole(Configuration.GetSection(LoggingSectionName));
             log.AddDebug();
 
+            // HTTPS redirect
             if (settings.Value.EnableHttpsRedirect)
             {
-                var options = new RewriteOptions()
-                    .AddRedirectToHttps();
-
+                var options = new RewriteOptions().AddRedirectToHttps();
                 app.UseRewriter(options);
             }
-            
+
             // Enable static files
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -108,7 +100,6 @@
             // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.0
             app.UseMvcWithDefaultRoute();
         }
-
         #endregion
     }
 }

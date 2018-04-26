@@ -1,4 +1,4 @@
-﻿#pragma warning disable SA1310 // Field names must not contain underscore
+#pragma warning disable SA1310 // Field names must not contain underscore
 namespace Unosquare.PassCore.Web.Helpers
 {
     using System;

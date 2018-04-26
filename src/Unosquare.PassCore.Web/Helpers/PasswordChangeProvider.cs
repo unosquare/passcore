@@ -1,4 +1,4 @@
-﻿namespace Unosquare.PassCore.Web.Helpers
+namespace Unosquare.PassCore.Web.Helpers
 {
     using System.DirectoryServices.AccountManagement;
     using System;
@@ -36,14 +36,14 @@
                     }
 
                     // Validate user credentials
-                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
+                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword)== false)
                     {
                         // Your new authenticate code snippet
                         var token = IntPtr.Zero;
                         try
                         {
-                            var parts = userPrincipal.UserPrincipalName.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                            
+                            var parts = userPrincipal.UserPrincipalName.Split(new [] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+
                             // Check for default domain, if none given
                             var domain = _options.ClientSettings.DefaultDomain ?? (parts.Length > 1 ? parts[1] : null);
 
@@ -93,7 +93,7 @@
                     catch
                     {
                         if (_options.PasswordChangeOptions.UseAutomaticContext) { throw; }
-                        
+
                         // If the previous attempt failed, use the SetPassword method.
                         userPrincipal.SetPassword(model.NewPassword);
                     }

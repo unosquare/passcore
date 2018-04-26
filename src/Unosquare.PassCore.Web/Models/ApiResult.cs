@@ -1,4 +1,4 @@
-﻿namespace Unosquare.PassCore.Web.Models
+namespace Unosquare.PassCore.Web.Models
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -46,9 +46,9 @@
             result.Errors.Add(new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.Generic,
-                ErrorType = ApiErrorType.GeneralFailure,
-                FieldName = string.Empty,
-                Message = "Invalid Request"
+                    ErrorType = ApiErrorType.GeneralFailure,
+                    FieldName = string.Empty,
+                    Message = "Invalid Request"
             });
 
             return result;
@@ -64,9 +64,9 @@
             Errors.Add(new ApiErrorItem
             {
                 ErrorCode = errorCode,
-                ErrorType = ApiErrorType.FieldValidation,
-                FieldName = fieldName,
-                Message = errorCode.ToString()
+                    ErrorType = ApiErrorType.FieldValidation,
+                    FieldName = fieldName,
+                    Message = errorCode.ToString()
             });
         }
 
@@ -79,9 +79,9 @@
             Errors.Add(new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.FieldRequired,
-                ErrorType = ApiErrorType.FieldValidation,
-                FieldName = fieldName,
-                Message = nameof(ApiErrorCode.FieldRequired)
+                    ErrorType = ApiErrorType.FieldValidation,
+                    FieldName = fieldName,
+                    Message = nameof(ApiErrorCode.FieldRequired)
             });
         }
 
@@ -94,9 +94,9 @@
             Errors.Add(new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.FieldMismatch,
-                ErrorType = ApiErrorType.FieldValidation,
-                FieldName = fieldName,
-                Message = nameof(ApiErrorCode.FieldMismatch)
+                    ErrorType = ApiErrorType.FieldValidation,
+                    FieldName = fieldName,
+                    Message = nameof(ApiErrorCode.FieldMismatch)
             });
         }
 
@@ -110,9 +110,9 @@
             Errors.Add(new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.Generic,
-                ErrorType = ApiErrorType.FieldValidation,
-                FieldName = fieldName,
-                Message = message
+                    ErrorType = ApiErrorType.FieldValidation,
+                    FieldName = fieldName,
+                    Message = message
             });
         }
 
@@ -126,9 +126,9 @@
             Errors.Add(new ApiErrorItem
             {
                 ErrorCode = errorCode,
-                ErrorType = ApiErrorType.GeneralFailure,
-                FieldName = string.Empty,
-                Message = message
+                    ErrorType = ApiErrorType.GeneralFailure,
+                    FieldName = string.Empty,
+                    Message = message
             });
         }
 
@@ -150,6 +150,5 @@
                     AddGenericFieldValidationError(state.Key, error.ErrorMessage);
             }
         }
-
     }
 }
