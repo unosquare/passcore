@@ -9,6 +9,7 @@
 - http://www.talkinghightech.com/en/angular-2-building-custom-validator/
 - https://angular.io/guide/form-validation
 - https://angular.io/guide/http
+- https://angular.io/guide/lifecycle-hooks
 - https://blog.angularindepth.com/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5
 - https://codeburst.io/angular-4-custom-validation-for-template-based-forms-b7dee9be48a6
 - https://github.com/angular/angular/issues/20219
@@ -20,6 +21,7 @@
 - https://medium.com/codingthesmartway-com-blog/angular-4-3-httpclient-accessing-rest-web-services-with-angular-2305b8fd654b
 - https://stackoverflow.com/questions/31788681/angular2-validator-which-relies-on-multiple-form-fields/39643501#39643501
 - https://stackoverflow.com/questions/35642223/angular2-why-do-we-need-the-es6-shim
+- https://toddmotto.com/angular-constructor-ngoninit-lifecycle-hook
 
 ## Webpack
 

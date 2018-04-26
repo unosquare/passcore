@@ -4,4 +4,5 @@
     "csharpfixformat.style.spaces.afterParenthesis": false,
     "csharpfixformat.style.spaces.beforeBracket": false,
     "csharpfixformat.style.spaces.beforeParenthesis": false,
+    "html.format.enable": false
 }

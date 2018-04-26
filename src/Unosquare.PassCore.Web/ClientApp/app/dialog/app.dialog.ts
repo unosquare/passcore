@@ -1,10 +1,11 @@
-import { Component, Inject } from '@angular/core';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Component, Inject } from '@angular/core';
 
 @Component({
+    providers: [DialogOverview],
     selector: 'dialog-overview',
-    templateUrl: './dialog.html',
-    providers:[DialogOverview]
+    templateUrl: './dialog.html'
 })
 export class DialogOverview {
 

@@ -1,19 +1,23 @@
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Alerts } from '../models/alerts.model';
 import { ChangePasswordForm } from '../models/change-password-form.model';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { DialogOverview } from '../dialog/app.dialog';
-import { PasswordModel } from '../models/password.model';
-import { PasswordStrength } from '../helpers/passwordStrength';
-import { Recaptcha } from '../models/recaptcha.model';
-import { ViewOptions } from '../models/view-options.model';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { DOCUMENT } from '@angular/common';
+import { filter, map, scan } from 'rxjs/operators'; // rxjs 5.5-6.x; used by Angular
+import { from } from 'rxjs/observable/from'; // rxjs 5.5-6.x; used by Angular
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { Subscription } from 'rxjs/Rx';
-import { Title } from '@angular/platform-browser';
-import { map } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of'; // rxjs 5.5-6.x; used by Angular
 import { PasswordMatch } from '../helpers/passwordMatch';
+import { PasswordModel } from '../models/password.model';
+import { PasswordStrength } from '../helpers/passwordStrength';
+import { range } from 'rxjs/observable/range'; // rxjs 5.5-6.x; used by Angular
+import { Recaptcha } from '../models/recaptcha.model';
+import { Subscription } from 'rxjs/Rx'; // rxjs 5.5-6.x; used by Angular
+import { Title } from '@angular/platform-browser';
+import { ViewOptions } from '../models/view-options.model';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -21,9 +25,19 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-
   selector: 'app-root',
   templateUrl: './change-password.html',
   styleUrls: ['./app.change-password.css'],
-  providers: [ChangePasswordComponent]
+  providers: [ChangePasswordComponent],
+  viewProviders: [ViewOptions]
 })
-export class ChangePasswordComponent implements OnInit {
+export class ChangePasswordComponent implements OnInit, OnChanges {
+
+  // Constructor: parent "this" doesn't work here
+  constructor(
+    public http: HttpClient,
+    public snackBar: MatSnackBar,
+    public titleService: Title,
+    public dialog: MatDialog,
+    public r: ActivatedRoute
+  ) { }
 
   // Properties
   color: string = 'warn';
@@ -42,26 +56,25 @@ export class ChangePasswordComponent implements OnInit {
     newPasswordVerify: new FormControl('', [Validators.required])
   }, PasswordMatch);
 
-  // Constructor
-  constructor(public http: HttpClient, public snackBar: MatSnackBar,
-    public titleService: Title, public dialog: MatDialog, public r: ActivatedRoute) {
-    this.FormData = new PasswordModel;
-    this.ViewOptions = new ViewOptions;
-    this.ViewOptions.alerts = new Alerts;
-    this.ViewOptions.recaptcha = new Recaptcha;
-    this.ViewOptions.changePasswordForm = new ChangePasswordForm;
+  // Angular "OnChanges": happens before "OnInit"
+  ngOnChanges() {
+    this.subscription = this.r.queryParams.subscribe((params: Params) => {
+      let userId = params['userName'] || "";
+      this.GetData(userId);
+    });
     this.FormGroup.valueChanges.subscribe(data => {
       if (data.newPassword != null)
         this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
     });
   }
 
-  // Angular init
-  ngOnInit(): void {
-    this.subscription = this.r.queryParams.subscribe((params: Params) => {
-      let userId = params['userName'] || "";
-      this.GetData(userId);
-    });
+  // Angular "OnInit": happens only on first page load
+  ngOnInit() {
+    this.FormData = new PasswordModel;
+    this.ViewOptions = new ViewOptions;
+    this.ViewOptions.alerts = new Alerts;
+    this.ViewOptions.recaptcha = new Recaptcha;
+    this.ViewOptions.changePasswordForm = new ChangePasswordForm;
   }
 
   // Progress bar for password strength
@@ -113,10 +126,10 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   // Get data from the form
-  GetData(queryParam: string): void {
+  GetData(queryParam: string) {
     this.FormData.Username = queryParam;
-    this.http.get('api/password').subscribe(values => {
-      this.ViewOptions = <ViewOptions>values;
+    this.http.get('api/password').subscribe((values:ViewOptions) => {
+      this.ViewOptions = values;
       this.titleService.setTitle(this.ViewOptions.changePasswordTitle + " - " + this.ViewOptions.applicationTitle);
       if (this.ViewOptions.recaptcha.isEnabled) {
         this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));

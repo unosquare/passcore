@@ -3,7 +3,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
-const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin
 
 const webpack = require('webpack')
 const path = require('path')
@@ -35,7 +34,6 @@ module.exports = {
   },
   plugins: [
     new WebpackCleanupPlugin(),
-    new PurifyPlugin(),
     new CommonsChunkPlugin({
       name: ['main', 'vendor', 'polyfills']
     }),

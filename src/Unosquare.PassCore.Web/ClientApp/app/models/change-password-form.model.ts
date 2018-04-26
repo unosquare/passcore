@@ -1,17 +1,17 @@
 export class ChangePasswordForm{
-    public changePasswordButtonLabel:string;
-    public currentPasswordHelpblock:string;
-    public currentPasswordLabel:string;
-    public currentPasswordPlaceholder:string;
-    public helpText:string;
-    public helpTitle:string;
-    public newPasswordHelpblock:string;
-    public newPasswordLabel:string;
-    public newPasswordPlaceholder:string;
-    public newPasswordVerifyHelpblock:string;
-    public newPasswordVerifyLabel:string;
-    public newPasswordVerifyPlaceholder:string;
-    public usernameHelpblock:string;
-    public usernameLabel:string;
-    public usernamePlaceholder:string;
+    changePasswordButtonLabel:string;
+    currentPasswordHelpblock:string;
+    currentPasswordLabel:string;
+    currentPasswordPlaceholder:string;
+    helpText:string;
+    helpTitle:string;
+    newPasswordHelpblock:string;
+    newPasswordLabel:string;
+    newPasswordPlaceholder:string;
+    newPasswordVerifyHelpblock:string;
+    newPasswordVerifyLabel:string;
+    newPasswordVerifyPlaceholder:string;
+    usernameHelpblock:string;
+    usernameLabel:string;
+    usernamePlaceholder:string;
   }
