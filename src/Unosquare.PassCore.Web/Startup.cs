@@ -1,4 +1,5 @@
-﻿namespace Unosquare.PassCore.Web {
+﻿
+namespace Unosquare.PassCore.Web {
     using System.Diagnostics;
     using System.IO;
     using System;
@@ -11,6 +12,7 @@
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
+    using Helpers;
 
     /// <summary>
     /// Represents this application's main class
@@ -76,6 +78,8 @@
             services.Configure<AppSettings> (Configuration.GetSection ("AppSettingsSectionName"));
             services.AddApplicationInsightsTelemetry (Configuration);
             services.AddMvc ();
+
+            services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
         }
 
         /// <summary>

@@ -1,7 +1,9 @@
-﻿namespace Unosquare.PassCore.Web.Helpers {
+﻿namespace Unosquare.PassCore.Web.Helpers
+{
     using Models;
 
-    public interface IPasswordChangeProvider {
-        ApiErrorItem PerformPasswordChange (ChangePasswordModel model);
+    public interface IPasswordChangeProvider
+    {
+        ApiErrorItem PerformPasswordChange(ChangePasswordModel model);       
     }
 }
