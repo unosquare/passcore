@@ -1,4 +1,5 @@
 ﻿const { CommonsChunkPlugin } = require('webpack').optimize
+const { SourceMapDevToolPlugin } = require('webpack');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -8,7 +9,6 @@ const webpack = require('webpack')
 const path = require('path')
 
 module.exports = {
-  devtool: 'source-map',
   devServer: {
     historyApiFallback: true
   },
@@ -51,7 +51,13 @@ module.exports = {
       /@angular(\\|\/)core(\\|\/)esm5/,
       './ClientApp', // location of your src
       {} // a map of your routes
-    ),
+      ),
+    new SourceMapDevToolPlugin({
+        "filename": '[file].map[query]',
+        "moduleFilenameTemplate": '[resource-path]',
+        "fallbackModuleFilenameTemplate": '[resource-path]?[hash]',
+        "sourceRoot": 'webpack:///'
+    }),
     new CopyWebpackPlugin([{
       'context': 'ClientApp',
       'to': '',
