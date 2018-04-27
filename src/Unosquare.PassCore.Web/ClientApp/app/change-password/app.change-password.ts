@@ -28,15 +28,15 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-
   providers: [ChangePasswordComponent],
   viewProviders: [ViewOptions]
 })
-export class ChangePasswordComponent implements OnInit, OnChanges {
+export class ChangePasswordComponent implements OnInit {
 
   // Constructor: parent "this" doesn't work here
   constructor(
-    public http: HttpClient,
-    public snackBar: MatSnackBar,
-    public titleService: Title,
-    public dialog: MatDialog,
-    public r: ActivatedRoute
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
+    private titleService: Title,
+    private dialog: MatDialog,
+    private r: ActivatedRoute
   ) { }
 
   // Properties
@@ -56,18 +56,6 @@ export class ChangePasswordComponent implements OnInit, OnChanges {
     newPasswordVerify: new FormControl('', [Validators.required])
   }, PasswordMatch);
 
-  // Angular "OnChanges": happens before "OnInit"
-  ngOnChanges() {
-    this.subscription = this.r.queryParams.subscribe((params: Params) => {
-      let userId = params['userName'] || "";
-      this.GetData(userId);
-    });
-    this.FormGroup.valueChanges.subscribe(data => {
-      if (data.newPassword != null)
-        this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
-    });
-  }
-
   // Angular "OnInit": happens only on first page load
   ngOnInit() {
     this.FormData = new PasswordModel;
@@ -75,6 +63,14 @@ export class ChangePasswordComponent implements OnInit, OnChanges {
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
+    this.subscription = this.r.queryParams.subscribe((params: Params) => {
+        let userId = params['userName'] || "";
+        this.GetData(userId);
+    });
+    this.FormGroup.valueChanges.subscribe(data => {
+        if (data.newPassword != null)
+            this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
+    });
   }
 
   // Progress bar for password strength
@@ -127,19 +123,20 @@ export class ChangePasswordComponent implements OnInit, OnChanges {
 
   // Get data from the form
   GetData(queryParam: string) {
-    this.FormData.Username = queryParam;
-    this.http.get('api/password').subscribe((values:ViewOptions) => {
-      this.ViewOptions = values;
-      this.titleService.setTitle(this.ViewOptions.changePasswordTitle + " - " + this.ViewOptions.applicationTitle);
-      if (this.ViewOptions.recaptcha.isEnabled) {
-        this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
-        const sp = document.createElement('script');
-        sp.type = 'text/javascript';
-        sp.async = true;
-        sp.defer = true;
-        sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
-      }
-    });
+      this.FormData.Username = queryParam;
+      this.http.get<ViewOptions>('api/password')
+          .subscribe(data => {
+              this.ViewOptions = data;
+              this.titleService.setTitle(this.ViewOptions.changePasswordTitle + " - " + this.ViewOptions.applicationTitle);
+              if (this.ViewOptions.recaptcha.isEnabled) {
+                this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
+                const sp = document.createElement('script');
+                sp.type = 'text/javascript';
+                sp.async = true;
+                sp.defer = true;
+                sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
+              }
+            }, error => console.log(error));
   }
 
   // Uses RecaptchaModule / RecaptchaFormsModule

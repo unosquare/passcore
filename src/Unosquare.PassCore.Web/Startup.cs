@@ -64,7 +64,7 @@ namespace Unosquare.PassCore.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettingsSectionName"));
+            services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
