@@ -12,6 +12,7 @@ import { MaterialModule } from './app.material-module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgModule } from '@angular/core';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -33,6 +34,7 @@ import { RouterModule } from '@angular/router';
     MatDialogModule,
     MatSnackBarModule,
     RecaptchaModule.forRoot(),
+    RecaptchaFormsModule,
     ReactiveFormsModule,
     RouterModule
   ],

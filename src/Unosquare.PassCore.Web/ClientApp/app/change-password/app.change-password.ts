@@ -1,21 +1,15 @@
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Alerts } from '../models/alerts.model';
 import { ChangePasswordForm } from '../models/change-password-form.model';
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DialogOverview } from '../dialog/app.dialog';
-import { DOCUMENT } from '@angular/common';
-import { filter, map, scan } from 'rxjs/operators'; // rxjs 5.5-6.x; used by Angular
-import { from } from 'rxjs/observable/from'; // rxjs 5.5-6.x; used by Angular
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { of } from 'rxjs/observable/of'; // rxjs 5.5-6.x; used by Angular
 import { PasswordMatch } from '../helpers/passwordMatch';
 import { PasswordModel } from '../models/password.model';
 import { PasswordStrength } from '../helpers/passwordStrength';
-import { range } from 'rxjs/observable/range'; // rxjs 5.5-6.x; used by Angular
 import { Recaptcha } from '../models/recaptcha.model';
-import { Subscription } from 'rxjs/Rx'; // rxjs 5.5-6.x; used by Angular
 import { Title } from '@angular/platform-browser';
 import { ViewOptions } from '../models/view-options.model';
 
@@ -44,7 +38,6 @@ export class ChangePasswordComponent implements OnInit {
   ErrorAlertMessage: string = '';
   FormData: PasswordModel;
   Loading: boolean = false;
-  subscription: Subscription;
   value: number = 0;
   ViewOptions: ViewOptions;
 
@@ -63,8 +56,8 @@ export class ChangePasswordComponent implements OnInit {
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
-    this.subscription = this.r.queryParams.subscribe((params: Params) => {
-        let userId = params['userName'] || "";
+    this.r.queryParams.subscribe((params: Params) => {
+        let userId = params['userName'] || '';
         this.GetData(userId);
     });
     this.FormGroup.valueChanges.subscribe(data => {
@@ -127,7 +120,7 @@ export class ChangePasswordComponent implements OnInit {
       this.http.get<ViewOptions>('api/password')
           .subscribe(data => {
               this.ViewOptions = data;
-              this.titleService.setTitle(this.ViewOptions.changePasswordTitle + " - " + this.ViewOptions.applicationTitle);
+              this.titleService.setTitle(this.ViewOptions.changePasswordTitle + ' - ' + this.ViewOptions.applicationTitle);
               if (this.ViewOptions.recaptcha.isEnabled) {
                 this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
                 const sp = document.createElement('script');
@@ -136,7 +129,7 @@ export class ChangePasswordComponent implements OnInit {
                 sp.defer = true;
                 sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
               }
-            }, error => console.log(error));
+            });
   }
 
   // Uses RecaptchaModule / RecaptchaFormsModule
@@ -153,7 +146,7 @@ export class ChangePasswordComponent implements OnInit {
         this.clean('success');
       },
       (error: HttpErrorResponse) => {
-        this.ErrorAlertMessage = error.message ? error.message : "Password Submission Error";
+        this.ErrorAlertMessage = error.message ? error.message : 'Password Submission Error';
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
         this.clean('error');
       }
