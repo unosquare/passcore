@@ -51,7 +51,7 @@ namespace Unosquare.PassCore.Web
         #endregion
         #region Methods
 
-        public static IWebHost BuildWebHost(string[] args)=>
+        public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
             .Build();
@@ -84,12 +84,14 @@ namespace Unosquare.PassCore.Web
             log.AddConsole(Configuration.GetSection(LoggingSectionName));
             log.AddDebug();
 
+#if !DEBUG
             // HTTPS redirect
             if (settings.Value.EnableHttpsRedirect)
             {
                 var options = new RewriteOptions().AddRedirectToHttps();
                 app.UseRewriter(options);
             }
+#endif
 
             // Enable static files
             app.UseDefaultFiles();
