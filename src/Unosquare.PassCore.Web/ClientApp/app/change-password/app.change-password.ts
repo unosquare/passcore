@@ -13,7 +13,8 @@ import { Recaptcha } from '../models/recaptcha.model';
 import { Title } from '@angular/platform-browser';
 import { ViewOptions } from '../models/view-options.model';
 
-const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+// TODO: you'd want an email-format test IF defaultDomain isn't set; but the test blocks using such...
+// const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
   selector: 'app-root',
@@ -41,9 +42,10 @@ export class ChangePasswordComponent implements OnInit {
   value: number = 0;
   ViewOptions: ViewOptions;
 
-  // Form Controls  
+  // Form Controls
   FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.pattern(emailRegex)]),
+    // username: new FormControl('', [Validators.required, Validators.pattern(emailRegex)]),
+    username: new FormControl('', [Validators.required]),
     currentPassword: new FormControl('', [Validators.required]),
     newPassword: new FormControl('', [Validators.required]),
     newPasswordVerify: new FormControl('', [Validators.required])
@@ -149,7 +151,7 @@ export class ChangePasswordComponent implements OnInit {
           this.ErrorAlertMessage = errorResponse.message ? errorResponse.message : 'Password Submission Error';
           errorResponse.error.errors.forEach((error: any) => {
               this.ErrorAlertMessage += " " + error.message;
-          }); 
+          });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
         this.clean('error');
       }
