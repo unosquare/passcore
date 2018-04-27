@@ -29,6 +29,7 @@
     <Content Remove="ClientApp\**" />
     <Content Include="ClientApp\manifest.json" />
     <Content Include="ClientApp\tsconfig.app.json" />
+    <Content Update="wwwroot/**/*.map" CopyToPublishDirectory="Never" />
     <None Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -45,9 +46,12 @@
     <Message Importance="high" Text="Performing run Webpack build..." />
     <Exec Command="node_modules/.bin/webpack" />
   </Target>
-  <Target Name="PublishRunWebpack" DependsOnTargets="NpmInstall" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
+  <Target Name="PublishRunWebpack" DependsOnTargets="NpmInstall" BeforeTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
     <Message Importance="high" Text="Performing run Webpack publish..." />
     <Exec Command="node_modules/.bin/webpack -p" />
+  </Target>
+  <Target Name="CopyFilestoPublish" DependsOnTargets="PublishRunWebpack" AfterTargets="PublishRunWebpack">
+    <Message Importance="high" Text="Coping files to publish..." />
     <ItemGroup>
       <DistFiles Include="wwwroot\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
