@@ -145,8 +145,11 @@ export class ChangePasswordComponent implements OnInit {
         this.openDialog(this.ViewOptions.alerts.successAlertTitle, this.ViewOptions.alerts.successAlertBody);
         this.clean('success');
       },
-      (error: HttpErrorResponse) => {
-        this.ErrorAlertMessage = error.message ? error.message : 'Password Submission Error';
+      errorResponse => {
+          this.ErrorAlertMessage = errorResponse.message ? errorResponse.message : 'Password Submission Error';
+          errorResponse.error.errors.forEach((error: any) => {
+              this.ErrorAlertMessage += " " + error.message;
+          }); 
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
         this.clean('error');
       }
