@@ -24,5 +24,5 @@ addons:
     build_command: "dotnet build"
     branch_pattern: unquietwiki-master
 
-after_script:
+after_failure:
   - cat /home/travis/build/unosquare/passcore/cov-int/scm_log.txt
