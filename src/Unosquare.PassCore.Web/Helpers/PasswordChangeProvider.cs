@@ -5,7 +5,7 @@ namespace Unosquare.PassCore.Web.Helpers
     using Microsoft.Extensions.Options;
     using Models;
 
-    internal class PasswordChangeProvider : IPasswordChangeProvider
+    internal partial class PasswordChangeProvider : IPasswordChangeProvider
     {
         private readonly AppSettings _options;
 
@@ -36,13 +36,13 @@ namespace Unosquare.PassCore.Web.Helpers
                     }
 
                     // Validate user credentials
-                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword)== false)
+                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
                         // Your new authenticate code snippet
                         var token = IntPtr.Zero;
                         try
                         {
-                            var parts = userPrincipal.UserPrincipalName.Split(new [] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                            var parts = userPrincipal.UserPrincipalName.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
 
                             // Check for default domain, if none given
                             var domain = _options.ClientSettings.DefaultDomain ?? (parts.Length > 1 ? parts[1] : null);
@@ -52,13 +52,13 @@ namespace Unosquare.PassCore.Web.Helpers
                                 throw new ArgumentOutOfRangeException(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
                             }
 
-                            if (!PasswordChangeFallBack.LogonUser(model.Username, domain, model.CurrentPassword, PasswordChangeFallBack.LogonTypes.Network, PasswordChangeFallBack.LogonProviders.Default, out token))
+                            if (!LogonUser(model.Username, domain, model.CurrentPassword, LogonTypes.Network, LogonProviders.Default, out token))
                             {
                                 var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
                                 switch (errorCode)
                                 {
-                                    case PasswordChangeFallBack.ERROR_PASSWORD_MUST_CHANGE:
-                                    case PasswordChangeFallBack.ERROR_PASSWORD_EXPIRED:
+                                    case ERROR_PASSWORD_MUST_CHANGE:
+                                    case ERROR_PASSWORD_EXPIRED:
                                         // Both of these means that the password CAN change and that we got the correct password
                                         break;
                                     default:
@@ -68,7 +68,7 @@ namespace Unosquare.PassCore.Web.Helpers
                         }
                         finally
                         {
-                            PasswordChangeFallBack.CloseHandle(token);
+                            CloseHandle(token);
                         }
                     }
 
