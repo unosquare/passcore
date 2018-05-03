@@ -13,8 +13,8 @@ import { Recaptcha } from '../models/recaptcha.model';
 import { Title } from '@angular/platform-browser';
 import { ViewOptions } from '../models/view-options.model';
 
-// TODO: you'd want an email-format test IF defaultDomain isn't set; but the test blocks using such...
-// const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const usernameRegex = /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/; // Maybe find a better regex
 
 @Component({
   selector: 'app-root',
@@ -41,15 +41,15 @@ export class ChangePasswordComponent implements OnInit {
   Loading: boolean = false;
   value: number = 0;
   ViewOptions: ViewOptions;
+  Username: string;
 
   // Form Controls
-  FormGroup = new FormGroup({
-    // username: new FormControl('', [Validators.required, Validators.pattern(emailRegex)]),
-    username: new FormControl('', [Validators.required]),
-    currentPassword: new FormControl('', [Validators.required]),
-    newPassword: new FormControl('', [Validators.required]),
-    newPasswordVerify: new FormControl('', [Validators.required])
-  }, PasswordMatch);
+    FormGroup = new FormGroup({
+        username: new FormControl('', [Validators.required]),
+        currentPassword: new FormControl('', [Validators.required]),
+        newPassword: new FormControl('', [Validators.required]),
+        newPasswordVerify: new FormControl('', [Validators.required])
+      }, PasswordMatch);
 
   // Angular "OnInit": happens only on first page load
   ngOnInit() {
@@ -131,6 +131,11 @@ export class ChangePasswordComponent implements OnInit {
                 sp.defer = true;
                 sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
               }
+              if (this.ViewOptions.defaultDomain) {
+                  this.FormGroup.get('username').setValidators(Validators.pattern(usernameRegex));
+              } else {
+                  this.FormGroup.get('username').setValidators(Validators.pattern(emailRegex));
+              }
             });
   }
 
@@ -142,6 +147,7 @@ export class ChangePasswordComponent implements OnInit {
   // Form submission
   Submit() {
     this.Loading = true;
+    this.FormData.Username = this.Username + this.ViewOptions.defaultDomain;
     this.http.post('api/password', this.FormData).subscribe(
       response => {
         this.openDialog(this.ViewOptions.alerts.successAlertTitle, this.ViewOptions.alerts.successAlertBody);

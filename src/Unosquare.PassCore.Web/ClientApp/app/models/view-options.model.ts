@@ -10,4 +10,5 @@ export class ViewOptions {
     errorMessages: string[];
     recaptcha: Recaptcha;
     showPasswordMeter: boolean;
-  }
+    defaultDomain: string;
+}
