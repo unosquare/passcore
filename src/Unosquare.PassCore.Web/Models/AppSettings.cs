@@ -29,6 +29,7 @@ namespace Unosquare.PassCore.Web.Models
         public ChangePasswordForm ChangePasswordForm { get; set; }
         public string DefaultDomain { get; set; }
         public List<string> ErrorMessages { get; set; }
+        public ErrorsPasswordForm ErrorsPasswordForm { get; set; }
         public Recaptcha Recaptcha { get; set; }
         public bool ShowPasswordMeter { get; set; }
         public Alerts Alerts { get; set; }
@@ -70,5 +71,13 @@ namespace Unosquare.PassCore.Web.Models
         public string ErrorAlertBody { get; set; }
         public string ErrorPasswordChangeNotAllowed { get; set; }
         public string ErrorInvalidCredentials { get; set; }
+    }
+
+    public class ErrorsPasswordForm
+    {
+        public string FieldRequired { get; set; }
+        public string UsernamePattern { get; set; }
+        public string UsernameEmailPattern { get; set; }
+        public string PasswordMatch { get; set; }
     }
 }

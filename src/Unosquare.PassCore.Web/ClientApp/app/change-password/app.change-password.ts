@@ -12,6 +12,7 @@ import { PasswordStrength } from '../helpers/passwordStrength';
 import { Recaptcha } from '../models/recaptcha.model';
 import { Title } from '@angular/platform-browser';
 import { ViewOptions } from '../models/view-options.model';
+import { ErrorsPasswordForm } from '../models/errors-password-form.model';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const usernameRegex = /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/; // Maybe find a better regex
@@ -58,6 +59,7 @@ export class ChangePasswordComponent implements OnInit {
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
+    this.ViewOptions.errorsPasswordForm = new ErrorsPasswordForm;
     this.r.queryParams.subscribe((params: Params) => {
         let userId = params['userName'] || '';
         this.GetData(userId);
