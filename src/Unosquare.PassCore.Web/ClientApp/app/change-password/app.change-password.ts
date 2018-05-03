@@ -4,7 +4,7 @@ import { Alerts } from '../models/alerts.model';
 import { ChangePasswordForm } from '../models/change-password-form.model';
 import { Component, OnInit } from '@angular/core';
 import { DialogOverview } from '../dialog/app.dialog';
-import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { PasswordMatch } from '../helpers/passwordMatch';
 import { PasswordModel } from '../models/password.model';

@@ -3,13 +3,15 @@ namespace Unosquare.PassCore.Web
     using Helpers;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Rewrite;
     using Microsoft.AspNetCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
+#if !DEBUG
+    using Microsoft.AspNetCore.Rewrite;
+#endif
 
     /// <summary>
     /// Represents this application's main class
@@ -28,8 +30,7 @@ namespace Unosquare.PassCore.Web
         /// Initializes a new instance of the <see cref="Startup" /> class.
         /// This class gets instantiatied by the Main method. The hosting environment gets provided via DI
         /// </summary>
-        /// <param name="environment">The environment.</param>
-        public Startup(IHostingEnvironment environment)
+        public Startup()
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder().AddJsonFile(AppSettingsJsonFilename, false, true);

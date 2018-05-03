@@ -1,12 +1,12 @@
-﻿const { CommonsChunkPlugin } = require('webpack').optimize
+﻿const { CommonsChunkPlugin } = require('webpack').optimize;
 const { SourceMapDevToolPlugin } = require('webpack');
 
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
-const webpack = require('webpack')
-const path = require('path')
+const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
   devServer: {
@@ -88,4 +88,4 @@ module.exports = {
       'debug': 'warning'
     })
   ]
-}
+};
