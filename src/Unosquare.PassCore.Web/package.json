@@ -43,6 +43,7 @@
     "ng-recaptcha": "^3.0.5",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.1.0",
+    "rxjs-compat": "^6.1.0",
     "zone.js": "^0.8.26"
   }
 }
