@@ -68,7 +68,11 @@ namespace Unosquare.PassCore.Web
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
+#if DEBUG
+            services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
+#else
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
+#endif
         }
 
         /// <summary>
