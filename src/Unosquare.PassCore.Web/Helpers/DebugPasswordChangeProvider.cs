@@ -1,12 +1,15 @@
 ﻿namespace Unosquare.PassCore.Web.Helpers
 {
+    using System.Collections.Generic;
     using Unosquare.PassCore.Web.Models;
 
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
         public ApiErrorItem PerformPasswordChange(ChangePasswordModel model)
         {
-            switch (model.Username)
+            var username = model.Username.Substring(0, model.Username.IndexOf("@"));
+
+            switch (username)
             {
                 case "pass":
                     return null;
