@@ -14,6 +14,8 @@
                     return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = "Error" };
                 case "notfound":
                     return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound, Message = "Invalid Username or Password" };
+                default:
+                    return null;
             }
         }
     }
