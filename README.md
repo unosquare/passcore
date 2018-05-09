@@ -43,7 +43,7 @@ PassCore has the following features:
 1. You need a Passcore copy to continue. We recommed to download the latest binary release of [PassCore](https://github.com/unosquare/passcore/releases/download/3.0.2/passcore.zip).
 1. **NOTE:** Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.
     - If you download the source code you need to run the following command via an Command Prompt. Make sure you start the Command Prompt with the Administrator option.
-    - `dotnet publish --framework netcoreapp2.0 --runtime win-x64 --configuration Release --output "<path>"`
+    - `dotnet publish --configuration Release --output "<path>"`
     - The `<path>` is the directory where you will be serving the website from.
 1. Install the [.NET Core Windows Server Hosting bundle](https://docs.microsoft.com/en-us/aspnet/core/publishing/iis?tabs=aspnetcore2x#install-the-net-core-windows-server-hosting-bundle). You will need at least [.NET Core Runtime 2.0.6 / SDK 2.1.2](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.6-download.md).
 1. Go to your *IIS Manager*, Right click on *Application Pools* and select *Add Application Pool*.
