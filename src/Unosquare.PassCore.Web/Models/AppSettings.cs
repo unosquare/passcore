@@ -42,16 +42,12 @@ namespace Unosquare.PassCore.Web.Models
         public string HelpTitle { get; set; }
         public string HelpText { get; set; }
         public string UsernameLabel { get; set; }
-        public string UsernamePlaceholder { get; set; }
         public string UsernameHelpblock { get; set; }
         public string CurrentPasswordLabel { get; set; }
-        public string CurrentPasswordPlaceholder { get; set; }
         public string CurrentPasswordHelpblock { get; set; }
         public string NewPasswordLabel { get; set; }
-        public string NewPasswordPlaceholder { get; set; }
         public string NewPasswordHelpblock { get; set; }
         public string NewPasswordVerifyLabel { get; set; }
-        public string NewPasswordVerifyPlaceholder { get; set; }
         public string NewPasswordVerifyHelpblock { get; set; }
         public string ChangePasswordButtonLabel { get; set; }
     }
