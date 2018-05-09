@@ -36,22 +36,22 @@ namespace Unosquare.PassCore.Web.Helpers
                     }
 
                     // Validate user credentials
-                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
+                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword)== false)
                     {
                         // Your new authenticate code snippet
                         // Check for default domain: if none given, ensure EFLD can be used as an override.
                         var token = IntPtr.Zero;
                         var parts = userPrincipal.UserPrincipalName.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                        string emailFormatLogonDomain = (parts.Length > 1 ? parts[1] : null);
+                        string emailFormatLogonDomain = parts.Length > 1 ? parts[1] : null;
                         string defaultDomain = _options.ClientSettings.DefaultDomain;
-                        string domain = "";
+                        string domain = string.Empty;
 
                         // Domain-determinance
-                        if (String.IsNullOrEmpty(emailFormatLogonDomain) && String.IsNullOrEmpty(defaultDomain))
+                        if (String.IsNullOrEmpty(emailFormatLogonDomain)&& String.IsNullOrEmpty(defaultDomain))
                         {
                             return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidDomain, Message = _options.ClientSettings.Alerts.ErrorInvalidDomain };
                         }
-                        else if(String.IsNullOrEmpty(defaultDomain))
+                        else if (String.IsNullOrEmpty(defaultDomain))
                         {
                             domain = emailFormatLogonDomain;
                         }

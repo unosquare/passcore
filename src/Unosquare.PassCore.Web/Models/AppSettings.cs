@@ -48,6 +48,7 @@ namespace Unosquare.PassCore.Web.Models
         public string NewPasswordLabel { get; set; }
         public string NewPasswordVerifyHelpblock { get; set; }
         public string NewPasswordVerifyLabel { get; set; }
+        public string UsernameDefaultDomainHelperBlock { get; set; }
         public string UsernameHelpblock { get; set; }
         public string UsernameLabel { get; set; }
     }

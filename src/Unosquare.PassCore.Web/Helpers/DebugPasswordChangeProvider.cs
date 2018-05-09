@@ -6,7 +6,12 @@
     // Sonar-Codacy thought we needed a static method here; and suggested dual default nulls was pointless.
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
-        static ApiErrorItem PerformPasswordChange(ChangePasswordModel model)
+        ApiErrorItem IPasswordChangeProvider.PerformPasswordChange(ChangePasswordModel model)
+        {
+            return DebugPasswordChangeProvider.PerformPasswordChange(model);
+        }
+
+        protected static ApiErrorItem PerformPasswordChange(ChangePasswordModel model)
         {
             var username = model.Username.Substring(0, model.Username.IndexOf("@"));
             switch (username)
@@ -18,10 +23,6 @@
                 default:
                     return null;
             }
-        }
-        ApiErrorItem IPasswordChangeProvider.PerformPasswordChange(ChangePasswordModel model)
-        {
-            return DebugPasswordChangeProvider.PerformPasswordChange(model);
         }
     }
 }

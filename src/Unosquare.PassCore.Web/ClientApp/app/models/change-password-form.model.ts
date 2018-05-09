@@ -9,5 +9,6 @@ export class ChangePasswordForm{
     newPasswordVerifyHelpblock:string;
     newPasswordVerifyLabel:string;
     usernameHelpblock:string;
+    usernameDefaultDomainHelperBlock:string;
     usernameLabel:string;
   }

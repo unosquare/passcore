@@ -4,5 +4,11 @@
     "csharpfixformat.style.spaces.afterParenthesis": false,
     "csharpfixformat.style.spaces.beforeBracket": false,
     "csharpfixformat.style.spaces.beforeParenthesis": false,
-    "html.format.enable": false
+    "html.format.enable": false,
+    "editor.formatOnSave": false,
+    "editor.formatOnPaste": false,
+    "htmlhint.options": {
+        "attr-lowercase": false,
+        "doctype-first": false
+    }
 }
