@@ -21,6 +21,8 @@ namespace Unosquare.PassCore.Web.Models
         UserNotFound = 3,
         InvalidCredentials = 4,
         InvalidCaptcha = 5,
+        ChangeNotPermitted = 6,
+        InvalidDomain = 7
     }
 
     /// <summary>

@@ -32,43 +32,46 @@ namespace Unosquare.PassCore.Web.Helpers
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
-                        throw new ArgumentOutOfRangeException(_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                        return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
                     }
 
                     // Validate user credentials
                     if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
                         // Your new authenticate code snippet
+                        // Check for default domain: if none given, ensure EFLD can be used as an override.
                         var token = IntPtr.Zero;
-                        try
+                        var parts = userPrincipal.UserPrincipalName.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                        string emailFormatLogonDomain = (parts.Length > 1 ? parts[1] : null);
+                        string defaultDomain = _options.ClientSettings.DefaultDomain;
+                        string domain = "";
+
+                        // Domain-determinance
+                        if (String.IsNullOrEmpty(emailFormatLogonDomain) && String.IsNullOrEmpty(defaultDomain))
                         {
-                            var parts = userPrincipal.UserPrincipalName.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-
-                            // Check for default domain, if none given
-                            var domain = _options.ClientSettings.DefaultDomain ?? (parts.Length > 1 ? parts[1] : null);
-
-                            if (domain == null)
-                            {
-                                throw new ArgumentOutOfRangeException(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
-                            }
-
-                            if (!LogonUser(model.Username, domain, model.CurrentPassword, LogonTypes.Network, LogonProviders.Default, out token))
-                            {
-                                var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
-                                switch (errorCode)
-                                {
-                                    case ERROR_PASSWORD_MUST_CHANGE:
-                                    case ERROR_PASSWORD_EXPIRED:
-                                        // Both of these means that the password CAN change and that we got the correct password
-                                        break;
-                                    default:
-                                        throw new ArgumentOutOfRangeException(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
-                                }
-                            }
+                            return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidDomain, Message = _options.ClientSettings.Alerts.ErrorInvalidDomain };
                         }
-                        finally
+                        else if(String.IsNullOrEmpty(defaultDomain))
                         {
-                            CloseHandle(token);
+                            domain = emailFormatLogonDomain;
+                        }
+                        else
+                        {
+                            domain = defaultDomain;
+                        }
+
+                        if (!LogonUser(model.Username, domain, model.CurrentPassword, LogonTypes.Network, LogonProviders.Default, out token))
+                        {
+                            var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                            switch (errorCode)
+                            {
+                                case ERROR_PASSWORD_MUST_CHANGE:
+                                case ERROR_PASSWORD_EXPIRED:
+                                    // Both of these means that the password CAN change and that we got the correct password
+                                    break;
+                                default:
+                                    return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCredentials, Message = _options.ClientSettings.Alerts.ErrorInvalidCredentials };
+                            }
                         }
                     }
 
@@ -79,7 +82,7 @@ namespace Unosquare.PassCore.Web.Helpers
                         {
                             if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
                             {
-                                throw new Exception(_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                                return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
                             }
                         }
                     }

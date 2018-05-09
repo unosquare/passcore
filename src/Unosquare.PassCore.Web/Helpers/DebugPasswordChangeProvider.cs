@@ -3,9 +3,7 @@
     using System.Collections.Generic;
     using Unosquare.PassCore.Web.Models;
 
-    // Codacy kept thinking the original implementation was an issue.
-    // https://stackoverflow.com/questions/9415257/how-can-i-implement-static-methods-on-an-interface
-
+    // Sonar-Codacy thought we needed a static method here; and suggested dual default nulls was pointless.
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
         static ApiErrorItem PerformPasswordChange(ChangePasswordModel model)

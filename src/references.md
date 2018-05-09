@@ -60,6 +60,11 @@
 - https://www.npmjs.com/package/@ngtools/webpack
 - https://www.npmjs.com/package/angular-named-lazy-chunks-webpack-plugin
 
+## Sonar / Codacy fix suggestions
+
+- https://medium.com/bynder-tech/c-why-you-should-use-configureawait-false-in-your-library-code-d7837dce3d7f
+- https://stackoverflow.com/questions/9415257/how-can-i-implement-static-methods-on-an-interface
+
 ## Brotli (if interested in using for smaller delivery)
 
 - https://blogs.msdn.microsoft.com/dotnet/2017/07/27/introducing-support-for-brotli-compression/

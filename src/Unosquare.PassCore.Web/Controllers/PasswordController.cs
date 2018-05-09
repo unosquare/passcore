@@ -66,7 +66,8 @@ namespace Unosquare.PassCore.Web.Controllers
             // Validate the Captcha
             try
             {
-                if (await ValidateRecaptcha(model.Recaptcha)== false)
+                // Sonar-Codacy suggested ConfigureAwait
+                if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
                 {
                     result.Errors.Add(new ApiErrorItem
                     {
