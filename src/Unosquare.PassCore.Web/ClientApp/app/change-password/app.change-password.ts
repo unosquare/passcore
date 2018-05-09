@@ -67,7 +67,7 @@ export class ChangePasswordComponent implements OnInit {
     this.FormGroup.valueChanges.subscribe(data => {
         if (data.newPassword != null)
             this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
-    });
+      });
   }
 
   // Progress bar for password strength
@@ -91,9 +91,10 @@ export class ChangePasswordComponent implements OnInit {
 
   // Uses MatDialogRef
   openDialog(title: string, message: string) {
-    let refDialog = this.dialog.open(DialogOverview, {
-      width: '300px',
-      data: { Title: title, Message: message }
+    this.dialog.open(DialogOverview, {
+        width: '300px',
+        height: '300px',
+        data: { Title: title, Message: message }
     });
   }
 
@@ -156,9 +157,8 @@ export class ChangePasswordComponent implements OnInit {
         this.clean('success');
       },
       errorResponse => {
-          this.ErrorAlertMessage = errorResponse.message ? errorResponse.message : 'Password Submission Error';
           errorResponse.error.errors.forEach((error: any) => {
-              this.ErrorAlertMessage += " " + error.message;
+              this.ErrorAlertMessage += error.message;
           });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
         this.clean('error');
