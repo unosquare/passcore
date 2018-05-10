@@ -38,13 +38,25 @@ namespace Unosquare.PassCore.Web.Helpers
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound, Message = _options.ClientSettings.Alerts.ErrorInvalidUserOrPassword };
+                        return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound, Message = _options.ClientSettings.Alerts.ErrorInvalidUser };
                     }
 
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
                         return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
+                    }
+                    
+                    // Verify user is not a member of an excluded group
+                    if (_options.ClientSettings.CheckRestrictedAdGroups)
+                    {
+                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                        {
+                            if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                            {
+                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
+                            }
+                        }
                     }
 
                     // Validate user credentials
@@ -61,18 +73,6 @@ namespace Unosquare.PassCore.Web.Helpers
                                     break;
                                 default:
                                     return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials, Message = _options.ClientSettings.Alerts.ErrorInvalidCredentials };
-                            }
-                        }
-                    }
-
-                    // Verify user is not a member of an excluded group
-                    if (_options.ClientSettings.CheckRestrictedAdGroups)
-                    {
-                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-                        {
-                            if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
-                            {
-                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
                             }
                         }
                     }

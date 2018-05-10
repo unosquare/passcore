@@ -66,7 +66,7 @@ namespace Unosquare.PassCore.Web.Models
         public string ErrorPasswordChangeNotAllowed { get; set; }
         public string SuccessAlertBody { get; set; }
         public string SuccessAlertTitle { get; set; }
-        public string ErrorInvalidUserOrPassword { get; set; }
+        public string ErrorInvalidUser { get; set; }
         public string ErrorCaptcha { get; set; }
     }
 
