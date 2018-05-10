@@ -8,7 +8,6 @@ export class ViewOptions {
     applicationTitle: string;
     changePasswordForm: ChangePasswordForm;
     changePasswordTitle: string;
-    errorMessages: string[];
     recaptcha: Recaptcha;
     showPasswordMeter: boolean;
     defaultDomain: string;
