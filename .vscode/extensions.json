@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "Angular.ng-template",
+        "chenxsan.vscode-standardjs",
+        "christian-kohler.npm-intellisense",
+        "fernandoescolar.vscode-solution-explorer",
+        "Leopotam.csharpfixformat",
+        "ms-vscode.csharp",
+        "oderwat.indent-rainbow",
+        "pflannery.vscode-versionlens",
+        "pmneo.tsimporter",
+        "stringham.angular-template-formatter",
+        "Tyriar.sort-lines",
+        "xykong.format-all-files",
+    ]
+}

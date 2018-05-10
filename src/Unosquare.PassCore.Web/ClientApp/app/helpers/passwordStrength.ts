@@ -1,4 +1,4 @@
-export default class PasswordStrength{
+export class PasswordStrength{
     
     static measureStrength(p: string) {
         let force = 0;
@@ -29,4 +29,5 @@ export default class PasswordStrength{
 
         return force;
     }
+
 }

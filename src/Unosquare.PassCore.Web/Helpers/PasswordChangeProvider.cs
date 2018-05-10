@@ -1,11 +1,11 @@
-﻿namespace Unosquare.PassCore.Web.Helpers
+namespace Unosquare.PassCore.Web.Helpers
 {
+    using System.DirectoryServices.AccountManagement;
+    using System;
     using Microsoft.Extensions.Options;
     using Models;
-    using System;
-    using System.DirectoryServices.AccountManagement;
 
-    internal class PasswordChangeProvider : IPasswordChangeProvider
+    internal partial class PasswordChangeProvider : IPasswordChangeProvider
     {
         private readonly AppSettings _options;
 
@@ -19,57 +19,34 @@
             // perform the password change
             try
             {
+                // Check for default domain: if none given, ensure EFLD can be used as an override.
+                var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
+
+                // Domain-determinance
+                if (string.IsNullOrEmpty(domain))
+                {
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain, Message = _options.ClientSettings.Alerts.ErrorInvalidDomain };
+                }
+
+                var username = parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
+
                 using (var principalContext = AcquirePrincipalContext())
                 {
-                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, model.Username);
+                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
 
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound, Message = "Invalid Username or Password" };
+                        return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound, Message = _options.ClientSettings.Alerts.ErrorInvalidUser };
                     }
 
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
-                        throw new Exception(_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                        return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
                     }
-
-                    // Validate user credentials
-                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
-                    {
-                        // Your new authenticate code snippet
-                        var token = IntPtr.Zero;
-                        try
-                        {
-                            var parts = userPrincipal.UserPrincipalName.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                            var domain = parts.Length > 1 ? parts[1] : null;
-
-                            if (domain == null)
-                            {
-                                throw new Exception(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
-                            }
-
-                            if (!PasswordChangeFallBack.LogonUser(model.Username, domain, model.CurrentPassword, PasswordChangeFallBack.LogonTypes.Network, PasswordChangeFallBack.LogonProviders.Default, out token))
-                            {
-                                var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
-                                switch (errorCode)
-                                {
-                                    case PasswordChangeFallBack.ERROR_PASSWORD_MUST_CHANGE:
-                                    case PasswordChangeFallBack.ERROR_PASSWORD_EXPIRED:
-                                        // Both of these means that the password CAN change and that we got the correct password
-                                        break;
-                                    default:
-                                        throw new Exception(_options.ClientSettings.Alerts.ErrorInvalidCredentials);
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            PasswordChangeFallBack.CloseHandle(token);
-                        }
-                    }
-
+                    
                     // Verify user is not a member of an excluded group
                     if (_options.ClientSettings.CheckRestrictedAdGroups)
                     {
@@ -77,7 +54,25 @@
                         {
                             if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
                             {
-                                throw new Exception(_options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed);
+                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
+                            }
+                        }
+                    }
+
+                    // Validate user credentials
+                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
+                    {
+                        if (!LogonUser(username, domain, model.CurrentPassword, LogonTypes.Network, LogonProviders.Default, out _))
+                        {
+                            var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                            switch (errorCode)
+                            {
+                                case ERROR_PASSWORD_MUST_CHANGE:
+                                case ERROR_PASSWORD_EXPIRED:
+                                    // Both of these means that the password CAN change and that we got the correct password
+                                    break;
+                                default:
+                                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials, Message = _options.ClientSettings.Alerts.ErrorInvalidCredentials };
                             }
                         }
                     }
@@ -90,9 +85,8 @@
                     }
                     catch
                     {
-                        if (_options.PasswordChangeOptions.UseAutomaticContext)
-                            throw;
-                        
+                        if (_options.PasswordChangeOptions.UseAutomaticContext) { throw; }
+
                         // If the previous attempt failed, use the SetPassword method.
                         userPrincipal.SetPassword(model.NewPassword);
                     }
@@ -102,7 +96,7 @@
             }
             catch (Exception ex)
             {
-                return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
+                return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
             }
 
             return null;

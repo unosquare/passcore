@@ -1,14 +1,14 @@
-﻿namespace Unosquare.PassCore.Web.Controllers
+namespace Unosquare.PassCore.Web.Controllers
 {
+    using System.Net.Http;
+    using System.Net;
+    using System.Threading.Tasks;
+    using System;
+    using Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Models;
     using Newtonsoft.Json;
-    using System;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using Helpers;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -66,18 +66,20 @@
             // Validate the Captcha
             try
             {
-                if (await ValidateRecaptcha(model.Recaptcha) == false)
+                // Sonar-Codacy suggested ConfigureAwait
+                if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
+                {
                     result.Errors.Add(new ApiErrorItem
                     {
-                        ErrorType = ApiErrorType.GeneralFailure,
-                        ErrorCode = ApiErrorCode.InvalidCaptcha
+                        ErrorCode = ApiErrorCode.InvalidCaptcha,
+                        Message = _options.ClientSettings.Alerts.ErrorCaptcha
                     });
+                }
             }
             catch (Exception ex)
             {
                 result.Errors.Add(new ApiErrorItem
                 {
-                    ErrorType = ApiErrorType.GeneralFailure,
                     ErrorCode = ApiErrorCode.Generic,
                     Message = ex.Message
                 });
@@ -96,7 +98,7 @@
             }
 
             if (result.HasErrors)
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             return Json(result);
         }

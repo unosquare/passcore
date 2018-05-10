@@ -22,7 +22,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 
-# Visual Studo 2015 cache/options directory
+# Visual Studo cache/options directory
 .vs/
 
 # MSTest test Results
@@ -200,3 +200,6 @@ FakesAssemblies/
 /src/Unosquare.PassCore.Web/.vscode/tasks.json
 /src/Unosquare.PassCore.Web/wwwroot/**
 /src/Unosquare.PassCore.Web/package-lock.json
+
+# AOT results
+aot/*

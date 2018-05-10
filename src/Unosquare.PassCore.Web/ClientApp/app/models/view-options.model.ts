@@ -1,13 +1,15 @@
-import Alerts from './alerts.model';
-import ChangePasswordForm from './change-password-form.model';
-import Recaptcha from "./recaptcha.model";
+import { Alerts } from './alerts.model';
+import { ChangePasswordForm } from './change-password-form.model';
+import { Recaptcha } from "./recaptcha.model";
+import { ErrorsPasswordForm } from './errors-password-form.model';
 
-export default class ViewOptions {
-    public alerts: Alerts;
-    public applicationTitle: string;
-    public changePasswordForm: ChangePasswordForm;
-    public changePasswordTitle: string;
-    public errorMessages: string[];
-    public recaptcha: Recaptcha;
-    public showPasswordMeter: boolean;
-  }
+export class ViewOptions {
+    alerts: Alerts;
+    applicationTitle: string;
+    changePasswordForm: ChangePasswordForm;
+    changePasswordTitle: string;
+    recaptcha: Recaptcha;
+    showPasswordMeter: boolean;
+    defaultDomain: string;
+    errorsPasswordForm: ErrorsPasswordForm;
+}

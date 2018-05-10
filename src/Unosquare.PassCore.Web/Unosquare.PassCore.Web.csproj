@@ -1,79 +1,59 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;node_modules\**</DefaultItemExcludes>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\jspm_packages\**;jspm_packages\**</DefaultItemExcludes>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\bower_components\**;bower_components\**</DefaultItemExcludes>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Unosquare.PassCore.Web</AssemblyName>
     <PackageId>Unosquare.PassCore.Web</PackageId>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <IsPackable>false</IsPackable>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
-    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.*" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.5.0-rc1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.*">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.ApplicationInsights.HostingStartup" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
-    <PackageReference Include="Unosquare.Swan" Version="0.17.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.*" />
   </ItemGroup>
-
   <ItemGroup>
-    <Reference Include="System.DirectoryServices" Version="4.0.0.0" />
-    <Reference Include="System.DirectoryServices.AccountManagement" Version="4.0.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.*" />
   </ItemGroup>
-
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!-- Files not to publish-->
     <Content Remove="ClientApp\**" />
     <Content Include="ClientApp\manifest.json" />
     <Content Include="ClientApp\tsconfig.app.json" />
+    <Content Update="wwwroot/**/*.map" CopyToPublishDirectory="Never" />
     <None Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-<Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\package-lock.json')">
-    <!-- Ensure Node.js is installed -->
+  <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\package-lock.json')">
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
+    <Exec Command="npm install" />
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <!-- Running npm install -->
     <Message Importance="high" Text="Performing first-run npm install..." />
-    <Exec Command="npm install -q" />
   </Target>
-
   <Target Name="Webpack" DependsOnTargets="NpmInstall" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
-    <!-- Running webpack -->
     <Message Importance="high" Text="Performing run Webpack build..." />
     <Exec Command="node_modules/.bin/webpack" />
   </Target>
-   
-  <Target Name="PublishRunWebpack" DependsOnTargets="NpmInstall" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
-    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Message Importance="high" Text="Performing run Webpack pusblish..." />
+  <Target Name="PublishRunWebpack" DependsOnTargets="NpmInstall" BeforeTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
+    <Message Importance="high" Text="Performing run Webpack publish..." />
     <Exec Command="node_modules/.bin/webpack -p" />
-
-    <!-- Include the newly-built files in the publish output -->
+  </Target>
+  <Target Name="CopyFilestoPublish" DependsOnTargets="PublishRunWebpack" AfterTargets="PublishRunWebpack">
+    <Message Importance="high" Text="Coping files to publish..." />
     <ItemGroup>
       <DistFiles Include="wwwroot\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
@@ -82,5 +62,4 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-
 </Project>

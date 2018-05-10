@@ -1,71 +1,76 @@
-import { Title } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
-import { MatSnackBar, MatDialog } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
-
-import ViewOptions from '../models/view-options.model';
-import Alerts from '../models/alerts.model';
-import Recaptcha from '../models/recaptcha.model';
-import ChangePasswordForm from '../models/change-password-form.model';
-import Result from '../models/result-data.model';
-import PasswordModel from '../models/password.model';
-import DialogOverview from '../dialog/app.dialog'
-
-import PasswordValidator from '../helpers/passwordValidator';
-import PasswordStrength from '../helpers/passwordStrength';
-
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/map';
+import { Alerts } from '../models/alerts.model';
+import { ChangePasswordForm } from '../models/change-password-form.model';
+import { Component, OnInit } from '@angular/core';
+import { DialogOverview } from '../dialog/app.dialog';
+import { HttpClient } from '@angular/common/http';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { PasswordMatch } from '../helpers/passwordMatch';
+import { PasswordModel } from '../models/password.model';
+import { PasswordStrength } from '../helpers/passwordStrength';
+import { Recaptcha } from '../models/recaptcha.model';
+import { Title } from '@angular/platform-browser';
+import { ViewOptions } from '../models/view-options.model';
+import { ErrorsPasswordForm } from '../models/errors-password-form.model';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const usernameRegex = /^[a-z0-9._-]{3,15}$/; // Maybe find a better regex
 
 @Component({
   selector: 'app-root',
   templateUrl: './change-password.html',
-  styleUrls: ['./app.change-password.css']
+  styleUrls: ['./app.change-password.css'],
+  providers: [ChangePasswordComponent],
+  viewProviders: [ViewOptions]
 })
-export default class ChangePasswordComponent implements OnInit {
-  subscription: Subscription;
+export class ChangePasswordComponent implements OnInit {
 
-  // Form Controls
-  FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.pattern(emailRegex)]),
-    currentPassword: new FormControl('', [Validators.required]),
-    newPassword: new FormControl('', [Validators.required]),
-    newPasswordVerify: new FormControl('', [Validators.required])
-  }, PasswordValidator.MatchPassword);
-  // Variables
-  ViewOptions: ViewOptions;
-  ResultData: Result;
-  Loading: boolean = false;
+  // Constructor: parent "this" doesn't work here
+  constructor(
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
+    private titleService: Title,
+    private dialog: MatDialog,
+    private r: ActivatedRoute
+  ) { }
+
+  // Properties
+  color: string = 'warn';
   ErrorAlertMessage: string = '';
   FormData: PasswordModel;
-  color: string = 'warn';
+  Loading: boolean = false;
   value: number = 0;
+  ViewOptions: ViewOptions;
 
-  constructor(private http: Http, private snackBar: MatSnackBar,
-      private titleService: Title, public dialog: MatDialog, private r: ActivatedRoute) {
+  // Form Controls
+    FormGroup = new FormGroup({
+        username: new FormControl('', [Validators.required]),
+        currentPassword: new FormControl('', [Validators.required]),
+        newPassword: new FormControl('', [Validators.required]),
+        newPasswordVerify: new FormControl('', [Validators.required])
+      }, PasswordMatch);
+
+  // Angular "OnInit": happens only on first page load
+  ngOnInit() {
     this.FormData = new PasswordModel;
     this.ViewOptions = new ViewOptions;
     this.ViewOptions.alerts = new Alerts;
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
-    this.FormGroup.valueChanges.subscribe(data => {
-      if (data.newPassword != null)
-        this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
+    this.ViewOptions.errorsPasswordForm = new ErrorsPasswordForm;
+    this.r.queryParams.subscribe((params: Params) => {
+        let userId = params['userName'] || '';
+        this.GetData(userId);
     });
-  }
-
-  ngOnInit(): void {
-      this.subscription = this.r.queryParams.subscribe((params: Params) => {
-          let userId = params['userName'] || "";
-          this.GetData(userId);
+    this.FormGroup.valueChanges.subscribe(data => {
+        if (data.newPassword != null)
+            this.changeProgressBar(PasswordStrength.measureStrength(data.newPassword));
       });
   }
 
-  private changeProgressBar(strength: number) {
+  // Progress bar for password strength
+  changeProgressBar(strength: number) {
     this.value = strength;
     if (strength < 33) {
       this.color = 'warn';
@@ -76,20 +81,24 @@ export default class ChangePasswordComponent implements OnInit {
     }
   }
 
-  private openSnackBar(message: string, action: string) {
+  // Uses MatSnackBar
+  openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 5000
     });
   }
 
-  private openDialog(title: string, message: string) {
-    let refDialog = this.dialog.open(DialogOverview, {
-      width: '300px',
-      data: { Title: title, Message: message }
+  // Uses MatDialogRef
+  openDialog(title: string, message: string) {
+    this.dialog.open(DialogOverview, {
+        width: '300px',
+        height: '300px',
+        data: { Title: title, Message: message }
     });
   }
 
-  private clean(submited: string) {
+  // Reset form
+  clean(submited: string) {
     this.Loading = false;
     this.ErrorAlertMessage = '';
     this.color = 'warn';
@@ -109,41 +118,49 @@ export default class ChangePasswordComponent implements OnInit {
     }
   }
 
-  private GetData(queryParam: string): void {
-    this.FormData.Username = queryParam;
-    this.http.get('api/password').subscribe(values => {
-      this.ViewOptions = values.json();
-      this.titleService.setTitle(this.ViewOptions.changePasswordTitle + " - " + this.ViewOptions.applicationTitle);
-      if (this.ViewOptions.recaptcha.isEnabled) {
-        this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
-        const sp = document.createElement('script');
-        sp.type = 'text/javascript';
-        sp.async = true;
-        sp.defer = true;
-        sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
-      }
-    });
+  // Get data from the form
+  GetData(queryParam: string) {
+      this.FormData.Username = queryParam;
+      this.http.get<ViewOptions>('api/password')
+          .subscribe(data => {
+              this.ViewOptions = data;
+              this.titleService.setTitle(this.ViewOptions.changePasswordTitle + ' - ' + this.ViewOptions.applicationTitle);
+              if (this.ViewOptions.recaptcha.isEnabled) {
+                this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
+                const sp = document.createElement('script');
+                sp.type = 'text/javascript';
+                sp.async = true;
+                sp.defer = true;
+                sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
+              }
+              if (this.ViewOptions.defaultDomain) {
+                  this.FormGroup.get('username').setValidators(Validators.pattern(usernameRegex));
+              } else {
+                  this.FormGroup.get('username').setValidators(Validators.pattern(emailRegex));
+              }
+            });
   }
 
-  private SetRecaptchaResponse(captchaResponse: string) {
+  // Uses RecaptchaModule / RecaptchaFormsModule
+  SetRecaptchaResponse(captchaResponse: string) {
     this.FormData.Recaptcha = captchaResponse;
   }
 
+  // Form submission
   Submit() {
     this.Loading = true;
-    this.http.post('api/password', this.FormData)
-      .subscribe((response) => {
+    this.http.post('api/password', this.FormData).subscribe(
+      response => {
         this.openDialog(this.ViewOptions.alerts.successAlertTitle, this.ViewOptions.alerts.successAlertBody);
-
         this.clean('success');
-      }, (error) => {
-        this.ResultData = error.json() as Result;
-        this.ResultData.errors.map(errData => {
-          this.ErrorAlertMessage += errData.message;
-        });
+      },
+        errorResponse => {
+          errorResponse.error.errors.forEach((error: any) => {
+              this.ErrorAlertMessage += error.message;
+          });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
-
         this.clean('error');
-      });
+      }
+    );
   }
 }

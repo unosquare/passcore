@@ -1,39 +1,44 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app.routing-module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { ChangePasswordComponent } from './change-password/app.change-password';
+import { DialogOverview } from './dialog/app.dialog';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FooterComponent } from './footer/app.footer';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { FlexLayoutModule } from "@angular/flex-layout";
-
+import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MaterialModule } from './app.material-module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgModule } from '@angular/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
-import { AppRoutingModule } from './app.routing-module';
-
-import { MaterialModule } from './app.material-module';
-import ChangePasswordComponent  from './change-password/app.change-password';
-import FooterComponent from './footer/app.footer';
-import DialogOverview from './dialog/app.dialog';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
+  bootstrap: [ChangePasswordComponent],
   declarations: [
     ChangePasswordComponent,
-    FooterComponent,
-    DialogOverview
+    DialogOverview,
+    FooterComponent
   ],
+  entryComponents: [DialogOverview],
   imports: [
-    BrowserModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
+    BrowserModule,
     FormsModule,
-    MaterialModule,
-    HttpModule,
     FlexLayoutModule,
+    HttpClientModule,
+    MaterialModule,
+    MatDialogModule,
+    MatSnackBarModule,
     RecaptchaModule.forRoot(),
     RecaptchaFormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    RouterModule
   ],
-  providers: [],
-  bootstrap: [ChangePasswordComponent],
-  entryComponents: [DialogOverview]
+  exports: [
+  ]
 })
 export class AppModule { }

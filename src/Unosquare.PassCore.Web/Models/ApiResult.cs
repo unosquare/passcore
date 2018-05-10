@@ -1,8 +1,8 @@
-﻿namespace Unosquare.PassCore.Web.Models
+namespace Unosquare.PassCore.Web.Models
 {
-    using Microsoft.AspNetCore.Mvc.ModelBinding;
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
 
     /// <summary>
     /// Represent a generic response from a REST API call
@@ -28,46 +28,20 @@
         public object Payload { get; set; }
 
         /// <summary>
-        /// Creates a generic success response
-        /// </summary>
-        /// <returns>The ApiResult wih OK status</returns>
-        public static ApiResult Success()
-        {
-            return new ApiResult { Payload = "OK" };
-        }
-
-        /// <summary>
         /// Creates a generic invalid request response
         /// </summary>
         /// <returns>The ApiResult wih Invalid request error</returns>
         public static ApiResult InvalidRequest()
         {
-            var result = new ApiResult { Payload = "Invalid Request" };
+            var result = new ApiResult {Payload = "Invalid Request"};
             result.Errors.Add(new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.Generic,
-                ErrorType = ApiErrorType.GeneralFailure,
                 FieldName = string.Empty,
                 Message = "Invalid Request"
             });
 
             return result;
-        }
-
-        /// <summary>
-        /// Adds the validation error.
-        /// </summary>
-        /// <param name="fieldName">Name of the field.</param>
-        /// <param name="errorCode">The error code.</param>
-        public void AddValidationError(string fieldName, ApiErrorCode errorCode)
-        {
-            Errors.Add(new ApiErrorItem
-            {
-                ErrorCode = errorCode,
-                ErrorType = ApiErrorType.FieldValidation,
-                FieldName = fieldName,
-                Message = errorCode.ToString()
-            });
         }
 
         /// <summary>
@@ -79,7 +53,6 @@
             Errors.Add(new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.FieldRequired,
-                ErrorType = ApiErrorType.FieldValidation,
                 FieldName = fieldName,
                 Message = nameof(ApiErrorCode.FieldRequired)
             });
@@ -94,7 +67,6 @@
             Errors.Add(new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.FieldMismatch,
-                ErrorType = ApiErrorType.FieldValidation,
                 FieldName = fieldName,
                 Message = nameof(ApiErrorCode.FieldMismatch)
             });
@@ -110,24 +82,7 @@
             Errors.Add(new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.Generic,
-                ErrorType = ApiErrorType.FieldValidation,
                 FieldName = fieldName,
-                Message = message
-            });
-        }
-
-        /// <summary>
-        /// Adds the operation error.
-        /// </summary>
-        /// <param name="errorCode">The error code.</param>
-        /// <param name="message">The message.</param>
-        public void AddOperationError(ApiErrorCode errorCode, string message)
-        {
-            Errors.Add(new ApiErrorItem
-            {
-                ErrorCode = errorCode,
-                ErrorType = ApiErrorType.GeneralFailure,
-                FieldName = string.Empty,
                 Message = message
             });
         }
@@ -150,6 +105,5 @@
                     AddGenericFieldValidationError(state.Key, error.ErrorMessage);
             }
         }
-
     }
 }
