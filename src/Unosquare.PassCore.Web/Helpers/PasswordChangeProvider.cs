@@ -19,9 +19,21 @@ namespace Unosquare.PassCore.Web.Helpers
             // perform the password change
             try
             {
+                // Check for default domain: if none given, ensure EFLD can be used as an override.
+                var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
+                        
+                // Domain-determinance
+                if (string.IsNullOrEmpty(domain))
+                {
+                    return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidDomain, Message = _options.ClientSettings.Alerts.ErrorInvalidDomain };
+                }
+
+                var username = parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
+
                 using (var principalContext = AcquirePrincipalContext())
                 {
-                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, model.Username);
+                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
 
                     // Check if the user principal exists
                     if (userPrincipal == null)
@@ -38,29 +50,7 @@ namespace Unosquare.PassCore.Web.Helpers
                     // Validate user credentials
                     if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword)== false)
                     {
-                        // Your new authenticate code snippet
-                        // Check for default domain: if none given, ensure EFLD can be used as an override.
-                        var token = IntPtr.Zero;
-                        var parts = userPrincipal.UserPrincipalName.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                        string emailFormatLogonDomain = parts.Length > 1 ? parts[1] : null;
-                        string defaultDomain = _options.ClientSettings.DefaultDomain;
-                        string domain = string.Empty;
-
-                        // Domain-determinance
-                        if (String.IsNullOrEmpty(emailFormatLogonDomain)&& String.IsNullOrEmpty(defaultDomain))
-                        {
-                            return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidDomain, Message = _options.ClientSettings.Alerts.ErrorInvalidDomain };
-                        }
-                        else if (String.IsNullOrEmpty(defaultDomain))
-                        {
-                            domain = emailFormatLogonDomain;
-                        }
-                        else
-                        {
-                            domain = defaultDomain;
-                        }
-
-                        if (!LogonUser(model.Username, domain, model.CurrentPassword, LogonTypes.Network, LogonProviders.Default, out token))
+                        if (!LogonUser(username, domain, model.CurrentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                         {
                             var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
                             switch (errorCode)
