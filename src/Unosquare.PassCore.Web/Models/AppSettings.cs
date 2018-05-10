@@ -62,10 +62,12 @@ namespace Unosquare.PassCore.Web.Models
     public class Alerts
     {
         public string ErrorInvalidCredentials { get; set; }
-        public string ErrorInvalidDomain {get; set; }
+        public string ErrorInvalidDomain { get; set; }
         public string ErrorPasswordChangeNotAllowed { get; set; }
         public string SuccessAlertBody { get; set; }
         public string SuccessAlertTitle { get; set; }
+        public string ErrorInvalidUserOrPassword { get; set; }
+        public string ErrorCaptcha { get; set; }
     }
 
     public class ErrorsPasswordForm

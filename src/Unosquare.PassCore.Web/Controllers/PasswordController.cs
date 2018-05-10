@@ -71,8 +71,8 @@ namespace Unosquare.PassCore.Web.Controllers
                 {
                     result.Errors.Add(new ApiErrorItem
                     {
-                        ErrorType = ApiErrorType.GeneralFailure,
-                            ErrorCode = ApiErrorCode.InvalidCaptcha
+                        ErrorCode = ApiErrorCode.InvalidCaptcha,
+                        Message = _options.ClientSettings.Alerts.ErrorCaptcha
                     });
                 }
             }
@@ -80,9 +80,8 @@ namespace Unosquare.PassCore.Web.Controllers
             {
                 result.Errors.Add(new ApiErrorItem
                 {
-                    ErrorType = ApiErrorType.GeneralFailure,
-                        ErrorCode = ApiErrorCode.Generic,
-                        Message = ex.Message
+                    ErrorCode = ApiErrorCode.Generic,
+                    Message = ex.Message
                 });
             }
 
@@ -107,10 +106,10 @@ namespace Unosquare.PassCore.Web.Controllers
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey))return true;
+            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey)) return true;
 
             // immediately return false because we don't 
-            if (string.IsNullOrEmpty(recaptchaResponse))return false;
+            if (string.IsNullOrEmpty(recaptchaResponse)) return false;
 
             var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.RecaptchaPrivateKey}&response={recaptchaResponse}";
 

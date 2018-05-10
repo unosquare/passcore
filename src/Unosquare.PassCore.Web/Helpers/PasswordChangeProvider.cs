@@ -22,11 +22,11 @@ namespace Unosquare.PassCore.Web.Helpers
                 // Check for default domain: if none given, ensure EFLD can be used as an override.
                 var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
                 var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
-                        
+
                 // Domain-determinance
                 if (string.IsNullOrEmpty(domain))
                 {
-                    return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidDomain, Message = _options.ClientSettings.Alerts.ErrorInvalidDomain };
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain, Message = _options.ClientSettings.Alerts.ErrorInvalidDomain };
                 }
 
                 var username = parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
@@ -38,17 +38,17 @@ namespace Unosquare.PassCore.Web.Helpers
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.UserNotFound, Message = "Invalid Username or Password" };
+                        return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound, Message = _options.ClientSettings.Alerts.ErrorInvalidUserOrPassword };
                     }
 
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
-                        return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
+                        return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
                     }
 
                     // Validate user credentials
-                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword)== false)
+                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
                     {
                         if (!LogonUser(username, domain, model.CurrentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                         {
@@ -60,7 +60,7 @@ namespace Unosquare.PassCore.Web.Helpers
                                     // Both of these means that the password CAN change and that we got the correct password
                                     break;
                                 default:
-                                    return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.InvalidCredentials, Message = _options.ClientSettings.Alerts.ErrorInvalidCredentials };
+                                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials, Message = _options.ClientSettings.Alerts.ErrorInvalidCredentials };
                             }
                         }
                     }
@@ -72,7 +72,7 @@ namespace Unosquare.PassCore.Web.Helpers
                         {
                             if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
                             {
-                                return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
+                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
                             }
                         }
                     }
@@ -96,7 +96,7 @@ namespace Unosquare.PassCore.Web.Helpers
             }
             catch (Exception ex)
             {
-                return new ApiErrorItem { ErrorType = ApiErrorType.GeneralFailure, ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
+                return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
             }
 
             return null;
