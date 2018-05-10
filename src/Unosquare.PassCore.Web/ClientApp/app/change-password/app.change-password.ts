@@ -15,7 +15,7 @@ import { ViewOptions } from '../models/view-options.model';
 import { ErrorsPasswordForm } from '../models/errors-password-form.model';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const usernameRegex = /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/; // Maybe find a better regex
+const usernameRegex = /^[a-z0-9._-]{3,15}$/; // Maybe find a better regex
 
 @Component({
   selector: 'app-root',
@@ -42,7 +42,6 @@ export class ChangePasswordComponent implements OnInit {
   Loading: boolean = false;
   value: number = 0;
   ViewOptions: ViewOptions;
-  Username: string;
 
   // Form Controls
     FormGroup = new FormGroup({
@@ -155,7 +154,7 @@ export class ChangePasswordComponent implements OnInit {
         this.openDialog(this.ViewOptions.alerts.successAlertTitle, this.ViewOptions.alerts.successAlertBody);
         this.clean('success');
       },
-      errorResponse => {
+        errorResponse => {
           errorResponse.error.errors.forEach((error: any) => {
               this.ErrorAlertMessage += error.message;
           });
