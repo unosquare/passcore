@@ -150,7 +150,6 @@ export class ChangePasswordComponent implements OnInit {
   // Form submission
   Submit() {
     this.Loading = true;
-    this.FormData.Username = this.Username + this.ViewOptions.defaultDomain;
     this.http.post('api/password', this.FormData).subscribe(
       response => {
         this.openDialog(this.ViewOptions.alerts.successAlertTitle, this.ViewOptions.alerts.successAlertBody);
