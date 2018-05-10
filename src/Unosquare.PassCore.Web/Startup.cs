@@ -66,7 +66,6 @@ namespace Unosquare.PassCore.Web
         {
             services.AddOptions();
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
-            services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
 #if DEBUG
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
@@ -87,9 +86,10 @@ namespace Unosquare.PassCore.Web
         {
             // Logging
             log.AddConsole(Configuration.GetSection(LoggingSectionName));
-            log.AddDebug();
 
 #if !DEBUG
+            log.AddDebug();
+
             // HTTPS redirect
             if (settings.Value.EnableHttpsRedirect)
             {
