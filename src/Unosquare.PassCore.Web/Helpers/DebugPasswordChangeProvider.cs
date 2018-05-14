@@ -25,7 +25,22 @@
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message ="Error" };
                 case "notfound":
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
-                // TODO: Add missing error codes
+                case "changeNotPermitted":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
+                case "fieldMismatch":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.FieldMismatch };
+                case "fieldRequired":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.FieldRequired };
+                case "generic":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic };
+                case "invalidCaptcha":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCaptcha };
+                case "invalidCredentials":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
+                case "invalidDomain":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain };
+                case "userNotFound":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
                 default:
                     return null;
             }

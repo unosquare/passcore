@@ -157,7 +157,27 @@ export class ChangePasswordComponent implements OnInit {
         errorResponse => {
           errorResponse.error.errors.forEach((error: any) => {
               // TODO: Create a switch case 0 use message, any other extract error from viewOptions
-              this.ErrorAlertMessage += error.message;
+              this.ErrorAlertMessage = "";
+              switch (error.errorCode) {
+                  case 0:
+                      return this.ErrorAlertMessage += error.message;
+                  case 1:
+                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorFieldRequired;
+                  case 2:
+                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorFieldMismatch;
+                  case 3:
+                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorUserNotFound;
+                  case 4:
+                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorInvalidCredentials;
+                  case 5:
+                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorCaptcha;
+                  case 6:
+                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorPasswordChangeNotAllowed;
+                  case 7:
+                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorInvalidDomain;
+                  default:
+                      return null;
+              }
           });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');
         this.clean('error');
