@@ -31,8 +31,6 @@
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.FieldMismatch };
                 case "fieldRequired":
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.FieldRequired };
-                case "generic":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic };
                 case "invalidCaptcha":
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCaptcha };
                 case "invalidCredentials":

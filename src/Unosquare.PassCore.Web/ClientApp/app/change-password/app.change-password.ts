@@ -15,7 +15,7 @@ import { ViewOptions } from '../models/view-options.model';
 import { ErrorsPasswordForm } from '../models/errors-password-form.model';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const usernameRegex = /^[a-z0-9._-]{3,15}$/; // Maybe find a better regex
+const usernameRegex = /^[a-zA-Z0-9._-]{3,20}$/; // Maybe find a better regex
 
 @Component({
   selector: 'app-root',
@@ -155,9 +155,7 @@ export class ChangePasswordComponent implements OnInit {
         this.clean('success');
       },
         errorResponse => {
-          errorResponse.error.errors.forEach((error: any) => {
-              // TODO: Create a switch case 0 use message, any other extract error from viewOptions
-              this.ErrorAlertMessage = "";
+            errorResponse.error.errors.forEach((error: any) => {
               switch (error.errorCode) {
                   case 0:
                       return this.ErrorAlertMessage += error.message;
@@ -166,7 +164,7 @@ export class ChangePasswordComponent implements OnInit {
                   case 2:
                       return this.ErrorAlertMessage += this.ViewOptions.alerts.errorFieldMismatch;
                   case 3:
-                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorUserNotFound;
+                      return this.ErrorAlertMessage += this.ViewOptions.alerts.errorInvalidUser;
                   case 4:
                       return this.ErrorAlertMessage += this.ViewOptions.alerts.errorInvalidCredentials;
                   case 5:

@@ -56,6 +56,8 @@ namespace Unosquare.PassCore.Web.Models
         public string SuccessAlertTitle { get; set; }
         public string ErrorInvalidUser { get; set; }
         public string ErrorCaptcha { get; set; }
+        public string ErrorFieldRequired { get; set; }
+        public string ErrorFieldMismatch { get; set; }
     }
 
     public class ErrorsPasswordForm
