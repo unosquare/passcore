@@ -156,6 +156,7 @@ export class ChangePasswordComponent implements OnInit {
       },
         errorResponse => {
           errorResponse.error.errors.forEach((error: any) => {
+              // TODO: Create a switch case 0 use message, any other extract error from viewOptions
               this.ErrorAlertMessage += error.message;
           });
         this.openSnackBar(this.ErrorAlertMessage, 'OK');

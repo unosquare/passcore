@@ -9,27 +9,15 @@ namespace Unosquare.PassCore.Web.Models
     {
         public bool EnableHttpsRedirect { get; set; } = true;
         public ClientSettings ClientSettings { get; set; }
-        public PasswordChangeOptions PasswordChangeOptions { get; set; }
         public string RecaptchaPrivateKey { get; set; }
-    }
-
-    public class PasswordChangeOptions
-    {
-        public bool UseAutomaticContext { get; set; } = true;
-        public int LdapPort { get; set; } = 389;
-        public string LdapHostname { get; set; }
-        public string LdapPassword { get; set; }
-        public string LdapUsername { get; set; }
     }
 
     public class ClientSettings
     {
         public Alerts Alerts { get; set; }
-        public bool CheckRestrictedAdGroups { get; set; }
         public bool ShowPasswordMeter { get; set; }
         public ChangePasswordForm ChangePasswordForm { get; set; }
         public ErrorsPasswordForm ErrorsPasswordForm { get; set; }
-        public List<string> RestrictedADGroups { get; set; }
         public Recaptcha Recaptcha { get; set; }
         public string ApplicationTitle { get; set; }
         public string ChangePasswordTitle { get; set; }

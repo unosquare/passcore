@@ -1,6 +1,7 @@
 namespace Unosquare.PassCore.Web
 {
     using Helpers;
+    using Common;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore;
@@ -8,6 +9,7 @@ namespace Unosquare.PassCore.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using PasswordProvider;
     using Models;
 #if !DEBUG
     using Microsoft.AspNetCore.Rewrite;
@@ -70,6 +72,7 @@ namespace Unosquare.PassCore.Web
 #if DEBUG
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
 #else
+            services.Configure<PasswordChangeOptions>(Configuration.GetSection(nameof(PasswordChangeOptions)));
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
 #endif
         }

@@ -5,6 +5,7 @@ namespace Unosquare.PassCore.Web.Controllers
     using System.Threading.Tasks;
     using System;
     using Helpers;
+    using Unosquare.PassCore.Common;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Models;
@@ -69,11 +70,7 @@ namespace Unosquare.PassCore.Web.Controllers
                 // Sonar-Codacy suggested ConfigureAwait
                 if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
                 {
-                    result.Errors.Add(new ApiErrorItem
-                    {
-                        ErrorCode = ApiErrorCode.InvalidCaptcha,
-                        Message = _options.ClientSettings.Alerts.ErrorCaptcha
-                    });
+                    result.Errors.Add(new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCaptcha });
                 }
             }
             catch (Exception ex)
@@ -90,7 +87,20 @@ namespace Unosquare.PassCore.Web.Controllers
                 return BadRequest(result);
             }
 
-            var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(model);
+            // Check for default domain: if none given, ensure EFLD can be used as an override.
+            var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
+
+            // Domain-determinance
+            if (string.IsNullOrEmpty(domain))
+            {
+                result.Errors.Add(new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain });
+                return BadRequest(result);
+            }
+
+            var currentUsername = parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
+
+            var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(currentUsername, model.CurrentPassword, model.NewPassword);
 
             if (resultPasswordChange != null)
             {

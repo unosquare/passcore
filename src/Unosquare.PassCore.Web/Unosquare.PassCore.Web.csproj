@@ -18,7 +18,6 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.*" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.*" />
     <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.*" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.5.0-rc1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.*">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
@@ -35,6 +34,10 @@
     <None Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj" />
+    <ProjectReference Include="..\Unosquare.PassCore.PasswordProvider\Unosquare.PassCore.PasswordProvider.csproj" />
   </ItemGroup>
   <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\package-lock.json')">
     <Exec Command="node --version" ContinueOnError="true">

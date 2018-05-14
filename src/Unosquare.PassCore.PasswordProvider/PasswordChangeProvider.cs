@@ -1,35 +1,25 @@
-﻿namespace PasswordProvider
+﻿namespace Unosquare.PassCore.PasswordProvider
 {
     using System.DirectoryServices.AccountManagement;
     using System;
     using Microsoft.Extensions.Options;
+    using System.Linq;
+    using Common;
 
     public partial class PasswordChangeProvider : IPasswordChangeProvider
     {
-        private readonly  _options;
+        private readonly PasswordChangeOptions  _options;
 
-        public PasswordChangeProvider(IOptions<> options)
+        public PasswordChangeProvider(IOptions<PasswordChangeOptions> options)
         {
             _options = options.Value;
         }
 
-        public ApiErrorItem PerformPasswordChange(ChangePasswordModel model)
+        public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             // perform the password change
             try
             {
-                // Check for default domain: if none given, ensure EFLD can be used as an override.
-                var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
-
-                // Domain-determinance
-                if (string.IsNullOrEmpty(domain))
-                {
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain, Message = _options.ClientSettings.Alerts.ErrorInvalidDomain };
-                }
-
-                var username = parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
-
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
@@ -37,31 +27,31 @@
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound, Message = _options.ClientSettings.Alerts.ErrorInvalidUser };
+                        return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
                     }
 
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
+                        return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
                     }
 
                     // Verify user is not a member of an excluded group
-                    if (_options.ClientSettings.CheckRestrictedAdGroups)
+                    if (_options.CheckRestrictedAdGroups)
                     {
                         foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
                         {
-                            if (_options.ClientSettings.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                            if (_options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
                             {
-                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted, Message = _options.ClientSettings.Alerts.ErrorPasswordChangeNotAllowed };
+                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
                             }
                         }
                     }
 
                     // Validate user credentials
-                    if (principalContext.ValidateCredentials(model.Username, model.CurrentPassword) == false)
+                    if (principalContext.ValidateCredentials(username, currentPassword) == false)
                     {
-                        if (!LogonUser(username, domain, model.CurrentPassword, LogonTypes.Network, LogonProviders.Default, out _))
+                        if (!LogonUser(username, username.Split('@').Last(), currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                         {
                             var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
                             switch (errorCode)
@@ -71,7 +61,7 @@
                                     // Both of these means that the password CAN change and that we got the correct password
                                     break;
                                 default:
-                                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials, Message = _options.ClientSettings.Alerts.ErrorInvalidCredentials };
+                                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
                             }
                         }
                     }
@@ -80,14 +70,14 @@
                     try
                     {
                         // Try by regular ChangePassword method
-                        userPrincipal.ChangePassword(model.CurrentPassword, model.NewPassword);
+                        userPrincipal.ChangePassword(currentPassword,newPassword);
                     }
                     catch
                     {
-                        if (_options.PasswordChangeOptions.UseAutomaticContext) { throw; }
+                        if (_options.UseAutomaticContext) { throw; }
 
                         // If the previous attempt failed, use the SetPassword method.
-                        userPrincipal.SetPassword(model.NewPassword);
+                        userPrincipal.SetPassword(newPassword);
                     }
 
                     userPrincipal.Save();
@@ -105,7 +95,7 @@
         {
             PrincipalContext principalContext;
 
-            if (_options.PasswordChangeOptions.UseAutomaticContext)
+            if (_options.UseAutomaticContext)
             {
                 principalContext = new PrincipalContext(ContextType.Domain);
             }
@@ -113,9 +103,9 @@
             {
                 principalContext = new PrincipalContext(
                     ContextType.Domain,
-                    $"{_options.PasswordChangeOptions.LdapHostname}:{_options.PasswordChangeOptions.LdapPort}",
-                    _options.PasswordChangeOptions.LdapUsername,
-                    _options.PasswordChangeOptions.LdapPassword);
+                    $"{_options.LdapHostname}:{_options.LdapPort}",
+                    _options.LdapUsername,
+                    _options.LdapPassword);
             }
 
             return principalContext;

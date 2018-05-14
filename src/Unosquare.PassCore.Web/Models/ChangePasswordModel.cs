@@ -1,5 +1,6 @@
 namespace Unosquare.PassCore.Web.Models
 {
+    using Common;
     using System.ComponentModel.DataAnnotations;
 
     public class ChangePasswordModel

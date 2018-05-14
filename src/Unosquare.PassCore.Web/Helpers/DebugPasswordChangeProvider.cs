@@ -3,6 +3,7 @@
     using System;
     using Models;
     using Microsoft.Extensions.Options;
+    using Common;
 
     // Sonar-Codacy thought we needed a static method here; and suggested dual default nulls was pointless.
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
@@ -14,16 +15,17 @@
             _options = options.Value;
         }
 
-        public ApiErrorItem PerformPasswordChange(ChangePasswordModel model)
+        public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            var username = model.Username.Substring(0, model.Username.IndexOf("@", StringComparison.Ordinal));
+            var currentUsername = username.Substring(0, username.IndexOf("@", StringComparison.Ordinal));
 
-            switch (username)
+            switch (currentUsername)
             {
                 case "error":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = _options.ClientSettings.Alerts.ErrorCaptcha };
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message ="Error" };
                 case "notfound":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound, Message = _options.ClientSettings.Alerts.ErrorInvalidUser };
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
+                // TODO: Add missing error codes
                 default:
                     return null;
             }
