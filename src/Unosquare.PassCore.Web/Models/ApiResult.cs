@@ -3,6 +3,7 @@ namespace Unosquare.PassCore.Web.Models
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
+    using Common;
 
     /// <summary>
     /// Represent a generic response from a REST API call

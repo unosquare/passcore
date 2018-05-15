@@ -1,12 +1,12 @@
-#pragma warning disable SA1310 // Field names must not contain underscore
-namespace Unosquare.PassCore.Web.Helpers
+﻿#pragma warning disable SA1310 // Field names must not contain underscore
+namespace Unosquare.PassCore.PasswordProvider
 {
     using System;
 
     /// <summary>
     /// This code is taken from the answer https://stackoverflow.com/a/1766203 from https://stackoverflow.com/questions/1394025/active-directory-ldap-check-account-locked-out-password-expired
     /// </summary>
-    internal partial class PasswordChangeProvider
+    partial class PasswordChangeProvider
     {
         // See http://support.microsoft.com/kb/155012
         internal const int ERROR_PASSWORD_MUST_CHANGE = 1907;

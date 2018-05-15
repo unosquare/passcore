@@ -2,28 +2,33 @@
 {
     using System;
     using Models;
-    using Microsoft.Extensions.Options;
+    using Common;
 
     // Sonar-Codacy thought we needed a static method here; and suggested dual default nulls was pointless.
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
-        private readonly AppSettings _options;
-
-        public DebugPasswordChangeProvider(IOptions<AppSettings> options)
+        public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            _options = options.Value;
-        }
+            var currentUsername = username.Substring(0, username.IndexOf("@", StringComparison.Ordinal));
 
-        public ApiErrorItem PerformPasswordChange(ChangePasswordModel model)
-        {
-            var username = model.Username.Substring(0, model.Username.IndexOf("@", StringComparison.Ordinal));
-
-            switch (username)
+            switch (currentUsername)
             {
                 case "error":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = _options.ClientSettings.Alerts.ErrorCaptcha };
-                case "notfound":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound, Message = _options.ClientSettings.Alerts.ErrorInvalidUser };
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message ="Error" };
+                case "changeNotPermitted":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
+                case "fieldMismatch":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.FieldMismatch };
+                case "fieldRequired":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.FieldRequired };
+                case "invalidCaptcha":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCaptcha };
+                case "invalidCredentials":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
+                case "invalidDomain":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain };
+                case "userNotFound":
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
                 default:
                     return null;
             }

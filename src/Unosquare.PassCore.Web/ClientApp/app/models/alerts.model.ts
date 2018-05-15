@@ -4,4 +4,8 @@ export class Alerts {
     errorPasswordChangeNotAllowed: string;
     successAlertBody: string;
     successAlertTitle: string;
+    errorFieldRequired: string;
+    errorFieldMismatch: string;
+    errorInvalidUser: string;
+    errorCaptcha: string;
   }

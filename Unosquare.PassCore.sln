@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unosquare.PassCore.Web", "src\Unosquare.PassCore.Web\Unosquare.PassCore.Web.csproj", "{22E2F79B-7816-4FAB-894D-112759551796}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unosquare.PassCore.PasswordProvider", "src\Unosquare.PassCore.PasswordProvider\Unosquare.PassCore.PasswordProvider.csproj", "{4329B3BC-3CD4-4A19-AAAC-6EB7200DA29A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.PassCore.Common", "src\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj", "{E80F6938-B399-44DD-8BF0-A27DFD7A6B7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,12 +29,22 @@ Global
 		{22E2F79B-7816-4FAB-894D-112759551796}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22E2F79B-7816-4FAB-894D-112759551796}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22E2F79B-7816-4FAB-894D-112759551796}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4329B3BC-3CD4-4A19-AAAC-6EB7200DA29A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4329B3BC-3CD4-4A19-AAAC-6EB7200DA29A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4329B3BC-3CD4-4A19-AAAC-6EB7200DA29A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4329B3BC-3CD4-4A19-AAAC-6EB7200DA29A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80F6938-B399-44DD-8BF0-A27DFD7A6B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80F6938-B399-44DD-8BF0-A27DFD7A6B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80F6938-B399-44DD-8BF0-A27DFD7A6B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80F6938-B399-44DD-8BF0-A27DFD7A6B7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{22E2F79B-7816-4FAB-894D-112759551796} = {0A003964-77CA-4779-BD97-BADDD710A745}
+		{4329B3BC-3CD4-4A19-AAAC-6EB7200DA29A} = {0A003964-77CA-4779-BD97-BADDD710A745}
+		{E80F6938-B399-44DD-8BF0-A27DFD7A6B7A} = {0A003964-77CA-4779-BD97-BADDD710A745}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30FE6198-367B-44D3-97CC-50927E101F3E}
