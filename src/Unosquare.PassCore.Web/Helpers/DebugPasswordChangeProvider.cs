@@ -23,8 +23,6 @@
             {
                 case "error":
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message ="Error" };
-                case "notfound":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
                 case "changeNotPermitted":
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
                 case "fieldMismatch":
