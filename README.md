@@ -101,6 +101,7 @@ To run as a sub application you need to modify the `base href="/"` value in the 
   1. Click: "World Wide Web Services"
   1. Click: "Application Development Features"
   1. Check the features.
+- If you / your user's current password never seems to be accepted for reset; the affected person may need to use a domain-connected PC to login and reset their password on it first. Updated group policy settings could be blocking user changes, until a local login is completed.
 
 ### LDAP Support (under review)
 
