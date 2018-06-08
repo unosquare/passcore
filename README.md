@@ -93,7 +93,7 @@ To run as a sub application you need to modify the `base href="/"` value in the 
 
 ## Troubleshooting
 
-- If you find an **HTTP Error 502.5**, ensure you have installed [.NET Core Runtime 2.0.6 / SDK 2.1.2](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.6-download.md), or better.
+- At first run if you find an error (e.g. **HTTP Error 502.5**) first ensure you have installed [.NET Core Runtime 2.1.0 / SDK 2.1.300](https://www.microsoft.com/net/download/windows), or better.
 - If you find an [HTTP Error 500](https://stackoverflow.com/questions/45415832/http-error-500-19-in-iis-10-and-visual-studio-2017) you can try
   1. Press Win Key+R to Open Run Window
   1. in the Run Window, enter "OptionalFeatures.exe"
