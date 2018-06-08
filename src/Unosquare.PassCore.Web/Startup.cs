@@ -48,16 +48,15 @@ namespace Unosquare.PassCore.Web
         /// <param name="args">The arguments.</param>
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         #endregion
         #region Methods
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
-            .Build();
+            .UseStartup<Startup>();
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
