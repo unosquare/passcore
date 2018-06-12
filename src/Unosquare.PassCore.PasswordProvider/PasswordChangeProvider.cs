@@ -37,11 +37,22 @@
                     }
 
                     // Verify user is not a member of an excluded group
-                    if (_options.CheckRestrictedAdGroups)
+                    if (_options.AdGroups.CheckRestricted)
                     {
                         foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
                         {
-                            if (_options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                            if (_options.AdGroups.Restricted.Contains(userPrincipalAuthGroup.Name))
+                            {
+                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
+                            }
+                        }
+                    }
+
+                    if (_options.AdGroups.CheckAllowed)
+                    {
+                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                        {
+                            if (!_options.AdGroups.Allowed.Contains(userPrincipalAuthGroup.Name))
                             {
                                 return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
                             }
