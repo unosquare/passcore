@@ -9,14 +9,9 @@
         public string LdapHostname { get; set; }
         public string LdapPassword { get; set; }
         public string LdapUsername { get; set; }
-        public AdGroups AdGroups { get; set; }
-    }
-
-    public class AdGroups
-    {
-        public bool CheckRestricted { get; set; }
-        public List<string> Restricted { get; set; }
-        public bool CheckAllowed { get; set; }
-        public List<string> Allowed { get; set; }
+        public List<string> RestrictedADGroups { get; set; }
+        public bool CheckRestrictedAdGroups { get; set; }
+        public List<string> AllowedADGroups { get; set; }
+        public bool CheckAllowedAdGroups { get; set; }
     }
 }
