@@ -13,9 +13,7 @@ import { Recaptcha } from '../models/recaptcha.model';
 import { Title } from '@angular/platform-browser';
 import { ViewOptions } from '../models/view-options.model';
 import { ErrorsPasswordForm } from '../models/errors-password-form.model';
-
-const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const usernameRegex = /^[a-zA-Z0-9._-]{3,20}$/; // Maybe find a better regex
+import { ValidationRegex } from '../models/validation-regex.model';
 
 @Component({
   selector: 'app-root',
@@ -59,6 +57,7 @@ export class ChangePasswordComponent implements OnInit {
     this.ViewOptions.recaptcha = new Recaptcha;
     this.ViewOptions.changePasswordForm = new ChangePasswordForm;
     this.ViewOptions.errorsPasswordForm = new ErrorsPasswordForm;
+    this.ViewOptions.validationRegex = new ValidationRegex();
     this.r.queryParams.subscribe((params: Params) => {
         let userId = params['userName'] || '';
         this.GetData(userId);
@@ -134,9 +133,9 @@ export class ChangePasswordComponent implements OnInit {
                 sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
               }
               if (this.ViewOptions.defaultDomain) {
-                  this.FormGroup.get('username').setValidators(Validators.pattern(usernameRegex));
+                  this.FormGroup.get('username').setValidators(Validators.pattern(this.ViewOptions.validationRegex.usernameRegex));
               } else {
-                  this.FormGroup.get('username').setValidators(Validators.pattern(emailRegex));
+                  this.FormGroup.get('username').setValidators(Validators.pattern(this.ViewOptions.validationRegex.emailRegex));
               }
             });
   }
