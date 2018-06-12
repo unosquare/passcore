@@ -11,5 +11,7 @@
         public string LdapUsername { get; set; }
         public List<string> RestrictedADGroups { get; set; }
         public bool CheckRestrictedAdGroups { get; set; }
+        public List<string> AllowedADGroups { get; set; }
+        public bool CheckAllowedAdGroups { get; set; }
     }
 }

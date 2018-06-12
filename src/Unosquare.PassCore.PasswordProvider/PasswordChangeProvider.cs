@@ -48,6 +48,17 @@
                         }
                     }
 
+                    if (_options.CheckAllowedAdGroups)
+                    {
+                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                        {
+                            if (!_options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
+                            {
+                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
+                            }
+                        }
+                    }
+
                     // Validate user credentials
                     if (principalContext.ValidateCredentials(username, currentPassword) == false)
                     {

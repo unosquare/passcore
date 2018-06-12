@@ -1,7 +1,5 @@
 namespace Unosquare.PassCore.Web.Models
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Represents all of the strongly-typed application settings loaded from a JSON file
     /// </summary>
@@ -22,6 +20,7 @@ namespace Unosquare.PassCore.Web.Models
         public string ApplicationTitle { get; set; }
         public string ChangePasswordTitle { get; set; }
         public string DefaultDomain { get; set; }
+        public ValidationRegex ValidationRegex { get; set; }
     }
 
     public class ChangePasswordForm
@@ -66,5 +65,11 @@ namespace Unosquare.PassCore.Web.Models
         public string PasswordMatch { get; set; }
         public string UsernameEmailPattern { get; set; }
         public string UsernamePattern { get; set; }
+    }
+
+    public class ValidationRegex
+    {
+        public string EmailRegex { get; set; }
+        public string UsernameRegex { get; set; }
     }
 }
