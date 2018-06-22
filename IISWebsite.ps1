@@ -7,13 +7,13 @@ $iisAppPoolName = "Passcore Pool PS"
 $iisAppPoolDotNetVersion = ""
 $iisAppPoolStartMode = "AlwaysRunning"
 #the directory where you will be serving the website from
-$directoryPath = $args[0]
+$directoryPath = (Get-Item -Path $args[0]).FullName
 
 try {
     Import-Module WebAdministration
 
     #navigate to the app pools root
-    cd IIS:\AppPools\
+    Set-Location IIS:\AppPools\
     
     #check if the app pool exists
     if (!(Test-Path $iisAppPoolName -pathType container))
@@ -40,11 +40,15 @@ try {
     $iisApp = New-Item $iisAppName -bindings @{protocol="http";bindingInformation="*:9091:"} -physicalPath $directoryPath
     $iisApp | Set-ItemProperty -Name "applicationPool" -Value $iisAppPoolName
     
+    Start-Sleep -s 3
+
     $request = Invoke-WebRequest -Uri "http://localhost:9091"
     if ($request.StatusCode -ne 200) {
         Write-Host "HTTP Error"
         exit 1
     }
+
+    Write-Host "Website request status: $($request.StatusCode)"
 }
 finally {
     Set-Location $currentDirectory
