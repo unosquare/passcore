@@ -40,8 +40,6 @@ try {
     $iisApp = New-Item $iisAppName -bindings @{protocol="http";bindingInformation="*:9091:"} -physicalPath $directoryPath
     $iisApp | Set-ItemProperty -Name "applicationPool" -Value $iisAppPoolName
     
-    Start-Sleep -s 3
-
     $site = Get-Website $iisAppName
     Get-IISAppPool $iisAppPoolName
     $site
@@ -50,6 +48,17 @@ try {
         Write-Host "No site was created"
         exit 1
     }
+
+    Start-WebAppPool -Name $iisAppPoolName
+    Start-Website -Name $iisAppName
+
+    $request = Invoke-WebRequest -Uri "http://localhost:9091"
+    if ($request.StatusCode -ne 200) {
+        Write-Host "HTTP Error"
+        exit 1
+    }
+
+    Write-Host "Website request status: $($request.StatusCode)"
 }
 finally {
     Set-Location $currentDirectory
