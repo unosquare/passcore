@@ -8,4 +8,4 @@ before_build:
 build_script:
 - dotnet build
 - dotnet publish -c Release
--ps: ./IISWebsite.ps1 ./src/Unosquare.PassCore.Web/bin/Release/netcoreapp2.1/publish/
+- ps: ./IISWebsite.ps1 ./src/Unosquare.PassCore.Web/bin/Release/netcoreapp2.1/publish/
