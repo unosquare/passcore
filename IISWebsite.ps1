@@ -40,7 +40,7 @@ try {
     $iisApp = New-Item $iisAppName -bindings @{protocol="http";bindingInformation="*:9091:"} -physicalPath $directoryPath
     $iisApp | Set-ItemProperty -Name "applicationPool" -Value $iisAppPoolName
     
-    $request = Invoke-WebRequest -Uri "http://localhost"
+    $request = Invoke-WebRequest -Uri "http://localhost:9091"
     if ($request.StatusCode -ne 200) {
         Write-Host "HTTP Error"
         exit 1
