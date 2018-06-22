@@ -3,6 +3,7 @@
 $currentDirectory = (Get-Item -Path ".\").FullName
 
 $iisAppName = "passcore"
+$iisAppPort = "8080"
 $iisAppPoolName = "Passcore Pool PS"
 $iisAppPoolDotNetVersion = ""
 $iisAppPoolStartMode = "AlwaysRunning"
@@ -37,7 +38,7 @@ try {
     
     Write-Host "Creating $($iisAppName) on IIS"
     #create the site
-    $iisApp = New-Item $iisAppName -bindings @{protocol="http";bindingInformation="*:9091:"} -physicalPath $directoryPath
+    $iisApp = New-Item $iisAppName -bindings @{protocol="http";bindingInformation="*:$($iisAppPort):"} -physicalPath $directoryPath
     $iisApp | Set-ItemProperty -Name "applicationPool" -Value $iisAppPoolName
     
     $site = Get-Website $iisAppName
@@ -52,7 +53,7 @@ try {
     Start-WebAppPool -Name $iisAppPoolName
     Start-Website -Name $iisAppName
 
-    $request = Invoke-WebRequest -Uri "http://localhost:9091"
+    $request = Invoke-WebRequest -Uri "http://localhost:$($iisAppPort)"
     if ($request.StatusCode -ne 200) {
         Write-Host "HTTP Error"
         exit 1
