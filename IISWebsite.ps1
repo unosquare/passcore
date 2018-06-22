@@ -42,13 +42,14 @@ try {
     
     Start-Sleep -s 3
 
-    $request = Invoke-WebRequest -Uri "http://localhost:9091"
-    if ($request.StatusCode -ne 200) {
-        Write-Host "HTTP Error"
+    $site = Get-Website $iisAppName
+    Get-IISAppPool $iisAppPoolName
+    $site
+    
+    if(!$site) {
+        Write-Host "No site was created"
         exit 1
     }
-
-    Write-Host "Website request status: $($request.StatusCode)"
 }
 finally {
     Set-Location $currentDirectory
