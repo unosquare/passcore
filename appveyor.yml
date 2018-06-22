@@ -6,5 +6,5 @@ install:
 before_build:
 - dotnet restore --verbosity q
 build_script:
-- dotnet publish -c Release
-- ps: ./IISWebsite.ps1 "./src/Unosquare.PassCore.Web/bin/Release/netcoreapp2.1/publish/"
+- dotnet publish -c Release --output "C:/passcore"
+- ps: ./IISWebsite.ps1 "C:/passcore"
