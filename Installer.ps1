@@ -23,7 +23,6 @@ $zipPath = "$($directory)\$($zipName)"
 
 # Downloading
 Write-Host "Downloading $($zipName)"
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath -UseBasicParsing
 
 # Unzipping

@@ -1,4 +1,19 @@
-﻿Write-Host "Configuring IIS"
+﻿$iis = Get-Service W3svc -ErrorAction Ignore
+if($iis){
+    if($iis.Status -eq "Running") {
+        Write-Host "World Wide Web Publishing is running"
+    }
+    else {
+        Write-Host "World Wide Web Publishing is not running"
+        exit 1
+    }
+}
+else {
+    Write-Host "World Wide Web Publishing not installed"
+    exit 1
+}
+
+Write-Host "Configuring IIS"
 
 $currentDirectory = (Get-Item -Path ".\").FullName
 
