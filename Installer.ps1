@@ -12,7 +12,7 @@ $repo = "unosquare/passcore"
 $releasesUrl = "https://api.github.com/repos/$repo/releases"
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$releases = Invoke-WebRequest $releasesUrl
+$releases = Invoke-WebRequest $releasesUrl -UseBasicParsing
 
 $releasesJson = ($releases.Content | ConvertFrom-Json)[0]
 $assetsJson = $releasesJson.assets
@@ -24,12 +24,12 @@ $zipPath = "$($directory)\$($zipName)"
 # Downloading
 Write-Host "Downloading $($zipName)"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Write-Host Downloading zip
-Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
+Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath -UseBasicParsing
 
 # Unzipping
 Write-Host "Unzipping"
 Expand-Archive $zipPath -dest $directory -force
+Remove-Item $zipPath
 
 # IIS setup script
 Write-Host "ISS setup runnig"
@@ -37,4 +37,10 @@ $iisSetup = (new-object net.webclient).DownloadString('https://raw.githubusercon
 
 Invoke-Command -ScriptBlock ([scriptblock]::Create($iisSetup)) -ArgumentList $directory
 
-## TODO: Open appsettings.json in notepad to let the users set their configuration
+Start-Process notepad .\appsettings.json -NoNewWindow -Wait
+
+Write-Host "Restarting website"
+
+Import-Module WebAdministration
+Stop-WebSite 'passcore'
+Start-WebSite 'passcore'
