@@ -9,4 +9,4 @@ before_build:
 - net start W3SVC
 build_script:
 - dotnet publish -c Release --output "C:/passcore"
-- ps: ./IISWebsite.ps1 "C:/passcore"
+- ps: ./IISSetup.ps1 "C:/passcore"
