@@ -32,7 +32,7 @@ Remove-Item $zipPath
 
 # IIS setup script
 Write-Host "ISS setup runnig"
-$iisSetup = (new-object net.webclient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/Issue141-AppVeyorIntegrationTest/IISSetup.ps1')
+$iisSetup = (new-object net.webclient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1')
 
 Invoke-Command -ScriptBlock ([scriptblock]::Create($iisSetup)) -ArgumentList $directory
 

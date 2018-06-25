@@ -12,6 +12,7 @@
   - [Overview](#overview)
     - [Features](#features)
   - [Installation on IIS](#installation-on-iis)
+  - [PowerShell Installer](#powershell-installer)
   - [Customization and Configuration](#customization-and-configuration)
     - [Running as a sub application](#running-as-a-sub-application)
   - [Troubleshooting](#troubleshooting)
@@ -58,6 +59,10 @@ PassCore has the following features:
 1. Click *OK* and navigate to `https://password.yourdomain.com` (the host name you previously set). If all is set then you should be able to see the PassCore tool show up in your browser.
 
 **NOTE:** If you have a previous version, you **can not** use the same `appsettings.json` file. Please update your settings manually editing the new file.
+
+## PowerShell Installer
+
+You can download the [installer](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1), that would download the latest release of passcore and configure the IIS for you, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled the world wide web publishing service.
 
 ## Customization and Configuration
 
