@@ -38,6 +38,8 @@ PassCore has the following features:
 
 ## Installation on IIS
 
+*You can easily install using Powershell. Check the next section to know how.*
+
 1. Ensure the server running IIS is domain-joined. To determine if the computer is domain-joined:
     - Go to the *Start* menu, right click on *Computer*, then select *Properties*
     - Make sure the *Domain* field contains the correct setting.
@@ -62,7 +64,12 @@ PassCore has the following features:
 
 ## PowerShell Installer
 
-You can download the [installer](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1), that would download the latest release of passcore and configure the IIS for you, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled the world wide web publishing service.
+You can use PowerShell to download and setup Passcore using the following command line:
+
+`Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))`
+
+Or if you want to customize your installation please download the [installer](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1), that would download the latest release of passcore and configure the IIS for you, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled the world wide web publishing service.
+
 
 ## Customization and Configuration
 
