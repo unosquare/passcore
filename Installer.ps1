@@ -30,7 +30,16 @@ Write-Host "Unzipping"
 Expand-Archive $zipPath -dest $directory -force
 Remove-Item $zipPath
 
+# Checkin for Net Core Host
+$netCoreHost = Get-wmiobject -class win32_product | Where-Object {$_.Name -match "Microsoft .NET Core Host - 2.1.0" }
+if([string]::IsNullOrEmpty($netCoreHost)) {
+    Write-Host "Please install the hosting bundle and then restart the installation"
+    Start-Process "https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer"
+    exit 1
+}
+
 # IIS setup script
+# Comment or delete the follow lines if you are making a custom installation and setup
 Write-Host "ISS setup runnig"
 $iisSetup = (new-object net.webclient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1')
 
