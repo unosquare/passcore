@@ -12,6 +12,7 @@
   - [Overview](#overview)
     - [Features](#features)
   - [Installation on IIS](#installation-on-iis)
+  - [PowerShell Installer](#powershell-installer)
   - [Customization and Configuration](#customization-and-configuration)
     - [Running as a sub application](#running-as-a-sub-application)
   - [Troubleshooting](#troubleshooting)
@@ -37,6 +38,8 @@ PassCore has the following features:
 
 ## Installation on IIS
 
+*You can easily install using Powershell. Check the next section to know how.*
+
 1. Ensure the server running IIS is domain-joined. To determine if the computer is domain-joined:
     - Go to the *Start* menu, right click on *Computer*, then select *Properties*
     - Make sure the *Domain* field contains the correct setting.
@@ -58,6 +61,16 @@ PassCore has the following features:
 1. Click *OK* and navigate to `https://password.yourdomain.com` (the host name you previously set). If all is set then you should be able to see the PassCore tool show up in your browser.
 
 **NOTE:** If you have a previous version, you **can not** use the same `appsettings.json` file. Please update your settings manually editing the new file.
+
+## PowerShell Installer
+
+You can use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled the world wide web publishing service:
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))
+```
+
+Using the above command will install to the folder `C:\passcore` and using the HTTP Port 8080 with the default (localhost) binding.If you want to customize your installation please download the [installer script](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1) and the [IIS setup script](https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1).
 
 ## Customization and Configuration
 

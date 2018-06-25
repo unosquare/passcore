@@ -5,5 +5,8 @@ install:
 - ps: Install-Product node 8
 before_build:
 - dotnet restore --verbosity q
+- iisreset
+- net start W3SVC
 build_script:
-- dotnet build
+- dotnet publish -c Release --output "C:/passcore"
+- ps: ./IISSetup.ps1 "C:/passcore"
