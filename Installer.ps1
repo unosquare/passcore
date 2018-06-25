@@ -36,10 +36,10 @@ $iisSetup = (new-object net.webclient).DownloadString('https://raw.githubusercon
 
 Invoke-Command -ScriptBlock ([scriptblock]::Create($iisSetup)) -ArgumentList $directory
 
+Write-Host "Once you finish configuring appsettings.json, passcore will restart" 
 Start-Process notepad .\appsettings.json -NoNewWindow -Wait
 
-Write-Host "Restarting website"
-
+Write-Host "Restarting passcore"
 Import-Module WebAdministration
 Stop-WebSite 'passcore'
 Start-WebSite 'passcore'
