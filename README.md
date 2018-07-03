@@ -55,7 +55,7 @@ PassCore has the following features:
 1. Back on your *IIS Manager*, right click on *Sites* and select *Add Website*
 1. A dialog appears. Under *Site name*, enter **PassCore Website**. Under *Application pool* click on *Select* and ensure you select **PassCore Application Pool**. Under *Physical path*, click on the ellispsis *(...)*, navigate to the folder where you extracted PassCore.
     - **Important:** Make sure the Physical path points to the *parent* folder which is the one containing the files, *logs* and *wwwroot* folders.
-    - **NOTE:** If the folder `logs` is not there you can created. To enable the logs you need to change `stdoutLogEnabled` to `true` in the `web.config` file.
+    - **NOTE:** If the folder `logs` is not there you can created. To enable the logs you need to change `stdoutLogEnabled` to `true` in the `web.config` file. You need to add *Full Control* permissions to your IIS Application Pool account (see Troubleshooting).
 1. Under the *Binding section* of the same dialog, configure the *Type* to be **https**, set *IP Address* to **All Unassigned**, the *Port* to **443** and the *Host name* to something like **password.yourdomain.com**. Under *SSL Certificate* select a certificate that matches the Host name you provided above. If you don't know how to install a certificate, please refer to [SSL Certificate Install on IIS 8](https://www.digicert.com/ssl-certificate-installation-microsoft-iis-8.htm) or [SSL Certificate Install on IIS 10](https://www.digicert.com/csr-creation-ssl-installation-iis-10.htm) , in order to install a proper certificate.
     - **Important:** Do not serve this website without an SSL certificate because requests and responses will be transmitted in cleartext and an attacker could easily retrieve these messages and collect usernames and passwords.
 1. Click *OK* and navigate to `https://password.yourdomain.com` (the host name you previously set). If all is set then you should be able to see the PassCore tool show up in your browser.
@@ -64,13 +64,15 @@ PassCore has the following features:
 
 ## PowerShell Installer
 
-You can use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled the world wide web publishing service:
+You can use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))
 ```
 
 Using the above command will install to the folder `C:\passcore` and using the HTTP Port 8080 with the default (localhost) binding.If you want to customize your installation please download the [installer script](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1) and the [IIS setup script](https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1).
+
+**NOTE:** You need PowerShell version 5 or better to execute the script.
 
 ## Customization and Configuration
 
@@ -115,6 +117,10 @@ To run as a sub application you need to modify the `base href="/"` value in the 
   1. Click: "Application Development Features"
   1. Check the features.
 - If you / your user's current password never seems to be accepted for reset; the affected person may need to use a domain-connected PC to login and reset their password on it first. Updated group policy settings could be blocking user changes, until a local login is completed.
+- You can add permissions to your log folder using [icacls](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls)
+```
+icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>":M /t
+```
 
 ### LDAP Support (under review)
 
