@@ -1,0 +1,8 @@
+language: csharp
+dotnet: 2.1.300
+dist: trusty
+sudo: false
+install:
+  - dotnet restore
+script:
+  - dotnet build
