@@ -5,6 +5,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/76nxqw893mk7xfb9/branch/master?svg=true)](https://ci.appveyor.com/project/geoperez/passcore/branch/master)
 [![Github All Releases](https://img.shields.io/github/downloads/unosquare/passcore/total.svg)](https://github.com/unosquare/passcore/releases)
 [![Analytics](https://ga-beacon.appspot.com/UA-8535255-2/unosquare/passcore/)](https://github.com/igrigorik/ga-beacon)
+[![Build Status](https://travis-ci.org/unosquare/passcore.svg?branch=master)](https://travis-ci.org/unosquare/passcore)
 
 *:star:Please star this project if you find it useful!*
 
