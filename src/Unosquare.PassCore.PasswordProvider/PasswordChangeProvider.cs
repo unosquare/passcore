@@ -36,14 +36,12 @@
                     {
                         return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
                     }
+
                     // Check if password expired or must be changed
                     if (userPrincipal.LastPasswordSet == null)
                     {
-                        PropertyValueCollection prop = null;
-                        DirectoryEntry der = null;
-                        der = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
-
-                        prop = der.Properties["pwdLastSet"];
+                        var der = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
+                        var prop = der.Properties["pwdLastSet"];
 
                         if (prop != null)
                         {
@@ -83,23 +81,8 @@
                         }
                     }
 
-                    // Validate user credentials
-                    if (principalContext.ValidateCredentials(username, currentPassword) == false)
-                    {
-                        if (!LogonUser(username, username.Split('@').Last(), currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
-                        {
-                            var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
-                            switch (errorCode)
-                            {
-                                case ERROR_PASSWORD_MUST_CHANGE:
-                                case ERROR_PASSWORD_EXPIRED:
-                                    // Both of these means that the password CAN change and that we got the correct password
-                                    break;
-                                default:
-                                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
-                            }
-                        }
-                    }
+                    if (ValidateUserCredentials(username, currentPassword, principalContext) == false) 
+                        return new ApiErrorItem {ErrorCode = ApiErrorCode.InvalidCredentials};
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
                     try
@@ -126,24 +109,29 @@
             return null;
         }
 
+        private static bool ValidateUserCredentials(string username, string currentPassword, PrincipalContext principalContext)
+        {
+            if (principalContext.ValidateCredentials(username, currentPassword)) 
+                return true;
+
+            if (LogonUser(username, username.Split('@').Last(), currentPassword, LogonTypes.Network, LogonProviders.Default, out _)) 
+                return true;
+            
+            var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+
+            // Both of these means that the password CAN change and that we got the correct password
+            return errorCode == ERROR_PASSWORD_MUST_CHANGE || errorCode == ERROR_PASSWORD_EXPIRED;
+        }
+
         private PrincipalContext AcquirePrincipalContext()
         {
-            PrincipalContext principalContext;
-
-            if (_options.UseAutomaticContext)
-            {
-                principalContext = new PrincipalContext(ContextType.Domain);
-            }
-            else
-            {
-                principalContext = new PrincipalContext(
+            return _options.UseAutomaticContext
+                ? new PrincipalContext(ContextType.Domain)
+                : new PrincipalContext(
                     ContextType.Domain,
                     $"{_options.LdapHostname}:{_options.LdapPort}",
                     _options.LdapUsername,
                     _options.LdapPassword);
-            }
-
-            return principalContext;
         }
     }
 }
