@@ -1,6 +1,7 @@
 ﻿namespace Unosquare.PassCore.PasswordProvider
 {
     using System.DirectoryServices.AccountManagement;
+    using System.DirectoryServices;
     using System;
     using Microsoft.Extensions.Options;
     using System.Linq;
@@ -8,7 +9,7 @@
 
     public partial class PasswordChangeProvider : IPasswordChangeProvider
     {
-        private readonly PasswordChangeOptions  _options;
+        private readonly PasswordChangeOptions _options;
 
         public PasswordChangeProvider(IOptions<PasswordChangeOptions> options)
         {
@@ -34,6 +35,29 @@
                     if (userPrincipal.UserCannotChangePassword)
                     {
                         return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
+                    }
+                    // Check if password expired or must be changed
+                    if (userPrincipal.LastPasswordSet == null)
+                    {
+                        PropertyValueCollection prop = null;
+                        DirectoryEntry der = null;
+                        der = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
+
+                        prop = der.Properties["pwdLastSet"];
+
+                        if (prop != null)
+                        {
+                            prop.Value = -1;
+                        }
+
+                        try
+                        {
+                            der.CommitChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message=ex.Message };
+                        }
                     }
 
                     // Verify user is not a member of an excluded group
@@ -81,7 +105,7 @@
                     try
                     {
                         // Try by regular ChangePassword method
-                        userPrincipal.ChangePassword(currentPassword,newPassword);
+                        userPrincipal.ChangePassword(currentPassword, newPassword);
                     }
                     catch
                     {
