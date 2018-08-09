@@ -211,7 +211,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             if (_ldapRemoteCertValidator != null)
                 ldap.UserDefinedServerCertValidationDelegate += _ldapRemoteCertValidator;
 
-            if (_options.LdapStartTls)
+            if (!_options.LdapStartTls)
                 ldap.SecureSocketLayer = true;
 
             string bindHostname = null;
