@@ -10,16 +10,20 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 
 namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
     public class LdapPasswordChangeProvider : IPasswordChangeProvider
     {
+        private ILogger _logger;
         private LdapPasswordChangeOptions _options;
         private LdapRemoteCertificateValidationCallback _ldapRemoteCertValidator = null;
 
-        public LdapPasswordChangeProvider(IOptions<LdapPasswordChangeOptions> options)
+        public LdapPasswordChangeProvider(ILogger<LdapPasswordChangeProvider> logger,
+            IOptions<LdapPasswordChangeOptions> options)
         {
+            _logger = logger;
             _options = options.Value;
 
             Init();
@@ -44,11 +48,13 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             var invalidIndex = username.IndexOfAny(invalid);
             if (invalidIndex >= 0)
             {
+                var msg = "username contains one or more invalid characters";
+                _logger.LogWarning(msg);
                 return new ApiErrorItem
                 {
                     ErrorCode = ApiErrorCode.InvalidCredentials,
                     FieldName = nameof(username),
-                    Message = "username contains one or more invalid characters",
+                    Message = msg,
                 };
             }
             
@@ -71,6 +77,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 if (copyFrom < maxLen)
                     buff.Append(cleanUsername.Substring(copyFrom));
                 cleanUsername = buff.ToString();
+                _logger.LogWarning("had to clean username: [{0}] => [{1}]", username, cleanUsername);
             }
 
             // Based on:
@@ -94,6 +101,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 
                 if (search.Count < 1)
                 {
+                    _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
                     if (_options.HideUserNotFound)
                     {
                         return new ApiErrorItem
@@ -116,6 +124,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
                 if (search.Count > 1)
                 {
+                    _logger.LogWarning("found multipel with same username: [{0}]", cleanUsername);
                     // Hopefully this should not ever happen if AD is preserving SAM Account Name
                     // uniqueness constraint, but just in case, handling this corner case
                     return new ApiErrorItem
@@ -145,6 +154,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 }
                 catch (LdapException ex)
                 {
+                    _logger.LogWarning("failed to update password", ex);
                     return ParseLdapException(ex);
                 }
 
@@ -172,6 +182,8 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
                 if (err != null)
                 {
+                    _logger.LogWarning("resolved Win32 API Error: code={0} name={1} desc={2}",
+                            err.Code, err.CodeName, err.Description);
                     return new ApiErrorItem
                     {
                         ErrorCode = ApiErrorCode.InvalidCredentials,
@@ -213,7 +225,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 }
                 catch (Exception ex)
                 {
-                    // TODO: logging?
+                    _logger.LogWarning("failed to log to host: " + h, ex);
                 }
             }
 
