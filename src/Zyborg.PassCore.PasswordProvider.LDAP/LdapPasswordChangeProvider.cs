@@ -98,8 +98,10 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                         _options.LdapSearchBase, LdapConnection.SCOPE_SUB,
                         searchFilter, new[] { "distinguishedName" },
                         false, searchConstraints);
-                
-                if (search.Count < 1)
+
+                // We can use search.Count here -- apparently it does not
+                // wait for the results to return before resolving the count
+                if (!search.hasMore())
                 {
                     _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
                     if (_options.HideUserNotFound)
