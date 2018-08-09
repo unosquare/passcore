@@ -39,13 +39,18 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 string currentPassword, string newPassword)
         {
             var cleanUsername = username;
+
+            var atindex = cleanUsername.IndexOf("@");
+            if (atindex >= 0)
+                cleanUsername = cleanUsername.Substring(0, atindex);
+
             // Must sanitize the username to eliminate the possibility of injection attacks:
             //    * https://docs.microsoft.com/en-us/windows/desktop/adschema/a-samaccountname
             //    * https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-2000-server/bb726984(v=technet.10)
             var samInvalid = "\"/\\[]:;|=,+*?<>";
             var miscInvalid = "\r\n\t";
             var invalid = (samInvalid + miscInvalid).ToCharArray();
-            var invalidIndex = username.IndexOfAny(invalid);
+            var invalidIndex = cleanUsername.IndexOfAny(invalid);
             if (invalidIndex >= 0)
             {
                 var msg = "username contains one or more invalid characters";
