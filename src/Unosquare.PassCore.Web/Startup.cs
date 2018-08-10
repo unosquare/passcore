@@ -9,10 +9,14 @@ namespace Unosquare.PassCore.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using PasswordProvider;
     using Models;
 #if !DEBUG
     using Microsoft.AspNetCore.Rewrite;
+#endif
+#if PASSCORE_LDAP_PROVIDER
+    using Zyborg.PassCore.PasswordProvider.LDAP;
+#else
+    using PasswordProvider;
 #endif
 
     /// <summary>
@@ -70,6 +74,9 @@ namespace Unosquare.PassCore.Web
             services.AddMvc();
 #if DEBUG
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
+#elif PASSCORE_LDAP_PROVIDER
+            services.Configure<LdapPasswordChangeOptions>(Configuration.GetSection(nameof(LdapPasswordChangeOptions)));
+            services.AddSingleton<IPasswordChangeProvider, LdapPasswordChangeProvider>();
 #else
             services.Configure<PasswordChangeOptions>(Configuration.GetSection(nameof(PasswordChangeOptions)));
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
