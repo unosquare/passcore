@@ -40,7 +40,7 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [ ],
   providers: [
-    { provide: RECAPTCHA_LANGUAGE, useFactory: () => window['lang'] },
+    { provide: RECAPTCHA_LANGUAGE, useFactory: () => window['config'].recaptcha.languageCode },
 ]
 })
 export class AppModule { }
