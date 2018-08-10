@@ -39,7 +39,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             if (_options == null)
                 throw new Exception("missing configuration options");
 
-            if (_options.LdapHostnames?.Count < 1)
+            if (_options.LdapHostnames?.Count() < 1)
                 throw new ArgumentException("options must specify at least one LDAP hostname",
                         nameof(_options.LdapHostnames));
             if (string.IsNullOrEmpty(_options.LdapBindUserDN))
