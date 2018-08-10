@@ -11,7 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from './app.material-module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgModule } from '@angular/core';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule, RECAPTCHA_LANGUAGE } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { RouterModule } from '@angular/router';
 
@@ -38,7 +38,9 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     RouterModule
   ],
-  exports: [
-  ]
+  exports: [ ],
+  providers: [
+    { provide: RECAPTCHA_LANGUAGE, useFactory: () => window['config'].recaptcha.languageCode },
+]
 })
 export class AppModule { }

@@ -16,7 +16,7 @@ module.exports = {
     extensions: ['.ts', '.js']
   },
   entry: {
-    'main': './ClientApp/main.ts',
+    'main': [ 'whatwg-fetch', './ClientApp/main.ts'],
     'vendor': './ClientApp/vendor.ts',
     'polyfills': './ClientApp/polyfills.ts'
   },

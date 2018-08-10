@@ -42,12 +42,12 @@ export class ChangePasswordComponent implements OnInit {
   ViewOptions: ViewOptions;
 
   // Form Controls
-    FormGroup = new FormGroup({
-        username: new FormControl('', [Validators.required]),
-        currentPassword: new FormControl('', [Validators.required]),
-        newPassword: new FormControl('', [Validators.required]),
-        newPasswordVerify: new FormControl('', [Validators.required])
-      }, PasswordMatch);
+  FormGroup = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      currentPassword: new FormControl('', [Validators.required]),
+      newPassword: new FormControl('', [Validators.required]),
+      newPasswordVerify: new FormControl('', [Validators.required])
+    }, PasswordMatch);
 
   // Angular "OnInit": happens only on first page load
   ngOnInit() {
@@ -120,24 +120,21 @@ export class ChangePasswordComponent implements OnInit {
   // Get data from the form
   GetData(queryParam: string) {
       this.FormData.Username = queryParam;
-      this.http.get<ViewOptions>('api/password')
-          .subscribe(data => {
-              this.ViewOptions = data;
-              this.titleService.setTitle(this.ViewOptions.changePasswordTitle + ' - ' + this.ViewOptions.applicationTitle);
-              if (this.ViewOptions.recaptcha.isEnabled) {
-                this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
-                const sp = document.createElement('script');
-                sp.type = 'text/javascript';
-                sp.async = true;
-                sp.defer = true;
-                sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
-              }
-              if (this.ViewOptions.defaultDomain) {
-                  this.FormGroup.get('username').setValidators(Validators.pattern(this.ViewOptions.validationRegex.usernameRegex));
-              } else {
-                  this.FormGroup.get('username').setValidators(Validators.pattern(this.ViewOptions.validationRegex.emailRegex));
-              }
-            });
+      this.ViewOptions = window['config'];
+      this.titleService.setTitle(this.ViewOptions.changePasswordTitle + ' - ' + this.ViewOptions.applicationTitle);
+      if (this.ViewOptions.recaptcha.isEnabled) {
+        this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
+        const sp = document.createElement('script');
+        sp.type = 'text/javascript';
+        sp.async = true;
+        sp.defer = true;
+        sp.src = 'https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=' + this.ViewOptions.recaptcha.languageCode;
+      }
+      if (this.ViewOptions.defaultDomain) {
+          this.FormGroup.get('username').setValidators(Validators.pattern(this.ViewOptions.validationRegex.usernameRegex));
+      } else {
+          this.FormGroup.get('username').setValidators(Validators.pattern(this.ViewOptions.validationRegex.emailRegex));
+      }
   }
 
   // Uses RecaptchaModule / RecaptchaFormsModule

@@ -41,8 +41,10 @@
     "@angular/router": "^6.0.0",
     "core-js": "^2.5.5",
     "ng-recaptcha": "^4.0.0-beta.1",
+    "promise-polyfill": "8.0.0",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.1.0",
+    "whatwg-fetch": "^2.0.4",
     "zone.js": "^0.8.26"
   }
 }
