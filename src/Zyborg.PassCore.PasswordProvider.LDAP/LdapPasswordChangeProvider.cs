@@ -104,8 +104,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                         searchFilter, new[] { "distinguishedName" },
                         false, searchConstraints);
 
-                // We can use search.Count here -- apparently it does not
+                // We cannot use search.Count here -- apparently it does not
                 // wait for the results to return before resolving the count
+                // but fortunately hasMore seems to block until final result
                 if (!search.hasMore())
                 {
                     _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
@@ -131,7 +132,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
                 if (search.Count > 1)
                 {
-                    _logger.LogWarning("found multipel with same username: [{0}]", cleanUsername);
+                    _logger.LogWarning("found multiple with same username: [{0}]", cleanUsername);
                     // Hopefully this should not ever happen if AD is preserving SAM Account Name
                     // uniqueness constraint, but just in case, handling this corner case
                     return new ApiErrorItem
@@ -232,12 +233,12 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning("failed to log to host: " + h, ex);
+                    _logger.LogWarning($"failed to connect to host [{h}]", ex);
                 }
             }
 
             if (string.IsNullOrEmpty(bindHostname))
-                throw new Exception("failed to connect to any specified hostname");
+                throw new Exception("failed to connect to any configured hostname");
             
             if (_options.LdapStartTls)
                 ldap.StartTls();
@@ -248,9 +249,8 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         }
 
         /// Custom server certificate validation logic that handles our special
-        /// cases based on configuration.  This implements the logic of supporting
-        /// custom CA-certs, custom CA thumbprint matching and also just ignoring
-        /// server certificate validation altogether.
+        /// cases based on configuration.  This implements the logic of either
+        /// ignoring just untrusted root errors or ignoring all TLS errors.
         private bool CustomServerCertValidation(object sender, X509Certificate certificate,
                 X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
