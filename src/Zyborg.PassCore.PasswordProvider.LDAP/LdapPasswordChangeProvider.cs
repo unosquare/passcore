@@ -24,7 +24,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             IOptions<LdapPasswordChangeOptions> options)
         {
             _logger = logger;
-            _options = options.Value;
+            _options = options?.Value;
 
             Init();
         }
@@ -33,6 +33,41 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         {
             if (_options.LdapIgnoreTlsErrors || _options.LdapIgnoreTlsValidation)
                 _ldapRemoteCertValidator = CustomServerCertValidation;
+
+            // Validate required options
+
+            if (_options == null)
+                throw new Exception("missing configuration options");
+
+            if (_options.LdapHostnames?.Count < 1)
+                throw new ArgumentException("options must specify at least one LDAP hostname",
+                        nameof(_options.LdapHostnames));
+            if (string.IsNullOrEmpty(_options.LdapBindUserDN))
+                throw new ArgumentException("options missing or invalid LDAP bind distinguished name (DN)",
+                        nameof(_options.LdapBindUserDN));
+            if (string.IsNullOrEmpty(_options.LdapBindPassword))
+                throw new ArgumentException("options missing or invalid LDAP bind password",
+                        nameof(_options.LdapBindPassword));
+            if (string.IsNullOrEmpty(_options.LdapSearchBase))
+                throw new ArgumentException($"options must specify LDAP search base",
+                        nameof(_options.LdapSearchBase));
+
+            // All other configuration is optional, but some may warrant attention
+
+            if (!_options.HideUserNotFound)
+                _logger.LogWarning($"option [{nameof(_options.HideUserNotFound)}] is DISABLED;"
+                        + " the presence or absence of usernames can be harvested");
+
+            if (!_options.LdapIgnoreTlsErrors)
+                _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsErrors)}] is ENABLED;"
+                        + " invalid certificates will be allowed");
+            else if (!_options.LdapIgnoreTlsValidation)
+                _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsValidation)}] is ENABLED;"
+                        + " untrusted certificate roots will be allowed");
+
+            if (_options.LdapPort != LdapConnection.DEFAULT_SSL_PORT && !_options.LdapStartTls)
+                _logger.LogWarning($"option [{nameof(_options.LdapStartTls)}] is DISABLED"
+                        + $" in combination with non-standard TLS port [{_options.LdapPort}]");
         }
 
         public ApiErrorItem PerformPasswordChange(string username,
