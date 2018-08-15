@@ -4,8 +4,7 @@ namespace Unosquare.PassCore.Web.Controllers
     using System.Net;
     using System.Threading.Tasks;
     using System;
-    using Helpers;
-    using Unosquare.PassCore.Common;
+    using Common;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Models;
@@ -34,6 +33,7 @@ namespace Unosquare.PassCore.Web.Controllers
         /// <summary>
         /// Returns the ClientSettings object as a JSON string
         /// </summary>
+        /// <returns>A Json representation of the ClientSettings object.</returns>
         [HttpGet]
         public IActionResult Get()
         {
@@ -44,7 +44,7 @@ namespace Unosquare.PassCore.Web.Controllers
         /// Given a POST request, processes and changes a User's password.
         /// </summary>
         /// <param name="model">The value.</param>
-        /// <returns></returns>
+        /// <returns>A task representing the async operation.</returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ChangePasswordModel model)
         {
@@ -87,18 +87,12 @@ namespace Unosquare.PassCore.Web.Controllers
                 return BadRequest(result);
             }
 
-            // Check for default domain: if none given, ensure EFLD can be used as an override.
-            var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-            var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
+            var currentUsername = GetUserName(model, result);
 
-            // Domain-determinance
-            if (string.IsNullOrEmpty(domain))
+            if (result.HasErrors)
             {
-                result.Errors.Add(new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain });
                 return BadRequest(result);
             }
-
-            var currentUsername = parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
 
             var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(currentUsername, model.CurrentPassword, model.NewPassword);
 
@@ -111,6 +105,21 @@ namespace Unosquare.PassCore.Web.Controllers
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             return Json(result);
+        }
+
+        private string GetUserName(ChangePasswordModel model, ApiResult result)
+        {
+            // Check for default domain: if none given, ensure EFLD can be used as an override.
+            var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
+
+            // Domain-determinance
+            if (string.IsNullOrEmpty(domain))
+            {
+                result.Errors.Add(new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain });
+            }
+
+            return parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
         }
 
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
