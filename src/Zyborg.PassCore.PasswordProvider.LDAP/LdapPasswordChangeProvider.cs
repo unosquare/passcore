@@ -97,7 +97,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                     Message = msg,
                 };
             }
-            
+
             // LDAP filters require escaping of some special chars:
             //    * http://www.ldapexplorer.com/en/manual/109010000-ldap-filter-syntax.htm
             var escape = "()&|=><!*/\\".ToCharArray();
@@ -132,7 +132,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 var searchConstraints = new LdapSearchConstraints(
                         0, 0, LdapSearchConstraints.DEREF_NEVER,
                         1000, true, 1, null, 10);
-                
+
                 var searchFilter = $"(sAMAccountName={cleanUsername})";
                 var search = ldap.Search(
                         _options.LdapSearchBase, LdapConnection.SCOPE_SUB,
@@ -180,20 +180,30 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
                 var userDN = search.next().DN;
 
+                #region Change Password by Delete/Add
                 var oldPassBytes = Encoding.Unicode.GetBytes($@"""{currentPassword}""")
                         .Select(x => (sbyte)x).ToArray();
                 var newPassBytes = Encoding.Unicode.GetBytes($@"""{newPassword}""")
                         .Select(x => (sbyte)x).ToArray();
-                
+
                 var oldAttr = new LdapAttribute("unicodePwd", oldPassBytes);
                 var newAttr = new LdapAttribute("unicodePwd", newPassBytes);
 
                 var ldapDel = new LdapModification(LdapModification.DELETE, oldAttr);
                 var ldapAdd = new LdapModification(LdapModification.ADD, newAttr);
+                #endregion 
+
+                #region Change Password by Replace
+                // If you don't have the rights to Add and/or Delete the Attribute, you might have the right to Change the attribute.
+                // In this case uncomment the next 2 lines and comment the region 'Change Password by Delete/Add'
+                //var replAttr = new LdapAttribute("userPassword", newPassword);
+                //var ldapReplace = new LdapModification(LdapModification.REPLACE, replAttr);
+                #endregion
 
                 try
                 {
-                    ldap.Modify(userDN, new[] { ldapDel, ldapAdd });
+                    //ldap.Modify(userDN, new[] { ldapReplace }); // Change with Replace
+                    ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
                 }
                 catch (LdapException ex)
                 {
@@ -201,7 +211,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                     return ParseLdapException(ex);
                 }
 
-                ldap.StopTls();
+                if (this._options.LdapStartTls)
+                    ldap.StopTls();
+
                 ldap.Disconnect();
             }
 
@@ -254,8 +266,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             if (_ldapRemoteCertValidator != null)
                 ldap.UserDefinedServerCertValidationDelegate += _ldapRemoteCertValidator;
 
-            if (!_options.LdapStartTls)
-                ldap.SecureSocketLayer = true;
+            ldap.SecureSocketLayer = this._options.LdapStartTls;
 
             string bindHostname = null;
             foreach (var h in _options.LdapHostnames)
@@ -274,13 +285,13 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
             if (string.IsNullOrEmpty(bindHostname))
                 throw new Exception("failed to connect to any configured hostname");
-            
-            if (_options.LdapStartTls)
+
+            if (ldap.SecureSocketLayer)
                 ldap.StartTls();
-            
+
             ldap.Bind(_options.LdapBindUserDN, _options.LdapBindPassword);
 
-            return ldap;            
+            return ldap;
         }
 
         /// Custom server certificate validation logic that handles our special
@@ -292,7 +303,8 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             if (_options.LdapIgnoreTlsErrors || sslPolicyErrors == SslPolicyErrors.None)
                 return true;
 
-            var errorStatuses = chain.ChainStatus.Select((x, y) => (status: x, index: y)).Where(x => {
+            var errorStatuses = chain.ChainStatus.Select((x, y) => (status: x, index: y)).Where(x =>
+            {
                 if (x.status.Status == X509ChainStatusFlags.UntrustedRoot
                         && _options.LdapIgnoreTlsValidation)
                     return false;
