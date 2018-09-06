@@ -134,6 +134,11 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                         1000, true, 1, null, 10);
 
                 var searchFilter = $"(sAMAccountName={cleanUsername})";
+
+                // If attribute sAMAccountName is not available is your LDAP, the 'cn'-Attribute will be there.
+                // In this case change the searchFilter
+                //var searchFilter = $"(&(objectClass=person)(cn={cleanUsername}))";
+
                 var search = ldap.Search(
                         _options.LdapSearchBase, LdapConnection.SCOPE_SUB,
                         searchFilter, new[] { "distinguishedName" },
