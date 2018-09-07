@@ -9,14 +9,12 @@ namespace Unosquare.PassCore.Common
     /// </summary>
     public class ApiErrorException : Exception
     {
-        private string _message = "";
-
         public ApiErrorItem ErrorItem { get; set; }
 
-        public ApiErrorException() : base()
+        public ApiErrorException() 
         {
             // Default ApiErrorItem to prevent Null-PointerException
-            ErrorItem = new ApiErrorItem()
+            ErrorItem = new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.Generic,
                 FieldName = "",

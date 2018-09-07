@@ -51,6 +51,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             if (string.IsNullOrEmpty(_options.LdapSearchBase))
                 throw new ArgumentException($"options must specify LDAP search base",
                         nameof(_options.LdapSearchBase));
+            if (String.IsNullOrWhiteSpace(_options.LdapSearchFilter))
+                throw new ArgumentException($"No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
+                        nameof(_options.LdapSearchBase));
 
             // All other configuration is optional, but some may warrant attention
 
@@ -68,6 +71,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             if (_options.LdapPort != LdapConnection.DEFAULT_SSL_PORT && !_options.LdapStartTls)
                 _logger.LogWarning($"option [{nameof(_options.LdapStartTls)}] is DISABLED"
                         + $" in combination with non-standard TLS port [{_options.LdapPort}]");
+
         }
 
         public ApiErrorItem PerformPasswordChange(string username,
@@ -84,7 +88,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             }
             catch (Exception ex)
             {
-                return new ApiErrorItem()
+                return new ApiErrorItem
                 {
                     ErrorCode = ApiErrorCode.UserNotFound,
                     FieldName = nameof(username),
@@ -98,21 +102,30 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             //    * https://ltb-project.org/documentation/self-service-password/latest/config_ldap#active_directory
             //    * https://technet.microsoft.com/en-us/library/ff848710.aspx?f=255&MSPPError=-2147217396
 
+            // First find user DN by username (SAM Account Name)
+            var searchConstraints = new LdapSearchConstraints(
+                    0, 0, LdapSearchConstraints.DEREF_NEVER,
+                    1000, true, 1, null, 10);
+
+            string searchFilter = _options.LdapSearchFilter;
+            try
+            {
+                if (searchFilter.Contains("{Username}"))
+                {
+                    searchFilter = searchFilter.Replace("{Username}", username);
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = "ldapSearchFilter could not be parsed. Be sure {Username} is included: " + ex.Message;
+                _logger.LogCritical(msg);
+                throw new Exception(msg);
+            }
+
             try
             {
                 using (var ldap = BindToLdap())
                 {
-                    // First find user DN by username (SAM Account Name)
-                    var searchConstraints = new LdapSearchConstraints(
-                            0, 0, LdapSearchConstraints.DEREF_NEVER,
-                            1000, true, 1, null, 10);
-
-                    var searchFilter = $"(sAMAccountName={cleanUsername})";
-
-                    // If attribute sAMAccountName is not available is your LDAP, the 'cn'-Attribute will be there.
-                    // In this case change the searchFilter
-                    //var searchFilter = $"(&(objectClass=person)(cn={cleanUsername}))";
-
                     var search = ldap.Search(
                             _options.LdapSearchBase, LdapConnection.SCOPE_SUB,
                             searchFilter, new[] { "distinguishedName" },
@@ -129,7 +142,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                             return new ApiErrorItem
                             {
                                 ErrorCode = ApiErrorCode.InvalidCredentials,
-                                FieldName = nameof(currentPassword),
+                                FieldName = nameof(username),
                                 Message = "invalid credentials",
                             };
                         }
@@ -159,30 +172,34 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
                     var userDN = search.next().DN;
 
-                    #region Change Password by Delete/Add
-                    var oldPassBytes = Encoding.Unicode.GetBytes($@"""{currentPassword}""")
-                            .Select(x => (sbyte)x).ToArray();
-                    var newPassBytes = Encoding.Unicode.GetBytes($@"""{newPassword}""")
-                            .Select(x => (sbyte)x).ToArray();
-
-                    var oldAttr = new LdapAttribute("unicodePwd", oldPassBytes);
-                    var newAttr = new LdapAttribute("unicodePwd", newPassBytes);
-
-                    var ldapDel = new LdapModification(LdapModification.DELETE, oldAttr);
-                    var ldapAdd = new LdapModification(LdapModification.ADD, newAttr);
-                    #endregion
-
-                    #region Change Password by Replace
-                    // If you don't have the rights to Add and/or Delete the Attribute, you might have the right to change the password-attribute.
-                    // In this case uncomment the next 2 lines and comment the region 'Change Password by Delete/Add'
-                    //var replAttr = new LdapAttribute("userPassword", newPassword);
-                    //var ldapReplace = new LdapModification(LdapModification.REPLACE, replAttr);
-                    #endregion
-
                     try
                     {
-                        //ldap.Modify(userDN, new[] { ldapReplace }); // Change with Replace
-                        ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
+                        if (_options.LdapChangePasswortWithDelAdd)
+                        {
+                            #region Change Password by Delete/Add
+                            var oldPassBytes = Encoding.Unicode.GetBytes($@"""{currentPassword}""")
+                                    .Select(x => (sbyte)x).ToArray();
+                            var newPassBytes = Encoding.Unicode.GetBytes($@"""{newPassword}""")
+                                    .Select(x => (sbyte)x).ToArray();
+
+                            var oldAttr = new LdapAttribute("unicodePwd", oldPassBytes);
+                            var newAttr = new LdapAttribute("unicodePwd", newPassBytes);
+
+                            var ldapDel = new LdapModification(LdapModification.DELETE, oldAttr);
+                            var ldapAdd = new LdapModification(LdapModification.ADD, newAttr);
+                            ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
+                            #endregion
+                        }
+                        else
+                        {
+                            #region Change Password by Replace
+                            // If you don't have the rights to Add and/or Delete the Attribute, you might have the right to change the password-attribute.
+                            // In this case uncomment the next 2 lines and comment the region 'Change Password by Delete/Add'
+                            var replAttr = new LdapAttribute("userPassword", newPassword);
+                            var ldapReplace = new LdapModification(LdapModification.REPLACE, replAttr);
+                            ldap.Modify(userDN, new[] { ldapReplace }); // Change with Replace
+                            #endregion
+                        }
                     }
                     catch (LdapException ex)
                     {
@@ -202,7 +219,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             }
             catch (Exception ex)
             {
-                return new ApiErrorItem()
+                return new ApiErrorItem
                 {
                     ErrorCode = ApiErrorCode.InvalidCredentials,
                     FieldName = nameof(username),
@@ -232,7 +249,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             {
                 var msg = "username contains one or more invalid characters";
                 _logger.LogWarning(msg);
-                throw new ApiErrorException()
+                throw new ApiErrorException
                 {
                     ErrorItem = new ApiErrorItem
                     {
@@ -327,9 +344,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 {
                     string msg = $"failed to connect to host [{h}]";
                     _logger.LogWarning(msg, ex);
-                    throw new ApiErrorException()
+                    throw new ApiErrorException
                     {
-                        ErrorItem = new ApiErrorItem()
+                        ErrorItem = new ApiErrorItem
                         {
                             Message = msg,
                             ErrorCode = ApiErrorCode.InvalidCredentials,
@@ -340,9 +357,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
             if (string.IsNullOrEmpty(bindHostname))
             {
-                throw new ApiErrorException()
+                throw new ApiErrorException
                 {
-                    ErrorItem = new ApiErrorItem()
+                    ErrorItem = new ApiErrorItem
                     {
                         Message = "failed to connect to any configured hostname",
                         ErrorCode = ApiErrorCode.InvalidCredentials,
