@@ -73,8 +73,150 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         public ApiErrorItem PerformPasswordChange(string username,
                 string currentPassword, string newPassword)
         {
-            var cleanUsername = username;
+            string cleanUsername = String.Empty;
+            try
+            {
+                cleanUsername = CleaningUsername(username);
+            }
+            catch (ApiErrorException ex)
+            {
+                return ex.ErrorItem;
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorItem()
+                {
+                    ErrorCode = ApiErrorCode.UserNotFound,
+                    FieldName = nameof(username),
+                    Message = "Some error in cleaning username: " + ex.Message,
+                };
+            }
 
+            // Based on:
+            //    * https://www.cs.bham.ac.uk/~smp/resources/ad-passwds/
+            //    * https://support.microsoft.com/en-us/help/269190/how-to-change-a-windows-active-directory-and-lds-user-password-through
+            //    * https://ltb-project.org/documentation/self-service-password/latest/config_ldap#active_directory
+            //    * https://technet.microsoft.com/en-us/library/ff848710.aspx?f=255&MSPPError=-2147217396
+
+            try
+            {
+                using (var ldap = BindToLdap())
+                {
+                    // First find user DN by username (SAM Account Name)
+                    var searchConstraints = new LdapSearchConstraints(
+                            0, 0, LdapSearchConstraints.DEREF_NEVER,
+                            1000, true, 1, null, 10);
+
+                    var searchFilter = $"(sAMAccountName={cleanUsername})";
+
+                    // If attribute sAMAccountName is not available is your LDAP, the 'cn'-Attribute will be there.
+                    // In this case change the searchFilter
+                    //var searchFilter = $"(&(objectClass=person)(cn={cleanUsername}))";
+
+                    var search = ldap.Search(
+                            _options.LdapSearchBase, LdapConnection.SCOPE_SUB,
+                            searchFilter, new[] { "distinguishedName" },
+                            false, searchConstraints);
+
+                    // We cannot use search.Count here -- apparently it does not
+                    // wait for the results to return before resolving the count
+                    // but fortunately hasMore seems to block until final result
+                    if (!search.hasMore())
+                    {
+                        _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
+                        if (_options.HideUserNotFound)
+                        {
+                            return new ApiErrorItem
+                            {
+                                ErrorCode = ApiErrorCode.InvalidCredentials,
+                                FieldName = nameof(currentPassword),
+                                Message = "invalid credentials",
+                            };
+                        }
+                        else
+                        {
+                            return new ApiErrorItem
+                            {
+                                ErrorCode = ApiErrorCode.UserNotFound,
+                                FieldName = nameof(username),
+                                Message = "username could not be located",
+                            };
+                        }
+                    }
+
+                    if (search.Count > 1)
+                    {
+                        _logger.LogWarning("found multiple with same username: [{0}]", cleanUsername);
+                        // Hopefully this should not ever happen if AD is preserving SAM Account Name
+                        // uniqueness constraint, but just in case, handling this corner case
+                        return new ApiErrorItem
+                        {
+                            ErrorCode = ApiErrorCode.UserNotFound,
+                            FieldName = nameof(username),
+                            Message = "multiple matching user entries resolved",
+                        };
+                    }
+
+                    var userDN = search.next().DN;
+
+                    #region Change Password by Delete/Add
+                    var oldPassBytes = Encoding.Unicode.GetBytes($@"""{currentPassword}""")
+                            .Select(x => (sbyte)x).ToArray();
+                    var newPassBytes = Encoding.Unicode.GetBytes($@"""{newPassword}""")
+                            .Select(x => (sbyte)x).ToArray();
+
+                    var oldAttr = new LdapAttribute("unicodePwd", oldPassBytes);
+                    var newAttr = new LdapAttribute("unicodePwd", newPassBytes);
+
+                    var ldapDel = new LdapModification(LdapModification.DELETE, oldAttr);
+                    var ldapAdd = new LdapModification(LdapModification.ADD, newAttr);
+                    #endregion
+
+                    #region Change Password by Replace
+                    // If you don't have the rights to Add and/or Delete the Attribute, you might have the right to change the password-attribute.
+                    // In this case uncomment the next 2 lines and comment the region 'Change Password by Delete/Add'
+                    //var replAttr = new LdapAttribute("userPassword", newPassword);
+                    //var ldapReplace = new LdapModification(LdapModification.REPLACE, replAttr);
+                    #endregion
+
+                    try
+                    {
+                        //ldap.Modify(userDN, new[] { ldapReplace }); // Change with Replace
+                        ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
+                    }
+                    catch (LdapException ex)
+                    {
+                        _logger.LogWarning("failed to update password", ex);
+                        return ParseLdapException(ex);
+                    }
+
+                    if (this._options.LdapStartTls)
+                        ldap.StopTls();
+
+                    ldap.Disconnect();
+                }
+            }
+            catch (ApiErrorException ex)
+            {
+                return ex.ErrorItem;
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorItem()
+                {
+                    ErrorCode = ApiErrorCode.InvalidCredentials,
+                    FieldName = nameof(username),
+                    Message = "failed to update password: " + ex.Message,
+                };
+            }
+
+            // Everything seems to have worked:
+            return null;
+        }
+
+        private string CleaningUsername(string username)
+        {
+            string cleanUsername = username;
             var atindex = cleanUsername.IndexOf("@");
             if (atindex >= 0)
                 cleanUsername = cleanUsername.Substring(0, atindex);
@@ -90,11 +232,14 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             {
                 var msg = "username contains one or more invalid characters";
                 _logger.LogWarning(msg);
-                return new ApiErrorItem
+                throw new ApiErrorException()
                 {
-                    ErrorCode = ApiErrorCode.InvalidCredentials,
-                    FieldName = nameof(username),
-                    Message = msg,
+                    ErrorItem = new ApiErrorItem
+                    {
+                        ErrorCode = ApiErrorCode.InvalidCredentials,
+                        FieldName = nameof(username),
+                        Message = msg,
+                    }
                 };
             }
 
@@ -119,111 +264,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 cleanUsername = buff.ToString();
                 _logger.LogWarning("had to clean username: [{0}] => [{1}]", username, cleanUsername);
             }
-
-            // Based on:
-            //    * https://www.cs.bham.ac.uk/~smp/resources/ad-passwds/
-            //    * https://support.microsoft.com/en-us/help/269190/how-to-change-a-windows-active-directory-and-lds-user-password-through
-            //    * https://ltb-project.org/documentation/self-service-password/latest/config_ldap#active_directory
-            //    * https://technet.microsoft.com/en-us/library/ff848710.aspx?f=255&MSPPError=-2147217396
-
-            using (var ldap = BindToLdap())
-            {
-                // First find user DN by username (SAM Account Name)
-                var searchConstraints = new LdapSearchConstraints(
-                        0, 0, LdapSearchConstraints.DEREF_NEVER,
-                        1000, true, 1, null, 10);
-
-                var searchFilter = $"(sAMAccountName={cleanUsername})";
-
-                // If attribute sAMAccountName is not available is your LDAP, the 'cn'-Attribute will be there.
-                // In this case change the searchFilter
-                //var searchFilter = $"(&(objectClass=person)(cn={cleanUsername}))";
-
-                var search = ldap.Search(
-                        _options.LdapSearchBase, LdapConnection.SCOPE_SUB,
-                        searchFilter, new[] { "distinguishedName" },
-                        false, searchConstraints);
-
-                // We cannot use search.Count here -- apparently it does not
-                // wait for the results to return before resolving the count
-                // but fortunately hasMore seems to block until final result
-                if (!search.hasMore())
-                {
-                    _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
-                    if (_options.HideUserNotFound)
-                    {
-                        return new ApiErrorItem
-                        {
-                            ErrorCode = ApiErrorCode.InvalidCredentials,
-                            FieldName = nameof(currentPassword),
-                            Message = "invalid credentials",
-                        };
-                    }
-                    else
-                    {
-                        return new ApiErrorItem
-                        {
-                            ErrorCode = ApiErrorCode.UserNotFound,
-                            FieldName = nameof(username),
-                            Message = "username could not be located",
-                        };
-                    }
-                }
-
-                if (search.Count > 1)
-                {
-                    _logger.LogWarning("found multiple with same username: [{0}]", cleanUsername);
-                    // Hopefully this should not ever happen if AD is preserving SAM Account Name
-                    // uniqueness constraint, but just in case, handling this corner case
-                    return new ApiErrorItem
-                    {
-                        ErrorCode = ApiErrorCode.UserNotFound,
-                        FieldName = nameof(username),
-                        Message = "multiple matching user entries resolved",
-                    };
-                }
-
-                var userDN = search.next().DN;
-
-                #region Change Password by Delete/Add
-                var oldPassBytes = Encoding.Unicode.GetBytes($@"""{currentPassword}""")
-                        .Select(x => (sbyte)x).ToArray();
-                var newPassBytes = Encoding.Unicode.GetBytes($@"""{newPassword}""")
-                        .Select(x => (sbyte)x).ToArray();
-
-                var oldAttr = new LdapAttribute("unicodePwd", oldPassBytes);
-                var newAttr = new LdapAttribute("unicodePwd", newPassBytes);
-
-                var ldapDel = new LdapModification(LdapModification.DELETE, oldAttr);
-                var ldapAdd = new LdapModification(LdapModification.ADD, newAttr);
-                #endregion 
-
-                #region Change Password by Replace
-                // If you don't have the rights to Add and/or Delete the Attribute, you might have the right to Change the attribute.
-                // In this case uncomment the next 2 lines and comment the region 'Change Password by Delete/Add'
-                //var replAttr = new LdapAttribute("userPassword", newPassword);
-                //var ldapReplace = new LdapModification(LdapModification.REPLACE, replAttr);
-                #endregion
-
-                try
-                {
-                    //ldap.Modify(userDN, new[] { ldapReplace }); // Change with Replace
-                    ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
-                }
-                catch (LdapException ex)
-                {
-                    _logger.LogWarning("failed to update password", ex);
-                    return ParseLdapException(ex);
-                }
-
-                if (this._options.LdapStartTls)
-                    ldap.StopTls();
-
-                ldap.Disconnect();
-            }
-
-            // Everything seems to have worked:
-            return null;
+            return cleanUsername;
         }
 
         private ApiErrorItem ParseLdapException(LdapException ex)
@@ -284,13 +325,30 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning($"failed to connect to host [{h}]", ex);
+                    string msg = $"failed to connect to host [{h}]";
+                    _logger.LogWarning(msg, ex);
+                    throw new ApiErrorException()
+                    {
+                        ErrorItem = new ApiErrorItem()
+                        {
+                            Message = msg,
+                            ErrorCode = ApiErrorCode.InvalidCredentials,
+                        }
+                    };
                 }
             }
 
             if (string.IsNullOrEmpty(bindHostname))
-                throw new Exception("failed to connect to any configured hostname");
-
+            {
+                throw new ApiErrorException()
+                {
+                    ErrorItem = new ApiErrorItem()
+                    {
+                        Message = "failed to connect to any configured hostname",
+                        ErrorCode = ApiErrorCode.InvalidCredentials,
+                    }
+                };
+            }
             if (ldap.SecureSocketLayer)
                 ldap.StartTls();
 

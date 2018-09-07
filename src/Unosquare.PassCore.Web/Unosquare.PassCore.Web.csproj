@@ -12,6 +12,7 @@
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <RootNamespace>Unosquare.PassCore.Web</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,6 +43,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj" />
+    <ProjectReference Include="..\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(PASSCORE_PROVIDER)' == ''">
@@ -55,6 +57,9 @@
   </ItemGroup>
   <PropertyGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
     <DefineConstants>PASSCORE_LDAP_PROVIDER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP;NETCOREAPP2_1;PASSCORE_LDAP_PROVIDER</DefineConstants>
   </PropertyGroup>
 
   <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\package-lock.json')">
