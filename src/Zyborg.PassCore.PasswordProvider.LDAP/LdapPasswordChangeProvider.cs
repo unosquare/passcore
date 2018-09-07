@@ -77,7 +77,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         public ApiErrorItem PerformPasswordChange(string username,
                 string currentPassword, string newPassword)
         {
-            string cleanUsername = String.Empty;
+            string cleanUsername = username;
             try
             {
                 cleanUsername = CleaningUsername(username);
@@ -112,7 +112,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             {
                 if (searchFilter.Contains("{Username}"))
                 {
-                    searchFilter = searchFilter.Replace("{Username}", username);
+                    searchFilter = searchFilter.Replace("{Username}", cleanUsername);
                 }
             }
             catch (Exception ex)
