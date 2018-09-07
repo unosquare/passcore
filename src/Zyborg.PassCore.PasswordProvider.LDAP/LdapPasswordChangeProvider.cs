@@ -119,7 +119,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             {
                 string msg = "ldapSearchFilter could not be parsed. Be sure {Username} is included: " + ex.Message;
                 _logger.LogCritical(msg);
-                throw new Exception(msg);
+                throw new ArgumentException(msg);
             }
 
             try
