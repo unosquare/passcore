@@ -114,9 +114,9 @@ namespace Unosquare.PassCore.Web.Controllers
             var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
 
             // Domain-determinance
-            if (string.IsNullOrEmpty(domain))
+            if (string.IsNullOrWhiteSpace(domain))
             {
-                result.Errors.Add(new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain });
+                return model.Username;
             }
 
             return parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";

@@ -10,10 +10,70 @@
     public partial class PasswordChangeProvider : IPasswordChangeProvider
     {
         private readonly PasswordChangeOptions _options;
+        private IdentityType _idType = IdentityType.UserPrincipalName;
 
         public PasswordChangeProvider(IOptions<PasswordChangeOptions> options)
         {
             _options = options.Value;
+            SetIdType();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void SetIdType()
+        {
+            if (String.IsNullOrWhiteSpace(_options.IdTypeForUser))
+            {
+                _idType = IdentityType.UserPrincipalName;
+            }
+            else
+            {
+                string tmpIdType = _options.IdTypeForUser.Trim().ToLower();
+
+                switch (tmpIdType)
+                {
+                    case "distinguishedname":
+                    case "distinguished name":
+                    case "dn":
+                        _idType = IdentityType.DistinguishedName;
+                        break;
+                    case "globally unique identifier":
+                    case "globallyuniqueidentifier":
+                    case "guid":
+                        _idType = IdentityType.Guid;
+                        break;
+                    case "name":
+                    case "nm":
+                        _idType = IdentityType.Name;
+                        break;
+                    case "samaccountname":
+                    case "accountname":
+                    case "sam account":
+                    case "sam account name":
+                    case "sam":
+                        _idType = IdentityType.SamAccountName;
+                        break;
+                    case "securityidentifier":
+                    case "securityid":
+                    case "secid":
+                    case "security identifier":
+                    case "sid":
+                        _idType = IdentityType.Sid;
+                        break;
+                    case "userprincipalname":
+                    case "user principal name":
+                    case "upn":
+                    case "id":
+                    case "cn":
+                    case "uid":
+                        _idType = IdentityType.UserPrincipalName;
+                        break;
+                    default:
+                        _idType = IdentityType.UserPrincipalName;
+                        break;
+                }
+            }
         }
 
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
@@ -23,7 +83,7 @@
             {
                 using (var principalContext = AcquirePrincipalContext())
                 {
-                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, username);
 
                     // Check if the user principal exists
                     if (userPrincipal == null)
@@ -54,7 +114,7 @@
                         }
                         catch (Exception ex)
                         {
-                            return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message=ex.Message };
+                            return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
                         }
                     }
 
@@ -81,8 +141,8 @@
                         }
                     }
 
-                    if (ValidateUserCredentials(username, currentPassword, principalContext) == false) 
-                        return new ApiErrorItem {ErrorCode = ApiErrorCode.InvalidCredentials};
+                    if (ValidateUserCredentials(username, currentPassword, principalContext) == false)
+                        return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
                     try
@@ -111,12 +171,13 @@
 
         private static bool ValidateUserCredentials(string username, string currentPassword, PrincipalContext principalContext)
         {
-            if (principalContext.ValidateCredentials(username, currentPassword)) 
+            if (principalContext.ValidateCredentials(username, currentPassword))
                 return true;
 
-            if (LogonUser(username, username.Split('@').Last(), currentPassword, LogonTypes.Network, LogonProviders.Default, out _)) 
+            string tmpAuthority = username?.Split('@')?.Last();
+            if (LogonUser(username, tmpAuthority, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                 return true;
-            
+
             var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
 
             // Both of these means that the password CAN change and that we got the correct password

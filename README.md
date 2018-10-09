@@ -98,7 +98,7 @@ The most relevant configuration entries are shown below. Make sure you make your
   1. `http://mypasscore.com/?userName=someusername`
   2. This helps the user incase they forgot thier username and, also comes in handy when sending a link to the application or having it embeded into another application were the user is all ready signed in.
 - To specify which (DC) attribute is used to search for the specific user.
-  - With the `IdentityType` can select one of six possible Attributes that will be used to searched for the user.
+  - With the `IdTypeForUser` it is possible to select one of six Attributes that will be used to search for the specifiv user.
   - The possible values are:
     - `DistinguishedName` or `DN`
     - `GloballyUniqueIdentifier` or `GUID`
