@@ -141,7 +141,7 @@
                         }
                     }
 
-                    if (ValidateUserCredentials(username, currentPassword, principalContext) == false)
+                    if (ValidateUserCredentials(userPrincipal.UserPrincipalName, currentPassword, principalContext) == false)
                         return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
