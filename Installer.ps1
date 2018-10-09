@@ -1,4 +1,4 @@
-﻿Write-Host "Installing Passcore"
+Write-Host "Installing Passcore"
 Write-Host "Creating Directory"
 
 $directory = "C:\passcore"
@@ -8,16 +8,14 @@ Set-Location $directory
 
 # Determining latest release
 Write-Host "Determining latest release"
-$repo = "unosquare/passcore"
-$releasesUrl = "https://api.github.com/repos/$repo/releases"
+$releasesUrl = "https://api.github.com/repos/unosquare/passcore/releases"
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $releases = Invoke-WebRequest $releasesUrl -UseBasicParsing
 
 $releasesJson = ($releases.Content | ConvertFrom-Json)[0]
-$assetsJson = $releasesJson.assets
-$zipName = $assetsJson.name
-$zipUrl = $assetsJson.browser_download_url
+$zipName = "passcore.zip"
+$zipUrl = $releasesJson.assets.browser_download_url | where-object {$_ -NotLike "*mac*" -and $_ -NotLike "*linux*"}
 
 $zipPath = "$($directory)\$($zipName)"
 

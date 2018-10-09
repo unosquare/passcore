@@ -11,7 +11,7 @@ namespace Unosquare.PassCore.Web
     using Microsoft.Extensions.Options;
     using Models;
 #if !DEBUG
-    using Microsoft.AspNetCore.Rewrite;
+        using Microsoft.AspNetCore.Rewrite;
 #endif
 #if PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
@@ -116,6 +116,6 @@ namespace Unosquare.PassCore.Web
             // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.0
             app.UseMvcWithDefaultRoute();
         }
-        #endregion
+#endregion
     }
 }

@@ -45,5 +45,11 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// bad credential -- in order to prevent brute force attack to
         /// discover the presence or absence of a username.
         public bool HideUserNotFound { get; set; } = true;
+
+        /// 
+        public bool LdapChangePasswortWithDelAdd { get; set; } = true;
+        
+        /// 
+        public string LdapSearchFilter { get; set; } = "(sAMAccountName={Username})";
     }
 }
