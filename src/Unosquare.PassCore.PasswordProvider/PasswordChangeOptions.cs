@@ -13,5 +13,6 @@
         public bool CheckRestrictedAdGroups { get; set; }
         public List<string> AllowedADGroups { get; set; }
         public bool CheckAllowedAdGroups { get; set; }
+        public string IdTypeForUser { get; set; }
     }
 }
