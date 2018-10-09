@@ -1,26 +1,27 @@
-﻿using System;
-using Microsoft.Extensions.Options;
-using Novell.Directory.Ldap;
-using LdapRemoteCertificateValidationCallback =
-        Novell.Directory.Ldap.RemoteCertificateValidationCallback;
-using Unosquare.PassCore.Common;
-using System.Security.Cryptography.X509Certificates;
-using System.Net.Security;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using Microsoft.Extensions.Logging;
-
-namespace Zyborg.PassCore.PasswordProvider.LDAP
+﻿namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
+    using Novell.Directory.Ldap;
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using Unosquare.PassCore.Common;
+    using LdapRemoteCertificateValidationCallback =
+        Novell.Directory.Ldap.RemoteCertificateValidationCallback;
+
     public class LdapPasswordChangeProvider : IPasswordChangeProvider
     {
         private readonly ILogger _logger;
         private readonly LdapPasswordChangeOptions _options;
         private LdapRemoteCertificateValidationCallback _ldapRemoteCertValidator;
 
-        public LdapPasswordChangeProvider(ILogger<LdapPasswordChangeProvider> logger,
+        public LdapPasswordChangeProvider(
+            ILogger<LdapPasswordChangeProvider> logger,
             IOptions<LdapPasswordChangeOptions> options)
         {
             _logger = logger;
@@ -35,48 +36,57 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 _ldapRemoteCertValidator = CustomServerCertValidation;
 
             // Validate required options
-
             if (_options == null)
                 throw new Exception("missing configuration options");
 
-            if (_options.LdapHostnames?.Count() < 1)
+            if (_options.LdapHostnames?.Length < 1)
+            {
                 throw new ArgumentException("options must specify at least one LDAP hostname",
                     nameof(_options.LdapHostnames));
+            }
+
             if (string.IsNullOrEmpty(_options.LdapBindUserDN))
+            {
                 throw new ArgumentException("options missing or invalid LDAP bind distinguished name (DN)",
                     nameof(_options.LdapBindUserDN));
+            }
+
             if (string.IsNullOrEmpty(_options.LdapBindPassword))
+            {
                 throw new ArgumentException("options missing or invalid LDAP bind password",
                     nameof(_options.LdapBindPassword));
+            }
+
             if (string.IsNullOrEmpty(_options.LdapSearchBase))
-                throw new ArgumentException($"options must specify LDAP search base",
+            {
+                throw new ArgumentException("options must specify LDAP search base",
                     nameof(_options.LdapSearchBase));
+            }
+
             if (string.IsNullOrWhiteSpace(_options.LdapSearchFilter))
+            {
                 throw new ArgumentException(
-                    $"No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
+                    "No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
                     nameof(_options.LdapSearchBase));
+            }
 
             // All other configuration is optional, but some may warrant attention
-
             if (!_options.HideUserNotFound)
-                _logger.LogWarning($"option [{nameof(_options.HideUserNotFound)}] is DISABLED;"
-                                   + " the presence or absence of usernames can be harvested");
+                _logger.LogWarning($"option [{nameof(_options.HideUserNotFound)}] is DISABLED; the presence or absence of usernames can be harvested");
 
             if (!_options.LdapIgnoreTlsErrors)
-                _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsErrors)}] is ENABLED;"
-                                   + " invalid certificates will be allowed");
+                _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsErrors)}] is ENABLED; invalid certificates will be allowed");
             else if (!_options.LdapIgnoreTlsValidation)
-                _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsValidation)}] is ENABLED;"
-                                   + " untrusted certificate roots will be allowed");
+                _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsValidation)}] is ENABLED; untrusted certificate roots will be allowed");
 
             if (_options.LdapPort != LdapConnection.DEFAULT_SSL_PORT && !_options.LdapStartTls)
-                _logger.LogWarning($"option [{nameof(_options.LdapStartTls)}] is DISABLED"
-                                   + $" in combination with non-standard TLS port [{_options.LdapPort}]");
-
+                _logger.LogWarning($"option [{nameof(_options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{_options.LdapPort}]");
         }
 
-        public ApiErrorItem PerformPasswordChange(string username,
-            string currentPassword, string newPassword)
+        public ApiErrorItem PerformPasswordChange(
+            string username,
+            string currentPassword, 
+            string newPassword)
         {
             var cleanUsername = username;
 
@@ -149,15 +159,13 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                                 Message = "invalid credentials",
                             };
                         }
-                        else
+
+                        return new ApiErrorItem
                         {
-                            return new ApiErrorItem
-                            {
-                                ErrorCode = ApiErrorCode.UserNotFound,
-                                FieldName = nameof(username),
-                                Message = "username could not be located",
-                            };
-                        }
+                            ErrorCode = ApiErrorCode.UserNotFound,
+                            FieldName = nameof(username),
+                            Message = "username could not be located",
+                        };
                     }
 
                     if (search.Count > 1)
@@ -241,7 +249,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         private string CleaningUsername(string username)
         {
             var cleanUsername = username;
-            var atindex = cleanUsername.IndexOf("@");
+            var atindex = cleanUsername.IndexOf("@", StringComparison.Ordinal);
             if (atindex >= 0)
                 cleanUsername = cleanUsername.Substring(0, atindex);
 
@@ -396,8 +404,11 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// Custom server certificate validation logic that handles our special
         /// cases based on configuration.  This implements the logic of either
         /// ignoring just untrusted root errors or ignoring all TLS errors.
-        private bool CustomServerCertValidation(object sender, X509Certificate certificate,
-            X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        private bool CustomServerCertValidation(
+            object sender, 
+            X509Certificate certificate,
+            X509Chain chain, 
+            SslPolicyErrors sslPolicyErrors)
         {
             if (_options.LdapIgnoreTlsErrors || sslPolicyErrors == SslPolicyErrors.None)
                 return true;

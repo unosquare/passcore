@@ -1,7 +1,7 @@
-using Novell.Directory.Ldap;
-
 namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
+    using Novell.Directory.Ldap;
+
     public class LdapPasswordChangeOptions
     {
         /// Required, one or more hostnames or IP addresses which expose an LDAP/LDAPS

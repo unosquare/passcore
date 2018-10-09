@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Win32ErrorCode
     {
         /// Based on
