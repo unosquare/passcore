@@ -19,7 +19,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Use the values from appsettings.IdTypeForUser as fault-tolerant as possible
         /// </summary>
         private void SetIdType()
         {
@@ -141,6 +141,7 @@
                         }
                     }
 
+                    // Use always UPN for passwordcheck.
                     if (ValidateUserCredentials(userPrincipal.UserPrincipalName, currentPassword, principalContext) == false)
                         return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
 
@@ -169,13 +170,13 @@
             return null;
         }
 
-        private static bool ValidateUserCredentials(string username, string currentPassword, PrincipalContext principalContext)
+        private static bool ValidateUserCredentials(string upn, string currentPassword, PrincipalContext principalContext)
         {
-            if (principalContext.ValidateCredentials(username, currentPassword))
+            if (principalContext.ValidateCredentials(upn, currentPassword))
                 return true;
 
-            string tmpAuthority = username?.Split('@')?.Last();
-            if (LogonUser(username, tmpAuthority, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
+            string tmpAuthority = upn?.Split('@')?.Last();
+            if (LogonUser(upn, tmpAuthority, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                 return true;
 
             var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
