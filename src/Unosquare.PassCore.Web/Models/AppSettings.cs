@@ -5,13 +5,6 @@ namespace Unosquare.PassCore.Web.Models
     /// </summary>
     public class AppSettings
     {
-        public bool EnableHttpsRedirect { get; set; } = true;
-        public ClientSettings ClientSettings { get; set; }
-        public string RecaptchaPrivateKey { get; set; }
-    }
-
-    public class ClientSettings
-    {
         public Alerts Alerts { get; set; }
         public bool ShowPasswordMeter { get; set; }
         public ChangePasswordForm ChangePasswordForm { get; set; }
@@ -21,6 +14,7 @@ namespace Unosquare.PassCore.Web.Models
         public string ChangePasswordTitle { get; set; }
         public string DefaultDomain { get; set; }
         public ValidationRegex ValidationRegex { get; set; }
+        public string RecaptchaPrivateKey { get; set; }
     }
 
     public class ChangePasswordForm

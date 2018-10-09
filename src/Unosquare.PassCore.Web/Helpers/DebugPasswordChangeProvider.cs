@@ -1,7 +1,6 @@
 ﻿namespace Unosquare.PassCore.Web.Helpers
 {
     using System;
-    using Models;
     using Common;
 
     // Sonar-Codacy thought we needed a static method here; and suggested dual default nulls was pointless.
@@ -14,7 +13,7 @@
             switch (currentUsername)
             {
                 case "error":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message ="Error" };
+                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = "Error" };
                 case "changeNotPermitted":
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
                 case "fieldMismatch":

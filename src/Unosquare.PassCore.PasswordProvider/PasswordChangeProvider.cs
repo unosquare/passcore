@@ -23,13 +23,13 @@
         /// </summary>
         private void SetIdType()
         {
-            if (String.IsNullOrWhiteSpace(_options.IdTypeForUser))
+            if (string.IsNullOrWhiteSpace(_options.IdTypeForUser))
             {
                 _idType = IdentityType.UserPrincipalName;
             }
             else
             {
-                string tmpIdType = _options.IdTypeForUser.Trim().ToLower();
+                var tmpIdType = _options.IdTypeForUser.Trim().ToLower();
 
                 switch (tmpIdType)
                 {
@@ -60,14 +60,6 @@
                     case "security identifier":
                     case "sid":
                         _idType = IdentityType.Sid;
-                        break;
-                    case "userprincipalname":
-                    case "user principal name":
-                    case "upn":
-                    case "id":
-                    case "cn":
-                    case "uid":
-                        _idType = IdentityType.UserPrincipalName;
                         break;
                     default:
                         _idType = IdentityType.UserPrincipalName;
@@ -175,7 +167,8 @@
             if (principalContext.ValidateCredentials(upn, currentPassword))
                 return true;
 
-            string tmpAuthority = upn?.Split('@')?.Last();
+            var tmpAuthority = upn?.Split('@').Last();
+
             if (LogonUser(upn, tmpAuthority, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                 return true;
 

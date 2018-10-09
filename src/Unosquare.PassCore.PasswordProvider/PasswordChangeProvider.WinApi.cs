@@ -4,7 +4,8 @@ namespace Unosquare.PassCore.PasswordProvider
     using System;
 
     /// <summary>
-    /// This code is taken from the answer https://stackoverflow.com/a/1766203 from https://stackoverflow.com/questions/1394025/active-directory-ldap-check-account-locked-out-password-expired
+    /// This code is taken from the answer https://stackoverflow.com/a/1766203
+    /// from https://stackoverflow.com/questions/1394025/active-directory-ldap-check-account-locked-out-password-expired
     /// </summary>
     partial class PasswordChangeProvider
     {

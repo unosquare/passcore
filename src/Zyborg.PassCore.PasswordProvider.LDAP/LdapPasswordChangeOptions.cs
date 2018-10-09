@@ -46,10 +46,20 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// discover the presence or absence of a username.
         public bool HideUserNotFound { get; set; } = true;
 
-        /// 
-        public bool LdapChangePasswortWithDelAdd { get; set; } = true;
-        
-        /// 
+        /// <summary>
+        /// Gets or sets a value indicating whether [LDAP change password with delete add].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [LDAP change password with delete add]; otherwise, <c>false</c>.
+        /// </value>
+        public bool LdapChangePasswordWithDelAdd { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the LDAP search filter.
+        /// </summary>
+        /// <value>
+        /// The LDAP search filter.
+        /// </value>
         public string LdapSearchFilter { get; set; } = "(sAMAccountName={Username})";
     }
 }

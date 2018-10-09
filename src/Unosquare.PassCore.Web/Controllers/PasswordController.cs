@@ -1,14 +1,14 @@
 namespace Unosquare.PassCore.Web.Controllers
 {
-    using System.Net.Http;
-    using System.Net;
-    using System.Threading.Tasks;
-    using System;
     using Common;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Models;
     using Newtonsoft.Json;
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -37,7 +37,7 @@ namespace Unosquare.PassCore.Web.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Json(_options.ClientSettings);
+            return Json(_options);
         }
 
         /// <summary>
@@ -50,6 +50,11 @@ namespace Unosquare.PassCore.Web.Controllers
         {
             // Validate the request
             if (model == null)
+            {
+                return BadRequest(ApiResult.InvalidRequest());
+            }
+
+            if (model.NewPassword != model.NewPasswordVerify)
             {
                 return BadRequest(ApiResult.InvalidRequest());
             }
@@ -67,7 +72,6 @@ namespace Unosquare.PassCore.Web.Controllers
             // Validate the Captcha
             try
             {
-                // Sonar-Codacy suggested ConfigureAwait
                 if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
                 {
                     result.Errors.Add(new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCaptcha });
@@ -87,7 +91,7 @@ namespace Unosquare.PassCore.Web.Controllers
                 return BadRequest(result);
             }
 
-            var currentUsername = GetUserName(model, result);
+            var currentUsername = GetUserName(model);
 
             if (result.HasErrors)
             {
@@ -102,18 +106,20 @@ namespace Unosquare.PassCore.Web.Controllers
             }
 
             if (result.HasErrors)
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            {
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            }
 
             return Json(result);
         }
 
-        private string GetUserName(ChangePasswordModel model, ApiResult result)
+        private string GetUserName(ChangePasswordModel model)
         {
             // Check for default domain: if none given, ensure EFLD can be used as an override.
             var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-            var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
+            var domain = parts.Length > 1 ? parts[1] : _options.DefaultDomain;
 
-            // Domain-determinance
+            // Domain-determinant
             if (string.IsNullOrWhiteSpace(domain))
             {
                 return model.Username;
@@ -125,7 +131,8 @@ namespace Unosquare.PassCore.Web.Controllers
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey)) return true;
+            if (!_options.Recaptcha.IsEnabled || string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey)) 
+                return true;
 
             // immediately return false because we don't 
             if (string.IsNullOrEmpty(recaptchaResponse)) return false;

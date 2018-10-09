@@ -1,8 +1,8 @@
 import { Alerts } from './alerts.model';
 import { ChangePasswordForm } from './change-password-form.model';
-import { Recaptcha } from "./recaptcha.model";
+import { Recaptcha } from './recaptcha.model';
 import { ErrorsPasswordForm } from './errors-password-form.model';
-import { ValidationRegex } from "./validation-regex.model";
+import { ValidationRegex } from './validation-regex.model';
 
 export class ViewOptions {
     alerts: Alerts;

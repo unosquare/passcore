@@ -46,17 +46,17 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 "The referenced account is currently locked out and cannot be logged on to."),
         };
 
-        private static Dictionary<int, Win32ErrorCode> _errorByCode =
+        private static readonly Dictionary<int, Win32ErrorCode> ErrorByCode =
                 new Dictionary<int, Win32ErrorCode>();
-        private static Dictionary<string, Win32ErrorCode> _errorByCodeName =
+        private static readonly Dictionary<string, Win32ErrorCode> ErrorByCodeName =
                 new Dictionary<string, Win32ErrorCode>(StringComparer.InvariantCultureIgnoreCase);
 
         static Win32ErrorCode()
         {
             foreach (var c in Codes)
             {
-                _errorByCode[c.Code] = c;
-                _errorByCodeName[c.CodeName] = c;
+                ErrorByCode[c.Code] = c;
+                ErrorByCodeName[c.CodeName] = c;
             }
         }
 
@@ -76,9 +76,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 && obj is Win32ErrorCode err && Code == err.Code;
 
         public static Win32ErrorCode ByCode(int code) =>
-            _errorByCode.TryGetValue(code, out var err) ? err : null;
+            ErrorByCode.TryGetValue(code, out var err) ? err : null;
 
         public static Win32ErrorCode ByCodeName(string codeName) =>
-            _errorByCodeName.TryGetValue(codeName, out var err) ? err : null;
+            ErrorByCodeName.TryGetValue(codeName, out var err) ? err : null;
     }
 }

@@ -24,24 +24,19 @@ namespace Unosquare.PassCore.Web
     /// </summary>
     public class Startup
     {
-        #region Constant Definitions
-
         private const string AppSettingsJsonFilename = "appsettings.json";
         private const string LoggingSectionName = "Logging";
 
-        #endregion
-        #region Constructors and Initializers
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
-        /// This class gets instantiatied by the Main method. The hosting environment gets provided via DI
+        /// This class gets instantiated by the Main method. The hosting environment gets provided via DI
         /// </summary>
         public Startup()
         {
-            // Set up configuration sources.
-            var builder = new ConfigurationBuilder().AddJsonFile(AppSettingsJsonFilename, false, true);
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile(AppSettingsJsonFilename, false, true)
+                .AddEnvironmentVariables()
+                .Build();
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -50,13 +45,8 @@ namespace Unosquare.PassCore.Web
         /// Application's entry point
         /// </summary>
         /// <param name="args">The arguments.</param>
-        public static void Main(string[] args)
-        {
+        public static void Main(string[] args) => 
             CreateWebHostBuilder(args).Build().Run();
-        }
-
-        #endregion
-        #region Methods
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
@@ -72,6 +62,7 @@ namespace Unosquare.PassCore.Web
             services.AddOptions();
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             services.AddMvc();
+
 #if DEBUG
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
 #elif PASSCORE_LDAP_PROVIDER
@@ -96,9 +87,9 @@ namespace Unosquare.PassCore.Web
             // Logging
             log.AddConsole(Configuration.GetSection(LoggingSectionName));
 
-#if !DEBUG
+#if DEBUG
             log.AddDebug();
-
+#else
             // HTTPS redirect
             if (settings.Value.EnableHttpsRedirect)
             {
@@ -116,6 +107,5 @@ namespace Unosquare.PassCore.Web
             // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.0
             app.UseMvcWithDefaultRoute();
         }
-#endregion
     }
 }

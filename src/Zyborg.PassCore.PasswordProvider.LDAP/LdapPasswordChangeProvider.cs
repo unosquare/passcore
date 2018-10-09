@@ -16,9 +16,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
     public class LdapPasswordChangeProvider : IPasswordChangeProvider
     {
-        private ILogger _logger;
-        private LdapPasswordChangeOptions _options;
-        private LdapRemoteCertificateValidationCallback _ldapRemoteCertValidator = null;
+        private readonly ILogger _logger;
+        private readonly LdapPasswordChangeOptions _options;
+        private LdapRemoteCertificateValidationCallback _ldapRemoteCertValidator;
 
         public LdapPasswordChangeProvider(ILogger<LdapPasswordChangeProvider> logger,
             IOptions<LdapPasswordChangeOptions> options)
@@ -41,43 +41,45 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
             if (_options.LdapHostnames?.Count() < 1)
                 throw new ArgumentException("options must specify at least one LDAP hostname",
-                        nameof(_options.LdapHostnames));
+                    nameof(_options.LdapHostnames));
             if (string.IsNullOrEmpty(_options.LdapBindUserDN))
                 throw new ArgumentException("options missing or invalid LDAP bind distinguished name (DN)",
-                        nameof(_options.LdapBindUserDN));
+                    nameof(_options.LdapBindUserDN));
             if (string.IsNullOrEmpty(_options.LdapBindPassword))
                 throw new ArgumentException("options missing or invalid LDAP bind password",
-                        nameof(_options.LdapBindPassword));
+                    nameof(_options.LdapBindPassword));
             if (string.IsNullOrEmpty(_options.LdapSearchBase))
                 throw new ArgumentException($"options must specify LDAP search base",
-                        nameof(_options.LdapSearchBase));
-            if (String.IsNullOrWhiteSpace(_options.LdapSearchFilter))
-                throw new ArgumentException($"No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
-                        nameof(_options.LdapSearchBase));
+                    nameof(_options.LdapSearchBase));
+            if (string.IsNullOrWhiteSpace(_options.LdapSearchFilter))
+                throw new ArgumentException(
+                    $"No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
+                    nameof(_options.LdapSearchBase));
 
             // All other configuration is optional, but some may warrant attention
 
             if (!_options.HideUserNotFound)
                 _logger.LogWarning($"option [{nameof(_options.HideUserNotFound)}] is DISABLED;"
-                        + " the presence or absence of usernames can be harvested");
+                                   + " the presence or absence of usernames can be harvested");
 
             if (!_options.LdapIgnoreTlsErrors)
                 _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsErrors)}] is ENABLED;"
-                        + " invalid certificates will be allowed");
+                                   + " invalid certificates will be allowed");
             else if (!_options.LdapIgnoreTlsValidation)
                 _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsValidation)}] is ENABLED;"
-                        + " untrusted certificate roots will be allowed");
+                                   + " untrusted certificate roots will be allowed");
 
             if (_options.LdapPort != LdapConnection.DEFAULT_SSL_PORT && !_options.LdapStartTls)
                 _logger.LogWarning($"option [{nameof(_options.LdapStartTls)}] is DISABLED"
-                        + $" in combination with non-standard TLS port [{_options.LdapPort}]");
+                                   + $" in combination with non-standard TLS port [{_options.LdapPort}]");
 
         }
 
         public ApiErrorItem PerformPasswordChange(string username,
-                string currentPassword, string newPassword)
+            string currentPassword, string newPassword)
         {
-            string cleanUsername = username;
+            var cleanUsername = username;
+
             try
             {
                 cleanUsername = CleaningUsername(username);
@@ -92,7 +94,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 {
                     ErrorCode = ApiErrorCode.UserNotFound,
                     FieldName = nameof(username),
-                    Message = "Some error in cleaning username: " + ex.Message,
+                    Message = $"Some error in cleaning username: {ex.Message}",
                 };
             }
 
@@ -104,10 +106,11 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
             // First find user DN by username (SAM Account Name)
             var searchConstraints = new LdapSearchConstraints(
-                    0, 0, LdapSearchConstraints.DEREF_NEVER,
-                    1000, true, 1, null, 10);
+                0, 0, LdapSearchConstraints.DEREF_NEVER,
+                1000, true, 1, null, 10);
 
-            string searchFilter = _options.LdapSearchFilter;
+            var searchFilter = _options.LdapSearchFilter;
+
             try
             {
                 if (searchFilter.Contains("{Username}"))
@@ -117,7 +120,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             }
             catch (Exception ex)
             {
-                string msg = "ldapSearchFilter could not be parsed. Be sure {Username} is included: " + ex.Message;
+                var msg = $"ldapSearchFilter could not be parsed. Be sure {{Username}} is included: {ex.Message}";
                 _logger.LogCritical(msg);
                 throw new ArgumentException(msg);
             }
@@ -127,9 +130,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 using (var ldap = BindToLdap())
                 {
                     var search = ldap.Search(
-                            _options.LdapSearchBase, LdapConnection.SCOPE_SUB,
-                            searchFilter, new[] { "distinguishedName" },
-                            false, searchConstraints);
+                        _options.LdapSearchBase, LdapConnection.SCOPE_SUB,
+                        searchFilter, new[] {"distinguishedName"},
+                        false, searchConstraints);
 
                     // We cannot use search.Count here -- apparently it does not
                     // wait for the results to return before resolving the count
@@ -174,30 +177,34 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
                     try
                     {
-                        if (_options.LdapChangePasswortWithDelAdd)
+                        if (_options.LdapChangePasswordWithDelAdd)
                         {
                             #region Change Password by Delete/Add
+
                             var oldPassBytes = Encoding.Unicode.GetBytes($@"""{currentPassword}""")
-                                    .Select(x => (sbyte)x).ToArray();
+                                .Select(x => (sbyte) x).ToArray();
                             var newPassBytes = Encoding.Unicode.GetBytes($@"""{newPassword}""")
-                                    .Select(x => (sbyte)x).ToArray();
+                                .Select(x => (sbyte) x).ToArray();
 
                             var oldAttr = new LdapAttribute("unicodePwd", oldPassBytes);
                             var newAttr = new LdapAttribute("unicodePwd", newPassBytes);
 
                             var ldapDel = new LdapModification(LdapModification.DELETE, oldAttr);
                             var ldapAdd = new LdapModification(LdapModification.ADD, newAttr);
-                            ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
+                            ldap.Modify(userDN, new[] {ldapDel, ldapAdd}); // Change with Delete/Add
+
                             #endregion
                         }
                         else
                         {
                             #region Change Password by Replace
+
                             // If you don't have the rights to Add and/or Delete the Attribute, you might have the right to change the password-attribute.
                             // In this case uncomment the next 2 lines and comment the region 'Change Password by Delete/Add'
                             var replAttr = new LdapAttribute("userPassword", newPassword);
                             var ldapReplace = new LdapModification(LdapModification.REPLACE, replAttr);
-                            ldap.Modify(userDN, new[] { ldapReplace }); // Change with Replace
+                            ldap.Modify(userDN, new[] {ldapReplace}); // Change with Replace
+
                             #endregion
                         }
                     }
@@ -207,7 +214,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                         return ParseLdapException(ex);
                     }
 
-                    if (this._options.LdapStartTls)
+                    if (_options.LdapStartTls)
                         ldap.StopTls();
 
                     ldap.Disconnect();
@@ -233,7 +240,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
         private string CleaningUsername(string username)
         {
-            string cleanUsername = username;
+            var cleanUsername = username;
             var atindex = cleanUsername.IndexOf("@");
             if (atindex >= 0)
                 cleanUsername = cleanUsername.Substring(0, atindex);
@@ -241,14 +248,17 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             // Must sanitize the username to eliminate the possibility of injection attacks:
             //    * https://docs.microsoft.com/en-us/windows/desktop/adschema/a-samaccountname
             //    * https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-2000-server/bb726984(v=technet.10)
-            var samInvalid = "\"/\\[]:;|=,+*?<>";
-            var miscInvalid = "\r\n\t";
+            const string samInvalid = "\"/\\[]:;|=,+*?<>";
+            const string miscInvalid = "\r\n\t";
+
             var invalid = (samInvalid + miscInvalid).ToCharArray();
             var invalidIndex = cleanUsername.IndexOfAny(invalid);
             if (invalidIndex >= 0)
             {
-                var msg = "username contains one or more invalid characters";
+                const string msg = "username contains one or more invalid characters";
+
                 _logger.LogWarning(msg);
+
                 throw new ApiErrorException
                 {
                     ErrorItem = new ApiErrorItem
@@ -264,6 +274,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             //    * http://www.ldapexplorer.com/en/manual/109010000-ldap-filter-syntax.htm
             var escape = "()&|=><!*/\\".ToCharArray();
             var escapeIndex = cleanUsername.IndexOfAny(escape);
+
             if (escapeIndex >= 0)
             {
                 var buff = new StringBuilder();
@@ -272,55 +283,61 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 while (escapeIndex >= 0)
                 {
                     buff.Append(cleanUsername.Substring(copyFrom, escapeIndex));
-                    buff.Append(string.Format("\\{0:X}", (int)cleanUsername[escapeIndex]));
+                    buff.Append(string.Format("\\{0:X}", (int) cleanUsername[escapeIndex]));
                     copyFrom = escapeIndex + 1;
                     escapeIndex = cleanUsername.IndexOfAny(escape, copyFrom);
                 }
+
                 if (copyFrom < maxLen)
                     buff.Append(cleanUsername.Substring(copyFrom));
                 cleanUsername = buff.ToString();
                 _logger.LogWarning("had to clean username: [{0}] => [{1}]", username, cleanUsername);
             }
+
             return cleanUsername;
         }
 
         private ApiErrorItem ParseLdapException(LdapException ex)
         {
-            // If the LDAP server returned an error, it will be formated
+            // If the LDAP server returned an error, it will be formatted
             // similar to this:
             //    "0000052D: AtrErr: DSID-03191083, #1:\n\t0: 0000052D: DSID-03191083, problem 1005 (CONSTRAINT_ATT_TYPE), data 0, Att 9005a (unicodePwd)\n\0"
             //
             // The leading number before the ':' is the Win32 API Error Code in HEX
             var m = Regex.Match(ex.LdapErrorMessage, "([0-9a-fA-F]+):");
-            if (m.Success)
+
+            if (!m.Success)
             {
-                var errCodeString = m.Groups[1].Value;
-                var errCode = int.Parse(errCodeString, NumberStyles.HexNumber);
-                var err = Win32ErrorCode.ByCode(errCode);
-
-                if (err != null)
-                {
-                    _logger.LogWarning("resolved Win32 API Error: code={0} name={1} desc={2}",
-                            err.Code, err.CodeName, err.Description);
-                    return new ApiErrorItem
-                    {
-                        ErrorCode = ApiErrorCode.InvalidCredentials,
-                        FieldName = "currentPassword",
-                        Message = $"0x{err.Code:X}:{err.CodeName}: {err.Description}",
-                    };
-                }
-
                 return new ApiErrorItem
                 {
                     ErrorCode = ApiErrorCode.Generic,
-                    Message = "unexpected Win32 API error; error code: " + errCodeString,
+                    Message = $"Unexpected error: {ex.LdapErrorMessage}",
                 };
             }
+
+            var errCodeString = m.Groups[1].Value;
+            var errCode = int.Parse(errCodeString, NumberStyles.HexNumber);
+            var err = Win32ErrorCode.ByCode(errCode);
+
+            if (err == null)
+            {
+                return new ApiErrorItem
+                {
+                    ErrorCode = ApiErrorCode.Generic,
+                    Message = "Unexpected Win32 API error; error code: " + errCodeString,
+                };
+            }
+
+            _logger.LogWarning("Resolved Win32 API Error: code={0} name={1} desc={2}",
+                err.Code, err.CodeName, err.Description);
+
             return new ApiErrorItem
             {
-                ErrorCode = ApiErrorCode.Generic,
-                Message = "unexpected error: " + ex.LdapErrorMessage,
+                ErrorCode = ApiErrorCode.InvalidCredentials,
+                FieldName = "currentPassword",
+                Message = $"0x{err.Code:X}:{err.CodeName}: {err.Description}",
             };
+
         }
 
         private LdapConnection BindToLdap()
@@ -329,7 +346,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             if (_ldapRemoteCertValidator != null)
                 ldap.UserDefinedServerCertValidationDelegate += _ldapRemoteCertValidator;
 
-            ldap.SecureSocketLayer = this._options.LdapStartTls;
+            ldap.SecureSocketLayer = _options.LdapStartTls;
 
             string bindHostname = null;
             foreach (var h in _options.LdapHostnames)
@@ -342,7 +359,8 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 }
                 catch (Exception ex)
                 {
-                    string msg = $"failed to connect to host [{h}]";
+                    var msg = $"failed to connect to host [{h}]";
+
                     _logger.LogWarning(msg, ex);
                     throw new ApiErrorException
                     {
@@ -366,6 +384,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                     }
                 };
             }
+
             if (ldap.SecureSocketLayer)
                 ldap.StartTls();
 
@@ -378,20 +397,22 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// cases based on configuration.  This implements the logic of either
         /// ignoring just untrusted root errors or ignoring all TLS errors.
         private bool CustomServerCertValidation(object sender, X509Certificate certificate,
-                X509Chain chain, SslPolicyErrors sslPolicyErrors)
+            X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             if (_options.LdapIgnoreTlsErrors || sslPolicyErrors == SslPolicyErrors.None)
                 return true;
 
-            var errorStatuses = chain.ChainStatus.Select((x, y) => (status: x, index: y)).Where(x =>
-            {
-                if (x.status.Status == X509ChainStatusFlags.UntrustedRoot
+            var errorStatuses = chain.ChainStatus
+                .Select((x, y) => (status: x, index: y))
+                .Where(x =>
+                {
+                    if (x.status.Status == X509ChainStatusFlags.UntrustedRoot
                         && _options.LdapIgnoreTlsValidation)
-                    return false;
-                if (x.status.Status == X509ChainStatusFlags.NoError)
-                    return false;
-                return true;
-            }).ToArray();
+                        return false;
+
+                    return x.status.Status != X509ChainStatusFlags.NoError;
+                })
+                .ToArray();
 
             return errorStatuses.Length > 0;
         }
