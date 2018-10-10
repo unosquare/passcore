@@ -59,7 +59,7 @@ export class ChangePasswordComponent implements OnInit {
         this.ViewOptions.errorsPasswordForm = new ErrorsPasswordForm;
         this.ViewOptions.validationRegex = new ValidationRegex();
         this.r.queryParams.subscribe((params: Params) => {
-            let userId = params['userName'] || '';
+            const userId = params['userName'] || '';
             this.GetData(userId);
         });
         this.FormGroup.valueChanges.subscribe(data => {

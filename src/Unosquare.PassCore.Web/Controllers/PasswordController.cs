@@ -86,12 +86,27 @@ namespace Unosquare.PassCore.Web.Controllers
                 return BadRequest(ApiResult.InvalidCaptcha());
             }
 
-            var currentUsername = GetUserName(model);
-            var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(currentUsername, model.CurrentPassword, model.NewPassword);
             var result = new ApiResult();
 
-            if (resultPasswordChange == null) return Json(result);
-            result.Errors.Add(resultPasswordChange);
+            try
+            {
+                var currentUsername = GetUserName(model);
+                var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(
+                        currentUsername,
+                        model.CurrentPassword,
+                        model.NewPassword);
+
+                if (resultPasswordChange == null) return Json(result);
+                result.Errors.Add(resultPasswordChange);
+            }
+            catch (Exception ex)
+            {
+                result.Errors.Add(new ApiErrorItem
+                {
+                    Message = ex.Message
+                });
+            }
+
             return BadRequest(result);
         }
 
@@ -101,13 +116,7 @@ namespace Unosquare.PassCore.Web.Controllers
             var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
             var domain = parts.Length > 1 ? parts[1] : _passwordChangeProvider.Settings.DefaultDomain;
 
-            // Domain-determinant
-            if (string.IsNullOrWhiteSpace(domain))
-            {
-                return model.Username;
-            }
-
-            return parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
+            return string.IsNullOrWhiteSpace(domain) || parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
         }
 
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
@@ -117,7 +126,7 @@ namespace Unosquare.PassCore.Web.Controllers
                 return true;
 
             // immediately return false because we don't 
-            if (string.IsNullOrEmpty(recaptchaResponse)) 
+            if (string.IsNullOrEmpty(recaptchaResponse))
                 return false;
 
             var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_passwordChangeProvider.Settings.RecaptchaPrivateKey}&response={recaptchaResponse}";

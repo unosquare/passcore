@@ -14,14 +14,16 @@
         {
             Settings = optionsAccessor.Value;
         }
-        
+
         /// <inheritdoc />
         public IAppSettings Settings { get; }
 
         /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            var currentUsername = username.Substring(0, username.IndexOf("@", StringComparison.Ordinal));
+            var currentUsername = username.IndexOf("@", StringComparison.Ordinal) > 0 
+                ? username.Substring(0, username.IndexOf("@", StringComparison.Ordinal)) 
+                : username;
 
             switch (currentUsername)
             {
