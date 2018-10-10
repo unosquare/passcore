@@ -83,7 +83,6 @@ The most relevant configuration entries are shown below. Make sure you make your
 - To enable reCAPTCHA
   1. Find the `RecaptchaPrivateKey` entry and enter your private key within double quotes (`"`)
   2. Find the `SiteKey` entry and enter your Site Key within double quotes (`"`)
-  3. Find the `IsEnabled` entry and enter value `true`
 - To change the language of the reCAPTCHA widget
   - Find the `LanguageCode` entry and enter [one of the options listed here](https://developers.google.com/recaptcha/docs/language). By default this is set to `en`
 - To enable the password meter

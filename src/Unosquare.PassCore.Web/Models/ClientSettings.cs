@@ -15,12 +15,6 @@ namespace Unosquare.PassCore.Web.Models
         public ValidationRegex ValidationRegex { get; set; }
     }
 
-    public class AppSettings
-    {
-        public string RecaptchaPrivateKey { get; set; }
-        public string DefaultDomain { get; set; }
-    }
-
     public class ChangePasswordForm
     {
         public string ChangePasswordButtonLabel { get; set; }
@@ -39,7 +33,6 @@ namespace Unosquare.PassCore.Web.Models
 
     public class Recaptcha
     {
-        public bool IsEnabled { get; set; }
         public string LanguageCode { get; set; }
         public string SiteKey { get; set; }
     }

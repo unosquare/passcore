@@ -46,10 +46,50 @@ namespace Unosquare.PassCore.Web.Models
         }
 
         /// <summary>
+        /// Invalids the captcha.
+        /// </summary>
+        /// <returns></returns>
+        public static ApiResult InvalidCaptcha()
+        {
+            var result = new ApiResult {Payload = "Invalid Recaptcha"};
+            result.Errors.Add(new ApiErrorItem
+            {
+                ErrorCode = ApiErrorCode.InvalidCaptcha,
+                FieldName = string.Empty,
+                Message = "Invalid Recaptcha"
+            });
+
+            return result;
+        }
+
+        /// <summary>
+        /// Adds the model state errors.
+        /// </summary>
+        /// <param name="modelState">State of the model.</param>
+        public static ApiResult FromModelStateErrors(ModelStateDictionary modelState)
+        {
+            var result = new ApiResult();
+
+            foreach (var state in modelState.Where(x => x.Value.Errors.Any()))
+            {
+                var error = state.Value.Errors.First();
+
+                if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldRequired)))
+                    result.AddFieldRequiredValidationError(state.Key);
+                else if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldMismatch)))
+                    result.AddFieldMismatchValidationError(state.Key);
+                else
+                    result.AddGenericFieldValidationError(state.Key, error.ErrorMessage);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Adds the field required validation error.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        public void AddFieldRequiredValidationError(string fieldName)
+        private void AddFieldRequiredValidationError(string fieldName)
         {
             Errors.Add(new ApiErrorItem
             {
@@ -63,7 +103,7 @@ namespace Unosquare.PassCore.Web.Models
         /// Adds the field mismatch validation error.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        public void AddFieldMismatchValidationError(string fieldName)
+        private void AddFieldMismatchValidationError(string fieldName)
         {
             Errors.Add(new ApiErrorItem
             {
@@ -78,7 +118,7 @@ namespace Unosquare.PassCore.Web.Models
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
         /// <param name="message">The message.</param>
-        public void AddGenericFieldValidationError(string fieldName, string message)
+        private void AddGenericFieldValidationError(string fieldName, string message)
         {
             Errors.Add(new ApiErrorItem
             {
@@ -86,25 +126,6 @@ namespace Unosquare.PassCore.Web.Models
                 FieldName = fieldName,
                 Message = message
             });
-        }
-
-        /// <summary>
-        /// Adds the model state errors.
-        /// </summary>
-        /// <param name="modelState">State of the model.</param>
-        public void AddModelStateErrors(ModelStateDictionary modelState)
-        {
-            foreach (var state in modelState.Where(x => x.Value.Errors.Any()))
-            {
-                var error = state.Value.Errors.First();
-
-                if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldRequired)))
-                    AddFieldRequiredValidationError(state.Key);
-                else if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldMismatch)))
-                    AddFieldMismatchValidationError(state.Key);
-                else
-                    AddGenericFieldValidationError(state.Key, error.ErrorMessage);
-            }
         }
     }
 }

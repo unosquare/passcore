@@ -1,46 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Unosquare.PassCore.Common
+﻿namespace Unosquare.PassCore.Common
 {
+    using System;
+
+    /// <inheritdoc />
     /// <summary>
     /// Special Exception to transport the ApiErrorItem.
     /// </summary>
     public class ApiErrorException : Exception
     {
-        public ApiErrorItem ErrorItem { get; set; }
-
-        public ApiErrorException() 
+        public ApiErrorException(ApiErrorCode errorCode = ApiErrorCode.Generic) 
         {
-            // Default ApiErrorItem to prevent Null-PointerException
-            ErrorItem = new ApiErrorItem
-            {
-                ErrorCode = ApiErrorCode.Generic,
-                FieldName = "",
-                Message = "Some Error"
-            };
+            ErrorCode = errorCode;
         }
 
-        /// <summary>
-        /// Exception message and/or ApiErrorItem.Message.
-        /// </summary>
-        public override string Message
+        public ApiErrorException(string message, ApiErrorCode errorCode = ApiErrorCode.Generic)
+        : base(message)
         {
-            get
-            {
-                string mess = base.Message;
+            ErrorCode = errorCode;
+        }
+        
+        public ApiErrorCode ErrorCode { get; set; }
 
-                if (this.ErrorItem != null)
-                {
-                    if (!String.IsNullOrWhiteSpace(base.Message))
-                    {
-                        mess += ": ";
-                    }
-                    mess += this.ErrorItem.Message;
-                }
-                return mess;
-            }
+        /// <inheritdoc />
+        public override string Message => $"Error Code: {ErrorCode}\r\n{base.Message}";
+
+        public ApiErrorItem ToApiErrorItem()
+        {
+            return new ApiErrorItem
+            {
+                ErrorCode =  ErrorCode,
+                Message = base.Message
+            };
         }
     }
 }

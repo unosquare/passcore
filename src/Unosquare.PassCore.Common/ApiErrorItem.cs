@@ -26,7 +26,7 @@
         /// <value>
         /// The error code.
         /// </value>
-        public ApiErrorCode ErrorCode { get; set; }
+        public ApiErrorCode ErrorCode { get; set; } = ApiErrorCode.Generic;
 
         /// <summary>
         /// Gets or sets the name of the field.

@@ -1,11 +1,25 @@
 ﻿namespace Unosquare.PassCore.Web.Helpers
 {
     using System;
+    using Microsoft.Extensions.Options;
     using Common;
 
     // Sonar-Codacy thought we needed a static method here; and suggested dual default nulls was pointless.
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DebugPasswordChangeProvider"/> class.
+        /// </summary>
+        /// <param name="optionsAccessor">The options accessor.</param>
+        public DebugPasswordChangeProvider(IOptions<DebugAppSettings> optionsAccessor)
+        {
+            Settings = optionsAccessor.Value;
+        }
+        
+        /// <inheritdoc />
+        public IAppSettings Settings { get; }
+
+        /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             var currentUsername = username.Substring(0, username.IndexOf("@", StringComparison.Ordinal));

@@ -13,5 +13,13 @@
         /// <param name="newPassword">The new password.</param>
         /// <returns></returns>
         ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword);
+
+        /// <summary>
+        /// Gets the settings.
+        /// </summary>
+        /// <value>
+        /// The settings.
+        /// </value>
+        IAppSettings Settings { get; }
     }
 }
