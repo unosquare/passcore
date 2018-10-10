@@ -131,7 +131,7 @@ namespace Unosquare.PassCore.Web.Controllers
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (!_options.Recaptcha.IsEnabled || string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey)) 
+            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey)) 
                 return true;
 
             // immediately return false because we don't 

@@ -60,6 +60,7 @@ namespace Unosquare.PassCore.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
+            services.Configure<ClientSettings>(Configuration.GetSection(nameof(ClientSettings)));
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             services.AddMvc();
 
@@ -82,7 +83,7 @@ namespace Unosquare.PassCore.Web
         /// <param name="env">The environment.</param>
         /// <param name="log">The logger factory.</param>
         /// <param name="settings">The settings.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions<AppSettings> settings)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions<ClientSettings> settings)
         {
             // Logging
             log.AddConsole(Configuration.GetSection(LoggingSectionName));

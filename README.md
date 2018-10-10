@@ -81,9 +81,9 @@ All server-side settings and client-side settings are stored in the `/appsetting
 The most relevant configuration entries are shown below. Make sure you make your changes to the `appsettings.json` file using a regular text editor like [Visual Studio Code](https://code.visualstudio.com)
 
 - To enable reCAPTCHA
-  1. reCaptcha is enable in testing mode, please change the keys to use it with your application
-  2. Find the `RecaptchaPrivateKey` entry and enter your private key within double quotes (`"`)
-  3. Find the `SiteKey` entry and enter your Site Key within double quotes (`"`)
+  1. Find the `RecaptchaPrivateKey` entry and enter your private key within double quotes (`"`)
+  2. Find the `SiteKey` entry and enter your Site Key within double quotes (`"`)
+  3. Find the `IsEnabled` entry and enter value `true`
 - To change the language of the reCAPTCHA widget
   - Find the `LanguageCode` entry and enter [one of the options listed here](https://developers.google.com/recaptcha/docs/language). By default this is set to `en`
 - To enable the password meter

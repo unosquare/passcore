@@ -3,7 +3,7 @@ namespace Unosquare.PassCore.Web.Models
     /// <summary>
     /// Represents all of the strongly-typed application settings loaded from a JSON file
     /// </summary>
-    public class AppSettings
+    public class ClientSettings
     {
         public Alerts Alerts { get; set; }
         public bool ShowPasswordMeter { get; set; }
@@ -12,9 +12,13 @@ namespace Unosquare.PassCore.Web.Models
         public Recaptcha Recaptcha { get; set; }
         public string ApplicationTitle { get; set; }
         public string ChangePasswordTitle { get; set; }
-        public string DefaultDomain { get; set; }
         public ValidationRegex ValidationRegex { get; set; }
+    }
+
+    public class AppSettings
+    {
         public string RecaptchaPrivateKey { get; set; }
+        public string DefaultDomain { get; set; }
     }
 
     public class ChangePasswordForm
