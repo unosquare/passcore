@@ -7,6 +7,7 @@ namespace Unosquare.PassCore.Web.Models
     {
         public Alerts Alerts { get; set; }
         public bool ShowPasswordMeter { get; set; }
+        public bool UseEmail { get; set; }
         public ChangePasswordForm ChangePasswordForm { get; set; }
         public ErrorsPasswordForm ErrorsPasswordForm { get; set; }
         public Recaptcha Recaptcha { get; set; }

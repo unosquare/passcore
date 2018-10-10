@@ -4,7 +4,6 @@
     using Microsoft.Extensions.Options;
     using Common;
 
-    // Sonar-Codacy thought we needed a static method here; and suggested dual default nulls was pointless.
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
         /// <summary>

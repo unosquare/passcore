@@ -11,7 +11,7 @@ export class ViewOptions {
     changePasswordTitle: string;
     recaptcha: Recaptcha;
     showPasswordMeter: boolean;
-    defaultDomain: string;
+    useEmail: boolean;
     errorsPasswordForm: ErrorsPasswordForm;
     validationRegex: ValidationRegex;
 }

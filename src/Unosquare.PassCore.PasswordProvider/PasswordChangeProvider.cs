@@ -43,6 +43,8 @@
                         return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
                     }
 
+                    ValidateGroups(options, userPrincipal);
+
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
@@ -71,33 +73,6 @@
                         catch (Exception ex)
                         {
                             return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
-                        }
-                    }
-
-                    // Verify user is not a member of an excluded group
-                    if (options.RestrictedADGroups.Any())
-                    {
-                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-                        {
-                            if (options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
-                            {
-                                _logger.LogWarning("The User principal is listed as restricted");
-
-                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
-                            }
-                        }
-                    }
-
-                    if (options.AllowedADGroups.Any())
-                    {
-                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-                        {
-                            if (!options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
-                            {
-                                _logger.LogWarning("The User principal is not listed as allowed");
-
-                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
-                            }
                         }
                     }
 
@@ -137,12 +112,44 @@
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Failed to update password", ex);
+                var item = ex is ApiErrorException apiError
+                    ? apiError.ToApiErrorItem()
+                    : new ApiErrorItem
+                    {
+                        ErrorCode = ApiErrorCode.InvalidCredentials,
+                        Message = $"Failed to update password: {ex.Message}",
+                    };
 
-                return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
+                _logger.LogWarning(item.Message, ex);
+
+                return item;
             }
 
             return null;
+        }
+
+        private static void ValidateGroups(PasswordChangeOptions options, UserPrincipal userPrincipal)
+        {
+            if (options.RestrictedADGroups.Any())
+            {
+                foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                {
+                    if (options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                    {
+                        throw new ApiErrorException("The User principal is listed as restricted", ApiErrorCode.ChangeNotPermitted);
+                    }
+                }
+            }
+
+            if (!options.AllowedADGroups.Any()) return;
+
+            foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+            {
+                if (!options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
+                {
+                    throw new ApiErrorException("The User principal is not listed as allowed", ApiErrorCode.ChangeNotPermitted);
+                }
+            }
         }
 
         private static bool ValidateUserCredentials(

@@ -121,7 +121,7 @@ export class ChangePasswordComponent implements OnInit {
     GetData(queryParam: string) {
         this.FormData.Username = queryParam;
         this.ViewOptions = window['config'];
-        this.titleService.setTitle(this.ViewOptions.changePasswordTitle + ' - ' + this.ViewOptions.applicationTitle);
+        this.titleService.setTitle(`${this.ViewOptions.changePasswordTitle} - ${this.ViewOptions.applicationTitle}`);
 
         if (this.ViewOptions.recaptcha.siteKey !== '') {
             this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
@@ -132,11 +132,11 @@ export class ChangePasswordComponent implements OnInit {
             sp.src = `https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=${this.ViewOptions.recaptcha.languageCode}`;
         }
 
-        if (this.ViewOptions.defaultDomain) {
-            this.FormGroup.get('username').setValidators(Validators.pattern(this.ViewOptions.validationRegex.usernameRegex));
-        } else {
-            this.FormGroup.get('username').setValidators(Validators.pattern(this.ViewOptions.validationRegex.emailRegex));
-        }
+        this.FormGroup.get('username')
+            .setValidators(Validators.pattern(
+                this.ViewOptions.useEmail
+                    ? this.ViewOptions.validationRegex.emailRegex
+                    : this.ViewOptions.validationRegex.usernameRegex));
     }
 
     // Uses RecaptchaModule / RecaptchaFormsModule

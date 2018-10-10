@@ -66,6 +66,7 @@ namespace Unosquare.PassCore.Web.Models
         /// Adds the model state errors.
         /// </summary>
         /// <param name="modelState">State of the model.</param>
+        /// <returns></returns>
         public static ApiResult FromModelStateErrors(ModelStateDictionary modelState)
         {
             var result = new ApiResult();

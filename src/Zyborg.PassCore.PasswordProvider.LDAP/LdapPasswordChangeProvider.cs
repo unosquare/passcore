@@ -14,11 +14,32 @@
     using LdapRemoteCertificateValidationCallback =
         Novell.Directory.Ldap.RemoteCertificateValidationCallback;
 
+    /// <summary>
+    /// Represents a LDAP password change provider using Novell LDAP Connection.
+    /// </summary>
+    /// <seealso cref="Unosquare.PassCore.Common.IPasswordChangeProvider" />
     public class LdapPasswordChangeProvider : IPasswordChangeProvider
     {
         private readonly ILogger _logger;
+
+        // First find user DN by username (SAM Account Name)
+        private readonly LdapSearchConstraints _searchConstraints = new LdapSearchConstraints(
+                0,
+                0,
+                LdapSearchConstraints.DEREF_NEVER,
+                1000,
+                true,
+                1,
+                null,
+                10);
+
         private LdapRemoteCertificateValidationCallback _ldapRemoteCertValidator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LdapPasswordChangeProvider"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="options">The options.</param>
         public LdapPasswordChangeProvider(
             ILogger<LdapPasswordChangeProvider> logger,
             IOptions<LdapPasswordChangeOptions> options)
@@ -32,114 +53,23 @@
         /// <inheritdoc />
         public IAppSettings Settings { get; }
 
-        private void Init()
-        {
-            // Validate required options
-            if (!(Settings is LdapPasswordChangeOptions options))
-                throw new Exception("missing configuration options");
-
-            if (options.LdapIgnoreTlsErrors || options.LdapIgnoreTlsValidation)
-                _ldapRemoteCertValidator = CustomServerCertValidation;
-
-            if (options.LdapHostnames?.Length < 1)
-            {
-                throw new ArgumentException("options must specify at least one LDAP hostname",
-                    nameof(options.LdapHostnames));
-            }
-
-            if (string.IsNullOrEmpty(options.LdapUsername))
-            {
-                throw new ArgumentException("options missing or invalid LDAP bind distinguished name (DN)",
-                    nameof(options.LdapUsername));
-            }
-
-            if (string.IsNullOrEmpty(options.LdapPassword))
-            {
-                throw new ArgumentException("options missing or invalid LDAP bind password",
-                    nameof(options.LdapPassword));
-            }
-
-            if (string.IsNullOrEmpty(options.LdapSearchBase))
-            {
-                throw new ArgumentException("options must specify LDAP search base",
-                    nameof(options.LdapSearchBase));
-            }
-
-            if (string.IsNullOrWhiteSpace(options.LdapSearchFilter))
-            {
-                throw new ArgumentException(
-                    "No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
-                    nameof(options.LdapSearchBase));
-            }
-
-            if (!options.LdapSearchFilter.Contains("{Username}"))
-            {
-                throw new ArgumentException(
-                    "The ldapSearchFilter should include {{Username}} value in the template string",
-                    nameof(options.LdapSearchBase));
-            }
-
-            // All other configuration is optional, but some may warrant attention
-            if (!options.HideUserNotFound)
-                _logger.LogWarning($"option [{nameof(options.HideUserNotFound)}] is DISABLED; the presence or absence of usernames can be harvested");
-
-            if (!options.LdapIgnoreTlsErrors)
-                _logger.LogWarning($"option [{nameof(options.LdapIgnoreTlsErrors)}] is ENABLED; invalid certificates will be allowed");
-            else if (!options.LdapIgnoreTlsValidation)
-                _logger.LogWarning($"option [{nameof(options.LdapIgnoreTlsValidation)}] is ENABLED; untrusted certificate roots will be allowed");
-
-            if (options.LdapPort != LdapConnection.DEFAULT_SSL_PORT && !options.LdapStartTls)
-                _logger.LogWarning($"option [{nameof(options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{options.LdapPort}]");
-        }
-
+        /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(
             string username,
             string currentPassword,
             string newPassword)
         {
-            var cleanUsername = username;
-
-            try
-            {
-                cleanUsername = CleaningUsername(username);
-            }
-            catch (Exception ex)
-            {
-                var item = ex is ApiErrorException apiError
-                    ? apiError.ToApiErrorItem()
-                    : new ApiErrorItem
-                    {
-                        ErrorCode = ApiErrorCode.UserNotFound,
-                        FieldName = nameof(username),
-                        Message = $"Some error in cleaning username: {ex.Message}",
-                    };
-
-                _logger.LogWarning(item.Message, ex);
-
-                return item;
-            }
-
             // Based on:
             //    * https://www.cs.bham.ac.uk/~smp/resources/ad-passwds/
             //    * https://support.microsoft.com/en-us/help/269190/how-to-change-a-windows-active-directory-and-lds-user-password-through
             //    * https://ltb-project.org/documentation/self-service-password/latest/config_ldap#active_directory
             //    * https://technet.microsoft.com/en-us/library/ff848710.aspx?f=255&MSPPError=-2147217396
-
-            // First find user DN by username (SAM Account Name)
-            var searchConstraints = new LdapSearchConstraints(
-                0,
-                0,
-                LdapSearchConstraints.DEREF_NEVER,
-                1000,
-                true,
-                1,
-                null,
-                10);
-
             var options = Settings as LdapPasswordChangeOptions;
 
             try
             {
+                var cleanUsername = CleaningUsername(username);
+
                 var searchFilter = options.LdapSearchFilter.Replace("{Username}", cleanUsername);
 
                 using (var ldap = BindToLdap(options))
@@ -150,7 +80,7 @@
                         searchFilter,
                         new[] { "distinguishedName" },
                         false,
-                        searchConstraints);
+                        _searchConstraints);
 
                     // We cannot use search.Count here -- apparently it does not
                     // wait for the results to return before resolving the count
@@ -159,21 +89,10 @@
                     {
                         _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
 
-                        if (options.HideUserNotFound)
-                        {
-                            return new ApiErrorItem
-                            {
-                                ErrorCode = ApiErrorCode.InvalidCredentials,
-                                FieldName = nameof(username),
-                                Message = "invalid credentials",
-                            };
-                        }
-
                         return new ApiErrorItem
                         {
-                            ErrorCode = ApiErrorCode.UserNotFound,
-                            FieldName = nameof(username),
-                            Message = "username could not be located",
+                            ErrorCode = options.HideUserNotFound ? ApiErrorCode.InvalidCredentials : ApiErrorCode.UserNotFound,
+                            Message = options.HideUserNotFound ? "invalid credentials" : "username could not be located",
                         };
                     }
 
@@ -186,31 +105,19 @@
                         return new ApiErrorItem
                         {
                             ErrorCode = ApiErrorCode.UserNotFound,
-                            FieldName = nameof(username),
                             Message = "multiple matching user entries resolved",
                         };
                     }
 
                     var userDN = search.next().DN;
 
-                    try
+                    if (options.LdapChangePasswordWithDelAdd)
                     {
-                        if (options.LdapChangePasswordWithDelAdd)
-                        {
-                            ChangePasswordDelAdd(currentPassword, newPassword, ldap, userDN);
-                        }
-                        else
-                        {
-                            ChangePasswordReplace(newPassword, ldap, userDN);
-                        }
+                        ChangePasswordDelAdd(currentPassword, newPassword, ldap, userDN);
                     }
-                    catch (LdapException ex)
+                    else
                     {
-                        var item = ParseLdapException(ex);
-
-                        _logger.LogWarning(item.Message, ex);
-
-                        return item;
+                        ChangePasswordReplace(newPassword, ldap, userDN);
                     }
 
                     if (options.LdapStartTls)
@@ -219,6 +126,14 @@
                     ldap.Disconnect();
                 }
             }
+            catch (LdapException ex)
+            {
+                var item = ParseLdapException(ex);
+
+                _logger.LogWarning(item.Message, ex);
+
+                return item;
+            }
             catch (Exception ex)
             {
                 var item = ex is ApiErrorException apiError
@@ -226,10 +141,9 @@
                     : new ApiErrorItem
                     {
                         ErrorCode = ApiErrorCode.InvalidCredentials,
-                        FieldName = nameof(username),
                         Message = $"Failed to update password: {ex.Message}",
                     };
-                
+
                 _logger.LogWarning(item.Message, ex);
 
                 return item;
@@ -273,17 +187,11 @@
             // Must sanitize the username to eliminate the possibility of injection attacks:
             //    * https://docs.microsoft.com/en-us/windows/desktop/adschema/a-samaccountname
             //    * https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-2000-server/bb726984(v=technet.10)
-            const string samInvalid = "\"/\\[]:;|=,+*?<>";
-            const string miscInvalid = "\r\n\t";
+            var invalidChars = "\"/\\[]:;|=,+*?<>\r\n\t".ToCharArray();
 
-            var invalid = (samInvalid + miscInvalid).ToCharArray();
-            var invalidIndex = cleanUsername.IndexOfAny(invalid);
-            if (invalidIndex >= 0)
+            if (cleanUsername.IndexOfAny(invalidChars) >= 0)
             {
-                const string msg = "username contains one or more invalid characters";
-
-                _logger.LogWarning(msg);
-                throw new ApiErrorException(msg, ApiErrorCode.InvalidCredentials);
+                throw new ApiErrorException("username contains one or more invalid characters", ApiErrorCode.InvalidCredentials);
             }
 
             // LDAP filters require escaping of some special chars:
@@ -347,9 +255,68 @@
             return new ApiErrorItem
             {
                 ErrorCode = ApiErrorCode.InvalidCredentials,
-                FieldName = "currentPassword",
                 Message = $"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}",
             };
+        }
+
+        private void Init()
+        {
+            // Validate required options
+            if (!(Settings is LdapPasswordChangeOptions options))
+                throw new Exception("missing configuration options");
+
+            if (options.LdapIgnoreTlsErrors || options.LdapIgnoreTlsValidation)
+                _ldapRemoteCertValidator = CustomServerCertValidation;
+
+            if (options.LdapHostnames?.Length < 1)
+            {
+                throw new ArgumentException("options must specify at least one LDAP hostname",
+                    nameof(options.LdapHostnames));
+            }
+
+            if (string.IsNullOrEmpty(options.LdapUsername))
+            {
+                throw new ArgumentException("options missing or invalid LDAP bind distinguished name (DN)",
+                    nameof(options.LdapUsername));
+            }
+
+            if (string.IsNullOrEmpty(options.LdapPassword))
+            {
+                throw new ArgumentException("options missing or invalid LDAP bind password",
+                    nameof(options.LdapPassword));
+            }
+
+            if (string.IsNullOrEmpty(options.LdapSearchBase))
+            {
+                throw new ArgumentException("options must specify LDAP search base",
+                    nameof(options.LdapSearchBase));
+            }
+
+            if (string.IsNullOrWhiteSpace(options.LdapSearchFilter))
+            {
+                throw new ArgumentException(
+                    "No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
+                    nameof(options.LdapSearchBase));
+            }
+
+            if (!options.LdapSearchFilter.Contains("{Username}"))
+            {
+                throw new ArgumentException(
+                    "The ldapSearchFilter should include {{Username}} value in the template string",
+                    nameof(options.LdapSearchBase));
+            }
+
+            // All other configuration is optional, but some may warrant attention
+            if (!options.HideUserNotFound)
+                _logger.LogWarning($"option [{nameof(options.HideUserNotFound)}] is DISABLED; the presence or absence of usernames can be harvested");
+
+            if (!options.LdapIgnoreTlsErrors)
+                _logger.LogWarning($"option [{nameof(options.LdapIgnoreTlsErrors)}] is ENABLED; invalid certificates will be allowed");
+            else if (!options.LdapIgnoreTlsValidation)
+                _logger.LogWarning($"option [{nameof(options.LdapIgnoreTlsValidation)}] is ENABLED; untrusted certificate roots will be allowed");
+
+            if (options.LdapPort != LdapConnection.DEFAULT_SSL_PORT && !options.LdapStartTls)
+                _logger.LogWarning($"option [{nameof(options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{options.LdapPort}]");
         }
 
         private LdapConnection BindToLdap(LdapPasswordChangeOptions options)
