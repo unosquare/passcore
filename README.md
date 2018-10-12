@@ -17,7 +17,7 @@
   - [Customization and Configuration](#customization-and-configuration)
     - [Running as a sub application](#running-as-a-sub-application)
   - [Troubleshooting](#troubleshooting)
-    - [LDAP Support (under review)](#ldap-support-under-review)
+    - [LDAP Support](#ldap-support)
   - [License](#license)
 
 ## Overview
@@ -34,6 +34,7 @@ PassCore has the following features:
 - Supports [reCAPTCHA](https://www.google.com/recaptcha/intro/index.html)
 - Has a built-in password meter
 - Responsive design that works on mobiles, tablets, and desktops.
+- Works with Windows/Linux servers.
 
 <img align="center" src="https://github.com/unosquare/passcore/raw/master/preview.png"></img>
 
@@ -65,7 +66,7 @@ PassCore has the following features:
 
 ## PowerShell Installer
 
-You can use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
+Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))
@@ -131,13 +132,14 @@ To run as a sub application you need to modify the `base href="/"` value in the 
 icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>":M /t
 ```
 
-### LDAP Support (under review)
+### LDAP Support
 
 - If your users are having trouble changing passwords as in issues #8 or #9 : try configuring the section `PasswordChangeOptions` in the `/appsettings.json` file. Here are some guidelines:
   1. Ensure `UseAutomaticContext` is set to `false`
   1. Ensure `LdapUsername` is set to an AD user with enough permissions to reset user passwords
   1. Ensure `LdapPassword` is set to the correct password for the admin user mentioned above
   1. User @gadams65 suggests the following: Use the FQDN of your LDAP host. Enter the LDAP username without any other prefix or suffix such as `domain\\` or `@domain`. Only the username.
+- You can also opt to use the Linux or MacOS version of PassCore. This version includes a LDAP Provider based on Novell. The same provider can be used with Windows, you must build it by yourself.
 
 ## License
 

@@ -37,7 +37,6 @@ namespace Unosquare.PassCore.Web.Models
             var result = new ApiResult {Payload = "Invalid Request"};
             result.Errors.Add(new ApiErrorItem
             {
-                ErrorCode = ApiErrorCode.Generic,
                 FieldName = string.Empty,
                 Message = "Invalid Request"
             });
@@ -123,7 +122,6 @@ namespace Unosquare.PassCore.Web.Models
         {
             Errors.Add(new ApiErrorItem
             {
-                ErrorCode = ApiErrorCode.Generic,
                 FieldName = fieldName,
                 Message = message
             });
