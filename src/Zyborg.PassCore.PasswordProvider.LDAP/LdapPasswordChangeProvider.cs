@@ -89,10 +89,9 @@
                     {
                         _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
 
-                        return new ApiErrorItem
+                        return new ApiErrorItem(options.HideUserNotFound ? "invalid credentials" : "username could not be located")
                         {
-                            ErrorCode = options.HideUserNotFound ? ApiErrorCode.InvalidCredentials : ApiErrorCode.UserNotFound,
-                            Message = options.HideUserNotFound ? "invalid credentials" : "username could not be located",
+                            ErrorCode = options.HideUserNotFound ? ApiErrorCode.InvalidCredentials : ApiErrorCode.UserNotFound
                         };
                     }
 
@@ -102,10 +101,9 @@
 
                         // Hopefully this should not ever happen if AD is preserving SAM Account Name
                         // uniqueness constraint, but just in case, handling this corner case
-                        return new ApiErrorItem
+                        return new ApiErrorItem("multiple matching user entries resolved")
                         {
                             ErrorCode = ApiErrorCode.UserNotFound,
-                            Message = "multiple matching user entries resolved",
                         };
                     }
 
@@ -138,10 +136,9 @@
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
-                    : new ApiErrorItem
+                    : new ApiErrorItem($"Failed to update password: {ex.Message}")
                     {
-                        ErrorCode = ApiErrorCode.InvalidCredentials,
-                        Message = $"Failed to update password: {ex.Message}",
+                        ErrorCode = ApiErrorCode.InvalidCredentials
                     };
 
                 _logger.LogWarning(item.Message, ex);
@@ -232,11 +229,7 @@
 
             if (!m.Success)
             {
-                return new ApiErrorItem
-                {
-                    ErrorCode = ApiErrorCode.Generic,
-                    Message = $"Unexpected error: {ex.LdapErrorMessage}",
-                };
+                return new ApiErrorItem($"Unexpected error: {ex.LdapErrorMessage}");
             }
 
             var errCodeString = m.Groups[1].Value;
@@ -245,17 +238,12 @@
 
             if (err == null)
             {
-                return new ApiErrorItem
-                {
-                    ErrorCode = ApiErrorCode.Generic,
-                    Message = $"Unexpected Win32 API error; error code: {errCodeString}",
-                };
+                return new ApiErrorItem($"Unexpected Win32 API error; error code: {errCodeString}");
             }
 
-            return new ApiErrorItem
+            return new ApiErrorItem($"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}")
             {
                 ErrorCode = ApiErrorCode.InvalidCredentials,
-                Message = $"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}",
             };
         }
 

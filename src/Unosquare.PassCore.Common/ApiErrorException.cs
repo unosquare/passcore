@@ -47,10 +47,9 @@
         /// <returns></returns>
         public ApiErrorItem ToApiErrorItem()
         {
-            return new ApiErrorItem
+            return new ApiErrorItem(base.Message)
             {
-                ErrorCode =  ErrorCode,
-                Message = base.Message
+                ErrorCode =  ErrorCode
             };
         }
     }

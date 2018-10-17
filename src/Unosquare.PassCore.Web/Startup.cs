@@ -11,7 +11,7 @@ namespace Unosquare.PassCore.Web
     using Microsoft.Extensions.Options;
     using Models;
 #if !DEBUG
-        using Microsoft.AspNetCore.Rewrite;
+    using Microsoft.AspNetCore.Rewrite;
 #endif
 #if PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
@@ -20,7 +20,7 @@ namespace Unosquare.PassCore.Web
 #endif
 
     /// <summary>
-    /// Represents this application's main class
+    /// Represents this application's main class.
     /// </summary>
     public class Startup
     {
@@ -29,7 +29,7 @@ namespace Unosquare.PassCore.Web
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
-        /// This class gets instantiated by the Main method. The hosting environment gets provided via DI
+        /// This class gets instantiated by the Main method. The hosting environment gets provided via DI.
         /// </summary>
         public Startup()
         {
@@ -42,7 +42,7 @@ namespace Unosquare.PassCore.Web
         public IConfigurationRoot Configuration { get; set; }
 
         /// <summary>
-        /// Application's entry point
+        /// Application's entry point.
         /// </summary>
         /// <param name="args">The arguments.</param>
         public static void Main(string[] args) => 
@@ -54,7 +54,7 @@ namespace Unosquare.PassCore.Web
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
-        /// All arguments are provided through dependency injection
+        /// All arguments are provided through dependency injection.
         /// </summary>
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
@@ -77,7 +77,7 @@ namespace Unosquare.PassCore.Web
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        /// All arguments are provided through dependency injection
+        /// All arguments are provided through dependency injection.
         /// </summary>
         /// <param name="app">The application.</param>
         /// <param name="env">The environment.</param>

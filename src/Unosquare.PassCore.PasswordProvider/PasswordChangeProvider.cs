@@ -27,6 +27,8 @@
 
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
+            _logger.LogInformation($"PerformPasswordChange for user {username}");
+
             var options = Settings as PasswordChangeOptions;
 
             try
@@ -72,13 +74,12 @@
                         }
                         catch (Exception ex)
                         {
-                            return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
+                            return new ApiErrorItem($"Failed to update password: {ex.Message}");
                         }
                     }
 
-                    // Use always UPN for passwordcheck.
-                    if (ValidateUserCredentials(userPrincipal.UserPrincipalName, currentPassword, principalContext) ==
-                        false)
+                    // Use always UPN for password check.
+                    if (!ValidateUserCredentials(userPrincipal.UserPrincipalName, currentPassword, principalContext))
                     {
                         _logger.LogWarning("The User principal password is not valid");
 
@@ -114,11 +115,7 @@
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
-                    : new ApiErrorItem
-                    {
-                        ErrorCode = ApiErrorCode.InvalidCredentials,
-                        Message = $"Failed to update password: {ex.Message}",
-                    };
+                    : new ApiErrorItem($"Failed to update password: {ex.Message}");
 
                 _logger.LogWarning(item.Message, ex);
 
@@ -225,13 +222,20 @@
 
         private PrincipalContext AcquirePrincipalContext()
         {
-            return (Settings as PasswordChangeOptions)?.UseAutomaticContext == true
-                ? new PrincipalContext(ContextType.Domain)
-                : new PrincipalContext(
-                    ContextType.Domain,
-                    $"{Settings.LdapHostnames.First()}:{Settings.LdapPort}",
-                    Settings.LdapUsername,
-                    Settings.LdapPassword);
+            if ((Settings as PasswordChangeOptions)?.UseAutomaticContext == true)
+            {
+                _logger.LogWarning("Using AutomaticContext");
+                return new PrincipalContext(ContextType.Domain);
+            }
+
+            var domain = $"{Settings.LdapHostnames.First()}:{Settings.LdapPort}";
+            _logger.LogWarning($"Not using AutomaticContext  {domain}");
+
+            return new PrincipalContext(
+                ContextType.Domain,
+                domain,
+                Settings.LdapUsername,
+                Settings.LdapPassword);
         }
     }
 }

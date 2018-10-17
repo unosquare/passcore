@@ -21,14 +21,14 @@
         /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            var currentUsername = username.IndexOf("@", StringComparison.Ordinal) > 0 
-                ? username.Substring(0, username.IndexOf("@", StringComparison.Ordinal)) 
+            var currentUsername = username.IndexOf("@", StringComparison.Ordinal) > 0
+                ? username.Substring(0, username.IndexOf("@", StringComparison.Ordinal))
                 : username;
 
             switch (currentUsername)
             {
                 case "error":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = "Error" };
+                    return new ApiErrorItem("Error");
                 case "changeNotPermitted":
                     return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
                 case "fieldMismatch":

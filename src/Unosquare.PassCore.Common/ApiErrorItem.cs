@@ -6,6 +6,15 @@
     public class ApiErrorItem
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ApiErrorItem"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public ApiErrorItem(string message = null)
+        {
+            Message = message;
+        }
+
+        /// <summary>
         /// Gets or sets the error code.
         /// </summary>
         /// <value>
@@ -22,11 +31,11 @@
         public string FieldName { get; set; }
 
         /// <summary>
-        /// Gets or sets the extended message.
+        /// Gets the message.
         /// </summary>
         /// <value>
         /// The message.
         /// </value>
-        public string Message { get; set; }
+        public string Message { get; }
     }
 }

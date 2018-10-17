@@ -37,7 +37,7 @@ namespace Unosquare.PassCore.Web.Controllers
         }
 
         /// <summary>
-        /// Returns the ClientSettings object as a JSON string
+        /// Returns the ClientSettings object as a JSON string.
         /// </summary>
         /// <returns>A Json representation of the ClientSettings object.</returns>
         [HttpGet]
@@ -101,10 +101,7 @@ namespace Unosquare.PassCore.Web.Controllers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(new ApiErrorItem
-                {
-                    Message = ex.Message
-                });
+                result.Errors.Add(new ApiErrorItem(ex.Message));
             }
 
             return BadRequest(result);
