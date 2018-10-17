@@ -37,7 +37,7 @@ namespace Unosquare.PassCore.Web.Controllers
         }
 
         /// <summary>
-        /// Returns the ClientSettings object as a JSON string.
+        /// Returns the ClientSettings object as a JSON string
         /// </summary>
         /// <returns>A Json representation of the ClientSettings object.</returns>
         [HttpGet]

@@ -127,7 +127,7 @@
 
         private static void ValidateGroups(PasswordChangeOptions options, UserPrincipal userPrincipal)
         {
-            if (options.RestrictedADGroups.Any())
+            if (options.RestrictedADGroups?.Any() == true)
             {
                 foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
                 {
@@ -138,13 +138,14 @@
                 }
             }
 
-            if (!options.AllowedADGroups.Any()) return;
+            if (options.AllowedADGroups?.Any() != true) return;
 
             foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
             {
                 if (!options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
                 {
-                    throw new ApiErrorException("The User principal is not listed as allowed", ApiErrorCode.ChangeNotPermitted);
+                    throw new ApiErrorException("The User principal is not listed as allowed",
+                        ApiErrorCode.ChangeNotPermitted);
                 }
             }
         }
