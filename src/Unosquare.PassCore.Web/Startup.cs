@@ -92,11 +92,8 @@ namespace Unosquare.PassCore.Web
             log.AddDebug();
 #else
             // HTTPS redirect
-            if (settings.Value.EnableHttpsRedirect)
-            {
-                var options = new RewriteOptions().AddRedirectToHttps();
-                app.UseRewriter(options);
-            }
+            var options = new RewriteOptions().AddRedirectToHttps();
+            app.UseRewriter(options);
 #endif
 
             // Enable static files

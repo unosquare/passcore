@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;node_modules\**</DefaultItemExcludes>
-    <DefaultItemExcludes>$(DefaultItemExcludes);**\jspm_packages\**;jspm_packages\**</DefaultItemExcludes>
-    <DefaultItemExcludes>$(DefaultItemExcludes);**\bower_components\**;bower_components\**</DefaultItemExcludes>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Unosquare.PassCore.Web</AssemblyName>
     <PackageId>Unosquare.PassCore.Web</PackageId>
@@ -43,7 +41,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj" />
-    <ProjectReference Include="..\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(PASSCORE_PROVIDER)' == ''">
