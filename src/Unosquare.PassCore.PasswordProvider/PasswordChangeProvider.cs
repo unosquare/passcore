@@ -8,6 +8,11 @@
     using System.DirectoryServices.AccountManagement;
     using System.Linq;
 
+    /// <inheritdoc />
+    /// <summary>
+    /// Default Change Password Provider using 'System.DirectoryServices' from Microsoft.
+    /// </summary>
+    /// <seealso cref="T:Unosquare.PassCore.Common.IPasswordChangeProvider" />
     public partial class PasswordChangeProvider : IPasswordChangeProvider
     {
         private readonly ILogger _logger;
@@ -42,7 +47,7 @@
                     {
                         _logger.LogWarning("The User principal doesn't exist");
 
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
+                        return new ApiErrorItem {ErrorCode = ApiErrorCode.UserNotFound};
                     }
 
                     ValidateGroups(options, userPrincipal);
@@ -52,30 +57,13 @@
                     {
                         _logger.LogWarning("The User principal cannot change the password");
 
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
+                        return new ApiErrorItem {ErrorCode = ApiErrorCode.ChangeNotPermitted};
                     }
 
                     // Check if password expired or must be changed
                     if (userPrincipal.LastPasswordSet == null)
                     {
-                        _logger.LogWarning("The User principal password have no last password");
-
-                        var der = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
-                        var prop = der.Properties["pwdLastSet"];
-
-                        if (prop != null)
-                        {
-                            prop.Value = -1;
-                        }
-
-                        try
-                        {
-                            der.CommitChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            return new ApiErrorItem($"Failed to update password: {ex.Message}");
-                        }
+                        SetLastPassword(userPrincipal);
                     }
 
                     // Use always UPN for password check.
@@ -83,29 +71,11 @@
                     {
                         _logger.LogWarning("The User principal password is not valid");
 
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
+                        return new ApiErrorItem {ErrorCode = ApiErrorCode.InvalidCredentials};
                     }
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
-                    try
-                    {
-                        // Try by regular ChangePassword method
-                        userPrincipal.ChangePassword(currentPassword, newPassword);
-                    }
-                    catch
-                    {
-                        if (options.UseAutomaticContext)
-                        {
-                            _logger.LogWarning("The User principal password cannot be changed and setPassword won't be called");
-
-                            throw;
-                        }
-
-                        // If the previous attempt failed, use the SetPassword method.
-                        userPrincipal.SetPassword(newPassword);
-
-                        _logger.LogDebug("The User principal password updated with setPassword");
-                    }
+                    ChangePassword(currentPassword, newPassword, userPrincipal, options.UseAutomaticContext);
 
                     userPrincipal.Save();
                     _logger.LogDebug("The User principal password updated with setPassword");
@@ -133,7 +103,8 @@
                 {
                     if (options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
                     {
-                        throw new ApiErrorException("The User principal is listed as restricted", ApiErrorCode.ChangeNotPermitted);
+                        throw new ApiErrorException("The User principal is listed as restricted",
+                            ApiErrorCode.ChangeNotPermitted);
                     }
                 }
             }
@@ -169,8 +140,58 @@
             return errorCode == ERROR_PASSWORD_MUST_CHANGE || errorCode == ERROR_PASSWORD_EXPIRED;
         }
 
+        private void SetLastPassword(UserPrincipal userPrincipal)
+        {
+            _logger.LogWarning("The User principal password have no last password");
+
+            var directoryEntry = (DirectoryEntry) userPrincipal.GetUnderlyingObject();
+            var prop = directoryEntry.Properties["pwdLastSet"];
+
+            if (prop != null)
+            {
+                prop.Value = -1;
+            }
+
+            try
+            {
+                directoryEntry.CommitChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new ApiErrorException($"Failed to update password: {ex.Message}",
+                    ApiErrorCode.ChangeNotPermitted);
+            }
+        }
+
+        private void ChangePassword(
+            string currentPassword,
+            string newPassword, 
+            UserPrincipal userPrincipal,
+            bool useAutomaticContext)
+        {
+            try
+            {
+                // Try by regular ChangePassword method
+                userPrincipal.ChangePassword(currentPassword, newPassword);
+            }
+            catch
+            {
+                if (useAutomaticContext)
+                {
+                    _logger.LogWarning("The User principal password cannot be changed and setPassword won't be called");
+
+                    throw;
+                }
+
+                // If the previous attempt failed, use the SetPassword method.
+                userPrincipal.SetPassword(newPassword);
+
+                _logger.LogDebug("The User principal password updated with setPassword");
+            }
+        }
+
         /// <summary>
-        /// Use the values from appsettings.IdTypeForUser as fault-tolerant as possible
+        /// Use the values from appsettings.IdTypeForUser as fault-tolerant as possible.
         /// </summary>
         private void SetIdType()
         {

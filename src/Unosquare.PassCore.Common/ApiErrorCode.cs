@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.PassCore.Common
 {
     /// <summary>
-    /// Represents error codes
+    /// Represents API error codes.
     /// </summary>
     public enum ApiErrorCode
     {

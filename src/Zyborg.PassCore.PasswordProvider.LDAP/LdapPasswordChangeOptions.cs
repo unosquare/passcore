@@ -65,7 +65,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// </summary>
         /// <remarks>
         /// Distinguished Name (DN) of the base OU from which to search for
-        /// the target users by their username (SAM Account Name)
+        /// the target users by their username (SAM Account Name).
         /// </remarks>
         /// <value>
         /// The LDAP search base.

@@ -6,7 +6,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
     public class Win32ErrorCode
     {
         /// Based on
-        /// <a href="https://msdn.microsoft.com/en-us/library/cc231199.aspx?f=255&MSPPError=-2147217396">docs</a>
+        /// <a href="https://msdn.microsoft.com/en-us/library/cc231199.aspx?f=255&MSPPError=-2147217396">docs.</a>
         /// provides a list of commonly anticipated error codes from a password change request.
         public static readonly IEnumerable<Win32ErrorCode> Codes = new[]
         {

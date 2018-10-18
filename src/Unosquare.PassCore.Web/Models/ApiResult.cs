@@ -6,7 +6,7 @@ namespace Unosquare.PassCore.Web.Models
     using Common;
 
     /// <summary>
-    /// Represent a generic response from a REST API call
+    /// Represent a generic response from a REST API call.
     /// </summary>
     public class ApiResult
     {
@@ -29,9 +29,9 @@ namespace Unosquare.PassCore.Web.Models
         public object Payload { get; set; }
 
         /// <summary>
-        /// Creates a generic invalid request response
+        /// Creates a generic invalid request response.
         /// </summary>
-        /// <returns>The ApiResult wih Invalid request error</returns>
+        /// <returns>The ApiResult wih Invalid request error.</returns>
         public static ApiResult InvalidRequest()
         {
             var result = new ApiResult {Payload = "Invalid Request"};

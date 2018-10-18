@@ -1,7 +1,7 @@
 namespace Unosquare.PassCore.Web.Models
 {
     /// <summary>
-    /// Represents all of the strongly-typed application settings loaded from a JSON file
+    /// Represents all of the strongly-typed application settings loaded from a JSON file.
     /// </summary>
     public class ClientSettings
     {
