@@ -36,7 +36,7 @@
         /// <value>
         /// The error code.
         /// </value>
-        public ApiErrorCode ErrorCode { get; set; }
+        public ApiErrorCode ErrorCode { get; }
 
         /// <inheritdoc />
         public override string Message => $"Error Code: {ErrorCode}\r\n{base.Message}";
