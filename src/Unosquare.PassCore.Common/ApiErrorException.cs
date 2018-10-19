@@ -12,16 +12,6 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Unosquare.PassCore.Common.ApiErrorException" /> class.
         /// </summary>
-        /// <param name="errorCode">The error code.</param>
-        public ApiErrorException(ApiErrorCode errorCode = ApiErrorCode.Generic) 
-        {
-            ErrorCode = errorCode;
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Unosquare.PassCore.Common.ApiErrorException" /> class.
-        /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="errorCode">The error code.</param>
         public ApiErrorException(string message, ApiErrorCode errorCode = ApiErrorCode.Generic)

@@ -1,3 +1,4 @@
+#pragma warning disable SA1117 // Parameters should be on same line or separate lines
 namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
     using System;
@@ -70,15 +71,16 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         public int Code { get; }
         public string CodeName { get; }
         public string Description { get; }
-
-        public override int GetHashCode() => Code;
-        public override bool Equals(object obj) => obj != null
-                && obj is Win32ErrorCode err && Code == err.Code;
-
+        
         public static Win32ErrorCode ByCode(int code) =>
             ErrorByCode.TryGetValue(code, out var err) ? err : null;
 
         public static Win32ErrorCode ByCodeName(string codeName) =>
             ErrorByCodeName.TryGetValue(codeName, out var err) ? err : null;
+
+        public override int GetHashCode() => Code;
+        public override bool Equals(object obj) => obj != null
+                && obj is Win32ErrorCode err && Code == err.Code;
     }
 }
+#pragma warning restore SA1117 // Parameters should be on same line or separate lines
