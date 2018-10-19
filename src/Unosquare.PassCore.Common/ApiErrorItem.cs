@@ -28,7 +28,7 @@
         /// <value>
         /// The name of the field.
         /// </value>
-        public string FieldName { get; set; }
+        public string FieldName { get; protected set; }
 
         /// <summary>
         /// Gets the message.
