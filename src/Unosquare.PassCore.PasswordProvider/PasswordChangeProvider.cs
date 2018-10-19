@@ -45,9 +45,9 @@
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        _logger.LogWarning("The User principal doesn't exist");
+                        _logger.LogWarning($"The User principal ({username}) doesn't exist");
 
-                        return new ApiErrorItem {ErrorCode = ApiErrorCode.UserNotFound};
+                        return new ApiErrorItem(ApiErrorCode.UserNotFound);
                     }
 
                     ValidateGroups(options, userPrincipal);
@@ -57,7 +57,7 @@
                     {
                         _logger.LogWarning("The User principal cannot change the password");
 
-                        return new ApiErrorItem {ErrorCode = ApiErrorCode.ChangeNotPermitted};
+                        return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted);
                     }
 
                     // Check if password expired or must be changed
@@ -71,7 +71,7 @@
                     {
                         _logger.LogWarning("The User principal password is not valid");
 
-                        return new ApiErrorItem {ErrorCode = ApiErrorCode.InvalidCredentials};
+                        return new ApiErrorItem(ApiErrorCode.InvalidCredentials);
                     }
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
@@ -85,7 +85,7 @@
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
-                    : new ApiErrorItem($"Failed to update password: {ex.Message}");
+                    : new ApiErrorItem(ApiErrorCode.Generic, $"Failed to update password: {ex.Message}");
 
                 _logger.LogWarning(item.Message, ex);
 
@@ -144,7 +144,7 @@
         {
             _logger.LogWarning("The User principal password have no last password");
 
-            var directoryEntry = (DirectoryEntry) userPrincipal.GetUnderlyingObject();
+            var directoryEntry = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
             var prop = directoryEntry.Properties["pwdLastSet"];
 
             if (prop != null)
@@ -165,7 +165,7 @@
 
         private void ChangePassword(
             string currentPassword,
-            string newPassword, 
+            string newPassword,
             UserPrincipal userPrincipal,
             bool useAutomaticContext)
         {

@@ -101,7 +101,9 @@ namespace Unosquare.PassCore.Web.Controllers
             }
             catch (Exception ex)
             {
-                result.Errors.Add(new ApiErrorItem(ex.Message));
+                _logger.LogError(ex, "Failed to update password");
+
+                result.Errors.Add(new ApiErrorItem(ApiErrorCode.Generic, ex.Message));
             }
 
             return BadRequest(result);

@@ -35,13 +35,7 @@
         /// To the API error item.
         /// </summary>
         /// <returns></returns>
-        public ApiErrorItem ToApiErrorItem()
-        {
-            return new ApiErrorItem(base.Message)
-            {
-                ErrorCode =  ErrorCode
-            };
-        }
+        public ApiErrorItem ToApiErrorItem() => new ApiErrorItem(ErrorCode, base.Message);
     }
 }
 

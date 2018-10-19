@@ -28,21 +28,21 @@
             switch (currentUsername)
             {
                 case "error":
-                    return new ApiErrorItem("Error");
+                    return new ApiErrorItem(ApiErrorCode.Generic, "Error");
                 case "changeNotPermitted":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
+                    return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted);
                 case "fieldMismatch":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.FieldMismatch };
+                    return new ApiErrorItem(ApiErrorCode.FieldMismatch);
                 case "fieldRequired":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.FieldRequired };
+                    return new ApiErrorItem(ApiErrorCode.FieldRequired);
                 case "invalidCaptcha":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCaptcha };
+                    return new ApiErrorItem(ApiErrorCode.InvalidCaptcha);
                 case "invalidCredentials":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
+                    return new ApiErrorItem(ApiErrorCode.InvalidCredentials);
                 case "invalidDomain":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidDomain };
+                    return new ApiErrorItem(ApiErrorCode.InvalidDomain);
                 case "userNotFound":
-                    return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
+                    return new ApiErrorItem(ApiErrorCode.UserNotFound);
                 default:
                     return null;
             }

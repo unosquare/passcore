@@ -89,10 +89,9 @@
                     {
                         _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
 
-                        return new ApiErrorItem(options.HideUserNotFound ? "invalid credentials" : "username could not be located")
-                        {
-                            ErrorCode = options.HideUserNotFound ? ApiErrorCode.InvalidCredentials : ApiErrorCode.UserNotFound
-                        };
+                        return new ApiErrorItem(
+                            options.HideUserNotFound ? ApiErrorCode.InvalidCredentials : ApiErrorCode.UserNotFound,
+                            options.HideUserNotFound ? "invalid credentials" : "username could not be located");
                     }
 
                     if (search.Count > 1)
@@ -101,10 +100,7 @@
 
                         // Hopefully this should not ever happen if AD is preserving SAM Account Name
                         // uniqueness constraint, but just in case, handling this corner case
-                        return new ApiErrorItem("multiple matching user entries resolved")
-                        {
-                            ErrorCode = ApiErrorCode.UserNotFound,
-                        };
+                        return new ApiErrorItem(ApiErrorCode.UserNotFound, "multiple matching user entries resolved");
                     }
 
                     var userDN = search.next().DN;
@@ -136,10 +132,7 @@
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
-                    : new ApiErrorItem($"Failed to update password: {ex.Message}")
-                    {
-                        ErrorCode = ApiErrorCode.InvalidCredentials
-                    };
+                    : new ApiErrorItem(ApiErrorCode.InvalidCredentials, $"Failed to update password: {ex.Message}");
 
                 _logger.LogWarning(item.Message, ex);
 
@@ -229,22 +222,17 @@
 
             if (!m.Success)
             {
-                return new ApiErrorItem($"Unexpected error: {ex.LdapErrorMessage}");
+                return new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected error: {ex.LdapErrorMessage}");
             }
 
             var errCodeString = m.Groups[1].Value;
             var errCode = int.Parse(errCodeString, NumberStyles.HexNumber);
             var err = Win32ErrorCode.ByCode(errCode);
 
-            if (err == null)
-            {
-                return new ApiErrorItem($"Unexpected Win32 API error; error code: {errCodeString}");
-            }
-
-            return new ApiErrorItem($"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}")
-            {
-                ErrorCode = ApiErrorCode.InvalidCredentials,
-            };
+            return err == null
+                ? new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected Win32 API error; error code: {errCodeString}")
+                : new ApiErrorItem(ApiErrorCode.InvalidCredentials,
+                    $"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}");
         }
 
         private void Init()
@@ -367,14 +355,13 @@
                 return true;
 
             var errorStatuses = chain.ChainStatus
-                .Select((x, y) => (status: x, index: y))
                 .Where(x =>
                 {
-                    if (x.status.Status == X509ChainStatusFlags.UntrustedRoot
+                    if (x.Status == X509ChainStatusFlags.UntrustedRoot
                         && options.LdapIgnoreTlsValidation)
                         return false;
 
-                    return x.status.Status != X509ChainStatusFlags.NoError;
+                    return x.Status != X509ChainStatusFlags.NoError;
                 })
                 .ToArray();
 

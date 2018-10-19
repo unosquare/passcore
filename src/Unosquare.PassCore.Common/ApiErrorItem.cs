@@ -6,11 +6,13 @@
     public class ApiErrorItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiErrorItem"/> class.
+        /// Initializes a new instance of the <see cref="ApiErrorItem" /> class.
         /// </summary>
+        /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
-        public ApiErrorItem(string message = null)
+        public ApiErrorItem(ApiErrorCode errorCode, string message = null)
         {
+            ErrorCode = errorCode;
             Message = message;
         }
 
@@ -20,7 +22,7 @@
         /// <value>
         /// The error code.
         /// </value>
-        public ApiErrorCode ErrorCode { get; protected set; } = ApiErrorCode.Generic;
+        public ApiErrorCode ErrorCode { get; }
 
         /// <summary>
         /// Gets or sets the name of the field.
@@ -28,7 +30,7 @@
         /// <value>
         /// The name of the field.
         /// </value>
-        public string FieldName { get; protected set; }
+        public string FieldName { get; set; }
 
         /// <summary>
         /// Gets the message.

@@ -11,6 +11,16 @@ namespace Unosquare.PassCore.Web.Models
     public class ApiResult
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ApiResult"/> class.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        public ApiResult(object payload = null)
+        {
+            Errors = new List<ApiErrorItem>();
+            Payload = payload;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this instance has errors.
         /// </summary>
         /// <value>
@@ -21,12 +31,12 @@ namespace Unosquare.PassCore.Web.Models
         /// <summary>
         /// Gets or sets the errors.
         /// </summary>
-        public List<ApiErrorItem> Errors { get; set; } = new List<ApiErrorItem>();
+        public List<ApiErrorItem> Errors { get; }
 
         /// <summary>
         /// Gets or sets the payload.
         /// </summary>
-        public object Payload { get; set; }
+        public object Payload { get;  }
 
         /// <summary>
         /// Creates a generic invalid request response.
@@ -34,8 +44,8 @@ namespace Unosquare.PassCore.Web.Models
         /// <returns>The ApiResult wih Invalid request error.</returns>
         public static ApiResult InvalidRequest()
         {
-            var result = new ApiResult {Payload = "Invalid Request"};
-            result.Errors.Add(new ApiErrorItem("Invalid Request"));
+            var result = new ApiResult("Invalid Request");
+            result.Errors.Add(new ApiErrorItem(ApiErrorCode.Generic, "Invalid Request"));
 
             return result;
         }
@@ -46,11 +56,8 @@ namespace Unosquare.PassCore.Web.Models
         /// <returns></returns>
         public static ApiResult InvalidCaptcha()
         {
-            var result = new ApiResult {Payload = "Invalid Recaptcha"};
-            result.Errors.Add(new ApiErrorItem("Invalid Recaptcha")
-            {
-                ErrorCode = ApiErrorCode.InvalidCaptcha
-            });
+            var result = new ApiResult("Invalid Recaptcha");
+            result.Errors.Add(new ApiErrorItem(ApiErrorCode.InvalidCaptcha));
 
             return result;
         }
@@ -85,9 +92,8 @@ namespace Unosquare.PassCore.Web.Models
         /// <param name="fieldName">Name of the field.</param>
         private void AddFieldRequiredValidationError(string fieldName)
         {
-            Errors.Add(new ApiErrorItem(nameof(ApiErrorCode.FieldRequired))
+            Errors.Add(new ApiErrorItem(ApiErrorCode.FieldRequired, nameof(ApiErrorCode.FieldRequired))
             {
-                ErrorCode = ApiErrorCode.FieldRequired,
                 FieldName = fieldName,
             });
         }
@@ -98,9 +104,8 @@ namespace Unosquare.PassCore.Web.Models
         /// <param name="fieldName">Name of the field.</param>
         private void AddFieldMismatchValidationError(string fieldName)
         {
-            Errors.Add(new ApiErrorItem(nameof(ApiErrorCode.FieldMismatch))
+            Errors.Add(new ApiErrorItem(ApiErrorCode.FieldMismatch, nameof(ApiErrorCode.FieldMismatch))
             {
-                ErrorCode = ApiErrorCode.FieldMismatch,
                 FieldName = fieldName,
             });
         }
@@ -112,7 +117,7 @@ namespace Unosquare.PassCore.Web.Models
         /// <param name="message">The message.</param>
         private void AddGenericFieldValidationError(string fieldName, string message)
         {
-            Errors.Add(new ApiErrorItem(message)
+            Errors.Add(new ApiErrorItem(ApiErrorCode.Generic, message)
             {
                 FieldName = fieldName,
             });
