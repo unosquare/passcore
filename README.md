@@ -18,6 +18,7 @@
     - [Running as a sub application](#running-as-a-sub-application)
   - [Troubleshooting](#troubleshooting)
     - [LDAP Support](#ldap-support)
+  - [Build your own version](#build-your-own-version)
   - [License](#license)
 
 ## Overview
@@ -140,6 +141,28 @@ icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>":M /t
   1. Ensure `LdapPassword` is set to the correct password for the admin user mentioned above
   1. User @gadams65 suggests the following: Use the FQDN of your LDAP host. Enter the LDAP username without any other prefix or suffix such as `domain\\` or `@domain`. Only the username.
 - You can also opt to use the Linux or MacOS version of PassCore. This version includes a LDAP Provider based on Novell. The same provider can be used with Windows, you must build it by yourself.
+
+
+## Build your own version
+
+If you need to modify the source code (either backend or frontend). You require .NET Core SDK and nodejs. Run the following command according to your target platform.
+
+## Windows
+```
+dotnet publish --configuration Release --runtime win-x64 --output "<path>"
+```
+
+## Linux (portable)
+```
+dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
+```
+
+## MacOS
+```
+dotnet publish --configuration Release --runtime osx-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
+```
+
+*Note* - The `PASSCORE_PROVIDER` modifier will use the LDAP Provider instead of Activde Directory Provider.
 
 ## License
 
