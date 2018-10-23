@@ -8,5 +8,5 @@ before_build:
 - iisreset
 - net start W3SVC
 build_script:
-- dotnet publish -c Release --output "C:/passcore"
+- dotnet publish --configuration Release --runtime win-x64 --output "C:/passcore"
 - ps: ./IISSetup.ps1 "C:/passcore"
