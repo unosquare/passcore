@@ -147,17 +147,17 @@ icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>":M /t
 
 If you need to modify the source code (either backend or frontend). You require .NET Core SDK and nodejs. Run the following command according to your target platform.
 
-## Windows
+### Windows
 ```
 dotnet publish --configuration Release --runtime win-x64 --output "<path>"
 ```
 
-## Linux (portable)
+### Linux (portable)
 ```
 dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
 ```
 
-## MacOS
+### MacOS (OS X)
 ```
 dotnet publish --configuration Release --runtime osx-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
 ```
