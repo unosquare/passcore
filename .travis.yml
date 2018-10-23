@@ -5,4 +5,4 @@ sudo: false
 install:
   - dotnet restore
 script:
-  - dotnet build
+  - dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP 
