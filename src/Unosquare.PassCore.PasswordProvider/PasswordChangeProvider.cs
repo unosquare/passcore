@@ -30,11 +30,11 @@
         /// <inheritdoc />
         public IAppSettings Settings { get; }
 
+        public PasswordChangeOptions PasswordChangeOptions => Settings as PasswordChangeOptions;
+
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             _logger.LogInformation($"PerformPasswordChange for user {username}");
-
-            var options = Settings as PasswordChangeOptions;
 
             try
             {
@@ -50,7 +50,7 @@
                         return new ApiErrorItem(ApiErrorCode.UserNotFound);
                     }
 
-                    ValidateGroups(options, userPrincipal);
+                    ValidateGroups(userPrincipal);
 
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
@@ -61,7 +61,7 @@
                     }
 
                     // Check if password expired or must be changed
-                    if (userPrincipal.LastPasswordSet == null)
+                    if (PasswordChangeOptions.UpdateLastPassword && userPrincipal.LastPasswordSet == null)
                     {
                         SetLastPassword(userPrincipal);
                     }
@@ -75,7 +75,7 @@
                     }
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
-                    ChangePassword(currentPassword, newPassword, userPrincipal, options.UseAutomaticContext);
+                    ChangePassword(currentPassword, newPassword, userPrincipal);
 
                     userPrincipal.Save();
                     _logger.LogDebug("The User principal password updated with setPassword");
@@ -94,33 +94,7 @@
 
             return null;
         }
-
-        private static void ValidateGroups(PasswordChangeOptions options, UserPrincipal userPrincipal)
-        {
-            if (options.RestrictedADGroups?.Any() == true)
-            {
-                foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-                {
-                    if (options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
-                    {
-                        throw new ApiErrorException("The User principal is listed as restricted",
-                            ApiErrorCode.ChangeNotPermitted);
-                    }
-                }
-            }
-
-            if (options.AllowedADGroups?.Any() != true) return;
-
-            foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-            {
-                if (!options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
-                {
-                    throw new ApiErrorException("The User principal is not listed as allowed",
-                        ApiErrorCode.ChangeNotPermitted);
-                }
-            }
-        }
-
+        
         private static bool ValidateUserCredentials(
             string upn,
             string currentPassword,
@@ -140,21 +114,48 @@
             return errorCode == ERROR_PASSWORD_MUST_CHANGE || errorCode == ERROR_PASSWORD_EXPIRED;
         }
 
+        private void ValidateGroups(UserPrincipal userPrincipal)
+        {
+            if (PasswordChangeOptions.RestrictedADGroups?.Any() == true)
+            {
+                foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                {
+                    if (PasswordChangeOptions.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                    {
+                        throw new ApiErrorException("The User principal is listed as restricted",
+                            ApiErrorCode.ChangeNotPermitted);
+                    }
+                }
+            }
+
+            if (PasswordChangeOptions.AllowedADGroups?.Any() != true) return;
+
+            foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+            {
+                if (!PasswordChangeOptions.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
+                {
+                    throw new ApiErrorException("The User principal is not listed as allowed",
+                        ApiErrorCode.ChangeNotPermitted);
+                }
+            }
+        }
+
         private void SetLastPassword(UserPrincipal userPrincipal)
         {
-            _logger.LogWarning("The User principal password have no last password");
-
             var directoryEntry = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
             var prop = directoryEntry.Properties["pwdLastSet"];
 
-            if (prop != null)
+            if (prop == null)
             {
-                prop.Value = -1;
+                _logger.LogWarning("The User principal password have no last password, but the property is missing");
+                return;
             }
 
             try
             {
+                prop.Value = -1;
                 directoryEntry.CommitChanges();
+                _logger.LogWarning("The User principal last password was updated");
             }
             catch (Exception ex)
             {
@@ -166,8 +167,7 @@
         private void ChangePassword(
             string currentPassword,
             string newPassword,
-            UserPrincipal userPrincipal,
-            bool useAutomaticContext)
+            UserPrincipal userPrincipal)
         {
             try
             {
@@ -176,7 +176,7 @@
             }
             catch
             {
-                if (useAutomaticContext)
+                if (PasswordChangeOptions.UseAutomaticContext)
                 {
                     _logger.LogWarning("The User principal password cannot be changed and setPassword won't be called");
 
@@ -195,56 +195,45 @@
         /// </summary>
         private void SetIdType()
         {
-            var idType = (Settings as PasswordChangeOptions)?.IdTypeForUser;
-
-            if (string.IsNullOrWhiteSpace(idType))
+            switch (PasswordChangeOptions.IdTypeForUser?.Trim().ToLower())
             {
-                _idType = IdentityType.UserPrincipalName;
-            }
-            else
-            {
-                var tmpIdType = idType.Trim().ToLower();
-
-                switch (tmpIdType)
-                {
-                    case "distinguishedname":
-                    case "distinguished name":
-                    case "dn":
-                        _idType = IdentityType.DistinguishedName;
-                        break;
-                    case "globally unique identifier":
-                    case "globallyuniqueidentifier":
-                    case "guid":
-                        _idType = IdentityType.Guid;
-                        break;
-                    case "name":
-                    case "nm":
-                        _idType = IdentityType.Name;
-                        break;
-                    case "samaccountname":
-                    case "accountname":
-                    case "sam account":
-                    case "sam account name":
-                    case "sam":
-                        _idType = IdentityType.SamAccountName;
-                        break;
-                    case "securityidentifier":
-                    case "securityid":
-                    case "secid":
-                    case "security identifier":
-                    case "sid":
-                        _idType = IdentityType.Sid;
-                        break;
-                    default:
-                        _idType = IdentityType.UserPrincipalName;
-                        break;
-                }
+                case "distinguishedname":
+                case "distinguished name":
+                case "dn":
+                    _idType = IdentityType.DistinguishedName;
+                    break;
+                case "globally unique identifier":
+                case "globallyuniqueidentifier":
+                case "guid":
+                    _idType = IdentityType.Guid;
+                    break;
+                case "name":
+                case "nm":
+                    _idType = IdentityType.Name;
+                    break;
+                case "samaccountname":
+                case "accountname":
+                case "sam account":
+                case "sam account name":
+                case "sam":
+                    _idType = IdentityType.SamAccountName;
+                    break;
+                case "securityidentifier":
+                case "securityid":
+                case "secid":
+                case "security identifier":
+                case "sid":
+                    _idType = IdentityType.Sid;
+                    break;
+                default:
+                    _idType = IdentityType.UserPrincipalName;
+                    break;
             }
         }
 
         private PrincipalContext AcquirePrincipalContext()
         {
-            if ((Settings as PasswordChangeOptions)?.UseAutomaticContext == true)
+            if (PasswordChangeOptions.UseAutomaticContext)
             {
                 _logger.LogWarning("Using AutomaticContext");
                 return new PrincipalContext(ContextType.Domain);

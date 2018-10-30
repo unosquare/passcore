@@ -15,5 +15,6 @@
         public string[] LdapHostnames { get; set; }
         public string LdapPassword { get; set; }
         public string LdapUsername { get; set; }
+        public bool UpdateLastPassword { get; set; }
     }
 }
