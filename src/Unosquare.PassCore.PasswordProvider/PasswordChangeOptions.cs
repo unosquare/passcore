@@ -1,18 +1,20 @@
 ﻿namespace Unosquare.PassCore.PasswordProvider
 {
+    using Common;
     using System.Collections.Generic;
 
-    public class PasswordChangeOptions
+    public class PasswordChangeOptions : IAppSettings
     {
         public bool UseAutomaticContext { get; set; } = true;
-        public int LdapPort { get; set; } = 389;
-        public string LdapHostname { get; set; }
+        public List<string> RestrictedADGroups { get; set; }
+        public List<string> AllowedADGroups { get; set; }
+        public string IdTypeForUser { get; set; }
+        public string RecaptchaPrivateKey { get; set; }
+        public string DefaultDomain { get; set; }
+        public int LdapPort { get; set; }
+        public string[] LdapHostnames { get; set; }
         public string LdapPassword { get; set; }
         public string LdapUsername { get; set; }
-        public List<string> RestrictedADGroups { get; set; }
-        public bool CheckRestrictedAdGroups { get; set; }
-        public List<string> AllowedADGroups { get; set; }
-        public bool CheckAllowedAdGroups { get; set; }
-        public string IdTypeForUser { get; set; }
+        public bool UpdateLastPassword { get; set; }
     }
 }

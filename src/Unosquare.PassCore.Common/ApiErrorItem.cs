@@ -1,32 +1,28 @@
 ﻿namespace Unosquare.PassCore.Common
 {
     /// <summary>
-    /// Represents error codes
-    /// </summary>
-    public enum ApiErrorCode
-    {
-        Generic = 0,
-        FieldRequired = 1,
-        FieldMismatch = 2,
-        UserNotFound = 3,
-        InvalidCredentials = 4,
-        InvalidCaptcha = 5,
-        ChangeNotPermitted = 6,
-        InvalidDomain = 7
-    }
-
-    /// <summary>
     /// Defines the fields contained in one of the items of Api Errors
     /// </summary>
     public class ApiErrorItem
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiErrorItem" /> class.
+        /// </summary>
+        /// <param name="errorCode">The error code.</param>
+        /// <param name="message">The message.</param>
+        public ApiErrorItem(ApiErrorCode errorCode, string message = null)
+        {
+            ErrorCode = errorCode;
+            Message = message;
+        }
+
         /// <summary>
         /// Gets or sets the error code.
         /// </summary>
         /// <value>
         /// The error code.
         /// </value>
-        public ApiErrorCode ErrorCode { get; set; }
+        public ApiErrorCode ErrorCode { get; }
 
         /// <summary>
         /// Gets or sets the name of the field.
@@ -37,11 +33,11 @@
         public string FieldName { get; set; }
 
         /// <summary>
-        /// Gets or sets the extended message.
+        /// Gets the message.
         /// </summary>
         /// <value>
         /// The message.
         /// </value>
-        public string Message { get; set; }
+        public string Message { get; }
     }
 }

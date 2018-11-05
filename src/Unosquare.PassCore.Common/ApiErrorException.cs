@@ -1,47 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Unosquare.PassCore.Common
+﻿namespace Unosquare.PassCore.Common
 {
+    using System;
+
+    /// <inheritdoc />
     /// <summary>
     /// Special Exception to transport the ApiErrorItem.
     /// </summary>
     public class ApiErrorException : Exception
     {
-        public ApiErrorItem ErrorItem { get; set; }
-
-        public ApiErrorException() 
+        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Unosquare.PassCore.Common.ApiErrorException" /> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="errorCode">The error code.</param>
+        public ApiErrorException(string message, ApiErrorCode errorCode = ApiErrorCode.Generic)
+        : base(message)
         {
-            // Default ApiErrorItem to prevent Null-PointerException
-            ErrorItem = new ApiErrorItem
-            {
-                ErrorCode = ApiErrorCode.Generic,
-                FieldName = "",
-                Message = "Some Error"
-            };
+            ErrorCode = errorCode;
         }
 
         /// <summary>
-        /// Exception message and/or ApiErrorItem.Message.
+        /// Gets or sets the error code.
         /// </summary>
-        public override string Message
-        {
-            get
-            {
-                string mess = base.Message;
+        /// <value>
+        /// The error code.
+        /// </value>
+        public ApiErrorCode ErrorCode { get; }
 
-                if (this.ErrorItem != null)
-                {
-                    if (!String.IsNullOrWhiteSpace(base.Message))
-                    {
-                        mess += ": ";
-                    }
-                    mess += this.ErrorItem.Message;
-                }
-                return mess;
-            }
-        }
+        /// <inheritdoc />
+        public override string Message => $"Error Code: {ErrorCode}\r\n{base.Message}";
+
+        /// <summary>
+        /// To the API error item.
+        /// </summary>
+        /// <returns></returns>
+        public ApiErrorItem ToApiErrorItem() => new ApiErrorItem(ErrorCode, base.Message);
     }
 }
 

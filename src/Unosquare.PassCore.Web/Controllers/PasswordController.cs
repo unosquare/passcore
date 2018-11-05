@@ -1,14 +1,14 @@
 namespace Unosquare.PassCore.Web.Controllers
 {
-    using System.Net.Http;
-    using System.Net;
-    using System.Threading.Tasks;
-    using System;
     using Common;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
     using Newtonsoft.Json;
+    using System;
+    using System.Net.Http;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -16,29 +16,32 @@ namespace Unosquare.PassCore.Web.Controllers
     [Route("api/[controller]")]
     public class PasswordController : Controller
     {
-        private readonly AppSettings _options;
+        private readonly ILogger _logger;
+        private readonly ClientSettings _options;
         private readonly IPasswordChangeProvider _passwordChangeProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordController"/> class.
+        /// Initializes a new instance of the <see cref="PasswordController" /> class.
         /// </summary>
+        /// <param name="logger">The logger.</param>
         /// <param name="optionsAccessor">The options accessor.</param>
         /// <param name="passwordChangeProvider">The password change provider.</param>
-        public PasswordController(IOptions<AppSettings> optionsAccessor, IPasswordChangeProvider passwordChangeProvider)
+        public PasswordController(
+            ILogger<PasswordController> logger,
+            IOptions<ClientSettings> optionsAccessor,
+            IPasswordChangeProvider passwordChangeProvider)
         {
+            _logger = logger;
             _options = optionsAccessor.Value;
             _passwordChangeProvider = passwordChangeProvider;
         }
 
         /// <summary>
-        /// Returns the ClientSettings object as a JSON string
+        /// Returns the ClientSettings object as a JSON string.
         /// </summary>
         /// <returns>A Json representation of the ClientSettings object.</returns>
         [HttpGet]
-        public IActionResult Get()
-        {
-            return Json(_options.ClientSettings);
-        }
+        public IActionResult Get() => Json(_options);
 
         /// <summary>
         /// Given a POST request, processes and changes a User's password.
@@ -51,86 +54,81 @@ namespace Unosquare.PassCore.Web.Controllers
             // Validate the request
             if (model == null)
             {
+                _logger.LogWarning("Null model");
+
                 return BadRequest(ApiResult.InvalidRequest());
             }
 
-            var result = new ApiResult();
+            if (model.NewPassword != model.NewPasswordVerify)
+            {
+                _logger.LogWarning("Invalid model, passwords don't match");
+
+                return BadRequest(ApiResult.InvalidRequest());
+            }
 
             // Validate the model
             if (ModelState.IsValid == false)
             {
-                result.AddModelStateErrors(ModelState);
+                _logger.LogWarning("Invalid model, validation failed");
 
-                return BadRequest(result);
+                return BadRequest(ApiResult.FromModelStateErrors(ModelState));
             }
 
             // Validate the Captcha
             try
             {
-                // Sonar-Codacy suggested ConfigureAwait
                 if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
-                {
-                    result.Errors.Add(new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCaptcha });
-                }
+                    throw new InvalidOperationException("Invalid Recaptcha response");
             }
             catch (Exception ex)
             {
-                result.Errors.Add(new ApiErrorItem
-                {
-                    ErrorCode = ApiErrorCode.Generic,
-                    Message = ex.Message
-                });
+                _logger.LogWarning(ex, "Invalid Recaptcha");
+                return BadRequest(ApiResult.InvalidCaptcha());
             }
 
-            if (result.HasErrors)
+            var result = new ApiResult();
+
+            try
             {
-                return BadRequest(result);
-            }
+                var currentUsername = GetUserName(model);
+                var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(
+                        currentUsername,
+                        model.CurrentPassword,
+                        model.NewPassword);
 
-            var currentUsername = GetUserName(model, result);
-
-            if (result.HasErrors)
-            {
-                return BadRequest(result);
-            }
-
-            var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(currentUsername, model.CurrentPassword, model.NewPassword);
-
-            if (resultPasswordChange != null)
-            {
+                if (resultPasswordChange == null) return Json(result);
                 result.Errors.Add(resultPasswordChange);
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update password");
 
-            if (result.HasErrors)
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                result.Errors.Add(new ApiErrorItem(ApiErrorCode.Generic, ex.Message));
+            }
 
-            return Json(result);
+            return BadRequest(result);
         }
 
-        private string GetUserName(ChangePasswordModel model, ApiResult result)
+        private string GetUserName(ChangePasswordModel model)
         {
             // Check for default domain: if none given, ensure EFLD can be used as an override.
             var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-            var domain = parts.Length > 1 ? parts[1] : _options.ClientSettings.DefaultDomain;
+            var domain = parts.Length > 1 ? parts[1] : _passwordChangeProvider.Settings.DefaultDomain;
 
-            // Domain-determinance
-            if (string.IsNullOrWhiteSpace(domain))
-            {
-                return model.Username;
-            }
-
-            return parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
+            return string.IsNullOrWhiteSpace(domain) || parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
         }
 
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey)) return true;
+            if (string.IsNullOrWhiteSpace(_passwordChangeProvider.Settings.RecaptchaPrivateKey))
+                return true;
 
             // immediately return false because we don't 
-            if (string.IsNullOrEmpty(recaptchaResponse)) return false;
+            if (string.IsNullOrEmpty(recaptchaResponse))
+                return false;
 
-            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.RecaptchaPrivateKey}&response={recaptchaResponse}";
+            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_passwordChangeProvider.Settings.RecaptchaPrivateKey}&response={recaptchaResponse}";
 
             using (var client = new HttpClient())
             {

@@ -6,10 +6,20 @@ namespace Unosquare.PassCore.Web.Models
     using Common;
 
     /// <summary>
-    /// Represent a generic response from a REST API call
+    /// Represent a generic response from a REST API call.
     /// </summary>
     public class ApiResult
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiResult"/> class.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        public ApiResult(object payload = null)
+        {
+            Errors = new List<ApiErrorItem>();
+            Payload = payload;
+        }
+
         /// <summary>
         /// Gets a value indicating whether this instance has errors.
         /// </summary>
@@ -21,26 +31,57 @@ namespace Unosquare.PassCore.Web.Models
         /// <summary>
         /// Gets or sets the errors.
         /// </summary>
-        public List<ApiErrorItem> Errors { get; set; } = new List<ApiErrorItem>();
+        public List<ApiErrorItem> Errors { get; }
 
         /// <summary>
         /// Gets or sets the payload.
         /// </summary>
-        public object Payload { get; set; }
+        public object Payload { get;  }
 
         /// <summary>
-        /// Creates a generic invalid request response
+        /// Creates a generic invalid request response.
         /// </summary>
-        /// <returns>The ApiResult wih Invalid request error</returns>
+        /// <returns>The ApiResult wih Invalid request error.</returns>
         public static ApiResult InvalidRequest()
         {
-            var result = new ApiResult {Payload = "Invalid Request"};
-            result.Errors.Add(new ApiErrorItem
+            var result = new ApiResult("Invalid Request");
+            result.Errors.Add(new ApiErrorItem(ApiErrorCode.Generic, "Invalid Request"));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Invalids the captcha.
+        /// </summary>
+        /// <returns></returns>
+        public static ApiResult InvalidCaptcha()
+        {
+            var result = new ApiResult("Invalid Recaptcha");
+            result.Errors.Add(new ApiErrorItem(ApiErrorCode.InvalidCaptcha));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Adds the model state errors.
+        /// </summary>
+        /// <param name="modelState">State of the model.</param>
+        /// <returns></returns>
+        public static ApiResult FromModelStateErrors(ModelStateDictionary modelState)
+        {
+            var result = new ApiResult();
+
+            foreach (var state in modelState.Where(x => x.Value.Errors.Any()))
             {
-                ErrorCode = ApiErrorCode.Generic,
-                FieldName = string.Empty,
-                Message = "Invalid Request"
-            });
+                var error = state.Value.Errors.First();
+
+                if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldRequired)))
+                    result.AddFieldRequiredValidationError(state.Key);
+                else if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldMismatch)))
+                    result.AddFieldMismatchValidationError(state.Key);
+                else
+                    result.AddGenericFieldValidationError(state.Key, error.ErrorMessage);
+            }
 
             return result;
         }
@@ -49,13 +90,11 @@ namespace Unosquare.PassCore.Web.Models
         /// Adds the field required validation error.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        public void AddFieldRequiredValidationError(string fieldName)
+        private void AddFieldRequiredValidationError(string fieldName)
         {
-            Errors.Add(new ApiErrorItem
+            Errors.Add(new ApiErrorItem(ApiErrorCode.FieldRequired, nameof(ApiErrorCode.FieldRequired))
             {
-                ErrorCode = ApiErrorCode.FieldRequired,
                 FieldName = fieldName,
-                Message = nameof(ApiErrorCode.FieldRequired)
             });
         }
 
@@ -63,13 +102,11 @@ namespace Unosquare.PassCore.Web.Models
         /// Adds the field mismatch validation error.
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
-        public void AddFieldMismatchValidationError(string fieldName)
+        private void AddFieldMismatchValidationError(string fieldName)
         {
-            Errors.Add(new ApiErrorItem
+            Errors.Add(new ApiErrorItem(ApiErrorCode.FieldMismatch, nameof(ApiErrorCode.FieldMismatch))
             {
-                ErrorCode = ApiErrorCode.FieldMismatch,
                 FieldName = fieldName,
-                Message = nameof(ApiErrorCode.FieldMismatch)
             });
         }
 
@@ -78,33 +115,12 @@ namespace Unosquare.PassCore.Web.Models
         /// </summary>
         /// <param name="fieldName">Name of the field.</param>
         /// <param name="message">The message.</param>
-        public void AddGenericFieldValidationError(string fieldName, string message)
+        private void AddGenericFieldValidationError(string fieldName, string message)
         {
-            Errors.Add(new ApiErrorItem
+            Errors.Add(new ApiErrorItem(ApiErrorCode.Generic, message)
             {
-                ErrorCode = ApiErrorCode.Generic,
                 FieldName = fieldName,
-                Message = message
             });
-        }
-
-        /// <summary>
-        /// Adds the model state errors.
-        /// </summary>
-        /// <param name="modelState">State of the model.</param>
-        public void AddModelStateErrors(ModelStateDictionary modelState)
-        {
-            foreach (var state in modelState.Where(x => x.Value.Errors.Any()))
-            {
-                var error = state.Value.Errors.First();
-
-                if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldRequired)))
-                    AddFieldRequiredValidationError(state.Key);
-                else if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldMismatch)))
-                    AddFieldMismatchValidationError(state.Key);
-                else
-                    AddGenericFieldValidationError(state.Key, error.ErrorMessage);
-            }
         }
     }
 }

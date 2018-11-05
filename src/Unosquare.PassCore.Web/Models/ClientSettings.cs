@@ -1,25 +1,18 @@
 namespace Unosquare.PassCore.Web.Models
 {
     /// <summary>
-    /// Represents all of the strongly-typed application settings loaded from a JSON file
+    /// Represents all of the strongly-typed application settings loaded from a JSON file.
     /// </summary>
-    public class AppSettings
-    {
-        public bool EnableHttpsRedirect { get; set; } = true;
-        public ClientSettings ClientSettings { get; set; }
-        public string RecaptchaPrivateKey { get; set; }
-    }
-
     public class ClientSettings
     {
         public Alerts Alerts { get; set; }
         public bool ShowPasswordMeter { get; set; }
+        public bool UseEmail { get; set; }
         public ChangePasswordForm ChangePasswordForm { get; set; }
         public ErrorsPasswordForm ErrorsPasswordForm { get; set; }
         public Recaptcha Recaptcha { get; set; }
         public string ApplicationTitle { get; set; }
         public string ChangePasswordTitle { get; set; }
-        public string DefaultDomain { get; set; }
         public ValidationRegex ValidationRegex { get; set; }
     }
 
@@ -41,7 +34,6 @@ namespace Unosquare.PassCore.Web.Models
 
     public class Recaptcha
     {
-        public bool IsEnabled { get; set; }
         public string LanguageCode { get; set; }
         public string SiteKey { get; set; }
     }

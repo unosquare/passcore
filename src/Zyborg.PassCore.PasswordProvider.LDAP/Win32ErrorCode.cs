@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
-
+#pragma warning disable SA1117 // Parameters should be on same line or separate lines
 namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Win32ErrorCode
     {
         /// Based on
-        /// <a href="https://msdn.microsoft.com/en-us/library/cc231199.aspx?f=255&MSPPError=-2147217396">docs</a>
+        /// <a href="https://msdn.microsoft.com/en-us/library/cc231199.aspx?f=255&MSPPError=-2147217396">docs.</a>
         /// provides a list of commonly anticipated error codes from a password change request.
         public static readonly IEnumerable<Win32ErrorCode> Codes = new[]
         {
@@ -46,17 +47,17 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
                 "The referenced account is currently locked out and cannot be logged on to."),
         };
 
-        private static Dictionary<int, Win32ErrorCode> _errorByCode =
+        private static readonly Dictionary<int, Win32ErrorCode> ErrorByCode =
                 new Dictionary<int, Win32ErrorCode>();
-        private static Dictionary<string, Win32ErrorCode> _errorByCodeName =
+        private static readonly Dictionary<string, Win32ErrorCode> ErrorByCodeName =
                 new Dictionary<string, Win32ErrorCode>(StringComparer.InvariantCultureIgnoreCase);
 
         static Win32ErrorCode()
         {
             foreach (var c in Codes)
             {
-                _errorByCode[c.Code] = c;
-                _errorByCodeName[c.CodeName] = c;
+                ErrorByCode[c.Code] = c;
+                ErrorByCodeName[c.CodeName] = c;
             }
         }
 
@@ -70,15 +71,16 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         public int Code { get; }
         public string CodeName { get; }
         public string Description { get; }
+        
+        public static Win32ErrorCode ByCode(int code) =>
+            ErrorByCode.TryGetValue(code, out var err) ? err : null;
+
+        public static Win32ErrorCode ByCodeName(string codeName) =>
+            ErrorByCodeName.TryGetValue(codeName, out var err) ? err : null;
 
         public override int GetHashCode() => Code;
         public override bool Equals(object obj) => obj != null
                 && obj is Win32ErrorCode err && Code == err.Code;
-
-        public static Win32ErrorCode ByCode(int code) =>
-            _errorByCode.TryGetValue(code, out var err) ? err : null;
-
-        public static Win32ErrorCode ByCodeName(string codeName) =>
-            _errorByCodeName.TryGetValue(codeName, out var err) ? err : null;
     }
 }
+#pragma warning restore SA1117 // Parameters should be on same line or separate lines

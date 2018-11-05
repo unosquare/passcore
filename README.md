@@ -17,7 +17,8 @@
   - [Customization and Configuration](#customization-and-configuration)
     - [Running as a sub application](#running-as-a-sub-application)
   - [Troubleshooting](#troubleshooting)
-    - [LDAP Support (under review)](#ldap-support-under-review)
+    - [LDAP Support](#ldap-support)
+  - [Build your own version](#build-your-own-version)
   - [License](#license)
 
 ## Overview
@@ -34,6 +35,7 @@ PassCore has the following features:
 - Supports [reCAPTCHA](https://www.google.com/recaptcha/intro/index.html)
 - Has a built-in password meter
 - Responsive design that works on mobiles, tablets, and desktops.
+- Works with Windows/Linux servers.
 
 <img align="center" src="https://github.com/unosquare/passcore/raw/master/preview.png"></img>
 
@@ -65,7 +67,7 @@ PassCore has the following features:
 
 ## PowerShell Installer
 
-You can use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
+Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))
@@ -81,9 +83,8 @@ All server-side settings and client-side settings are stored in the `/appsetting
 The most relevant configuration entries are shown below. Make sure you make your changes to the `appsettings.json` file using a regular text editor like [Visual Studio Code](https://code.visualstudio.com)
 
 - To enable reCAPTCHA
-  1. reCaptcha is enable in testing mode, please change the keys to use it with your application
-  2. Find the `RecaptchaPrivateKey` entry and enter your private key within double quotes (`"`)
-  3. Find the `SiteKey` entry and enter your Site Key within double quotes (`"`)
+  1. Find the `RecaptchaPrivateKey` entry and enter your private key within double quotes (`"`)
+  2. Find the `SiteKey` entry and enter your Site Key within double quotes (`"`)
 - To change the language of the reCAPTCHA widget
   - Find the `LanguageCode` entry and enter [one of the options listed here](https://developers.google.com/recaptcha/docs/language). By default this is set to `en`
 - To enable the password meter
@@ -132,13 +133,36 @@ To run as a sub application you need to modify the `base href="/"` value in the 
 icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>":M /t
 ```
 
-### LDAP Support (under review)
+### LDAP Support
 
 - If your users are having trouble changing passwords as in issues #8 or #9 : try configuring the section `PasswordChangeOptions` in the `/appsettings.json` file. Here are some guidelines:
   1. Ensure `UseAutomaticContext` is set to `false`
   1. Ensure `LdapUsername` is set to an AD user with enough permissions to reset user passwords
   1. Ensure `LdapPassword` is set to the correct password for the admin user mentioned above
   1. User @gadams65 suggests the following: Use the FQDN of your LDAP host. Enter the LDAP username without any other prefix or suffix such as `domain\\` or `@domain`. Only the username.
+- You can also opt to use the Linux or MacOS version of PassCore. This version includes a LDAP Provider based on Novell. The same provider can be used with Windows, you must build it by yourself.
+
+
+## Build your own version
+
+If you need to modify the source code (either backend or frontend). You require .NET Core SDK and nodejs. Run the following command according to your target platform.
+
+### Windows
+```
+dotnet publish --configuration Release --runtime win-x64 --output "<path>"
+```
+
+### Linux (portable)
+```
+dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
+```
+
+### MacOS (OS X)
+```
+dotnet publish --configuration Release --runtime osx-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
+```
+
+*Note* - The `PASSCORE_PROVIDER` modifier will use the LDAP Provider instead of Activde Directory Provider.
 
 ## License
 

@@ -1,84 +1,41 @@
 ﻿namespace Unosquare.PassCore.PasswordProvider
 {
-    using System.DirectoryServices.AccountManagement;
-    using System.DirectoryServices;
-    using System;
-    using Microsoft.Extensions.Options;
-    using System.Linq;
     using Common;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
+    using System;
+    using System.DirectoryServices;
+    using System.DirectoryServices.AccountManagement;
+    using System.Linq;
 
+    /// <inheritdoc />
+    /// <summary>
+    /// Default Change Password Provider using 'System.DirectoryServices' from Microsoft.
+    /// </summary>
+    /// <seealso cref="T:Unosquare.PassCore.Common.IPasswordChangeProvider" />
     public partial class PasswordChangeProvider : IPasswordChangeProvider
     {
-        private readonly PasswordChangeOptions _options;
+        private readonly ILogger _logger;
         private IdentityType _idType = IdentityType.UserPrincipalName;
 
-        public PasswordChangeProvider(IOptions<PasswordChangeOptions> options)
+        public PasswordChangeProvider(
+            ILogger<PasswordChangeProvider> logger,
+            IOptions<PasswordChangeOptions> options)
         {
-            _options = options.Value;
+            _logger = logger;
+            Settings = options.Value;
             SetIdType();
         }
 
-        /// <summary>
-        /// Use the values from appsettings.IdTypeForUser as fault-tolerant as possible
-        /// </summary>
-        private void SetIdType()
-        {
-            if (String.IsNullOrWhiteSpace(_options.IdTypeForUser))
-            {
-                _idType = IdentityType.UserPrincipalName;
-            }
-            else
-            {
-                string tmpIdType = _options.IdTypeForUser.Trim().ToLower();
+        /// <inheritdoc />
+        public IAppSettings Settings { get; }
 
-                switch (tmpIdType)
-                {
-                    case "distinguishedname":
-                    case "distinguished name":
-                    case "dn":
-                        _idType = IdentityType.DistinguishedName;
-                        break;
-                    case "globally unique identifier":
-                    case "globallyuniqueidentifier":
-                    case "guid":
-                        _idType = IdentityType.Guid;
-                        break;
-                    case "name":
-                    case "nm":
-                        _idType = IdentityType.Name;
-                        break;
-                    case "samaccountname":
-                    case "accountname":
-                    case "sam account":
-                    case "sam account name":
-                    case "sam":
-                        _idType = IdentityType.SamAccountName;
-                        break;
-                    case "securityidentifier":
-                    case "securityid":
-                    case "secid":
-                    case "security identifier":
-                    case "sid":
-                        _idType = IdentityType.Sid;
-                        break;
-                    case "userprincipalname":
-                    case "user principal name":
-                    case "upn":
-                    case "id":
-                    case "cn":
-                    case "uid":
-                        _idType = IdentityType.UserPrincipalName;
-                        break;
-                    default:
-                        _idType = IdentityType.UserPrincipalName;
-                        break;
-                }
-            }
-        }
+        public PasswordChangeOptions PasswordChangeOptions => Settings as PasswordChangeOptions;
 
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            // perform the password change
+            _logger.LogInformation($"PerformPasswordChange for user {username}");
+
             try
             {
                 using (var principalContext = AcquirePrincipalContext())
@@ -88,94 +45,66 @@
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.UserNotFound };
+                        _logger.LogWarning($"The User principal ({username}) doesn't exist");
+
+                        return new ApiErrorItem(ApiErrorCode.UserNotFound);
                     }
+
+                    ValidateGroups(userPrincipal);
 
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
                     {
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
+                        _logger.LogWarning("The User principal cannot change the password");
+
+                        return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted);
                     }
 
                     // Check if password expired or must be changed
-                    if (userPrincipal.LastPasswordSet == null)
+                    if (PasswordChangeOptions.UpdateLastPassword && userPrincipal.LastPasswordSet == null)
                     {
-                        var der = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
-                        var prop = der.Properties["pwdLastSet"];
-
-                        if (prop != null)
-                        {
-                            prop.Value = -1;
-                        }
-
-                        try
-                        {
-                            der.CommitChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
-                        }
+                        SetLastPassword(userPrincipal);
                     }
 
-                    // Verify user is not a member of an excluded group
-                    if (_options.CheckRestrictedAdGroups)
+                    // Use always UPN for password check.
+                    if (!ValidateUserCredentials(userPrincipal.UserPrincipalName, currentPassword, principalContext))
                     {
-                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-                        {
-                            if (_options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
-                            {
-                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
-                            }
-                        }
-                    }
+                        _logger.LogWarning("The User principal password is not valid");
 
-                    if (_options.CheckAllowedAdGroups)
-                    {
-                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-                        {
-                            if (!_options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
-                            {
-                                return new ApiErrorItem { ErrorCode = ApiErrorCode.ChangeNotPermitted };
-                            }
-                        }
+                        return new ApiErrorItem(ApiErrorCode.InvalidCredentials);
                     }
-
-                    // Use always UPN for passwordcheck.
-                    if (ValidateUserCredentials(userPrincipal.UserPrincipalName, currentPassword, principalContext) == false)
-                        return new ApiErrorItem { ErrorCode = ApiErrorCode.InvalidCredentials };
 
                     // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
-                    try
-                    {
-                        // Try by regular ChangePassword method
-                        userPrincipal.ChangePassword(currentPassword, newPassword);
-                    }
-                    catch
-                    {
-                        if (_options.UseAutomaticContext) { throw; }
-
-                        // If the previous attempt failed, use the SetPassword method.
-                        userPrincipal.SetPassword(newPassword);
-                    }
+                    ChangePassword(currentPassword, newPassword, userPrincipal);
 
                     userPrincipal.Save();
+                    _logger.LogDebug("The User principal password updated with setPassword");
                 }
             }
             catch (Exception ex)
             {
-                return new ApiErrorItem { ErrorCode = ApiErrorCode.Generic, Message = ex.Message };
+                var item = ex is ApiErrorException apiError
+                    ? apiError.ToApiErrorItem()
+                    : new ApiErrorItem(ApiErrorCode.Generic, $"Failed to update password: {ex.Message}");
+
+                _logger.LogWarning(item.Message, ex);
+
+                return item;
             }
 
             return null;
         }
-
-        private static bool ValidateUserCredentials(string upn, string currentPassword, PrincipalContext principalContext)
+        
+        private static bool ValidateUserCredentials(
+            string upn,
+            string currentPassword,
+            PrincipalContext principalContext)
         {
             if (principalContext.ValidateCredentials(upn, currentPassword))
                 return true;
 
-            string tmpAuthority = upn?.Split('@')?.Last();
+            var tmpAuthority = upn?.Split('@').Last();
+
             if (LogonUser(upn, tmpAuthority, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                 return true;
 
@@ -185,15 +114,139 @@
             return errorCode == ERROR_PASSWORD_MUST_CHANGE || errorCode == ERROR_PASSWORD_EXPIRED;
         }
 
+        private void ValidateGroups(UserPrincipal userPrincipal)
+        {
+            if (PasswordChangeOptions.RestrictedADGroups?.Any() == true)
+            {
+                foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                {
+                    if (PasswordChangeOptions.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                    {
+                        throw new ApiErrorException("The User principal is listed as restricted",
+                            ApiErrorCode.ChangeNotPermitted);
+                    }
+                }
+            }
+
+            if (PasswordChangeOptions.AllowedADGroups?.Any() != true) return;
+
+            foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+            {
+                if (!PasswordChangeOptions.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
+                {
+                    throw new ApiErrorException("The User principal is not listed as allowed",
+                        ApiErrorCode.ChangeNotPermitted);
+                }
+            }
+        }
+
+        private void SetLastPassword(UserPrincipal userPrincipal)
+        {
+            var directoryEntry = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
+            var prop = directoryEntry.Properties["pwdLastSet"];
+
+            if (prop == null)
+            {
+                _logger.LogWarning("The User principal password have no last password, but the property is missing");
+                return;
+            }
+
+            try
+            {
+                prop.Value = -1;
+                directoryEntry.CommitChanges();
+                _logger.LogWarning("The User principal last password was updated");
+            }
+            catch (Exception ex)
+            {
+                throw new ApiErrorException($"Failed to update password: {ex.Message}",
+                    ApiErrorCode.ChangeNotPermitted);
+            }
+        }
+
+        private void ChangePassword(
+            string currentPassword,
+            string newPassword,
+            UserPrincipal userPrincipal)
+        {
+            try
+            {
+                // Try by regular ChangePassword method
+                userPrincipal.ChangePassword(currentPassword, newPassword);
+            }
+            catch
+            {
+                if (PasswordChangeOptions.UseAutomaticContext)
+                {
+                    _logger.LogWarning("The User principal password cannot be changed and setPassword won't be called");
+
+                    throw;
+                }
+
+                // If the previous attempt failed, use the SetPassword method.
+                userPrincipal.SetPassword(newPassword);
+
+                _logger.LogDebug("The User principal password updated with setPassword");
+            }
+        }
+
+        /// <summary>
+        /// Use the values from appsettings.IdTypeForUser as fault-tolerant as possible.
+        /// </summary>
+        private void SetIdType()
+        {
+            switch (PasswordChangeOptions.IdTypeForUser?.Trim().ToLower())
+            {
+                case "distinguishedname":
+                case "distinguished name":
+                case "dn":
+                    _idType = IdentityType.DistinguishedName;
+                    break;
+                case "globally unique identifier":
+                case "globallyuniqueidentifier":
+                case "guid":
+                    _idType = IdentityType.Guid;
+                    break;
+                case "name":
+                case "nm":
+                    _idType = IdentityType.Name;
+                    break;
+                case "samaccountname":
+                case "accountname":
+                case "sam account":
+                case "sam account name":
+                case "sam":
+                    _idType = IdentityType.SamAccountName;
+                    break;
+                case "securityidentifier":
+                case "securityid":
+                case "secid":
+                case "security identifier":
+                case "sid":
+                    _idType = IdentityType.Sid;
+                    break;
+                default:
+                    _idType = IdentityType.UserPrincipalName;
+                    break;
+            }
+        }
+
         private PrincipalContext AcquirePrincipalContext()
         {
-            return _options.UseAutomaticContext
-                ? new PrincipalContext(ContextType.Domain)
-                : new PrincipalContext(
-                    ContextType.Domain,
-                    $"{_options.LdapHostname}:{_options.LdapPort}",
-                    _options.LdapUsername,
-                    _options.LdapPassword);
+            if (PasswordChangeOptions.UseAutomaticContext)
+            {
+                _logger.LogWarning("Using AutomaticContext");
+                return new PrincipalContext(ContextType.Domain);
+            }
+
+            var domain = $"{Settings.LdapHostnames.First()}:{Settings.LdapPort}";
+            _logger.LogWarning($"Not using AutomaticContext  {domain}");
+
+            return new PrincipalContext(
+                ContextType.Domain,
+                domain,
+                Settings.LdapUsername,
+                Settings.LdapPassword);
         }
     }
 }
