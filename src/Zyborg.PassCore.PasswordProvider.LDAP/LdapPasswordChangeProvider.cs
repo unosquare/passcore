@@ -272,14 +272,14 @@
             {
                 throw new ArgumentException(
                     "No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
-                    nameof(options.LdapSearchBase));
+                    nameof(options.LdapSearchFilter));
             }
 
             if (!options.LdapSearchFilter.Contains("{Username}"))
             {
                 throw new ArgumentException(
                     "The ldapSearchFilter should include {{Username}} value in the template string",
-                    nameof(options.LdapSearchBase));
+                    nameof(options.LdapSearchFilter));
             }
 
             // All other configuration is optional, but some may warrant attention
