@@ -7,6 +7,7 @@ about: Create a report to help us improve
 **PassCore Server**
 - OS: [Windows | Linux | macOS]
 - Provider: [Active Directory | LDAP]
+- Settings file (without sensitive information): 
 
 **Describe the bug**
 A clear and concise description of what the bug is.
