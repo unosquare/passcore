@@ -27,7 +27,7 @@
             _options = options.Value;
             SetIdType();
         }
-        
+
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             var fixedUsername = FixUsernameWithDomain(username);
@@ -111,7 +111,7 @@
             // Both of these means that the password CAN change and that we got the correct password
             return errorCode == ERROR_PASSWORD_MUST_CHANGE || errorCode == ERROR_PASSWORD_EXPIRED;
         }
-        
+
         private string FixUsernameWithDomain(string username)
         {
             if (_idType != IdentityType.UserPrincipalName) return username;
@@ -138,15 +138,18 @@
             }
 
             if (_options.AllowedADGroups?.Any() != true) return;
-
+            
             foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
             {
-                if (!_options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
+                if (_options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
                 {
-                    throw new ApiErrorException("The User principal is not listed as allowed",
-                        ApiErrorCode.ChangeNotPermitted);
+                    return;
                 }
             }
+
+            // If after iterate the user groups the user cannot change password.
+            throw new ApiErrorException("The User principal is not listed as allowed",
+                    ApiErrorCode.ChangeNotPermitted);
         }
 
         private void SetLastPassword(UserPrincipal userPrincipal)
