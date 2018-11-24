@@ -7,7 +7,7 @@ namespace Unosquare.PassCore.PasswordProvider
     /// This code is taken from the answer https://stackoverflow.com/a/1766203
     /// from https://stackoverflow.com/questions/1394025/active-directory-ldap-check-account-locked-out-password-expired.
     /// </summary>
-    partial class PasswordChangeProvider
+    public partial class PasswordChangeProvider
     {
         // See http://support.microsoft.com/kb/155012
         internal const int ERROR_PASSWORD_MUST_CHANGE = 1907;

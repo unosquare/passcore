@@ -15,6 +15,7 @@
     /// <seealso cref="T:Unosquare.PassCore.Common.IPasswordChangeProvider" />
     public partial class PasswordChangeProvider : IPasswordChangeProvider
     {
+        private readonly PasswordChangeOptions _options;
         private readonly ILogger _logger;
         private IdentityType _idType = IdentityType.UserPrincipalName;
 
@@ -23,29 +24,26 @@
             IOptions<PasswordChangeOptions> options)
         {
             _logger = logger;
-            Settings = options.Value;
+            _options = options.Value;
             SetIdType();
         }
-
-        /// <inheritdoc />
-        public IAppSettings Settings { get; }
-
-        public PasswordChangeOptions PasswordChangeOptions => Settings as PasswordChangeOptions;
-
+        
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            _logger.LogInformation($"PerformPasswordChange for user {username}");
+            var fixedUsername = FixUsernameWithDomain(username);
+
+            _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
 
             try
             {
                 using (var principalContext = AcquirePrincipalContext())
                 {
-                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, username);
+                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
 
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
-                        _logger.LogWarning($"The User principal ({username}) doesn't exist");
+                        _logger.LogWarning($"The User principal ({fixedUsername}) doesn't exist");
 
                         return new ApiErrorItem(ApiErrorCode.UserNotFound);
                     }
@@ -61,7 +59,7 @@
                     }
 
                     // Check if password expired or must be changed
-                    if (PasswordChangeOptions.UpdateLastPassword && userPrincipal.LastPasswordSet == null)
+                    if (_options.UpdateLastPassword && userPrincipal.LastPasswordSet == null)
                     {
                         SetLastPassword(userPrincipal);
                     }
@@ -94,7 +92,7 @@
 
             return null;
         }
-        
+
         private static bool ValidateUserCredentials(
             string upn,
             string currentPassword,
@@ -113,14 +111,25 @@
             // Both of these means that the password CAN change and that we got the correct password
             return errorCode == ERROR_PASSWORD_MUST_CHANGE || errorCode == ERROR_PASSWORD_EXPIRED;
         }
+        
+        private string FixUsernameWithDomain(string username)
+        {
+            if (_idType != IdentityType.UserPrincipalName) return username;
+
+            // Check for default domain: if none given, ensure EFLD can be used as an override.
+            var parts = username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            var domain = parts.Length > 1 ? parts[1] : _options.DefaultDomain;
+
+            return string.IsNullOrWhiteSpace(domain) || parts.Length > 1 ? username : $"{username}@{domain}";
+        }
 
         private void ValidateGroups(UserPrincipal userPrincipal)
         {
-            if (PasswordChangeOptions.RestrictedADGroups?.Any() == true)
+            if (_options.RestrictedADGroups?.Any() == true)
             {
                 foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
                 {
-                    if (PasswordChangeOptions.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
+                    if (_options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
                     {
                         throw new ApiErrorException("The User principal is listed as restricted",
                             ApiErrorCode.ChangeNotPermitted);
@@ -128,11 +137,11 @@
                 }
             }
 
-            if (PasswordChangeOptions.AllowedADGroups?.Any() != true) return;
+            if (_options.AllowedADGroups?.Any() != true) return;
 
             foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
             {
-                if (!PasswordChangeOptions.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
+                if (!_options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
                 {
                     throw new ApiErrorException("The User principal is not listed as allowed",
                         ApiErrorCode.ChangeNotPermitted);
@@ -176,7 +185,7 @@
             }
             catch
             {
-                if (PasswordChangeOptions.UseAutomaticContext)
+                if (_options.UseAutomaticContext)
                 {
                     _logger.LogWarning("The User principal password cannot be changed and setPassword won't be called");
 
@@ -195,7 +204,7 @@
         /// </summary>
         private void SetIdType()
         {
-            switch (PasswordChangeOptions.IdTypeForUser?.Trim().ToLower())
+            switch (_options.IdTypeForUser?.Trim().ToLower())
             {
                 case "distinguishedname":
                 case "distinguished name":
@@ -233,20 +242,20 @@
 
         private PrincipalContext AcquirePrincipalContext()
         {
-            if (PasswordChangeOptions.UseAutomaticContext)
+            if (_options.UseAutomaticContext)
             {
                 _logger.LogWarning("Using AutomaticContext");
                 return new PrincipalContext(ContextType.Domain);
             }
 
-            var domain = $"{Settings.LdapHostnames.First()}:{Settings.LdapPort}";
+            var domain = $"{_options.LdapHostnames.First()}:{_options.LdapPort}";
             _logger.LogWarning($"Not using AutomaticContext  {domain}");
 
             return new PrincipalContext(
                 ContextType.Domain,
                 domain,
-                Settings.LdapUsername,
-                Settings.LdapPassword);
+                _options.LdapUsername,
+                _options.LdapPassword);
         }
     }
 }

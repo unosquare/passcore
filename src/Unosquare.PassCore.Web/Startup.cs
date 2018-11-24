@@ -26,6 +26,7 @@ namespace Unosquare.PassCore.Web
     {
         private const string AppSettingsJsonFilename = "appsettings.json";
         private const string LoggingSectionName = "Logging";
+        private const string AppSettingsSectionName = "AppSettings";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -63,14 +64,14 @@ namespace Unosquare.PassCore.Web
             services.Configure<ClientSettings>(Configuration.GetSection(nameof(ClientSettings)));
             services.AddMvc();
 
-#if DEBUG
-            services.Configure<IAppSettings>(Configuration.GetSection(nameof(DebugAppSettings)));
+#if !DEBUG
+            services.Configure<IAppSettings>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
 #elif PASSCORE_LDAP_PROVIDER
-            services.Configure<IAppSettings>(Configuration.GetSection(nameof(LdapPasswordChangeOptions)));
+            services.Configure<LdapPasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, LdapPasswordChangeProvider>();
 #else
-            services.Configure<IAppSettings>(Configuration.GetSection(nameof(PasswordChangeOptions)));
+            services.Configure<PasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
 #endif
         }

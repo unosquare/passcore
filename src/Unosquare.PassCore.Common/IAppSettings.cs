@@ -6,14 +6,6 @@
     public interface IAppSettings
     {
         /// <summary>
-        /// Gets or sets the recaptcha private key.
-        /// </summary>
-        /// <value>
-        /// The recaptcha private key.
-        /// </value>
-        string RecaptchaPrivateKey { get; set; }
-
-        /// <summary>
         /// Gets or sets the default domain.
         /// </summary>
         /// <value>

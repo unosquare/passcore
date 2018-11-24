@@ -90,9 +90,8 @@ namespace Unosquare.PassCore.Web.Controllers
 
             try
             {
-                var currentUsername = GetUserName(model);
                 var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(
-                        currentUsername,
+                        model.Username,
                         model.CurrentPassword,
                         model.NewPassword);
 
@@ -109,26 +108,17 @@ namespace Unosquare.PassCore.Web.Controllers
             return BadRequest(result);
         }
 
-        private string GetUserName(ChangePasswordModel model)
-        {
-            // Check for default domain: if none given, ensure EFLD can be used as an override.
-            var parts = model.Username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-            var domain = parts.Length > 1 ? parts[1] : _passwordChangeProvider.Settings.DefaultDomain;
-
-            return string.IsNullOrWhiteSpace(domain) || parts.Length > 1 ? model.Username : $"{model.Username}@{domain}";
-        }
-
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(_passwordChangeProvider.Settings.RecaptchaPrivateKey))
+            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey))
                 return true;
 
             // immediately return false because we don't 
             if (string.IsNullOrEmpty(recaptchaResponse))
                 return false;
 
-            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_passwordChangeProvider.Settings.RecaptchaPrivateKey}&response={recaptchaResponse}";
+            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.RecaptchaPrivateKey}&response={recaptchaResponse}";
 
             using (var client = new HttpClient())
             {
