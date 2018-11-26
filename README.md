@@ -23,7 +23,8 @@
 
 ## Overview
 
-PassCore is a very simple 1-page web application written in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/), using [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/getting-started?view=aspnetcore-2.0) , [Angular Material](https://material.angular.io/), [Typescript](http://www.typescriptlang.org/), and [Microsoft Directory Services](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices). It allows users to change their Active Directory password on their own, provided the user is not disabled.
+PassCore is a very simple 1-page web application written in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/), using [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/getting-started?view=aspnetcore-2.0) , [Angular Material](https://material.angular.io/), [Typescript](http://www.typescriptlang.org/), and [Microsoft Directory Services](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices) (Default provider). 
+It allows users to change their Active Directory password on their own, provided the user is not disabled.
 
 PassCore does not require any configuration, as it obtains the principal context from the current domain. I wrote this because a number of people have requested several features that the [original version](http://unopasscore.codeplex.com/) did not have. The original version of this tool was downloaded around 8000 times in 2.5 years. My hope is that the new version continues to be just as popular. There really is no free alternative out there (that I know of) so hopefully this saves someone else some time and money.
 
@@ -46,7 +47,7 @@ PassCore has the following features:
 1. Ensure the server running IIS is domain-joined. To determine if the computer is domain-joined:
     - Go to the *Start* menu, right click on *Computer*, then select *Properties*
     - Make sure the *Domain* field contains the correct setting.
-1. You need a Passcore copy to continue. We recommed to download the latest binary release of [PassCore](https://github.com/unosquare/passcore/releases/download/3.5.0/PassCore35.zip).
+1. You need a Passcore copy to continue. We recommed to download the latest binary release of [PassCore](https://github.com/unosquare/passcore/releases/download/3.6.0/PassCore36.zip).
 1. **NOTE:** Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.
     - If you download the source code you need to run the following command via an Command Prompt. Make sure you start the Command Prompt with the Administrator option.
     - `dotnet publish --configuration Release --runtime win-x64 --output "<path>"`
@@ -73,9 +74,12 @@ Use PowerShell to download and setup Passcore using the following command line, 
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))
 ```
 
-Using the above command will install to the folder `C:\passcore` and using the HTTP Port 8080 with the default (localhost) binding.If you want to customize your installation please download the [installer script](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1) and the [IIS setup script](https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1).
+Using the above command will install to the folder `C:\passcore` and using the HTTP Port 8080 with the default (localhost) binding. 
+If you want to customize your installation please download the [installer script](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1) and 
+the [IIS setup script](https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1).
 
-**NOTE:** You need [PowerShell version 5 or better](https://docs.microsoft.com/en-us/powershell/scripting/setup/windows-powershell-system-requirements?view=powershell-6) to execute the script.
+**NOTE:** You need [PowerShell version 5 or better](https://docs.microsoft.com/en-us/powershell/scripting/setup/windows-powershell-system-requirements?view=powershell-6) 
+to execute the script.
 
 ## Customization and Configuration
 
@@ -83,14 +87,12 @@ All server-side settings and client-side settings are stored in the `/appsetting
 The most relevant configuration entries are shown below. Make sure you make your changes to the `appsettings.json` file using a regular text editor like [Visual Studio Code](https://code.visualstudio.com)
 
 - To enable reCAPTCHA
-  1. Find the `RecaptchaPrivateKey` entry and enter your private key within double quotes (`"`)
+  1. Find the `PrivateKey` entry and enter your private key within double quotes (`"`)
   2. Find the `SiteKey` entry and enter your Site Key within double quotes (`"`)
 - To change the language of the reCAPTCHA widget
   - Find the `LanguageCode` entry and enter [one of the options listed here](https://developers.google.com/recaptcha/docs/language). By default this is set to `en`
-- To enable the password meter
-  - Find the `ShowPasswordMeter` entry and set it to `true` (without quotes)
-- To disable the password meter
-  - Find the `ShowPasswordMeter` entry and set it to `false` (without quotes)
+- To enable/disable the password meter
+  - Find the `ShowPasswordMeter` entry and set it to `true` or `false` (without quotes)
 - To enable restricted group checking
   1. Find the `CheckRestrictedAdGroups` entry and set it to `true` (without quotes)
   2. Find the `RestrictedADGroups` entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.
