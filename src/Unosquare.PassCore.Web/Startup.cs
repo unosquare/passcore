@@ -64,7 +64,7 @@ namespace Unosquare.PassCore.Web
             services.Configure<ClientSettings>(Configuration.GetSection(nameof(ClientSettings)));
             services.AddMvc();
 
-#if !DEBUG
+#if DEBUG
             services.Configure<IAppSettings>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
 #elif PASSCORE_LDAP_PROVIDER
