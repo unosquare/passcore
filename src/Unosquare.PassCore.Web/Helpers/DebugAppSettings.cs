@@ -4,7 +4,6 @@
 
     public class DebugAppSettings : IAppSettings
     {
-        public string RecaptchaPrivateKey { get; set; }
         public string DefaultDomain { get; set; }
         public int LdapPort { get; set; }
         public string[] LdapHostnames { get; set; }

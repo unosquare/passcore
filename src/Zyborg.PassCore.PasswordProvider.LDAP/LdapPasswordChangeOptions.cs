@@ -15,9 +15,6 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         public string LdapUsername { get; set; }
 
         /// <inheritdoc />
-        public string RecaptchaPrivateKey { get; set; }
-
-        /// <inheritdoc />
         public string DefaultDomain { get; set; }
 
         /// <inheritdoc />

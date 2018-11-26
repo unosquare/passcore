@@ -111,14 +111,14 @@ namespace Unosquare.PassCore.Web.Controllers
         private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(_options.RecaptchaPrivateKey))
+            if (string.IsNullOrWhiteSpace(_options.Recaptcha.PrivateKey))
                 return true;
 
             // immediately return false because we don't 
             if (string.IsNullOrEmpty(recaptchaResponse))
                 return false;
 
-            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.RecaptchaPrivateKey}&response={recaptchaResponse}";
+            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}";
 
             using (var client = new HttpClient())
             {
