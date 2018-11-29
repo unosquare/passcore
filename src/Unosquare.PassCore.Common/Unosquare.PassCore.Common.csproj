@@ -1,7 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Description>PassCore abstraction classes to implement custom providers.</Description>
+    <Copyright>Copyright (c) 2018 - Unosquare</Copyright>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+     <Version>1.0.0</Version>
+    <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Authors>Unosquare</Authors>
+    <PackageIconUrl>https://github.com/unosquare/swan/raw/master/swan-logo-32.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/unosquare/swan</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/unosquare/swan/master/LICENSE</PackageLicenseUrl>
+    <PackageTags>best-practices netcore network objectmapper json-serialization</PackageTags>
   </PropertyGroup>
 
 </Project>
