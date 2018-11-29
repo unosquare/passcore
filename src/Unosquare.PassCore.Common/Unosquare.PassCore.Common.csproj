@@ -9,10 +9,8 @@
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Unosquare</Authors>
-    <PackageIconUrl>https://github.com/unosquare/swan/raw/master/swan-logo-32.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/unosquare/swan</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/unosquare/swan/master/LICENSE</PackageLicenseUrl>
-    <PackageTags>best-practices netcore network objectmapper json-serialization</PackageTags>
+    <PackageProjectUrl>https://github.com/unosquare/passcore</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/unosquare/passcore/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
 </Project>
