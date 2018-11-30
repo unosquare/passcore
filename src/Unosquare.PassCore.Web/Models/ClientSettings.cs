@@ -23,7 +23,6 @@ namespace Unosquare.PassCore.Web.Models
         public string CurrentPasswordHelpblock { get; set; }
         public string CurrentPasswordLabel { get; set; }
         public string HelpText { get; set; }
-        public string HelpTitle { get; set; }
         public string NewPasswordHelpblock { get; set; }
         public string NewPasswordLabel { get; set; }
         public string NewPasswordVerifyHelpblock { get; set; }
