@@ -121,7 +121,7 @@ export class ChangePasswordComponent implements OnInit {
     GetData(queryParam: string) {
         this.FormData.Username = queryParam;
         this.ViewOptions = window['config'];
-        this.titleService.setTitle(`${this.ViewOptions.changePasswordTitle} - ${this.ViewOptions.applicationTitle}`);
+        this.titleService.setTitle(this.ViewOptions.applicationTitle);
 
         if (this.ViewOptions.recaptcha.siteKey !== '') {
             this.FormGroup.addControl('reCaptcha', new FormControl('', [Validators.required]));
@@ -177,6 +177,9 @@ export class ChangePasswordComponent implements OnInit {
                             return null;
                     }
                 });
+
+                if (this.ErrorAlertMessage === '') return;
+
                 this.openSnackBar(this.ErrorAlertMessage, 'OK');
                 this.clean('error');
             }

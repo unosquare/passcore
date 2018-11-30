@@ -25,7 +25,7 @@ namespace Unosquare.PassCore.Web
     public class Startup
     {
         private const string AppSettingsJsonFilename = "appsettings.json";
-        private const string LoggingSectionName = "Logging";
+        private const string AppSettingsSectionName = "AppSettings";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -64,13 +64,13 @@ namespace Unosquare.PassCore.Web
             services.AddMvc();
 
 #if DEBUG
-            services.Configure<IAppSettings>(Configuration.GetSection(nameof(DebugAppSettings)));
+            services.Configure<IAppSettings>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
 #elif PASSCORE_LDAP_PROVIDER
-            services.Configure<IAppSettings>(Configuration.GetSection(nameof(LdapPasswordChangeOptions)));
+            services.Configure<LdapPasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, LdapPasswordChangeProvider>();
 #else
-            services.Configure<IAppSettings>(Configuration.GetSection(nameof(PasswordChangeOptions)));
+            services.Configure<PasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
 #endif
         }
@@ -85,12 +85,7 @@ namespace Unosquare.PassCore.Web
         /// <param name="settings">The settings.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions<ClientSettings> settings)
         {
-            // Logging
-            log.AddConsole(Configuration.GetSection(LoggingSectionName));
-
-#if DEBUG
-            log.AddDebug();
-#else
+#if !DEBUG
             // HTTPS redirect
             var options = new RewriteOptions().AddRedirectToHttps();
             app.UseRewriter(options);

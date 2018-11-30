@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unosquare.PassCore.Web", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unosquare.PassCore.PasswordProvider", "src\Unosquare.PassCore.PasswordProvider\Unosquare.PassCore.PasswordProvider.csproj", "{4329B3BC-3CD4-4A19-AAAC-6EB7200DA29A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unosquare.PassCore.Common", "src\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj", "{E80F6938-B399-44DD-8BF0-A27DFD7A6B7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unosquare.PassCore.Common", "src\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj", "{E80F6938-B399-44DD-8BF0-A27DFD7A6B7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zyborg.PassCore.PasswordProvider.LDAP", "src\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj", "{EA6E34EB-4528-48D5-8B4E-CBD54F24F945}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zyborg.PassCore.PasswordProvider.LDAP", "src\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj", "{EA6E34EB-4528-48D5-8B4E-CBD54F24F945}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

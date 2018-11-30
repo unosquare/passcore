@@ -1,23 +1,10 @@
 ﻿namespace Unosquare.PassCore.Web.Helpers
 {
     using System;
-    using Microsoft.Extensions.Options;
     using Common;
 
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DebugPasswordChangeProvider"/> class.
-        /// </summary>
-        /// <param name="optionsAccessor">The options accessor.</param>
-        public DebugPasswordChangeProvider(IOptions<DebugAppSettings> optionsAccessor)
-        {
-            Settings = optionsAccessor.Value;
-        }
-
-        /// <inheritdoc />
-        public IAppSettings Settings { get; }
-
         /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {

@@ -13,13 +13,5 @@
         /// <param name="newPassword">The new password.</param>
         /// <returns>The API error item or null if the change password operation was successful.</returns>
         ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword);
-
-        /// <summary>
-        /// Gets the settings.
-        /// </summary>
-        /// <value>
-        /// The settings.
-        /// </value>
-        IAppSettings Settings { get; }
     }
 }

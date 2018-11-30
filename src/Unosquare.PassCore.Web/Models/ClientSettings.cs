@@ -1,5 +1,7 @@
 namespace Unosquare.PassCore.Web.Models
 {
+    using Newtonsoft.Json;
+
     /// <summary>
     /// Represents all of the strongly-typed application settings loaded from a JSON file.
     /// </summary>
@@ -12,7 +14,6 @@ namespace Unosquare.PassCore.Web.Models
         public ErrorsPasswordForm ErrorsPasswordForm { get; set; }
         public Recaptcha Recaptcha { get; set; }
         public string ApplicationTitle { get; set; }
-        public string ChangePasswordTitle { get; set; }
         public ValidationRegex ValidationRegex { get; set; }
     }
 
@@ -22,7 +23,6 @@ namespace Unosquare.PassCore.Web.Models
         public string CurrentPasswordHelpblock { get; set; }
         public string CurrentPasswordLabel { get; set; }
         public string HelpText { get; set; }
-        public string HelpTitle { get; set; }
         public string NewPasswordHelpblock { get; set; }
         public string NewPasswordLabel { get; set; }
         public string NewPasswordVerifyHelpblock { get; set; }
@@ -36,6 +36,9 @@ namespace Unosquare.PassCore.Web.Models
     {
         public string LanguageCode { get; set; }
         public string SiteKey { get; set; }
+
+        [JsonIgnore]
+        public string PrivateKey { get; set; }
     }
 
     public class Alerts
