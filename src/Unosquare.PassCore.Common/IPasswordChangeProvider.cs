@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.PassCore.Common
 {
     /// <summary>
-    /// Represents a interface for a password change provider
+    /// Represents a interface for a password change provider.
     /// </summary>
     public interface IPasswordChangeProvider
     {

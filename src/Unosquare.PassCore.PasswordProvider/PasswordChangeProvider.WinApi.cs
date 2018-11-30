@@ -10,29 +10,36 @@ namespace Unosquare.PassCore.PasswordProvider
     public partial class PasswordChangeProvider
     {
         // See http://support.microsoft.com/kb/155012
-        internal const int ERROR_PASSWORD_MUST_CHANGE = 1907;
+        internal const int ErrorPasswordMustChange = 1907;
 
         // It gives this error if the account is locked, REGARDLESS OF WHETHER VALID CREDENTIALS WERE PROVIDED!!!
-        internal const int ERROR_PASSWORD_EXPIRED = 1330;
+        internal const int ErrorPasswordExpired = 1330;
 
         // here are enums
         internal enum LogonTypes : uint
         {
+            /// <summary>
+            /// The interactive
+            /// </summary>
             Interactive = 2,
+
+            /// <summary>
+            /// The network
+            /// </summary>
             Network = 3,
-            Batch = 4,
+
+            /// <summary>
+            /// The service
+            /// </summary>
             Service = 5,
-            Unlock = 7,
-            NetworkCleartext = 8,
-            NewCredentials = 9,
         }
 
         internal enum LogonProviders : uint
         {
-            Default = 0, // default for platform (use this!)
-            WinNT35, // sends smoke signals to authority
-            WinNT40, // uses NTLM
-            WinNT50, // negotiates Kerb or NTLM
+            /// <summary>
+            /// The default for platform (use this!)
+            /// </summary>
+            Default = 0,
         }
 
         [System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError = true)]

@@ -52,17 +52,20 @@
         }
 
         /// <inheritdoc />
+        /// <remarks>
+        /// Based on:
+        ///    * https://www.cs.bham.ac.uk/~smp/resources/ad-passwds/
+        ///    * https://support.microsoft.com/en-us/help/269190/how-to-change-a-windows-active-directory-and-lds-user-password-through
+        ///    * https://ltb-project.org/documentation/self-service-password/latest/config_ldap#active_directory
+        ///    * https://technet.microsoft.com/en-us/library/ff848710.aspx?f=255&amp;MSPPError=-2147217396
+        ///
+        /// Check the above links for more information.
+        /// </remarks>
         public ApiErrorItem PerformPasswordChange(
             string username,
             string currentPassword,
             string newPassword)
         {
-            // Based on:
-            //    * https://www.cs.bham.ac.uk/~smp/resources/ad-passwds/
-            //    * https://support.microsoft.com/en-us/help/269190/how-to-change-a-windows-active-directory-and-lds-user-password-through
-            //    * https://ltb-project.org/documentation/self-service-password/latest/config_ldap#active_directory
-            //    * https://technet.microsoft.com/en-us/library/ff848710.aspx?f=255&MSPPError=-2147217396
-
             try
             {
                 var cleanUsername = CleaningUsername(username);
@@ -163,6 +166,30 @@
             var ldapAdd = new LdapModification(LdapModification.ADD, newAttr);
             ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
         }
+        
+        private static ApiErrorItem ParseLdapException(LdapException ex)
+        {
+            // If the LDAP server returned an error, it will be formatted
+            // similar to this:
+            //    "0000052D: AtrErr: DSID-03191083, #1:\n\t0: 0000052D: DSID-03191083, problem 1005 (CONSTRAINT_ATT_TYPE), data 0, Att 9005a (unicodePwd)\n\0"
+            //
+            // The leading number before the ':' is the Win32 API Error Code in HEX
+            var m = Regex.Match(ex.LdapErrorMessage, "([0-9a-fA-F]+):");
+
+            if (!m.Success)
+            {
+                return new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected error: {ex.LdapErrorMessage}");
+            }
+
+            var errCodeString = m.Groups[1].Value;
+            var errCode = int.Parse(errCodeString, NumberStyles.HexNumber);
+            var err = Win32ErrorCode.ByCode(errCode);
+
+            return err == null
+                ? new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected Win32 API error; error code: {errCodeString}")
+                : new ApiErrorItem(ApiErrorCode.InvalidCredentials,
+                    $"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}");
+        }
 
         private string CleaningUsername(string username)
         {
@@ -206,30 +233,6 @@
             }
 
             return cleanUsername;
-        }
-
-        private static ApiErrorItem ParseLdapException(LdapException ex)
-        {
-            // If the LDAP server returned an error, it will be formatted
-            // similar to this:
-            //    "0000052D: AtrErr: DSID-03191083, #1:\n\t0: 0000052D: DSID-03191083, problem 1005 (CONSTRAINT_ATT_TYPE), data 0, Att 9005a (unicodePwd)\n\0"
-            //
-            // The leading number before the ':' is the Win32 API Error Code in HEX
-            var m = Regex.Match(ex.LdapErrorMessage, "([0-9a-fA-F]+):");
-
-            if (!m.Success)
-            {
-                return new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected error: {ex.LdapErrorMessage}");
-            }
-
-            var errCodeString = m.Groups[1].Value;
-            var errCode = int.Parse(errCodeString, NumberStyles.HexNumber);
-            var err = Win32ErrorCode.ByCode(errCode);
-
-            return err == null
-                ? new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected Win32 API error; error code: {errCodeString}")
-                : new ApiErrorItem(ApiErrorCode.InvalidCredentials,
-                    $"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}");
         }
 
         private void Init()

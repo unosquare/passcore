@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.PassCore.Common
 {
     /// <summary>
-    /// Interface for any Application provider
+    /// Interface for any Application provider.
     /// </summary>
     public interface IAppSettings
     {

@@ -8,9 +8,8 @@
     /// </summary>
     public class ApiErrorException : Exception
     {
-        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Unosquare.PassCore.Common.ApiErrorException" /> class.
+        /// Initializes a new instance of the <see cref="ApiErrorException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="errorCode">The error code.</param>
@@ -34,9 +33,7 @@
         /// <summary>
         /// To the API error item.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An API Error Item.</returns>
         public ApiErrorItem ToApiErrorItem() => new ApiErrorItem(ErrorCode, base.Message);
     }
 }
-
-

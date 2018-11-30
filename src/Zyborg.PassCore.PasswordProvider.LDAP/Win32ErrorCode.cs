@@ -4,11 +4,16 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents a container of Win32 Error Code.
+    /// </summary>
     public class Win32ErrorCode
     {
+        /// <summary>
         /// Based on
         /// <a href="https://msdn.microsoft.com/en-us/library/cc231199.aspx?f=255&MSPPError=-2147217396">docs.</a>
         /// provides a list of commonly anticipated error codes from a password change request.
+        /// </summary>
         public static readonly IEnumerable<Win32ErrorCode> Codes = new[]
         {
             new Win32ErrorCode(0x00000005, "ERROR_ACCESS_DENIED",
@@ -68,17 +73,61 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
             Description = desc;
         }
 
+        /// <summary>
+        /// Gets the code.
+        /// </summary>
+        /// <value>
+        /// The code.
+        /// </value>
         public int Code { get; }
+
+        /// <summary>
+        /// Gets the name of the code.
+        /// </summary>
+        /// <value>
+        /// The name of the code.
+        /// </value>
         public string CodeName { get; }
+
+        /// <summary>
+        /// Gets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
         public string Description { get; }
-        
+
+        /// <summary>
+        /// Get Error Code by the code.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <returns>A Win32ErrorCode from the code.</returns>
         public static Win32ErrorCode ByCode(int code) =>
             ErrorByCode.TryGetValue(code, out var err) ? err : null;
 
+        /// <summary>
+        /// Get Error Code by the name of the code.
+        /// </summary>
+        /// <param name="codeName">Name of the code.</param>
+        /// <returns>A Win32ErrorCode from the name of the code.</returns>
         public static Win32ErrorCode ByCodeName(string codeName) =>
             ErrorByCodeName.TryGetValue(codeName, out var err) ? err : null;
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode() => Code;
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj) => obj != null
                 && obj is Win32ErrorCode err && Code == err.Code;
     }

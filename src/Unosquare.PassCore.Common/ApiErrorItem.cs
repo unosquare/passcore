@@ -1,7 +1,7 @@
 ﻿namespace Unosquare.PassCore.Common
 {
     /// <summary>
-    /// Defines the fields contained in one of the items of Api Errors
+    /// Defines the fields contained in one of the items of Api Errors.
     /// </summary>
     public class ApiErrorItem
     {

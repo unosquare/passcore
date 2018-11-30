@@ -19,6 +19,11 @@
         private readonly ILogger _logger;
         private IdentityType _idType = IdentityType.UserPrincipalName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PasswordChangeProvider"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="options">The options.</param>
         public PasswordChangeProvider(
             ILogger<PasswordChangeProvider> logger,
             IOptions<PasswordChangeOptions> options)
@@ -28,6 +33,7 @@
             SetIdType();
         }
 
+        /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             var fixedUsername = FixUsernameWithDomain(username);
@@ -109,7 +115,7 @@
             var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
 
             // Both of these means that the password CAN change and that we got the correct password
-            return errorCode == ERROR_PASSWORD_MUST_CHANGE || errorCode == ERROR_PASSWORD_EXPIRED;
+            return errorCode == ErrorPasswordMustChange || errorCode == ErrorPasswordExpired;
         }
 
         private string FixUsernameWithDomain(string username)

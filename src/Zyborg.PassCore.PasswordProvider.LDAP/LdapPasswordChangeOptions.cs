@@ -3,6 +3,10 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
     using Novell.Directory.Ldap;
     using Unosquare.PassCore.Common;
 
+    /// <summary>
+    /// Represents the options of this provider.
+    /// </summary>
+    /// <seealso cref="Unosquare.PassCore.Common.IAppSettings" />
     public class LdapPasswordChangeOptions : IAppSettings
     {
         /// <inheritdoc />
