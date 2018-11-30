@@ -19,6 +19,7 @@
   - [Troubleshooting](#troubleshooting)
     - [LDAP Support](#ldap-support)
   - [Build your own version](#build-your-own-version)
+  - [Create your own provider](#create-your-own-provider)
   - [License](#license)
 
 ## Overview
@@ -167,6 +168,16 @@ dotnet publish --configuration Release --runtime osx-x64 /p:PASSCORE_PROVIDER=LD
 
 *Note* - The `PASSCORE_PROVIDER` modifier will use the LDAP Provider instead of Activde Directory Provider.
 
+
+## Create your own provider
+
+If you wish to create your owen provider, you need use our interface and common classes. You can use the following nuget to install them:
+
+[![NuGet version](https://badge.fury.io/nu/Unosquare.PassCore.Common.svg)](https://badge.fury.io/nu/Unosquare.PassCore.Common)
+
+```
+PM> Install-Package Unosquare.PassCore.Common
+```
 ## License
 
 PassCore is open source software and MIT licensed. Please star this project if you like it.
