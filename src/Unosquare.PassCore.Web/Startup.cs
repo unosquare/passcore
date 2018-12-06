@@ -1,18 +1,16 @@
 namespace Unosquare.PassCore.Web
 {
-    using Helpers;
     using Common;
+    using Helpers;
+    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Rewrite;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
-#if !DEBUG
-    using Microsoft.AspNetCore.Rewrite;
-#endif
 #if PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
 #else
@@ -39,6 +37,12 @@ namespace Unosquare.PassCore.Web
                 .Build();
         }
 
+        /// <summary>
+        /// Gets or sets the configuration.
+        /// </summary>
+        /// <value>
+        /// The configuration.
+        /// </value>
         public IConfigurationRoot Configuration { get; set; }
 
         /// <summary>
@@ -48,6 +52,11 @@ namespace Unosquare.PassCore.Web
         public static void Main(string[] args) => 
             CreateWebHostBuilder(args).Build().Run();
 
+        /// <summary>
+        /// Creates the web host builder.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The web host builder.</returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>();
@@ -61,6 +70,7 @@ namespace Unosquare.PassCore.Web
         {
             services.AddOptions();
             services.Configure<ClientSettings>(Configuration.GetSection(nameof(ClientSettings)));
+            services.Configure<WebSettings>(Configuration.GetSection(nameof(WebSettings)));
             services.AddMvc();
 
 #if DEBUG
@@ -83,13 +93,14 @@ namespace Unosquare.PassCore.Web
         /// <param name="env">The environment.</param>
         /// <param name="log">The logger factory.</param>
         /// <param name="settings">The settings.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions<ClientSettings> settings)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions<WebSettings> settings)
         {
-#if !DEBUG
             // HTTPS redirect
-            var options = new RewriteOptions().AddRedirectToHttps();
-            app.UseRewriter(options);
-#endif
+            if (settings.Value.EnableHttpsRedirect)
+            {
+                var options = new RewriteOptions().AddRedirectToHttps();
+                app.UseRewriter(options);
+            }
 
             // Enable static files
             app.UseDefaultFiles();
