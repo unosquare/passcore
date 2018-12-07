@@ -14,6 +14,7 @@ namespace Unosquare.PassCore.Web.Models
         public ErrorsPasswordForm ErrorsPasswordForm { get; set; }
         public Recaptcha Recaptcha { get; set; }
         public string ApplicationTitle { get; set; }
+        public string ChangePasswordTitle { get; set; }
         public ValidationRegex ValidationRegex { get; set; }
     }
 
