@@ -1,17 +1,17 @@
 namespace Unosquare.PassCore.Web
 {
     using Common;
-    using Helpers;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Rewrite;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
-#if PASSCORE_LDAP_PROVIDER
+#if DEBUG
+    using Helpers;
+#elif PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
 #else
     using PasswordProvider;
@@ -95,14 +95,9 @@ namespace Unosquare.PassCore.Web
         /// <param name="settings">The settings.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions<WebSettings> settings)
         {
-            // HTTPS redirect
             if (settings.Value.EnableHttpsRedirect)
-            {
-                var options = new RewriteOptions().AddRedirectToHttps();
-                app.UseRewriter(options);
-            }
+                app.UseHttpsRedirection();
 
-            // Enable static files
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
