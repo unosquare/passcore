@@ -134,7 +134,7 @@ To run as a sub application you need to modify the `base href="/"` value in the 
 - If you / your user's current password never seems to be accepted for reset; the affected person may need to use a domain-connected PC to login and reset their password on it first. Updated group policy settings could be blocking user changes, until a local login is completed.
 - You can add permissions to your log folder using [icacls](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls)
 ```
-icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>":M /t
+icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>:M" /t
 ```
 
 ### LDAP Support
