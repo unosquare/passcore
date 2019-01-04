@@ -136,6 +136,7 @@ To run as a sub application you need to modify the `base href="/"` value in the 
 ```
 icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>:M" /t
 ```
+- If you find [Exception from HRESULT: 0x800708C5 .The password does not meet the password policy requirements](http://blog.cionsystems.com/?p=907) trying to change a password. Set 'Minimum password age' to 0 at 'Default Domain Policy'.
 
 ### LDAP Support
 
