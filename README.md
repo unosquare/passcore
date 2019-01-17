@@ -167,7 +167,7 @@ dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=
 dotnet publish --configuration Release --runtime osx-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
 ```
 
-*Note* - The `PASSCORE_PROVIDER` modifier will use the LDAP Provider instead of Activde Directory Provider.
+*Note* - The `PASSCORE_PROVIDER` modifier will use the LDAP Provider instead of Active Directory Provider.
 
 
 ## Create your own provider

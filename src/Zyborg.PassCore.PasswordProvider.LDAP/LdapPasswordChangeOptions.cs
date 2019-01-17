@@ -25,6 +25,18 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         public int LdapPort { get; set; } = LdapConnection.DEFAULT_SSL_PORT;
 
         /// <summary>
+        /// Gets or sets a value indicating whether [LDAP uses SSL].
+        /// </summary>
+        /// <remarks>
+        /// Optional, if 'true', then the specified port is using SSL encryption.
+        /// By default this should set to 'true' when using port 636.
+        /// </remarks>
+        /// <value>
+        ///   <c>true</c> if [LDAP uses SSL]; otherwise, <c>false</c>.
+        /// </value>
+        public bool LdapSecureSocketLayer { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether [LDAP start TLS].
         /// </summary>
         /// <remarks>

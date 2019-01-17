@@ -174,6 +174,11 @@
             //    "0000052D: AtrErr: DSID-03191083, #1:\n\t0: 0000052D: DSID-03191083, problem 1005 (CONSTRAINT_ATT_TYPE), data 0, Att 9005a (unicodePwd)\n\0"
             //
             // The leading number before the ':' is the Win32 API Error Code in HEX
+            if (ex.LdapErrorMessage == null)
+            {
+                return new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected null exception");
+            } 
+
             var m = Regex.Match(ex.LdapErrorMessage, "([0-9a-fA-F]+):");
 
             if (!m.Success)
@@ -288,6 +293,9 @@
             else if (!_options.LdapIgnoreTlsValidation)
                 _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsValidation)}] is ENABLED; untrusted certificate roots will be allowed");
 
+            if (_options.LdapPort == LdapConnection.DEFAULT_SSL_PORT && !_options.LdapSecureSocketLayer)
+                _logger.LogWarning($"option [{nameof(_options.LdapSecureSocketLayer)}] is DISABLED in combination with standard SSL port [{_options.LdapPort}]");
+
             if (_options.LdapPort != LdapConnection.DEFAULT_SSL_PORT && !_options.LdapStartTls)
                 _logger.LogWarning($"option [{nameof(_options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{_options.LdapPort}]");
         }
@@ -298,7 +306,7 @@
             if (_ldapRemoteCertValidator != null)
                 ldap.UserDefinedServerCertValidationDelegate += _ldapRemoteCertValidator;
 
-            ldap.SecureSocketLayer = _options.LdapStartTls;
+            ldap.SecureSocketLayer = _options.LdapSecureSocketLayer;
 
             string bindHostname = null;
 
@@ -321,7 +329,7 @@
                 throw new ApiErrorException("failed to connect to any configured hostname", ApiErrorCode.InvalidCredentials);
             }
 
-            if (ldap.SecureSocketLayer)
+            if (_options.LdapStartTls)
                 ldap.StartTls();
 
             ldap.Bind(_options.LdapUsername, _options.LdapPassword);
