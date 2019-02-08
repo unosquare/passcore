@@ -165,7 +165,6 @@
             catch (System.DirectoryServices.AccountManagement.NoMatchingPrincipalException exception)
             {
                 _logger.LogWarning(exception.Message);
-                return;
             }
         }
 
