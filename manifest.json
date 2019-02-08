@@ -1,0 +1,509 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/projects/passcore",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      },
+      "is_incremental": false
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html",
+          "hash": "vsiAxIyFQgX5ZppocAjBaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "best-practices/resources/images/doc_logo.svg",
+      "output": {
+        "resource": {
+          "relative_path": "best-practices/resources/images/doc_logo.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "best-practices/resources/images/logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "best-practices/resources/images/logo.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "best-practices/resources/images/transparent.gif",
+      "output": {
+        "resource": {
+          "relative_path": "best-practices/resources/images/transparent.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "best-practices/resources/images/unosquare_logo.svg",
+      "output": {
+        "resource": {
+          "relative_path": "best-practices/resources/images/unosquare_logo.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Common.ApiErrorCode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Common.ApiErrorCode.html",
+          "hash": "9RlzgYUHM0+1S2wW1c/OQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Common.ApiErrorException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Common.ApiErrorException.html",
+          "hash": "tpftg3z1E57Uj1AG73d+LA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Common.ApiErrorItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Common.ApiErrorItem.html",
+          "hash": "+MIqg9cOKu6KgwIDD+LnvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Common.IAppSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Common.IAppSettings.html",
+          "hash": "EhL+nBYNXQtsLzWoO0JcOA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Common.IPasswordChangeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Common.IPasswordChangeProvider.html",
+          "hash": "/StIKZsSfLS8TCAGpnS2vQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Common.html",
+          "hash": "qrhThi3HMLYUVnZAVpf5Eg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.PasswordProvider.PasswordChangeOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.PasswordProvider.PasswordChangeOptions.html",
+          "hash": "MN6Daj8SAEsofP9a94g3YA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.PasswordProvider.PasswordChangeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.PasswordProvider.PasswordChangeProvider.html",
+          "hash": "Us0VNWT+Oh/s8T9+TWfixw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.PasswordProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.PasswordProvider.html",
+          "hash": "sRztsjYIKNrtRMVdZmY2mA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Controllers.HomeController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Controllers.HomeController.html",
+          "hash": "NVDgxqdQTpp41vWOBZhhHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Controllers.PasswordController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Controllers.PasswordController.html",
+          "hash": "uiLRIqBeRcplERDqoKV6IA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Controllers.html",
+          "hash": "L2G0ZJC+evdNYXv0YqzGOA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Helpers.DebugAppSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Helpers.DebugAppSettings.html",
+          "hash": "Krgx8INCT0/ji/8PdKiJcw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Helpers.html",
+          "hash": "SA0sJMkibysRHGPAL9SLJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.Alerts.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.Alerts.html",
+          "hash": "jcVAedScZbIYtdi+Ls3mDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.ApiResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.ApiResult.html",
+          "hash": "M76955TP1cAl3O/0kjjjoQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.ChangePasswordForm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.ChangePasswordForm.html",
+          "hash": "LlMI7RgIj4WijNv8kWigrA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.ChangePasswordModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.ChangePasswordModel.html",
+          "hash": "6K7EdWRTZbiyKBnYhp6aeg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.ClientSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.ClientSettings.html",
+          "hash": "LegFOZ36PhPSWREjd5tqXA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.ErrorsPasswordForm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.ErrorsPasswordForm.html",
+          "hash": "nVgqEXu4I5r5QplFdggtvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.Recaptcha.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.Recaptcha.html",
+          "hash": "hoQP2hOoy8ZM1VOAFzLGDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.ValidationRegex.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.ValidationRegex.html",
+          "hash": "PbXnhfjuSLH61fzPqoNuug=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.WebSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.WebSettings.html",
+          "hash": "FDUO2ES0zyA7PvqOnVzTkQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.html",
+          "hash": "StfvyKRG66i/aUAh/fKroQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Startup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Startup.html",
+          "hash": "lqCn5TCm1rYQDD0NsHIxjw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.html",
+          "hash": "b0MI7vd8rDa2N3Jrj3os5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions.html",
+          "hash": "7A4fnuZ1DpOrGk13oEVLMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.html",
+          "hash": "e8skKmMmTlDn4UA4rolzQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.html",
+          "hash": "vfkQ7fOo05bUmCawZNuXFw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Zyborg.PassCore.PasswordProvider.LDAP.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Zyborg.PassCore.PasswordProvider.LDAP.html",
+          "hash": "t8o1slMLPzTaIkGy3IfSkA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "obj/api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "3EdwGX9+eBfdREe2/sZW0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 1,
+          "skipped_file_count": 1
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 30,
+          "skipped_file_count": 30
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
