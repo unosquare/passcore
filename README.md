@@ -14,6 +14,7 @@
     - [Features](#features)
   - [Installation on IIS](#installation-on-iis)
   - [PowerShell Installer](#powershell-installer)
+  - [Docker](#docker)
   - [Customization and Configuration](#customization-and-configuration)
     - [Running as a sub application](#running-as-a-sub-application)
   - [Troubleshooting](#troubleshooting)
@@ -82,6 +83,24 @@ the [IIS setup script](https://raw.githubusercontent.com/unosquare/passcore/mast
 
 **NOTE:** You need [PowerShell version 5 or better](https://docs.microsoft.com/en-us/powershell/scripting/setup/windows-powershell-system-requirements?view=powershell-6) 
 to execute the script.
+
+## Docker
+
+You can use the Alpine Docker Builder image and then copy the assets over to an Alpine container.
+
+You can pass environment attributes directly into docker without modifying the appsettings.json
+
+```
+docker build --rm -t passcore .
+docker run \
+-e AppSettings__LdapHostnames__0='ad001.example.com' \
+-e AppSettings__LdapHostnames__1='ad002.example.com' \
+-e AppSettings__LdapPort='636' \
+-e AppSettings__LdapUsername='CN=First Last,OU=Users,DC=example,DC=com' \
+-it \
+-p 80:80 \
+passcore:latest
+```
 
 ## Customization and Configuration
 
