@@ -53,7 +53,7 @@ namespace Unosquare.PassCore.Web.Models
         /// <summary>
         /// Invalids the captcha.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The ApiResult from Invalid Recaptcha.</returns>
         public static ApiResult InvalidCaptcha()
         {
             var result = new ApiResult("Invalid Recaptcha");
@@ -66,21 +66,21 @@ namespace Unosquare.PassCore.Web.Models
         /// Adds the model state errors.
         /// </summary>
         /// <param name="modelState">State of the model.</param>
-        /// <returns></returns>
+        /// <returns>The ApiResilt from Model State.</returns>
         public static ApiResult FromModelStateErrors(ModelStateDictionary modelState)
         {
             var result = new ApiResult();
 
-            foreach (var state in modelState.Where(x => x.Value.Errors.Any()))
+            foreach (var (key, value) in modelState.Where(x => x.Value.Errors.Any()))
             {
-                var error = state.Value.Errors.First();
+                var error = value.Errors.First();
 
                 if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldRequired)))
-                    result.AddFieldRequiredValidationError(state.Key);
+                    result.AddFieldRequiredValidationError(key);
                 else if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldMismatch)))
-                    result.AddFieldMismatchValidationError(state.Key);
+                    result.AddFieldMismatchValidationError(key);
                 else
-                    result.AddGenericFieldValidationError(state.Key, error.ErrorMessage);
+                    result.AddGenericFieldValidationError(key, error.ErrorMessage);
             }
 
             return result;

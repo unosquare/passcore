@@ -5,7 +5,6 @@
 
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
-        /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             var currentUsername = username.IndexOf("@", StringComparison.Ordinal) > 0
