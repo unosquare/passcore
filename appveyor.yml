@@ -4,6 +4,12 @@ image:
 - Ubuntu
 platform: Any CPU
 stack: node 9
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  op_build_user: "Geo Perez"
+  op_build_user_email: "geovanni.perez@gmail.com"
+  access_token:
+       secure: HzWdswNyfQbQ0vLk9IQyO+Ei9mxoPYp9rvv6HPhtC9J/Fm7EHRzyV953pbPRXI9I
 notifications:
 - provider: Slack
   auth_token:
@@ -16,6 +22,12 @@ install:
             Install-Product node 8
         }
 before_build:
+- ps: |
+        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE -And $isWindows)
+        {
+            git checkout $env:APPVEYOR_REPO_BRANCH -q
+            cinst docfx -y
+        }
 - dotnet restore --verbosity q
 - cmd: iisreset
 - cmd: net start W3SVC
@@ -26,4 +38,25 @@ build_script:
         if($isWindows)
         {
             ./IISSetup.ps1 "C:/passcore"
+        }
+after_build:
+- ps: |
+        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE -And $isWindows)
+        {
+            docfx docfx.json --logLevel Error
+            git config --global credential.helper store
+            Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+            git config --global core.autocrlf false 
+            git config --global user.email $env:op_build_user_email
+            git config --global user.name $env:op_build_user
+            git clone https://github.com/unosquare/passcore.git -b gh-pages origin_site -q
+            git clone -b documentation https://github.com/unosquare/best-practices.git -q
+            docfx docfx.json --logLevel Error
+            Copy-Item origin_site/.git _site -recurse
+            CD _site
+            Copy-Item README.html index.html -force
+            git add -A 2>&1
+            git commit -m "Documentation update" -q
+            git push origin gh-pages -q
+            CD ..
         }
