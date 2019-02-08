@@ -1,0 +1,40 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [ "src/**/*.cs" ],
+          "exclude": [ "**/bin/**", "**/obj/**" ]
+        }
+      ],
+      "dest": "obj/api"
+    }
+  ],
+  "build": {
+    "template": [
+      "best-practices/templates/default"
+    ],
+    "content": [
+      {
+        "files": [ "**/*.yml" ],
+        "cwd": "obj/api",
+        "dest": "api"
+      },
+      {
+        "files": [ "*.md", "toc.yml" ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [ "best-practices/resources/**", "/src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png"]
+      }
+    ],
+    "globalMetadata": {
+      "_appTitle": "Unosquare SWAN ASPNetCore",
+      "_enableSearch": true,
+      "_appLogoPath": "best-practices/resources/images/logo.png",
+      "_docLogo":  "/src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png"
+    },
+    "dest": "_site"
+  }
+}
