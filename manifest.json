@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "+GOWFFykeDjhEjrxPLaTXQ=="
+          "hash": "vsiAxIyFQgX5ZppocAjBaQ=="
         }
       },
       "is_incremental": false,
@@ -605,17 +605,17 @@
         "skipped_file_count": 0
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
-          "incrementalPhase": "build",
-          "total_file_count": 42,
-          "skipped_file_count": 42
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 1,
           "skipped_file_count": 1
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 42,
+          "skipped_file_count": 42
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
