@@ -46,7 +46,7 @@
         InvalidDomain = 7,
 
         /// <summary>
-        /// LDAP problem connecting
+        /// LDAP problem connection
         /// </summary>
         LDAPProblem = 8,
     }
