@@ -1,0 +1,7 @@
+apiRules:
+- exclude: 
+    uidRegex: ^Unosquare\.PassCore\.Web$
+- exclude: 
+    uidRegex: ^Unosquare\.PassCore\.Web\.Helpers$
+- exclude:
+    uidRegex: ^VisualStudioConfiguration$
