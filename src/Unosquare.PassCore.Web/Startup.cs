@@ -8,8 +8,15 @@ namespace Unosquare.PassCore.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using Models; 
+    using Models;
+#if DEBUG
+    using Helpers;
+#elif PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
+#else
+    using PasswordProvider;
+#endif
+
     /// <summary>
     /// Represents this application's main class.
     /// </summary>
@@ -42,7 +49,7 @@ namespace Unosquare.PassCore.Web
         /// Application's entry point.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        public static void Main(string[] args) => 
+        public static void Main(string[] args) =>
             CreateWebHostBuilder(args).Build().Run();
 
         /// <summary>
@@ -65,9 +72,17 @@ namespace Unosquare.PassCore.Web
             services.Configure<ClientSettings>(Configuration.GetSection(nameof(ClientSettings)));
             services.Configure<WebSettings>(Configuration.GetSection(nameof(WebSettings)));
             services.AddMvc();
+
+#if DEBUG
+            services.Configure<IAppSettings>(Configuration.GetSection(AppSettingsSectionName));
+            services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
+#elif PASSCORE_LDAP_PROVIDER
             services.Configure<LdapPasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, LdapPasswordChangeProvider>();
- 
+#else
+            services.Configure<PasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
+            services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
+#endif
         }
 
         /// <summary>
