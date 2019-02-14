@@ -173,6 +173,8 @@ export class ChangePasswordComponent implements OnInit {
                             return this.ErrorAlertMessage += this.ViewOptions.alerts.errorPasswordChangeNotAllowed;
                         case 7:
                             return this.ErrorAlertMessage += this.ViewOptions.alerts.errorInvalidDomain;
+                        case 8:
+                            return this.ErrorAlertMessage += this.ViewOptions.alerts.errorConnectionLDAP;
                         default:
                             return null;
                     }

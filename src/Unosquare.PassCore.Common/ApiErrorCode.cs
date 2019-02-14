@@ -44,5 +44,10 @@
         /// The invalid domain
         /// </summary>
         InvalidDomain = 7,
+
+        /// <summary>
+        /// The invalid domain
+        /// </summary>
+        LDAPProblem = 8,
     }
 }

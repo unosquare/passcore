@@ -122,7 +122,15 @@
             }
             catch (LdapException ex)
             {
-                var item = ParseLdapException(ex);
+                var item = new ApiErrorItem(ApiErrorCode.LDAPProblem, $"Failed to update password: LDAP problem,  {ex.Message}");
+                _logger.LogWarning(item.Message, ex);
+                return item;
+            }
+            catch (ApiErrorException ex)
+            {
+                var item = ex is ApiErrorException apiError
+                ? apiError.ToApiErrorItem()
+                : new ApiErrorItem(ApiErrorCode.InvalidCredentials, $"Failed to update password: {ex.Message}");
 
                 _logger.LogWarning(item.Message, ex);
 

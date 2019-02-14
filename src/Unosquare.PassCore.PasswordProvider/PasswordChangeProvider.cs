@@ -44,8 +44,7 @@
             {
                 using (var principalContext = AcquirePrincipalContext())
                 {
-                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
-
+                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);                    
                     // Check if the user principal exists
                     if (userPrincipal == null)
                     {
@@ -84,6 +83,16 @@
                     userPrincipal.Save();
                     _logger.LogDebug("The User principal password updated with setPassword");
                 }
+            }            
+            catch (ApiErrorException ex)
+            {
+                var item = ex is ApiErrorException apiError
+                ? apiError.ToApiErrorItem()
+                : new ApiErrorItem(ApiErrorCode.InvalidCredentials, $"Failed to update password: {ex.Message}");
+
+                _logger.LogWarning(item.Message, ex);
+
+                return item;
             }
             catch (Exception ex)
             {
