@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "Yh2HnQieGa99nNmrUepisA=="
+          "hash": "YdASqI+B4MT6OeNpxCMn/A=="
         }
       },
       "is_incremental": false,
@@ -214,30 +214,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Helpers.DebugAppSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.Helpers.DebugAppSettings.html",
-          "hash": "eNkSlzTRoStwsDscMfF6+w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Helpers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.Helpers.html",
-          "hash": "RuOI+G4BPPitiWLMltRApw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.Alerts.yml",
       "output": {
         ".html": {
@@ -358,174 +334,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Startup.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.Startup.html",
-          "hash": "1G6CHL6vOJaK8nqakr1B1g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.html",
-          "hash": "0r7nLweU2tDJvIeA0GBAkw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.IEnumSetupInstances.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.IEnumSetupInstances.html",
-          "hash": "Ybb7MTgHeJj1TNVHSXsBqQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupConfiguration.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupConfiguration.html",
-          "hash": "IHJpGMXoQ91H4QH3AaqwqQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupConfiguration2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupConfiguration2.html",
-          "hash": "di3jNnqr6e7z49svTD1tKw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupInstance.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupInstance.html",
-          "hash": "7JLtmcNmAy10FXxPy2932g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupInstance2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupInstance2.html",
-          "hash": "NjnMwIH2nxcO8QgqH8hogA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupPackageReference.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupPackageReference.html",
-          "hash": "ctcz1MhpBCuoofzMoYcmFg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupPropertyStore.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupPropertyStore.html",
-          "hash": "inONXuWLsc2OZQj3bNbuaw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.InstanceState.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.InstanceState.html",
-          "hash": "7mZ37MrVQCf8yJI2tjEiBQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.Main.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.Main.html",
-          "hash": "aSmAgK38bN1WOjMofnzb/Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.SetupConfiguration.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.SetupConfiguration.html",
-          "hash": "rUCJfVRzVTUr9Aio2Z8Yaw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.SetupConfigurationClass.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.SetupConfigurationClass.html",
-          "hash": "A5AwWtZt/Z9kNeor+K8Uaw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.html",
-          "hash": "noCEGt5Jl63xkwr+NUe1RA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions.yml",
       "output": {
         ".html": {
@@ -578,7 +386,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "8yd4iE9u+Tt9eFEjnRj6CQ=="
+          "hash": "Xg3bWXSOIVybZoWdkvELbg=="
         }
       },
       "is_incremental": false,
@@ -620,8 +428,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 42,
-          "skipped_file_count": 42
+          "total_file_count": 26,
+          "skipped_file_count": 26
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
@@ -629,16 +437,16 @@
           "total_file_count": 1,
           "skipped_file_count": 1
         },
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
