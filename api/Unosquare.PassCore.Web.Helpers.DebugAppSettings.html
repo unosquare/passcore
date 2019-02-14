@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class Alerts
+    <title>Class DebugAppSettings
    | Unosquare SWAN ASPNetCore </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class Alerts
+    <meta name="title" content="Class DebugAppSettings
    | Unosquare SWAN ASPNetCore ">
     <meta name="generator" content="docfx 2.40.10.0">
     
@@ -76,17 +76,21 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.PassCore.Web.Models.Alerts">
+            <article class="content wrap" id="_content" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings">
   
   
-  <h1 id="Unosquare_PassCore_Web_Models_Alerts" data-uid="Unosquare.PassCore.Web.Models.Alerts" class="text-break">Class Alerts
+  <h1 id="Unosquare_PassCore_Web_Helpers_DebugAppSettings" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings" class="text-break">Class DebugAppSettings
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">Alerts</span></div>
+    <div class="level1"><span class="xref">DebugAppSettings</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Unosquare.PassCore.Common.IAppSettings.html">IAppSettings</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -112,22 +116,22 @@
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.PassCore.Web.Models.html">Unosquare.PassCore.Web.Models</a></h6>
-  <h5 id="Unosquare_PassCore_Web_Models_Alerts_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.PassCore.Web.Helpers.html">Unosquare.PassCore.Web.Helpers</a></h6>
+  <h5 id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Alerts</code></pre>
+    <pre><code class="lang-csharp hljs">public class DebugAppSettings : IAppSettings</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorCaptcha_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorCaptcha*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorCaptcha" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorCaptcha">ErrorCaptcha</h4>
+  <a id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_DefaultDomain_" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.DefaultDomain*"></a>
+  <h4 id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_DefaultDomain" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.DefaultDomain">DefaultDomain</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorCaptcha { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string DefaultDomain { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,13 +150,38 @@
   </table>
   
   
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLDAP_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLDAP" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP">ErrorConnectionLDAP</h4>
+  <a id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_LdapHostnames_" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.LdapHostnames*"></a>
+  <h4 id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_LdapHostnames" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.LdapHostnames">LdapHostnames</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorConnectionLDAP { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string[] LdapHostnames { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_LdapPassword_" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.LdapPassword*"></a>
+  <h4 id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_LdapPassword" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.LdapPassword">LdapPassword</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string LdapPassword { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -171,13 +200,38 @@
   </table>
   
   
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorFieldMismatch_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorFieldMismatch*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorFieldMismatch" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorFieldMismatch">ErrorFieldMismatch</h4>
+  <a id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_LdapPort_" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.LdapPort*"></a>
+  <h4 id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_LdapPort" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.LdapPort">LdapPort</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorFieldMismatch { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int LdapPort { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_LdapUsername_" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.LdapUsername*"></a>
+  <h4 id="Unosquare_PassCore_Web_Helpers_DebugAppSettings_LdapUsername" data-uid="Unosquare.PassCore.Web.Helpers.DebugAppSettings.LdapUsername">LdapUsername</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string LdapUsername { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -194,181 +248,10 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorFieldRequired_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorFieldRequired*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorFieldRequired" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorFieldRequired">ErrorFieldRequired</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorFieldRequired { get; set; }</code></pre>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Unosquare.PassCore.Common.IAppSettings.html">IAppSettings</a>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidCredentials_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidCredentials*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidCredentials" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidCredentials">ErrorInvalidCredentials</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorInvalidCredentials { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidDomain_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidDomain*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidDomain" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidDomain">ErrorInvalidDomain</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorInvalidDomain { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidUser_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidUser*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidUser" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidUser">ErrorInvalidUser</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorInvalidUser { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorPasswordChangeNotAllowed_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorPasswordChangeNotAllowed*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorPasswordChangeNotAllowed" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorPasswordChangeNotAllowed">ErrorPasswordChangeNotAllowed</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorPasswordChangeNotAllowed { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_SuccessAlertBody_" data-uid="Unosquare.PassCore.Web.Models.Alerts.SuccessAlertBody*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_SuccessAlertBody" data-uid="Unosquare.PassCore.Web.Models.Alerts.SuccessAlertBody">SuccessAlertBody</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string SuccessAlertBody { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_SuccessAlertTitle_" data-uid="Unosquare.PassCore.Web.Models.Alerts.SuccessAlertTitle*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_SuccessAlertTitle" data-uid="Unosquare.PassCore.Web.Models.Alerts.SuccessAlertTitle">SuccessAlertTitle</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string SuccessAlertTitle { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

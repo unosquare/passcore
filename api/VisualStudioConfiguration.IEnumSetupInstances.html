@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Enum ApiErrorCode
+    <title>Interface IEnumSetupInstances
    | Unosquare SWAN ASPNetCore </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Enum ApiErrorCode
+    <meta name="title" content="Interface IEnumSetupInstances
    | Unosquare SWAN ASPNetCore ">
     <meta name="generator" content="docfx 2.40.10.0">
     
@@ -76,76 +76,119 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.PassCore.Common.ApiErrorCode">
+            <article class="content wrap" id="_content" data-uid="VisualStudioConfiguration.IEnumSetupInstances">
   
   
-  <h1 id="Unosquare_PassCore_Common_ApiErrorCode" data-uid="Unosquare.PassCore.Common.ApiErrorCode" class="text-break">Enum ApiErrorCode
+  <h1 id="VisualStudioConfiguration_IEnumSetupInstances" data-uid="VisualStudioConfiguration.IEnumSetupInstances" class="text-break">Interface IEnumSetupInstances
   </h1>
-  <div class="markdown level0 summary"><p>Represents API error codes.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.PassCore.Common.html">Unosquare.PassCore.Common</a></h6>
-  <h5 id="Unosquare_PassCore_Common_ApiErrorCode_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="VisualStudioConfiguration.html">VisualStudioConfiguration</a></h6>
+  <h5 id="VisualStudioConfiguration_IEnumSetupInstances_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum ApiErrorCode</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IEnumSetupInstances</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="VisualStudioConfiguration_IEnumSetupInstances_Clone_" data-uid="VisualStudioConfiguration.IEnumSetupInstances.Clone*"></a>
+  <h4 id="VisualStudioConfiguration_IEnumSetupInstances_Clone" data-uid="VisualStudioConfiguration.IEnumSetupInstances.Clone">Clone()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumSetupInstances Clone()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="VisualStudioConfiguration.IEnumSetupInstances.html">IEnumSetupInstances</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="VisualStudioConfiguration_IEnumSetupInstances_Next_" data-uid="VisualStudioConfiguration.IEnumSetupInstances.Next*"></a>
+  <h4 id="VisualStudioConfiguration_IEnumSetupInstances_Next_System_Int32_VisualStudioConfiguration_ISetupInstance___System_Int32__" data-uid="VisualStudioConfiguration.IEnumSetupInstances.Next(System.Int32,VisualStudioConfiguration.ISetupInstance[],System.Int32@)">Next(Int32, ISetupInstance[], out Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Next(int celt, ISetupInstance[] rgelt, out int pceltFetched)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
         <th>Name</th>
         <th>Description</th>
       </tr>
-    <thead>
+    </thead>
     <tbody>
       <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_ChangeNotPermitted">ChangeNotPermitted</td>
-        <td><p>The change not permitted</p>
-</td>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">celt</span></td>
+        <td></td>
       </tr>
       <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_FieldMismatch">FieldMismatch</td>
-        <td><p>The field mismatch</p>
-</td>
+        <td><a class="xref" href="VisualStudioConfiguration.ISetupInstance.html">ISetupInstance</a>[]</td>
+        <td><span class="parametername">rgelt</span></td>
+        <td></td>
       </tr>
       <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_FieldRequired">FieldRequired</td>
-        <td><p>The field required</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_Generic">Generic</td>
-        <td><p>The generic</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_InvalidCaptcha">InvalidCaptcha</td>
-        <td><p>The invalid captcha</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_InvalidCredentials">InvalidCredentials</td>
-        <td><p>The invalid credentials</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_InvalidDomain">InvalidDomain</td>
-        <td><p>The invalid domain</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_LDAPProblem">LDAPProblem</td>
-        <td><p>LDAP problem connection</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Unosquare_PassCore_Common_ApiErrorCode_UserNotFound">UserNotFound</td>
-        <td><p>The user not found</p>
-</td>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">pceltFetched</span></td>
+        <td></td>
       </tr>
     </tbody>
-  </thead></thead></table>
+  </table>
+  
+  
+  <a id="VisualStudioConfiguration_IEnumSetupInstances_Reset_" data-uid="VisualStudioConfiguration.IEnumSetupInstances.Reset*"></a>
+  <h4 id="VisualStudioConfiguration_IEnumSetupInstances_Reset" data-uid="VisualStudioConfiguration.IEnumSetupInstances.Reset">Reset()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Reset()</code></pre>
+  </div>
+  
+  
+  <a id="VisualStudioConfiguration_IEnumSetupInstances_Skip_" data-uid="VisualStudioConfiguration.IEnumSetupInstances.Skip*"></a>
+  <h4 id="VisualStudioConfiguration_IEnumSetupInstances_Skip_System_Int32_" data-uid="VisualStudioConfiguration.IEnumSetupInstances.Skip(System.Int32)">Skip(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Skip(int celt)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">celt</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

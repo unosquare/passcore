@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class Alerts
+    <title>Class Startup
    | Unosquare SWAN ASPNetCore </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class Alerts
+    <meta name="title" content="Class Startup
    | Unosquare SWAN ASPNetCore ">
     <meta name="generator" content="docfx 2.40.10.0">
     
@@ -76,17 +76,18 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.PassCore.Web.Models.Alerts">
+            <article class="content wrap" id="_content" data-uid="Unosquare.PassCore.Web.Startup">
   
   
-  <h1 id="Unosquare_PassCore_Web_Models_Alerts" data-uid="Unosquare.PassCore.Web.Models.Alerts" class="text-break">Class Alerts
+  <h1 id="Unosquare_PassCore_Web_Startup" data-uid="Unosquare.PassCore.Web.Startup" class="text-break">Class Startup
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Represents this application&apos;s main class.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">Alerts</span></div>
+    <div class="level1"><span class="xref">Startup</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -112,22 +113,37 @@
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.PassCore.Web.Models.html">Unosquare.PassCore.Web.Models</a></h6>
-  <h5 id="Unosquare_PassCore_Web_Models_Alerts_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Unosquare.PassCore.Web.html">Unosquare.PassCore.Web</a></h6>
+  <h5 id="Unosquare_PassCore_Web_Startup_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Alerts</code></pre>
+    <pre><code class="lang-csharp hljs">public class Startup</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Unosquare_PassCore_Web_Startup__ctor_" data-uid="Unosquare.PassCore.Web.Startup.#ctor*"></a>
+  <h4 id="Unosquare_PassCore_Web_Startup__ctor" data-uid="Unosquare.PassCore.Web.Startup.#ctor">Startup()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Unosquare.PassCore.Web.Startup.html">Startup</a> class.
+This class gets instantiated by the Main method. The hosting environment gets provided via DI.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Startup()</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorCaptcha_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorCaptcha*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorCaptcha" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorCaptcha">ErrorCaptcha</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Unosquare_PassCore_Web_Startup_Configuration_" data-uid="Unosquare.PassCore.Web.Startup.Configuration*"></a>
+  <h4 id="Unosquare_PassCore_Web_Startup_Configuration" data-uid="Unosquare.PassCore.Web.Startup.Configuration">Configuration</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the configuration.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorCaptcha { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IConfigurationRoot Configuration { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -139,47 +155,122 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
+        <td><span class="xref">IConfigurationRoot</span></td>
+        <td><p>The configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Unosquare_PassCore_Web_Startup_Configure_" data-uid="Unosquare.PassCore.Web.Startup.Configure*"></a>
+  <h4 id="Unosquare_PassCore_Web_Startup_Configure_IApplicationBuilder_IHostingEnvironment_ILoggerFactory_IOptions_Unosquare_PassCore_Web_Models_WebSettings__" data-uid="Unosquare.PassCore.Web.Startup.Configure(IApplicationBuilder,IHostingEnvironment,ILoggerFactory,IOptions{Unosquare.PassCore.Web.Models.WebSettings})">Configure(IApplicationBuilder, IHostingEnvironment, ILoggerFactory, IOptions&lt;WebSettings&gt;)</h4>
+  <div class="markdown level1 summary"><p>This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+All arguments are provided through dependency injection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions&lt;WebSettings&gt; settings)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IApplicationBuilder</span></td>
+        <td><span class="parametername">app</span></td>
+        <td><p>The application.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IHostingEnvironment</span></td>
+        <td><span class="parametername">env</span></td>
+        <td><p>The environment.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ILoggerFactory</span></td>
+        <td><span class="parametername">log</span></td>
+        <td><p>The logger factory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IOptions</span>&lt;<a class="xref" href="Unosquare.PassCore.Web.Models.WebSettings.html">WebSettings</a>&gt;</td>
+        <td><span class="parametername">settings</span></td>
+        <td><p>The settings.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLDAP_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLDAP" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP">ErrorConnectionLDAP</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Unosquare_PassCore_Web_Startup_ConfigureServices_" data-uid="Unosquare.PassCore.Web.Startup.ConfigureServices*"></a>
+  <h4 id="Unosquare_PassCore_Web_Startup_ConfigureServices_IServiceCollection_" data-uid="Unosquare.PassCore.Web.Startup.ConfigureServices(IServiceCollection)">ConfigureServices(IServiceCollection)</h4>
+  <div class="markdown level1 summary"><p>This method gets called by the runtime. Use this method to add services to the container.
+All arguments are provided through dependency injection.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorConnectionLDAP { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public void ConfigureServices(IServiceCollection services)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
+        <td><span class="xref">IServiceCollection</span></td>
+        <td><span class="parametername">services</span></td>
+        <td><p>The services.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorFieldMismatch_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorFieldMismatch*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorFieldMismatch" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorFieldMismatch">ErrorFieldMismatch</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Unosquare_PassCore_Web_Startup_CreateWebHostBuilder_" data-uid="Unosquare.PassCore.Web.Startup.CreateWebHostBuilder*"></a>
+  <h4 id="Unosquare_PassCore_Web_Startup_CreateWebHostBuilder_System_String___" data-uid="Unosquare.PassCore.Web.Startup.CreateWebHostBuilder(System.String[])">CreateWebHostBuilder(String[])</h4>
+  <div class="markdown level1 summary"><p>Creates the web host builder.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorFieldMismatch { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWebHostBuilder CreateWebHostBuilder(string[] args)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">args</span></td>
+        <td><p>The arguments.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -189,183 +280,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
+        <td><span class="xref">IWebHostBuilder</span></td>
+        <td><p>The web host builder.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorFieldRequired_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorFieldRequired*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorFieldRequired" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorFieldRequired">ErrorFieldRequired</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Unosquare_PassCore_Web_Startup_Main_" data-uid="Unosquare.PassCore.Web.Startup.Main*"></a>
+  <h4 id="Unosquare_PassCore_Web_Startup_Main_System_String___" data-uid="Unosquare.PassCore.Web.Startup.Main(System.String[])">Main(String[])</h4>
+  <div class="markdown level1 summary"><p>Application&apos;s entry point.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorFieldRequired { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static void Main(string[] args)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidCredentials_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidCredentials*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidCredentials" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidCredentials">ErrorInvalidCredentials</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorInvalidCredentials { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidDomain_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidDomain*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidDomain" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidDomain">ErrorInvalidDomain</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorInvalidDomain { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidUser_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidUser*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorInvalidUser" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorInvalidUser">ErrorInvalidUser</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorInvalidUser { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_ErrorPasswordChangeNotAllowed_" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorPasswordChangeNotAllowed*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_ErrorPasswordChangeNotAllowed" data-uid="Unosquare.PassCore.Web.Models.Alerts.ErrorPasswordChangeNotAllowed">ErrorPasswordChangeNotAllowed</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ErrorPasswordChangeNotAllowed { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_SuccessAlertBody_" data-uid="Unosquare.PassCore.Web.Models.Alerts.SuccessAlertBody*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_SuccessAlertBody" data-uid="Unosquare.PassCore.Web.Models.Alerts.SuccessAlertBody">SuccessAlertBody</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string SuccessAlertBody { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Unosquare_PassCore_Web_Models_Alerts_SuccessAlertTitle_" data-uid="Unosquare.PassCore.Web.Models.Alerts.SuccessAlertTitle*"></a>
-  <h4 id="Unosquare_PassCore_Web_Models_Alerts_SuccessAlertTitle" data-uid="Unosquare.PassCore.Web.Models.Alerts.SuccessAlertTitle">SuccessAlertTitle</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string SuccessAlertTitle { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">args</span></td>
+        <td><p>The arguments.</p>
+</td>
       </tr>
     </tbody>
   </table>
