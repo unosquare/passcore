@@ -8,4 +8,5 @@ export class Alerts {
     errorFieldMismatch: string;
     errorInvalidUser: string;
     errorCaptcha: string;
+    ErrorConnectionLdap: string;
   }

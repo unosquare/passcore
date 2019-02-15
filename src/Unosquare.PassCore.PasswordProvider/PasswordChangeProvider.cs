@@ -133,42 +133,41 @@
         {
             try
             {
-                if (userPrincipal.GetGroups() != null && userPrincipal.GetGroups().ToList().Count > 0)
+                if (!userPrincipal.GetGroups().ToList().Any()) return;
+
+                if (_options.RestrictedADGroups?.Any() == true)
                 {
-                    if (_options.RestrictedADGroups?.Any() == true)
-                    {
-                        foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-                        {
-                            if (_options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
-                            {
-                                throw new ApiErrorException("The User principal is listed as restricted",
-                                    ApiErrorCode.ChangeNotPermitted);
-                            }
-                        }
-                    }
-
-                    if (_options.AllowedADGroups?.Any() != true) return;
-
                     foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
                     {
-                        if (_options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
+                        if (_options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
                         {
-                            return;
+                            throw new ApiErrorException("The User principal is listed as restricted",
+                                ApiErrorCode.ChangeNotPermitted);
                         }
                     }
-
-                    // If after iterate the user groups the user cannot change password.
-                    throw new ApiErrorException("The User principal is not listed as allowed",
-                            ApiErrorCode.ChangeNotPermitted);
                 }
+
+                if (_options.AllowedADGroups?.Any() != true) return;
+
+                foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                {
+                    if (_options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
+                    {
+                        return;
+                    }
+                }
+
+                // If after iterate the user groups the user cannot change password.
+                throw new ApiErrorException("The User principal is not listed as allowed",
+                    ApiErrorCode.ChangeNotPermitted);
             }
-            catch (System.DirectoryServices.AccountManagement.NoMatchingPrincipalException exception)
+            catch (Exception exception)
             {
-                _logger.LogWarning(exception.Message);
+                _logger.LogError(new EventId(888), exception, nameof(ValidateGroups));
             }
         }
 
-        private void SetLastPassword(UserPrincipal userPrincipal)
+        private void SetLastPassword(Principal userPrincipal)
         {
             var directoryEntry = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
             var prop = directoryEntry.Properties["pwdLastSet"];
@@ -195,7 +194,7 @@
         private void ChangePassword(
             string currentPassword,
             string newPassword,
-            UserPrincipal userPrincipal)
+            AuthenticablePrincipal userPrincipal)
         {
             try
             {

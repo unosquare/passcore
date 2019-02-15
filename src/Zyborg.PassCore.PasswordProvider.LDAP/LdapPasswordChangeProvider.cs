@@ -176,14 +176,14 @@
             // The leading number before the ':' is the Win32 API Error Code in HEX
             if (ex.LdapErrorMessage == null)
             {
-                return new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected null exception");
+                return new ApiErrorItem(ApiErrorCode.LdapProblem, "Unexpected null exception");
             } 
 
             var m = Regex.Match(ex.LdapErrorMessage, "([0-9a-fA-F]+):");
 
             if (!m.Success)
             {
-                return new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected error: {ex.LdapErrorMessage}");
+                return new ApiErrorItem(ApiErrorCode.LdapProblem, $"Unexpected error: {ex.LdapErrorMessage}");
             }
 
             var errCodeString = m.Groups[1].Value;
@@ -191,7 +191,7 @@
             var err = Win32ErrorCode.ByCode(errCode);
 
             return err == null
-                ? new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected Win32 API error; error code: {errCodeString}")
+                ? new ApiErrorItem(ApiErrorCode.LdapProblem, $"Unexpected Win32 API error; error code: {errCodeString}")
                 : new ApiErrorItem(ApiErrorCode.InvalidCredentials,
                     $"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}");
         }

@@ -29,6 +29,8 @@
                     return new ApiErrorItem(ApiErrorCode.InvalidDomain);
                 case "userNotFound":
                     return new ApiErrorItem(ApiErrorCode.UserNotFound);
+                case "ldapProblem":
+                    return new ApiErrorItem(ApiErrorCode.LdapProblem);
                 default:
                     return null;
             }

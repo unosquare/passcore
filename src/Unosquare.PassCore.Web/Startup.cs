@@ -49,7 +49,7 @@ namespace Unosquare.PassCore.Web
         /// Application's entry point.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        public static void Main(string[] args) => 
+        public static void Main(string[] args) =>
             CreateWebHostBuilder(args).Build().Run();
 
         /// <summary>

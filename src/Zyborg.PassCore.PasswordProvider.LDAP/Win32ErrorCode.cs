@@ -1,7 +1,6 @@
 #pragma warning disable SA1117 // Parameters should be on same line or separate lines
 namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -54,15 +53,12 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
         private static readonly Dictionary<int, Win32ErrorCode> ErrorByCode =
                 new Dictionary<int, Win32ErrorCode>();
-        private static readonly Dictionary<string, Win32ErrorCode> ErrorByCodeName =
-                new Dictionary<string, Win32ErrorCode>(StringComparer.InvariantCultureIgnoreCase);
 
         static Win32ErrorCode()
         {
             foreach (var c in Codes)
             {
                 ErrorByCode[c.Code] = c;
-                ErrorByCodeName[c.CodeName] = c;
             }
         }
 
@@ -104,14 +100,6 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// <returns>A Win32ErrorCode from the code.</returns>
         public static Win32ErrorCode ByCode(int code) =>
             ErrorByCode.TryGetValue(code, out var err) ? err : null;
-
-        /// <summary>
-        /// Get Error Code by the name of the code.
-        /// </summary>
-        /// <param name="codeName">Name of the code.</param>
-        /// <returns>A Win32ErrorCode from the name of the code.</returns>
-        public static Win32ErrorCode ByCodeName(string codeName) =>
-            ErrorByCodeName.TryGetValue(codeName, out var err) ? err : null;
 
         /// <summary>
         /// Returns a hash code for this instance.
