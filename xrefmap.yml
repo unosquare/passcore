@@ -55,12 +55,12 @@ references:
   commentId: F:Unosquare.PassCore.Common.ApiErrorCode.InvalidDomain
   fullName: Unosquare.PassCore.Common.ApiErrorCode.InvalidDomain
   nameWithType: ApiErrorCode.InvalidDomain
-- uid: Unosquare.PassCore.Common.ApiErrorCode.LDAPProblem
-  name: LDAPProblem
-  href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_LDAPProblem
-  commentId: F:Unosquare.PassCore.Common.ApiErrorCode.LDAPProblem
-  fullName: Unosquare.PassCore.Common.ApiErrorCode.LDAPProblem
-  nameWithType: ApiErrorCode.LDAPProblem
+- uid: Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
+  name: LdapProblem
+  href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_LdapProblem
+  commentId: F:Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
+  fullName: Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
+  nameWithType: ApiErrorCode.LdapProblem
 - uid: Unosquare.PassCore.Common.ApiErrorCode.UserNotFound
   name: UserNotFound
   href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_UserNotFound
@@ -631,19 +631,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorCaptcha
   nameWithType: Alerts.ErrorCaptcha
-- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP
-  name: ErrorConnectionLDAP
-  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLDAP
-  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP
-  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP
-  nameWithType: Alerts.ErrorConnectionLDAP
-- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP*
-  name: ErrorConnectionLDAP
-  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLDAP_
-  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLdap
+  name: ErrorConnectionLdap
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLdap
+  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLdap
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLdap
+  nameWithType: Alerts.ErrorConnectionLdap
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLdap*
+  name: ErrorConnectionLdap
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLdap_
+  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLdap
   isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLDAP
-  nameWithType: Alerts.ErrorConnectionLDAP
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLdap
+  nameWithType: Alerts.ErrorConnectionLdap
 - uid: Unosquare.PassCore.Web.Models.Alerts.ErrorFieldMismatch
   name: ErrorFieldMismatch
   href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorFieldMismatch
@@ -793,19 +793,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ApiResult.FromModelStateErrors
   nameWithType: ApiResult.FromModelStateErrors
-- uid: Unosquare.PassCore.Web.Models.ApiResult.HasErrors
-  name: HasErrors
-  href: api/Unosquare.PassCore.Web.Models.ApiResult.html#Unosquare_PassCore_Web_Models_ApiResult_HasErrors
-  commentId: P:Unosquare.PassCore.Web.Models.ApiResult.HasErrors
-  fullName: Unosquare.PassCore.Web.Models.ApiResult.HasErrors
-  nameWithType: ApiResult.HasErrors
-- uid: Unosquare.PassCore.Web.Models.ApiResult.HasErrors*
-  name: HasErrors
-  href: api/Unosquare.PassCore.Web.Models.ApiResult.html#Unosquare_PassCore_Web_Models_ApiResult_HasErrors_
-  commentId: Overload:Unosquare.PassCore.Web.Models.ApiResult.HasErrors
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.ApiResult.HasErrors
-  nameWithType: ApiResult.HasErrors
 - uid: Unosquare.PassCore.Web.Models.ApiResult.InvalidCaptcha
   name: InvalidCaptcha()
   href: api/Unosquare.PassCore.Web.Models.ApiResult.html#Unosquare_PassCore_Web_Models_ApiResult_InvalidCaptcha
@@ -2236,19 +2223,6 @@ references:
   isSpec: "True"
   fullName: Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.ByCode
   nameWithType: Win32ErrorCode.ByCode
-- uid: Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.ByCodeName(System.String)
-  name: ByCodeName(String)
-  href: api/Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.html#Zyborg_PassCore_PasswordProvider_LDAP_Win32ErrorCode_ByCodeName_System_String_
-  commentId: M:Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.ByCodeName(System.String)
-  fullName: Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.ByCodeName(System.String)
-  nameWithType: Win32ErrorCode.ByCodeName(String)
-- uid: Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.ByCodeName*
-  name: ByCodeName
-  href: api/Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.html#Zyborg_PassCore_PasswordProvider_LDAP_Win32ErrorCode_ByCodeName_
-  commentId: Overload:Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.ByCodeName
-  isSpec: "True"
-  fullName: Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.ByCodeName
-  nameWithType: Win32ErrorCode.ByCodeName
 - uid: Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.Code
   name: Code
   href: api/Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.html#Zyborg_PassCore_PasswordProvider_LDAP_Win32ErrorCode_Code
