@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "DzxQUc2WjlaoojeXUJrEjQ=="
+          "hash": "Lj9bjJcyMevolk/dXdd6fA=="
         }
       },
       "is_incremental": false,
@@ -214,30 +214,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Helpers.DebugAppSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.Helpers.DebugAppSettings.html",
-          "hash": "0bn6MhZr6ssEv7YTUDd5cA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Helpers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.Helpers.html",
-          "hash": "eAEOF0oNmxdxhxir3hFNBg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.Alerts.yml",
       "output": {
         ".html": {
@@ -358,174 +334,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Startup.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.Startup.html",
-          "hash": "1Q4pyX2cMwZDrJJsQVY+Ag=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.html",
-          "hash": "vLBeZTSJIc7yXVSQS3yCYg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.IEnumSetupInstances.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.IEnumSetupInstances.html",
-          "hash": "iWwTRIUUCXhN3XFTGyihPA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupConfiguration.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupConfiguration.html",
-          "hash": "vmChWwiBVfsPBd5xfLdzcw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupConfiguration2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupConfiguration2.html",
-          "hash": "mcHzN/aCZFEB/ARbBDNjrw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupInstance.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupInstance.html",
-          "hash": "cPZWyhKzkv2mXk7tR1l5Tw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupInstance2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupInstance2.html",
-          "hash": "2jxJK/8yguUKzn2gFzc79w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupPackageReference.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupPackageReference.html",
-          "hash": "D7bdS0BxhyKC8dDTDaVHTw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.ISetupPropertyStore.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.ISetupPropertyStore.html",
-          "hash": "woV3o1RIv0gh116+zDjGBQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.InstanceState.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.InstanceState.html",
-          "hash": "PKUUkH7dRB5Oea2GeZxufg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.Main.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.Main.html",
-          "hash": "WGj0ie8UW0T6epbbIwgiRw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.SetupConfiguration.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.SetupConfiguration.html",
-          "hash": "9D7lMxelpHmoQ2tYsc6r8g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.SetupConfigurationClass.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.SetupConfigurationClass.html",
-          "hash": "mk5TJljSkTVMg7cnfh+0qg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/VisualStudioConfiguration.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/VisualStudioConfiguration.html",
-          "hash": "omZKBF5osDDR+YuQGiedUQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions.yml",
       "output": {
         ".html": {
@@ -578,7 +386,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "8yd4iE9u+Tt9eFEjnRj6CQ=="
+          "hash": "Xg3bWXSOIVybZoWdkvELbg=="
         }
       },
       "is_incremental": false,
@@ -633,8 +441,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 42,
-          "skipped_file_count": 42
+          "total_file_count": 26,
+          "skipped_file_count": 26
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
