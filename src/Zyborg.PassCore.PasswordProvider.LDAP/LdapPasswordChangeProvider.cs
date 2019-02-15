@@ -122,15 +122,7 @@
             }
             catch (LdapException ex)
             {
-                var item = new ApiErrorItem(ApiErrorCode.LDAPProblem, $"Failed to update password: LDAP problem,  {ex.Message}");
-                _logger.LogWarning(item.Message, ex);
-                return item;
-            }
-            catch (ApiErrorException ex)
-            {
-                var item = ex is ApiErrorException apiError
-                ? apiError.ToApiErrorItem()
-                : new ApiErrorItem(ApiErrorCode.InvalidCredentials, $"Failed to update password: {ex.Message}");
+                var item = ParseLdapException(ex);
 
                 _logger.LogWarning(item.Message, ex);
 
@@ -184,14 +176,14 @@
             // The leading number before the ':' is the Win32 API Error Code in HEX
             if (ex.LdapErrorMessage == null)
             {
-                return new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected null exception");
+                return new ApiErrorItem(ApiErrorCode.LdapProblem, "Unexpected null exception");
             } 
 
             var m = Regex.Match(ex.LdapErrorMessage, "([0-9a-fA-F]+):");
 
             if (!m.Success)
             {
-                return new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected error: {ex.LdapErrorMessage}");
+                return new ApiErrorItem(ApiErrorCode.LdapProblem, $"Unexpected error: {ex.LdapErrorMessage}");
             }
 
             var errCodeString = m.Groups[1].Value;
@@ -199,7 +191,7 @@
             var err = Win32ErrorCode.ByCode(errCode);
 
             return err == null
-                ? new ApiErrorItem(ApiErrorCode.Generic, $"Unexpected Win32 API error; error code: {errCodeString}")
+                ? new ApiErrorItem(ApiErrorCode.LdapProblem, $"Unexpected Win32 API error; error code: {errCodeString}")
                 : new ApiErrorItem(ApiErrorCode.InvalidCredentials,
                     $"Resolved Win32 API Error: code={err.Code} name={err.CodeName} desc={err.Description}");
         }

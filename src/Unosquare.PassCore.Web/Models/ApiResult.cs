@@ -21,14 +21,6 @@ namespace Unosquare.PassCore.Web.Models
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance has errors.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance has errors; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasErrors => Errors.Count > 0;
-
-        /// <summary>
         /// Gets or sets the errors.
         /// </summary>
         public List<ApiErrorItem> Errors { get; }

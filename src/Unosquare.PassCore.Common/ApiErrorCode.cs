@@ -48,6 +48,6 @@
         /// <summary>
         /// LDAP problem connection
         /// </summary>
-        LDAPProblem = 8,
+        LdapProblem = 8,
     }
 }

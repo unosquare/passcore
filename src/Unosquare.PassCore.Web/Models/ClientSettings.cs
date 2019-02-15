@@ -53,7 +53,7 @@ namespace Unosquare.PassCore.Web.Models
         public string ErrorCaptcha { get; set; }
         public string ErrorFieldRequired { get; set; }
         public string ErrorFieldMismatch { get; set; }
-        public string ErrorConnectionLDAP { get; set; }
+        public string ErrorConnectionLdap { get; set; }
     }
 
     public class ErrorsPasswordForm

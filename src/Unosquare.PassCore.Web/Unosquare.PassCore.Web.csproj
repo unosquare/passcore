@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;node_modules\**</DefaultItemExcludes>
+    <Copyright>Copyright (c) 2018-2019 - Unosquare</Copyright>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>Unosquare.PassCore.Web</AssemblyName>
     <PackageId>Unosquare.PassCore.Web</PackageId>
