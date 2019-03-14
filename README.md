@@ -15,6 +15,7 @@
   - [Installation on IIS](#installation-on-iis)
   - [PowerShell Installer](#powershell-installer)
   - [Docker](#docker)
+  - [LDAP Provider](#ldap-provider)
   - [Customization and Configuration](#customization-and-configuration)
     - [Running as a sub application](#running-as-a-sub-application)
   - [Troubleshooting](#troubleshooting)
@@ -86,9 +87,7 @@ to execute the script.
 
 ## Docker
 
-You can use the Alpine Docker Builder image and then copy the assets over to an Alpine container.
-
-You can pass environment attributes directly into docker without modifying the appsettings.json
+You can use the Alpine Docker Builder image and then copy the assets over to an Alpine container. You can pass environment attributes directly into docker without modifying the appsettings.json
 
 ```
 docker build --rm -t passcore .
@@ -101,6 +100,16 @@ docker run \
 -p 80:80 \
 passcore:latest
 ```
+
+**NOTE:** Docker image contains a build using the LDAP Provider (see below).
+
+## LDAP Provider
+
+PassCore was created to use the Microsoft Active Directory Services provided by .NET Framework, but a new Provider using [Novell LDAP Client](https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard) can be used instead. This provider is the default when PassCore is running at Linux or MacOS since Microsoft AD Services are NOT available.
+
+The configuration of the LDAP Provider is slightly different. for example, the AutomaticContext is not available and you need to supply credentials.
+
+*WIP*
 
 ## Customization and Configuration
 
