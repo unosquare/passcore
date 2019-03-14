@@ -8,7 +8,7 @@
     <title>PassCore: A self-service password change utility for Active Directory | Unosquare SWAN ASPNetCore </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="PassCore: A self-service password change utility for Active Directory | Unosquare SWAN ASPNetCore ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -85,6 +85,7 @@
 <li><a href="#installation-on-iis">Installation on IIS</a></li>
 <li><a href="#powershell-installer">PowerShell Installer</a></li>
 <li><a href="#docker">Docker</a></li>
+<li><a href="#ldap-provider">LDAP Provider</a></li>
 <li><a href="#customization-and-configuration">Customization and Configuration</a><ul>
 <li><a href="#running-as-a-sub-application">Running as a sub application</a></li>
 </ul>
@@ -154,8 +155,7 @@ the <a href="https://raw.githubusercontent.com/unosquare/passcore/master/IISSetu
 <p><strong>NOTE:</strong> You need <a href="https://docs.microsoft.com/en-us/powershell/scripting/setup/windows-powershell-system-requirements?view=powershell-6">PowerShell version 5 or better</a> 
 to execute the script.</p>
 <h2 id="docker">Docker</h2>
-<p>You can use the Alpine Docker Builder image and then copy the assets over to an Alpine container.</p>
-<p>You can pass environment attributes directly into docker without modifying the appsettings.json</p>
+<p>You can use the Alpine Docker Builder image and then copy the assets over to an Alpine container. You can pass environment attributes directly into docker without modifying the appsettings.json</p>
 <pre><code>docker build --rm -t passcore .
 docker run \
 -e AppSettings__LdapHostnames__0=&#39;ad001.example.com&#39; \
@@ -165,7 +165,12 @@ docker run \
 -it \
 -p 80:80 \
 passcore:latest
-</code></pre><h2 id="customization-and-configuration">Customization and Configuration</h2>
+</code></pre><p><strong>NOTE:</strong> Docker image contains a build using the LDAP Provider (see below).</p>
+<h2 id="ldap-provider">LDAP Provider</h2>
+<p>PassCore was created to use the Microsoft Active Directory Services provided by .NET Framework, but a new Provider using <a href="https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard">Novell LDAP Client</a> can be used instead. This provider is the default when PassCore is running at Linux or MacOS since Microsoft AD Services are NOT available.</p>
+<p>The configuration of the LDAP Provider is slightly different. for example, the AutomaticContext is not available and you need to supply credentials.</p>
+<p><em>WIP</em></p>
+<h2 id="customization-and-configuration">Customization and Configuration</h2>
 <p>All server-side settings and client-side settings are stored in the <code>/appsettings.json</code> file.
 The most relevant configuration entries are shown below. Make sure you make your changes to the <code>appsettings.json</code> file using a regular text editor like <a href="https://code.visualstudio.com">Visual Studio Code</a></p>
 <ul>
