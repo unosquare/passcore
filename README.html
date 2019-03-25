@@ -26,7 +26,7 @@
       <header>
         
         <nav class="navbar navbar-inverse ng-scope" role="navigation">
-          <div class="container">
+          <div class="container-fluid">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -49,14 +49,14 @@
         </nav>
         
         <div class="subnav navbar">
-          <div class="container hide-when-search" id="breadcrumb">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
               <li></li>
             </ul>
           </div>
         </div>
       </header>
-      <div class="container body-content">
+      <div class="container-fluid body-content">
         
         <div id="search-results">
           <div class="search-list"></div>
@@ -64,7 +64,7 @@
           <ul id="pagination"></ul>
         </div>
       </div>
-      <div role="main" class="container body-content hide-when-search">
+      <div role="main" class="container-fluid body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
@@ -245,7 +245,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 <li>You can also opt to use the Linux or MacOS version of PassCore. This version includes a LDAP Provider based on Novell. The same provider can be used with Windows, you must build it by yourself.</li>
 </ul>
 <h2 id="build-your-own-version">Build your own version</h2>
-<p>If you need to modify the source code (either backend or frontend). You require .NET Core SDK and nodejs. Run the following command according to your target platform.</p>
+<p>If you need to modify the source code (either backend or frontend). You may require to install [.NET Core SDK}(<a href="https://dotnet.microsoft.com/download">https://dotnet.microsoft.com/download</a>) and <a href="https://nodejs.org/en/download/">Node.js</a>. Run the following command according to your target platform.</p>
 <h3 id="windows">Windows</h3>
 <pre><code>dotnet publish --configuration Release --runtime win-x64 --output &quot;&lt;path&gt;&quot;
 </code></pre><h3 id="linux-portable">Linux (portable)</h3>
