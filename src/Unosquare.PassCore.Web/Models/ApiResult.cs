@@ -58,7 +58,7 @@ namespace Unosquare.PassCore.Web.Models
         /// Adds the model state errors.
         /// </summary>
         /// <param name="modelState">State of the model.</param>
-        /// <returns>The ApiResilt from Model State.</returns>
+        /// <returns>The ApiResult from Model State.</returns>
         public static ApiResult FromModelStateErrors(ModelStateDictionary modelState)
         {
             var result = new ApiResult();
@@ -67,12 +67,18 @@ namespace Unosquare.PassCore.Web.Models
             {
                 var error = value.Errors.First();
 
-                if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldRequired)))
-                    result.AddFieldRequiredValidationError(key);
-                else if (error.ErrorMessage.Equals(nameof(ApiErrorCode.FieldMismatch)))
-                    result.AddFieldMismatchValidationError(key);
-                else
-                    result.AddGenericFieldValidationError(key, error.ErrorMessage);
+                switch (error.ErrorMessage)
+                {
+                    case nameof(ApiErrorCode.FieldRequired):
+                        result.AddFieldRequiredValidationError(key);
+                        break;
+                    case nameof(ApiErrorCode.FieldMismatch):
+                        result.AddFieldMismatchValidationError(key);
+                        break;
+                    default:
+                        result.AddGenericFieldValidationError(key, error.ErrorMessage);
+                        break;
+                }
             }
 
             return result;

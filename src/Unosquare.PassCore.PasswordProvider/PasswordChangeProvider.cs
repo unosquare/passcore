@@ -12,7 +12,7 @@
     /// <summary>
     /// Default Change Password Provider using 'System.DirectoryServices' from Microsoft.
     /// </summary>
-    /// <seealso cref="T:Unosquare.PassCore.Common.IPasswordChangeProvider" />
+    /// <seealso cref="IPasswordChangeProvider" />
     public partial class PasswordChangeProvider : IPasswordChangeProvider
     {
         private readonly PasswordChangeOptions _options;

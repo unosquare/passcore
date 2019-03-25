@@ -90,10 +90,8 @@ namespace Unosquare.PassCore.Web
         /// All arguments are provided through dependency injection.
         /// </summary>
         /// <param name="app">The application.</param>
-        /// <param name="env">The environment.</param>
-        /// <param name="log">The logger factory.</param>
         /// <param name="settings">The settings.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log, IOptions<WebSettings> settings)
+        public void Configure(IApplicationBuilder app, IOptions<WebSettings> settings)
         {
             if (settings.Value.EnableHttpsRedirect)
                 app.UseHttpsRedirection();
