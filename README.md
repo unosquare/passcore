@@ -3,7 +3,6 @@
 [![Analytics](https://ga-beacon.appspot.com/UA-8535255-2/unosquare/passcore/)](https://github.com/igrigorik/ga-beacon)
 [![Build Status](https://travis-ci.org/unosquare/passcore.svg?branch=master)](https://travis-ci.org/unosquare/passcore)
 
-
 ![Passcore Logo](https://github.com/unosquare/passcore/raw/master/src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png)
 # PassCore: A self-service password change utility for Active Directory
 
@@ -200,7 +199,7 @@ dotnet publish --configuration Release --runtime osx-x64 /p:PASSCORE_PROVIDER=LD
 
 ## Create your own provider
 
-If you wish to create your owen provider, you need use our interface and common classes. You can use the following nuget to install them:
+If you wish to create your own provider, you need use our interface and common classes. You can use the following nuget to install them:
 
 [![NuGet version](https://badge.fury.io/nu/Unosquare.PassCore.Common.svg)](https://badge.fury.io/nu/Unosquare.PassCore.Common)
 
