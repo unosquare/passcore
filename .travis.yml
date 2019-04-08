@@ -1,6 +1,6 @@
 language: csharp
-dotnet: 2.1.300
-dist: trusty
+dotnet: 2.2.101
+dist: xenial
 sudo: false
 install:
   - dotnet restore
