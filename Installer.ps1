@@ -29,7 +29,7 @@ Expand-Archive $zipPath -dest $directory -force
 Remove-Item $zipPath
 
 # Checkin for Net Core Host
-$netCoreHost = Get-wmiobject -class win32_product | Where-Object {$_.Name -match "Microsoft .NET Core Host - 2.2.3" }
+$netCoreHost = Get-wmiobject -class win32_product | Where-Object {$_.Name -match "Microsoft .NET Core Host - 2.2" }
 if([string]::IsNullOrEmpty($netCoreHost)) {
     Write-Host "Please install the hosting bundle and then restart the installation"
     Start-Process "https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.3-windows-hosting-bundle-installer"
