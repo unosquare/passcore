@@ -70,7 +70,7 @@ PassCore has the following features:
 
 ## PowerShell Installer
 
-Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.1 Windows Server Hosting bundle](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
+Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 2.2.3 Windows Server Hosting bundle](https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.3-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))
