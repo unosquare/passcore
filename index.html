@@ -8,7 +8,7 @@
     <title>PassCore: A self-service password change utility for Active Directory | Unosquare SWAN ASPNetCore </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="PassCore: A self-service password change utility for Active Directory | Unosquare SWAN ASPNetCore ">
-    <meta name="generator" content="docfx 2.42.1.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -75,7 +75,7 @@
 <a href="https://travis-ci.org/unosquare/passcore"><img src="https://travis-ci.org/unosquare/passcore.svg?branch=master" alt="Build Status"></a></p>
 <p><img src="https://github.com/unosquare/passcore/raw/master/src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png" alt="Passcore Logo"></p>
 <h1 id="passcore-a-self-service-password-change-utility-for-active-directory">PassCore: A self-service password change utility for Active Directory</h1>
-<p><em><span class="emoji" shortcode="star">⭐</span>Please star this project if you find it useful!</em></p>
+<p><em><span class="emoji" shortcode="star">⭐</span> Please star this project if you find it useful!</em></p>
 <ul>
 <li><a href="#passcore-a-self-service-password-change-utility-for-active-directory">PassCore: A self-service password change utility for Active Directory</a><ul>
 <li><a href="#overview">Overview</a><ul>
@@ -118,32 +118,32 @@ It allows users to change their Active Directory password on their own, provided
 <p><em>You can easily install using Powershell. Check the next section to know how.</em></p>
 <ol>
 <li>Ensure the server running IIS is domain-joined. To determine if the computer is domain-joined:<ul>
-<li>Go to the <em>Start</em> menu, right click on <em>Computer</em>, then select <em>Properties</em></li>
+<li>Go to the <em>Start</em> menu, right-click on <em>Computer</em>, then select <em>Properties</em></li>
 <li>Make sure the <em>Domain</em> field contains the correct setting.</li>
 </ul>
 </li>
-<li>You need a Passcore copy to continue. We recommed to download the latest binary release of <a href="https://github.com/unosquare/passcore/releases/download/3.6.3/PassCore363.zip">PassCore</a>.</li>
-<li><strong>NOTE:</strong> Before extracting the contents of the file, please right click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.<ul>
+<li>You need a Passcore copy to continue. We recommend to download the latest binary release of <a href="https://github.com/unosquare/passcore/releases/download/3.6.3/PassCore363.zip">PassCore</a>.</li>
+<li><strong>NOTE:</strong> Before extracting the contents of the file, please right-click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.<ul>
 <li>If you download the source code you need to run the following command via an Command Prompt. Make sure you start the Command Prompt with the Administrator option.</li>
 <li><code>dotnet publish --configuration Release --runtime win-x64 --output &quot;&lt;path&gt;&quot;</code></li>
 <li>The <code>&lt;path&gt;</code> is the directory where you will be serving the website from.</li>
 </ul>
 </li>
 <li>Install the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.3-windows-hosting-bundle-installer">.NET Core 2.2.3 Windows Server Hosting bundle</a>.</li>
-<li>Go to your <em>IIS Manager</em>, Right click on <em>Application Pools</em> and select <em>Add Application Pool</em>.</li>
+<li>Go to your <em>IIS Manager</em>, Right-click on <em>Application Pools</em> and select <em>Add Application Pool</em>.</li>
 <li>A dialog appears. Under Name enter <strong>PassCore Application Pool</strong>, Under .NET CLR Version select <strong>No Managed Code</strong> and finally, under Managed pipeline mode select <strong>Integrated</strong>. Click OK after all fields have been set.</li>
-<li>Now, right click on the application pool you just created in the previous step and select <em>Advanced Settings ...</em>. Change the <em>Start Mode</em> to <strong>AlwaysRunning</strong>, and the <em>Idle Time-out (minutes)</em> to <strong>0</strong>. Click on <em>OK</em>. This will ensure PassCore stays responsive even after long periods of inactivity.</li>
-<li>Back on your <em>IIS Manager</em>, right click on <em>Sites</em> and select <em>Add Website</em></li>
-<li>A dialog appears. Under <em>Site name</em>, enter <strong>PassCore Website</strong>. Under <em>Application pool</em> click on <em>Select</em> and ensure you select <strong>PassCore Application Pool</strong>. Under <em>Physical path</em>, click on the ellispsis <em>(...)</em>, navigate to the folder where you extracted PassCore.<ul>
+<li>Now, right-click on the application pool you just created in the previous step and select <em>Advanced Settings ...</em>. Change the <em>Start Mode</em> to <strong>AlwaysRunning</strong>, and the <em>Idle Time-out (minutes)</em> to <strong>0</strong>. Click on <em>OK</em>. This will ensure PassCore stays responsive even after long periods of inactivity.</li>
+<li>Back on your <em>IIS Manager</em>, right-click on <em>Sites</em> and select <em>Add Website</em></li>
+<li>A dialog appears. Under <em>Site name</em>, enter <strong>PassCore Website</strong>. Under <em>Application pool</em> click on <em>Select</em> and ensure you select <strong>PassCore Application Pool</strong>. Under <em>Physical path</em>, click on the ellipsis <em>(...)</em>, navigate to the folder where you extracted PassCore.<ul>
 <li><strong>Important:</strong> Make sure the Physical path points to the <em>parent</em> folder which is the one containing the files, <em>logs</em> and <em>wwwroot</em> folders.</li>
 <li><strong>NOTE:</strong> If the folder <code>logs</code> is not there you can created. To enable the logs you need to change <code>stdoutLogEnabled</code> to <code>true</code> in the <code>web.config</code> file. You need to add <em>Full Control</em> permissions to your IIS Application Pool account (see Troubleshooting).</li>
 </ul>
 </li>
-<li>Under the <em>Binding section</em> of the same dialog, configure the <em>Type</em> to be <strong>https</strong>, set <em>IP Address</em> to <strong>All Unassigned</strong>, the <em>Port</em> to <strong>443</strong> and the <em>Host name</em> to something like <strong>password.yourdomain.com</strong>. Under <em>SSL Certificate</em> select a certificate that matches the Host name you provided above. If you don&#39;t know how to install a certificate, please refer to <a href="https://www.digicert.com/ssl-certificate-installation-microsoft-iis-8.htm">SSL Certificate Install on IIS 8</a> or <a href="https://www.digicert.com/csr-creation-ssl-installation-iis-10.htm">SSL Certificate Install on IIS 10</a> , in order to install a proper certificate.<ul>
+<li>Under the <em>Binding section</em> of the same dialog, configure the <em>Type</em> to be <strong>https</strong>, set <em>IP Address</em> to <strong>All Unassigned</strong>, the <em>Port</em> to <strong>443</strong> and the <em>Hostname</em> to something like <strong>password.yourdomain.com</strong>. Under <em>SSL Certificate</em> select a certificate that matches the Hostname you provided above. If you don&#39;t know how to install a certificate, please refer to <a href="https://www.digicert.com/ssl-certificate-installation-microsoft-iis-8.htm">SSL Certificate Install on IIS 8</a> or <a href="https://www.digicert.com/csr-creation-ssl-installation-iis-10.htm">SSL Certificate Install on IIS 10</a> , in order to install a proper certificate.<ul>
 <li><strong>Important:</strong> Do not serve this website without an SSL certificate because requests and responses will be transmitted in cleartext and an attacker could easily retrieve these messages and collect usernames and passwords.</li>
 </ul>
 </li>
-<li>Click <em>OK</em> and navigate to <code>https://password.yourdomain.com</code> (the host name you previously set). If all is set then you should be able to see the PassCore tool show up in your browser.</li>
+<li>Click <em>OK</em> and navigate to <code>https://password.yourdomain.com</code> (the hostname you previously set). If all is set then you should be able to see the PassCore tool show up in your browser.</li>
 </ol>
 <p><strong>NOTE:</strong> If you have a previous version, you <strong>can not</strong> use the same <code>appsettings.json</code> file. Please update your settings manually editing the new file.</p>
 <h2 id="powershell-installer">PowerShell Installer</h2>
@@ -167,7 +167,7 @@ docker run \
 passcore:latest
 </code></pre><p><strong>NOTE:</strong> Docker image contains a build using the LDAP Provider (see below).</p>
 <h2 id="ldap-provider">LDAP Provider</h2>
-<p>PassCore was created to use the Microsoft Active Directory Services provided by .NET Framework, but a new Provider using <a href="https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard">Novell LDAP Client</a> can be used instead. This provider is the default when PassCore is running at Linux or MacOS since Microsoft AD Services are NOT available.</p>
+<p>PassCore was created to use the Microsoft Active Directory Services provided by .NET Framework, but a new Provider using <a href="https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard">Novell LDAP Client</a> can be used instead. This provider is the default when PassCore is running at Linux or macOS since Microsoft AD Services are NOT available.</p>
 <p>The configuration of the LDAP Provider is slightly different. for example, the AutomaticContext is not available and you need to supply credentials.</p>
 <p><em>WIP</em></p>
 <h2 id="customization-and-configuration">Customization and Configuration</h2>
@@ -188,14 +188,13 @@ The most relevant configuration entries are shown below. Make sure you make your
 </ul>
 </li>
 <li>To enable restricted group checking<ol>
-<li>Find the <code>CheckRestrictedAdGroups</code> entry and set it to <code>true</code> (without quotes)</li>
 <li>Find the <code>RestrictedADGroups</code> entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.</li>
 </ol>
 </li>
-<li>Find the <code>DefaultDomain</code> entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names. <strong>NOTE:</strong> if you are using a subdomain, and you have errors, please try using your top-level domain. Thank you.</li>
-<li>To provide an optional paramerter to the URL to set the username text box automatically<ol>
+<li>Find the <code>DefaultDomain</code> entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names. <strong>NOTE:</strong> if you are using a subdomain, and you have errors, please try using your top-level domain. </li>
+<li>To provide an optional parameter to the URL to set the username text box automatically<ol>
 <li><code>http://mypasscore.com/?userName=someusername</code></li>
-<li>This helps the user incase they forgot thier username and, also comes in handy when sending a link to the application or having it embeded into another application were the user is all ready signed in.</li>
+<li>This helps the user in case they forgot their username and, also comes in handy when sending a link to the application or having it embedded into another application where the user is already signed in.</li>
 </ol>
 </li>
 <li>To specify which (DC) attribute is used to search for the specific user.<ul>
@@ -213,8 +212,8 @@ The most relevant configuration entries are shown below. Make sure you make your
 </li>
 <li>The rest of the configuration entries are all pretty much all UI strings. Change them to localize, or to brand this utility, to meet your needs.</li>
 </ul>
-<h3 id="running-as-a-sub-application">Running as a sub application</h3>
-<p>To run as a sub application you need to modify the <code>base href=&quot;/&quot;</code> value in the <code>wwwroot/index.html</code> file to be the base url for PassCore. For example you might have PassCore setup at /PassCore so you would put</p>
+<h3 id="running-as-a-sub-application">Running as a sub-application</h3>
+<p>To run as a sub-application you need to modify the <code>base href=&quot;/&quot;</code> value in the <code>wwwroot/index.html</code> file to be the base URL for PassCore. For example you might have PassCore setup at /PassCore so you would put</p>
 <pre><code class="lang-html">&lt;base href=&quot;/PassCore/&quot; /&gt;
 </code></pre><h2 id="troubleshooting">Troubleshooting</h2>
 <ul>
@@ -228,7 +227,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 <li>Check the features.</li>
 </ol>
 </li>
-<li>If you / your user&#39;s current password never seems to be accepted for reset; the affected person may need to use a domain-connected PC to login and reset their password on it first. Updated group policy settings could be blocking user changes, until a local login is completed.</li>
+<li>If you / your user&#39;s current password never seems to be accepted for reset; the affected person may need to use a domain-connected PC to log in and reset their password on it first. Updated group policy settings could be blocking user changes, until a local login is completed.</li>
 <li>You can add permissions to your log folder using <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls">icacls</a>
 <code>icacls &quot;&lt;logfolder&gt;/&quot; /grant &quot;IIS AppPool\&lt;passcoreAppPoolAccount&gt;:M&quot; /t</code></li>
 <li>If you find <a href="http://blog.cionsystems.com/?p=907">Exception from HRESULT: 0x800708C5 .The password does not meet the password policy requirements</a> trying to change a password. Set &#39;Minimum password age&#39; to 0 at &#39;Default Domain Policy&#39;.</li>
@@ -242,7 +241,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 <li>User @gadams65 suggests the following: Use the FQDN of your LDAP host. Enter the LDAP username without any other prefix or suffix such as <code>domain\\</code> or <code>@domain</code>. Only the username.</li>
 </ol>
 </li>
-<li>You can also opt to use the Linux or MacOS version of PassCore. This version includes a LDAP Provider based on Novell. The same provider can be used with Windows, you must build it by yourself.</li>
+<li>You can also opt to use the Linux or macOS version of PassCore. This version includes a LDAP Provider based on Novell. The same provider can be used with Windows, you must build it by yourself.</li>
 </ul>
 <h2 id="build-your-own-version">Build your own version</h2>
 <p>If you need to modify the source code (either backend or frontend). You may require to install [.NET Core SDK}(<a href="https://dotnet.microsoft.com/download">https://dotnet.microsoft.com/download</a>) and <a href="https://nodejs.org/en/download/">Node.js</a>. Run the following command according to your target platform.</p>
