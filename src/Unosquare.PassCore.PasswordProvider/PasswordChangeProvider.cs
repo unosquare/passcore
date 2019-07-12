@@ -161,6 +161,10 @@
                 throw new ApiErrorException("The User principal is not listed as allowed",
                     ApiErrorCode.ChangeNotPermitted);
             }
+            catch (ApiErrorException)
+            {
+                throw;
+            }
             catch (Exception exception)
             {
                 _logger.LogError(new EventId(888), exception, nameof(ValidateGroups));
