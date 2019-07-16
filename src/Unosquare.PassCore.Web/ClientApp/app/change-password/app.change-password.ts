@@ -150,7 +150,7 @@ export class ChangePasswordComponent implements OnInit {
         this.http.post('api/password', this.FormData).subscribe(
             response => {
                 this.openDialog(this.ViewOptions.alerts.successAlertTitle, this.ViewOptions.alerts.successAlertBody);
-                this.clean('success');
+                setTimeout(() => this.clean('success'));
             },
             errorResponse => {
                 this.ErrorAlertMessage = '';
