@@ -22,6 +22,7 @@
   - [Build your own version](#build-your-own-version)
   - [Create your own provider](#create-your-own-provider)
   - [License](#license)
+  - [passcorepro](#passcorepro)
 
 ## Overview
 
@@ -205,6 +206,23 @@ If you wish to create your own provider, you need use our interface and common c
 ```
 PM> Install-Package Unosquare.PassCore.Common
 ```
+
 ## License
 
 PassCore is open source software and MIT licensed. Please star this project if you like it.
+
+## passcorepro
+
+PassCore is free and will continue to be free forever.
+However, you can access a complete, brand new version with new features and tools.
+
+Introducing passcopro.
+This new, enhanced version of our self-service password manager comes with new features such as:
+
+*	Display and manage your Active Directory information with our user profile system.
+*	Search for any staff member with the new Directory grid.
+*	Forgot your password? We help you reset it via Email or SMS (via Twillio).
+*	Administrate your AD using our new Dashboard tool.
+*	Parlez-vous français? You can now add any language to PassCorePro!
+
+Go to our store: https://store.unosquare.com/PasscorePro
