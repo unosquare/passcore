@@ -37,18 +37,15 @@
         /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            var domainPasswordInfo = GetDomainPasswordInformation(_options.DefaultDomain);
-            if (domainPasswordInfo.PasswordProperties == null)
-                throw new ArgumentNullException("ADException", new Exception("Couldn't load the Active Directory domain information"));
-
-            if (newPassword.Length < domainPasswordInfo.MinPasswordLength)
-                throw new InvalidOperationException("ADException", new Exception("New password doesn't meet the AD policies for password length"));
-
             var fixedUsername = FixUsernameWithDomain(username);
             _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
 
             try
             {
+                var domainPasswordInfo = GetDomainPasswordInformation(_options.DefaultDomain);
+                if (newPassword.Length < domainPasswordInfo.MinPasswordLength)
+                    throw new InvalidOperationException("Failed due to password complex policies: New password length is shorter than AD minimum password length");
+
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
@@ -96,10 +93,7 @@
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
-                    : new ApiErrorItem(ApiErrorCode.Generic,
-                        ex.Message.Equals("ADException") ? $"{ex.InnerException.Message}"
-                        : $"Failed to update password: {ex.Message}"
-                      );
+                    : new ApiErrorItem(ApiErrorCode.Generic, $"{ex.InnerException.Message}");
 
                 _logger.LogWarning(item.Message, ex);
 
@@ -195,7 +189,7 @@
                 }
             }
 
-            throw new InvalidOperationException("Cannot find the domain information");
+            throw new InvalidOperationException("Failed due to password complex policies: Cannot find the domain information");
         }
 
         private void SetLastPassword(Principal userPrincipal)
