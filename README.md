@@ -216,7 +216,7 @@ PassCore is open source software and MIT licensed. Please star this project if y
 PassCore is free and will continue to be free forever.
 However, you can access a complete, brand new version with new features and tools.
 
-Introducing passcopro.
+Introducing passcorepro.
 This new, enhanced version of our self-service password manager comes with new features such as:
 
 *	Display and manage your Active Directory information with our user profile system.

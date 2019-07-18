@@ -18,6 +18,7 @@
         private readonly PasswordChangeOptions _options;
         private readonly ILogger _logger;
         private IdentityType _idType = IdentityType.UserPrincipalName;
+        private DomainPasswordInformation domainPasswordInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordChangeProvider"/> class.
@@ -36,8 +37,14 @@
         /// <inheritdoc />
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            var fixedUsername = FixUsernameWithDomain(username);
+            var domainPasswordInfo = GetDomainPasswordInformation(_options.DefaultDomain);
+            if (domainPasswordInfo.PasswordProperties == null)
+                throw new ArgumentNullException("ADException", new Exception("Couldn't load the Active Directory domain information"));
 
+            if (newPassword.Length < domainPasswordInfo.MinPasswordLength)
+                throw new InvalidOperationException("ADException", new Exception("New password doesn't meet the AD policies for password length"));
+
+            var fixedUsername = FixUsernameWithDomain(username);
             _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
 
             try
@@ -89,7 +96,10 @@
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
-                    : new ApiErrorItem(ApiErrorCode.Generic, $"Failed to update password: {ex.Message}");
+                    : new ApiErrorItem(ApiErrorCode.Generic,
+                        ex.Message.Equals("ADException") ? $"{ex.InnerException.Message}"
+                        : $"Failed to update password: {ex.Message}"
+                      );
 
                 _logger.LogWarning(item.Message, ex);
 
@@ -169,6 +179,23 @@
             {
                 _logger.LogError(new EventId(888), exception, nameof(ValidateGroups));
             }
+        }
+        
+        private DomainPasswordInformation GetDomainPasswordInformation(string domainName)
+        {
+            using (var server = new SamServer())
+            {
+                foreach (var domain in server.EnumerateDomains())
+                {
+                    if (domain == "Builtin") continue;
+                    if (!string.IsNullOrEmpty(domainName) && !domainName.Contains(domain)) continue;
+
+                    var sid = server.GetDomainSid(domain);
+                    return server.GetDomainPasswordInformation(sid);
+                }
+            }
+
+            throw new InvalidOperationException("Cannot find the domain information");
         }
 
         private void SetLastPassword(Principal userPrincipal)
