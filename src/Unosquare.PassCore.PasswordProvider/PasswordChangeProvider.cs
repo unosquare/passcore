@@ -18,7 +18,7 @@
         private readonly PasswordChangeOptions _options;
         private readonly ILogger _logger;
         private IdentityType _idType = IdentityType.UserPrincipalName;
-        private DomainPasswordInformation domainPasswordInfo;
+        private DomainPasswordInformation? domainPasswordInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordChangeProvider"/> class.
@@ -32,6 +32,7 @@
             _logger = logger;
             _options = options.Value;
             SetIdType();
+            domainPasswordInfo = GetDomainPasswordInformation();
         }
 
         /// <inheritdoc />
@@ -40,18 +41,16 @@
             var fixedUsername = FixUsernameWithDomain(username);
             _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
 
+            if (domainPasswordInfo != null && newPassword.Length < domainPasswordInfo.Value.MinPasswordLength)
+            {
+                _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
+
+                return new ApiErrorItem(ApiErrorCode.ComplexPassword);
+            }
+
             try
             {
-                var domainPasswordInfo = GetDomainPasswordInformation();
-                if (domainPasswordInfo != null && (domainPasswordInfo.Value.PasswordProperties & PasswordProperties.DomainPasswordComplex) == PasswordProperties.DomainPasswordComplex)
-                {
-                    if (newPassword.Length < domainPasswordInfo.Value.MinPasswordLength)
-                    {
-                        _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
 
-                        return new ApiErrorItem(ApiErrorCode.ComplexPassword);
-                    }
-                }
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
@@ -100,6 +99,9 @@
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
                     : new ApiErrorItem(ApiErrorCode.Generic, $"{ex.InnerException.Message}");
+
+                // TODO: Check if the exception is from AD and then check Complex flag to report properly.
+                // if ((domainPasswordInfo.Value.PasswordProperties & PasswordProperties.DomainPasswordComplex) == PasswordProperties.DomainPasswordComplex)
 
                 _logger.LogWarning(item.Message, ex);
 
