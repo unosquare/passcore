@@ -40,12 +40,13 @@
             var fixedUsername = FixUsernameWithDomain(username);
             _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
 
+            var domainPasswordInfo = GetDomainPasswordInformation();
+
+            if (domainPasswordInfo != null && newPassword.Length < domainPasswordInfo.Value.MinPasswordLength)
+                new ApiErrorItem(ApiErrorCode.ComplexPassword, "Failed due to password complex policies: New password length is shorter than AD minimum password length");
+
             try
             {
-                var domainPasswordInfo = GetDomainPasswordInformation(_options.DefaultDomain);
-                if (newPassword.Length < domainPasswordInfo.MinPasswordLength)
-                    throw new InvalidOperationException("Failed due to password complex policies: New password length is shorter than AD minimum password length");
-
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
@@ -175,21 +176,21 @@
             }
         }
         
-        private DomainPasswordInformation GetDomainPasswordInformation(string domainName)
+        private DomainPasswordInformation? GetDomainPasswordInformation()
         {
             using (var server = new SamServer())
             {
                 foreach (var domain in server.EnumerateDomains())
                 {
                     if (domain == "Builtin") continue;
-                    if (!string.IsNullOrEmpty(domainName) && !domainName.Contains(domain)) continue;
+                    if (!string.IsNullOrEmpty(_options.DefaultDomain) && !_options.DefaultDomain.Contains(domain)) continue;
 
                     var sid = server.GetDomainSid(domain);
                     return server.GetDomainPasswordInformation(sid);
                 }
             }
 
-            throw new InvalidOperationException("Failed due to password complex policies: Cannot find the domain information");
+            return null;
         }
 
         private void SetLastPassword(Principal userPrincipal)
