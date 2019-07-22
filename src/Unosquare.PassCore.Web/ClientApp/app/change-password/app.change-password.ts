@@ -104,17 +104,18 @@ export class ChangePasswordComponent implements OnInit {
         this.value = 0;
 
         if (submitted === 'success') {
-            this.FormGroup.reset();
+            this.FormGroup.reset('');
         } else {
             for (let formControl in this.FormGroup.controls) {
                 if (formControl !== 'username')
-                    this.FormGroup.controls[formControl].reset();
+                    this.FormGroup.controls[formControl].reset('');
             }
         }
 
         if (this.ViewOptions.recaptcha.siteKey !== '') {
             grecaptcha.reset();
         }
+        this.changeProgressBar(PasswordStrength.measureStrength(this.FormData.NewPassword));
     }
 
     // Get data from the form
@@ -174,7 +175,9 @@ export class ChangePasswordComponent implements OnInit {
                         case 7:
                             return this.ErrorAlertMessage += this.ViewOptions.alerts.errorInvalidDomain;
                         case 8:
-                            return this.ErrorAlertMessage += this.ViewOptions.alerts.ErrorConnectionLdap;
+                            return this.ErrorAlertMessage += this.ViewOptions.alerts.errorConnectionLdap;
+                        case 9:
+                            return this.ErrorAlertMessage += this.ViewOptions.alerts.errorComplexPassword;
                         default:
                             return null;
                     }

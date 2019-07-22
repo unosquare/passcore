@@ -9,7 +9,7 @@ namespace Unosquare.PassCore.Web
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
-#if DEBUG
+#if !DEBUG
     using Helpers;
 #elif PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
@@ -73,7 +73,7 @@ namespace Unosquare.PassCore.Web
             services.Configure<WebSettings>(Configuration.GetSection(nameof(WebSettings)));
             services.AddMvc();
 
-#if DEBUG
+#if !DEBUG
             services.Configure<IAppSettings>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
 #elif PASSCORE_LDAP_PROVIDER

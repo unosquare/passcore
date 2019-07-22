@@ -49,5 +49,10 @@
         /// LDAP problem connection
         /// </summary>
         LdapProblem = 8,
+
+        /// <summary>
+        /// Complex password errors
+        /// </summary>
+        ComplexPassword = 9,
     }
 }
