@@ -18,6 +18,7 @@
         private readonly PasswordChangeOptions _options;
         private readonly ILogger _logger;
         private IdentityType _idType = IdentityType.UserPrincipalName;
+        private DomainPasswordInformation domainPasswordInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordChangeProvider"/> class.
@@ -37,11 +38,20 @@
         public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             var fixedUsername = FixUsernameWithDomain(username);
-
             _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
 
             try
             {
+                var domainPasswordInfo = GetDomainPasswordInformation();
+                if (domainPasswordInfo != null && (domainPasswordInfo.Value.PasswordProperties & PasswordProperties.DomainPasswordComplex) == PasswordProperties.DomainPasswordComplex)
+                {
+                    if (newPassword.Length < domainPasswordInfo.Value.MinPasswordLength)
+                    {
+                        _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
+
+                        return new ApiErrorItem(ApiErrorCode.ComplexPassword);
+                    }
+                }
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
@@ -89,7 +99,7 @@
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
-                    : new ApiErrorItem(ApiErrorCode.Generic, $"Failed to update password: {ex.Message}");
+                    : new ApiErrorItem(ApiErrorCode.Generic, $"{ex.InnerException.Message}");
 
                 _logger.LogWarning(item.Message, ex);
 
@@ -169,6 +179,23 @@
             {
                 _logger.LogError(new EventId(888), exception, nameof(ValidateGroups));
             }
+        }
+
+        private DomainPasswordInformation? GetDomainPasswordInformation()
+        {
+            using (var server = new SamServer())
+            {
+                foreach (var domain in server.EnumerateDomains())
+                {
+                    if (domain == "Builtin") continue;
+                    if (!string.IsNullOrEmpty(_options.DefaultDomain) && !_options.DefaultDomain.Contains(domain)) continue;
+
+                    var sid = server.GetDomainSid(domain);
+                    return server.GetDomainPasswordInformation(sid);
+                }
+            }
+
+            return null;
         }
 
         private void SetLastPassword(Principal userPrincipal)
