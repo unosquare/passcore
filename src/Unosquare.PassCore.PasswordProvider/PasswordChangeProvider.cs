@@ -52,7 +52,6 @@
                         return new ApiErrorItem(ApiErrorCode.ComplexPassword);
                     }
                 }
-
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
@@ -181,6 +180,7 @@
                 _logger.LogError(new EventId(888), exception, nameof(ValidateGroups));
             }
         }
+
         private DomainPasswordInformation? GetDomainPasswordInformation()
         {
             using (var server = new SamServer())
