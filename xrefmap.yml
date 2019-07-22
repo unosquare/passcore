@@ -19,6 +19,12 @@ references:
   commentId: F:Unosquare.PassCore.Common.ApiErrorCode.ChangeNotPermitted
   fullName: Unosquare.PassCore.Common.ApiErrorCode.ChangeNotPermitted
   nameWithType: ApiErrorCode.ChangeNotPermitted
+- uid: Unosquare.PassCore.Common.ApiErrorCode.ComplexPassword
+  name: ComplexPassword
+  href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_ComplexPassword
+  commentId: F:Unosquare.PassCore.Common.ApiErrorCode.ComplexPassword
+  fullName: Unosquare.PassCore.Common.ApiErrorCode.ComplexPassword
+  nameWithType: ApiErrorCode.ComplexPassword
 - uid: Unosquare.PassCore.Common.ApiErrorCode.FieldMismatch
   name: FieldMismatch
   href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_FieldMismatch
