@@ -554,6 +554,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorCaptcha
   nameWithType: Alerts.ErrorCaptcha
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorComplexPassword
+  name: ErrorComplexPassword
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorComplexPassword
+  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorComplexPassword
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorComplexPassword
+  nameWithType: Alerts.ErrorComplexPassword
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorComplexPassword*
+  name: ErrorComplexPassword
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorComplexPassword_
+  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorComplexPassword
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorComplexPassword
+  nameWithType: Alerts.ErrorComplexPassword
 - uid: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLdap
   name: ErrorConnectionLdap
   href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorConnectionLdap
