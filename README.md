@@ -177,7 +177,7 @@ icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>:M" /t
 
 ## Build your own version
 
-If you need to modify the source code (either backend or frontend). You may require to install [.NET Core SDK}(https://dotnet.microsoft.com/download) and [Node.js](https://nodejs.org/en/download/). Run the following command according to your target platform.
+If you need to modify the source code (either backend or frontend). You may require to install [.NET Core SDK](https://dotnet.microsoft.com/download) and [Node.js](https://nodejs.org/en/download/). Run the following command according to your target platform.
 
 ### Windows
 ```
