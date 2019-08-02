@@ -35,7 +35,7 @@
     "@angular/core": "^6.0.0",
     "@angular/flex-layout": "^6.0.0-beta.16",
     "@angular/forms": "^6.0.0",
-    "@angular/http": "^6.0.0",
+    "@angular/http": "^7.2.15",
     "@angular/material": "6.0.1",
     "@angular/platform-browser": "^6.0.0",
     "@angular/platform-browser-dynamic": "^6.0.0",
