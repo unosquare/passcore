@@ -15,7 +15,7 @@
     "@ngtools/webpack": "^1.7.4",
     "@types/angular": "^1.6.45",
     "@types/node": "^12.6.8",
-    "@types/webpack": "^3.8.11",
+    "@types/webpack": "^4.32.1",
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^4.0.0",
     "copy-webpack-plugin": "^4.5.1",
