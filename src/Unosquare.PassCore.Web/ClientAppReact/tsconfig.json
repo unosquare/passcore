@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      "sourceMap": true,
+      "noImplicitAny": true,
+      "module": "esnext",
+      "target": "es5",
+      "jsx": "react",
+      "lib": ["esnext","dom"],
+      "moduleResolution": "node",
+      "strictNullChecks": false,
+      "noImplicitReturns": true,
+      "forceConsistentCasingInFileNames": true,
+      "suppressImplicitAnyIndexErrors": true,
+      "noUnusedLocals": true
+    },
+    "include": ["./**/*"],
+    "exclude": [
+      "node_modules",
+      "build",
+      "scripts",
+      "acceptance-tests",
+      "webpack",
+    ],
+    "types": ["typesPatches"]
+  }
