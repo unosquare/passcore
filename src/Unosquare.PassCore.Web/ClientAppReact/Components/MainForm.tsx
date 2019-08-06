@@ -1,17 +1,48 @@
 import Paper from '@material-ui/core/Paper/Paper';
-import Typography from '@material-ui/core/Typography/Typography';
 import * as React from 'react';
+import { TextValidator } from 'uno-material-ui';
+import { useStateForModel, ValidatorForm } from 'uno-react';
+
+interface IChangePasswordFormInitialModel {
+    confirmationPassword: string;
+    currentPassword: string;
+    newPassword: string;
+    userName: string;
+}
+
+const defaultState: IChangePasswordFormInitialModel = {
+    confirmationPassword: '',
+    currentPassword: '',
+    newPassword: '',
+    userName: '',
+};
 
 export const MainForm: React.FunctionComponent<any> = () => {
+    const [fields, handleChange] = useStateForModel({ ...defaultState });
     return (
-        <Paper
+        < Paper
             style={{
-                marginTop: '10%',
+                marginTop: '70px',
             }}
         >
-            <Typography>
-                Holi paper
-            </Typography>
-        </Paper>
+            <ValidatorForm
+                autoComplete='off'
+                instantValidate={true}
+            // onSubmit={onSubmitForm}
+            >
+                <TextValidator
+                    id='userName'
+                    //label='Email Active Directory Attribute'
+                    name='userName'
+                    value={fields.userName}
+                    onChange={handleChange}
+                    validators={['required'}
+                    errorMessages={[
+                        'This field is required',
+                    ]}
+                />
+                
+            </ValidatorForm>
+        </Paper >
     );
 };

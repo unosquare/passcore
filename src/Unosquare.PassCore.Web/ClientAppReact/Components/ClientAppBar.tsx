@@ -6,48 +6,48 @@ import HelpIcon from '@material-ui/icons/Help';
 import * as React from 'react';
 
 // ToDo: Add action to be called at onClick in Fab component
-export const ClientAppBar: React.FunctionComponent<any> = () => {
-    return (
-        <AppBar
-            position='fixed'
-            style={{
-                backgroundColor: '#304FF3',
-                height: '6%',
-            }}
+export const ClientAppBar: React.FunctionComponent<any> = () => (
+    <AppBar
+        position='fixed'
+        style={{
+            backgroundColor: '#304FF3',
+            height: '60px',
+        }}
+    >
+        <Grid
+            alignItems='center'
+            container={true}
+            direction='row'
+            justify='space-between'
         >
             <Grid
-                alignItems='center'
-                container={true}
-                direction='row'
-                justify='space-between'
+                item={true}
+                xs={11}
             >
-                <Grid
-                    item={true}
-                    xs={11}
+                <Typography
+                    variant='h4'
+                    style={{
+                        color: 'white',
+                    }}
                 >
-                    <Typography
-                        variant='h4'
-                        color='inherit'
-                    >
-                        Change Account Password
-                    </Typography>
-                </Grid>
-                <Grid
-                    item={true}
-                    xs={1}
-                >
-                    <Fab
-                        color='primary'
-                    >
-                        <HelpIcon
-                            style={{
-                                height: '100%',
-                                width: '100%',
-                            }}
-                        />
-                    </Fab>
-                </Grid>
+                    Change Account Password
+                </Typography>
             </Grid>
-        </AppBar>
-    );
-};
+            <Grid
+                item={true}
+                xs={1}
+            >
+                <Fab
+                    color='primary'
+                >
+                    <HelpIcon
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                        }}
+                    />
+                </Fab>
+            </Grid>
+        </Grid>
+    </AppBar>
+);
