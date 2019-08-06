@@ -48,13 +48,12 @@ export const MainForm: React.FunctionComponent<any> = () => {
                         helperText='Your organization`s email address'
                         name='userName'
                         margin='dense'
-                        onValidated={setDisabled}
                         onChange={handleChange}
                         validators={['required']}
                         value={fields.userName}
                         style={{
                             height: '20px',
-                            marginBottom: '10%',
+                            marginBottom: '15%',
                         }}
                         fullWidth={true}
                         errorMessages={[
@@ -71,7 +70,7 @@ export const MainForm: React.FunctionComponent<any> = () => {
                         value={fields.currentPassword}
                         style={{
                             height: '20px',
-                            marginBottom: '10%',
+                            marginBottom: '15%',
                         }}
                         fullWidth={true}
                         errorMessages={[
@@ -88,7 +87,7 @@ export const MainForm: React.FunctionComponent<any> = () => {
                         value={fields.newPassword}
                         style={{
                             height: '20px',
-                            marginBottom: '10%',
+                            marginBottom: '15%',
                         }}
                         fullWidth={true}
                         errorMessages={[
@@ -106,7 +105,7 @@ export const MainForm: React.FunctionComponent<any> = () => {
                         value={fields.confirmationPassword}
                         style={{
                             height: '20px',
-                            marginBottom: '10%',
+                            marginBottom: '15%',
                         }}
                         fullWidth={true}
                         errorMessages={[

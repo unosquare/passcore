@@ -11,7 +11,6 @@ export const EntryPoint: React.FunctionComponent<any> = () => (
         <ClientAppBar />
         <main
             style={{
-                //alignItems: 'center',
                 display: 'flex',
                 flexGrow: 1,
                 height: '100%',

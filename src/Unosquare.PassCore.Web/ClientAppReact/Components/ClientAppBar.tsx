@@ -1,53 +1,41 @@
 import AppBar from '@material-ui/core/AppBar/AppBar';
 import Grid from '@material-ui/core/Grid/Grid';
-import IconButton from '@material-ui/core/IconButton/IconButton';
+import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import Typography from '@material-ui/core/Typography/Typography';
 import HelpIcon from '@material-ui/icons/Help';
 import * as React from 'react';
 
-// ToDo: Add action to be called at onClick in Fab component
 export const ClientAppBar: React.FunctionComponent<any> = () => (
     <AppBar
         position='fixed'
         style={{
             backgroundColor: '#304FF3',
-            height: '65px',
+            height: '64px',
         }}
+        elevation={0}
     >
         <Grid
-            alignItems='center'
             container={true}
+            style={{ height: '64px' }}
             direction='row'
             justify='space-between'
+            alignItems='center'
         >
-            <Grid
-                item={true}
-                xs={11}
-                alignItems='center'
+            <Typography
+                variant='h6'
+                color='secondary'
+                style={{
+                    paddingLeft: '1.5%',
+                }}
             >
-                <Typography
-                    variant='h6'
-                    style={{
-                        color: 'white',
-                    }}
-                >
-                    Change Account Password
-                </Typography>
-            </Grid>
-            <Grid
-                item={true}
-                xs={1}
+                Change Account Password
+            </Typography>
+            <Tooltip
+                title='If you are having trouble with this tool, please contact IT Support'
+                placement='left-end'
             >
-                <IconButton
-                    style={{
-                        height: '25px',
-                        width: '25px',
-                    }}
-                    color='default'
-                >
-                    <HelpIcon />
-                </IconButton>
-            </Grid>
+                <HelpIcon color='secondary' style={{ paddingRight: '1%' }} />
+            </Tooltip>
         </Grid>
-    </AppBar>
+    </AppBar >
 );
