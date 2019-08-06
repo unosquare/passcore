@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
       "sourceMap": true,
+      "paths": { "*": ["types/*"] },
       "noImplicitAny": true,
       "module": "esnext",
       "target": "es5",

@@ -3,9 +3,21 @@ import { ClientAppBar } from './ClientAppBar';
 import { MainForm } from './MainForm';
 
 export const EntryPoint: React.FunctionComponent<any> = () => (
-    <div>
+    <div
+        style={{
+            height: '100%',
+        }}
+    >
         <ClientAppBar />
-        <main>
+        <main
+            style={{
+                //alignItems: 'center',
+                display: 'flex',
+                flexGrow: 1,
+                height: '100%',
+                justifyContent: 'center',
+            }}
+        >
             <MainForm />
         </main>
     </div>

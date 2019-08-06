@@ -1,6 +1,6 @@
 import AppBar from '@material-ui/core/AppBar/AppBar';
-import Fab from '@material-ui/core/Fab/Fab';
 import Grid from '@material-ui/core/Grid/Grid';
+import IconButton from '@material-ui/core/IconButton/IconButton';
 import Typography from '@material-ui/core/Typography/Typography';
 import HelpIcon from '@material-ui/icons/Help';
 import * as React from 'react';
@@ -11,7 +11,7 @@ export const ClientAppBar: React.FunctionComponent<any> = () => (
         position='fixed'
         style={{
             backgroundColor: '#304FF3',
-            height: '60px',
+            height: '65px',
         }}
     >
         <Grid
@@ -23,9 +23,10 @@ export const ClientAppBar: React.FunctionComponent<any> = () => (
             <Grid
                 item={true}
                 xs={11}
+                alignItems='center'
             >
                 <Typography
-                    variant='h4'
+                    variant='h6'
                     style={{
                         color: 'white',
                     }}
@@ -37,16 +38,15 @@ export const ClientAppBar: React.FunctionComponent<any> = () => (
                 item={true}
                 xs={1}
             >
-                <Fab
-                    color='primary'
+                <IconButton
+                    style={{
+                        height: '25px',
+                        width: '25px',
+                    }}
+                    color='default'
                 >
-                    <HelpIcon
-                        style={{
-                            height: '100%',
-                            width: '100%',
-                        }}
-                    />
-                </Fab>
+                    <HelpIcon />
+                </IconButton>
             </Grid>
         </Grid>
     </AppBar>
