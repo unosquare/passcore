@@ -4,38 +4,44 @@ import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import Typography from '@material-ui/core/Typography/Typography';
 import HelpIcon from '@material-ui/icons/Help';
 import * as React from 'react';
+import { GlobalContext } from '../Provider/GlobalContext';
 
-export const ClientAppBar: React.FunctionComponent<any> = () => (
-    <AppBar
-        position='fixed'
-        style={{
-            backgroundColor: '#304FF3',
-            height: '64px',
-        }}
-        elevation={0}
-    >
-        <Grid
-            container={true}
-            style={{ height: '64px' }}
-            direction='row'
-            justify='space-between'
-            alignItems='center'
+export const ClientAppBar: React.FunctionComponent<any> = () => {
+    const { ChangePasswordForm, ChangePasswordTitle } = React.useContext(GlobalContext);
+    const { HelpText } = ChangePasswordForm;
+
+    return (
+        <AppBar
+            position='fixed'
+            style={{
+                backgroundColor: '#304FF3',
+                height: '64px',
+            }}
+            elevation={0}
         >
-            <Typography
-                variant='h6'
-                color='secondary'
-                style={{
-                    paddingLeft: '1.5%',
-                }}
+            <Grid
+                container={true}
+                style={{ height: '64px' }}
+                direction='row'
+                justify='space-between'
+                alignItems='center'
             >
-                Change Account Password
-            </Typography>
-            <Tooltip
-                title='If you are having trouble with this tool, please contact IT Support'
-                placement='left-end'
-            >
-                <HelpIcon color='secondary' style={{ paddingRight: '1%' }} />
-            </Tooltip>
-        </Grid>
-    </AppBar >
-);
+                <Typography
+                    variant='h6'
+                    color='secondary'
+                    style={{
+                        paddingLeft: '1.5%',
+                    }}
+                >
+                    {ChangePasswordTitle}
+                </Typography>
+                <Tooltip
+                    title={HelpText}
+                    placement='left'
+                >
+                    <HelpIcon color='secondary' style={{ paddingRight: '1%' }} />
+                </Tooltip>
+            </Grid>
+        </AppBar >
+    );
+};

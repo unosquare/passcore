@@ -36,7 +36,7 @@ export const Main: React.FunctionComponent<any> = () => {
                             align='center'
                         // className={classes.loadingtitle}
                         >
-                            passcore
+                            Loading Passcore...
                         </Typography>
                     </Grid>
                     <Grid

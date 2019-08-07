@@ -4,23 +4,57 @@ import Paper from '@material-ui/core/Paper/Paper';
 import * as React from 'react';
 import { TextValidator } from 'uno-material-ui';
 import { useStateForModel, ValidatorForm } from 'uno-react';
+import { GlobalContext } from '../Provider/GlobalContext';
+import { ReCaptchaComponent } from './ReCaptcha';
+import { PasswordStrengthBar } from './PasswordStrengthBar';
 
 interface IChangePasswordFormInitialModel {
-    confirmationPassword: string;
-    currentPassword: string;
-    newPassword: string;
-    userName: string;
+    CurrentPassword: string;
+    NewPassword: string;
+    NewPasswordVerify: string;
+    Recaptcha: string;
+    Username: string;
 }
 
 const defaultState: IChangePasswordFormInitialModel = {
-    confirmationPassword: '',
-    currentPassword: '',
-    newPassword: '',
-    userName: '',
+    CurrentPassword: '',
+    NewPassword: '',
+    NewPasswordVerify: '',
+    Recaptcha: '',
+    Username: '',
 };
 
 export const MainForm: React.FunctionComponent<any> = () => {
+
+    const { ChangePasswordForm,
+        ErrorsPasswordForm,
+        UseEmail,
+        ShowPasswordMeter,
+    } = React.useContext(GlobalContext);
+
+    const {
+        ChangePasswordButtonLabel,
+        CurrentPasswordHelpblock,
+        CurrentPasswordLabel,
+        NewPasswordHelpblock,
+        NewPasswordLabel,
+        NewPasswordVerifyHelpblock,
+        NewPasswordVerifyLabel,
+        UsernameDefaultDomainHelperBlock,
+        UsernameHelpblock,
+        UsernameLabel,
+    } = ChangePasswordForm;
+
+    const {
+        FieldRequired,
+        PasswordMatch,
+        UsernameEmailPattern,
+        UsernamePattern,
+    } = ErrorsPasswordForm;
+
     const [fields, handleChange] = useStateForModel({ ...defaultState });
+    const [token, setToken] = React.useState('');
+    const [shouldReset, setShouldReset] = React.useState(1);
 
     return (
         < Paper
@@ -43,76 +77,90 @@ export const MainForm: React.FunctionComponent<any> = () => {
                     style={{ width: '80%', marginLeft: '10%' }}
                 >
                     <TextValidator
-                        id='userName'
-                        label='Username'
-                        helperText='Your organization`s email address'
-                        name='userName'
-                        margin='dense'
+                        id='Username'
+                        label={UsernameLabel}
+                        helperText={UseEmail ? UsernameHelpblock : UsernameDefaultDomainHelperBlock}
+                        name='Username'
                         onChange={handleChange}
-                        validators={['required']}
-                        value={fields.userName}
+                        validators={['required']} //ToDo: add the email validation if UseEmail is active
+                        value={fields.Username}
                         style={{
                             height: '20px',
                             marginBottom: '15%',
                         }}
                         fullWidth={true}
                         errorMessages={[
-                            'This field is required',
+                            FieldRequired,
+                            UseEmail ? UsernameEmailPattern : UsernamePattern,
                         ]}
                     />
                     <TextValidator
-                        helperText='Enter your current password'
-                        id='currentPassword'
-                        name='currentPassword'
+                        label={CurrentPasswordLabel}
+                        helperText={CurrentPasswordHelpblock}
+                        id='CurrentPassword'
+                        name='CurrentPassword'
                         onChange={handleChange}
                         type='password'
                         validators={['required']}
-                        value={fields.currentPassword}
+                        value={fields.CurrentPassword}
                         style={{
                             height: '20px',
                             marginBottom: '15%',
                         }}
                         fullWidth={true}
                         errorMessages={[
-                            'This field is required',
+                            FieldRequired,
                         ]}
                     />
                     <TextValidator
-                        helperText='Enter a strong password. You can use this tool to help you create one; use the XKCD (random sep, pad digit), or NTLM, options.'
-                        id='newPassword'
-                        name='newPassword'
+                        label={NewPasswordLabel}
+                        helperText={NewPasswordHelpblock}
+                        id='NewPassword'
+                        name='NewPassword'
                         onChange={handleChange}
                         type='password'
                         validators={['required']}
-                        value={fields.newPassword}
+                        value={fields.NewPassword}
                         style={{
                             height: '20px',
                             marginBottom: '15%',
                         }}
                         fullWidth={true}
                         errorMessages={[
-                            'This field is required',
+                            FieldRequired,
                         ]}
                     />
+                    {
+                        ShowPasswordMeter &&
+                        <PasswordStrengthBar
+                            newPassword={fields.newPassword}
+                        //reset={}
+                        />
+                    }
                     <TextValidator
-                        helperText='Enter your new password again'
-                        id='confirmationPassword'
-                        label='Re-enter New Password'
-                        name='confirmationPassword'
+                        label={NewPasswordVerifyLabel}
+                        helperText={NewPasswordVerifyHelpblock}
+                        id='NewPasswordVerify'
+                        name='NewPasswordVerify'
                         onChange={handleChange}
                         type='password'
                         validators={['required']}
-                        value={fields.confirmationPassword}
+                        value={fields.NewPasswordVerify}
                         style={{
                             height: '20px',
                             marginBottom: '15%',
                         }}
                         fullWidth={true}
                         errorMessages={[
-                            'This field is required',
+                            FieldRequired,
+                            PasswordMatch ///ToDo: need to set the password match validation
                         ]}
                     />
                 </FormGroup>
+                <ReCaptchaComponent
+                    setToken={setToken}
+                    shouldReset={shouldReset}
+                />
                 <Button
                     type='submit'
                     variant='contained'
@@ -122,7 +170,7 @@ export const MainForm: React.FunctionComponent<any> = () => {
                         marginTop: '10%',
                     }}
                 >
-                    Change Password
+                    {ChangePasswordButtonLabel}
                 </Button>
             </ValidatorForm>
         </Paper >
