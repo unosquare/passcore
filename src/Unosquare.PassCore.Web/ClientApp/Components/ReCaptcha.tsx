@@ -1,35 +1,12 @@
 import * as React from 'react';
-import { ReCaptcha } from 'react-recaptcha-google';
-import { GlobalContext } from '../Provider/GlobalContext';
+import { ReCaptcha } from 'react-recaptcha-v3';
 
-export const ReCaptchaComponent: React.FunctionComponent<any> = ({ setToken, shouldReset }) => {
-
-    const { siteKey } = React.useContext(GlobalContext).recaptcha;
-
-    // tslint:disable-next-line
-    let captchaRef: any;
-
-    React.useEffect(() => {
-        if (captchaRef) {
-            captchaRef.reset();
-        }
-    }, [shouldReset]);
-
-    const onLoadRecaptcha = () => {
-        if (captchaRef) {
-            captchaRef.reset();
-        }
-    };
-
+export const ReCaptchaComponent: React.FunctionComponent<any> = ({ setToken, siteKey }) => {
     const verifyCallback = (recaptchaToken: any) => setToken(recaptchaToken);
 
     return (
         <ReCaptcha
-            ref={(el: any) => { captchaRef = el; }}
-            size='normal'
-            render='explicit'
             sitekey={siteKey}
-            onloadCallback={onLoadRecaptcha}
             verifyCallback={verifyCallback}
         />
     );

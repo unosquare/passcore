@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { ChangePassword } from './ChangePassword';
 import { ClientAppBar } from './ClientAppBar';
-import { MainForm } from './MainForm';
 
 export const EntryPoint: React.FunctionComponent<any> = () => (
     <div
@@ -17,7 +17,7 @@ export const EntryPoint: React.FunctionComponent<any> = () => (
                 justifyContent: 'center',
             }}
         >
-            <MainForm />
+            <ChangePassword />
         </main>
     </div>
 );

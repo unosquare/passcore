@@ -70,4 +70,10 @@ export const GlobalContext = React.createContext<IGlobalContext>({
     validationRegex: null,
 });
 
-export const GlobalActionsContext = React.createContext<any>({});
+interface IGlobalActionsContext {
+    changePassword: any;
+}
+
+export const GlobalActionsContext = React.createContext<IGlobalActionsContext>({
+    changePassword: null,
+});

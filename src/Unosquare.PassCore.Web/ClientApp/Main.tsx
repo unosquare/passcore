@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid/Grid';
 import Typography from '@material-ui/core/Typography/Typography';
 import * as React from 'react';
-import { loadReCaptcha } from 'react-recaptcha-google';
+import { loadReCaptcha } from 'react-recaptcha-v3';
 import { LoadingIcon } from 'uno-material-ui';
 import { useEffectWithLoading } from 'uno-react';
 import { EntryPoint } from './Components/EntryPoint';
@@ -13,8 +13,10 @@ export const Main: React.FunctionComponent<any> = () => {
     const [settings, isLoading] = useEffectWithLoading(resolveAppSettings, {}, []);
 
     React.useEffect(() => {
-        if (settings) {
-            loadReCaptcha();
+        if (settings && settings.recaptcha) {
+            if (settings.recaptcha.siteKey !== '') {
+                loadReCaptcha(settings.recaptcha.siteKey);
+            }
         }
     }, [settings]);
 
