@@ -1,87 +1,22 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" style="height: 100%; overflow-y: hidden; overflow-x: hidden">
 
 <head>
-    <!-- Change the following line to suit your redirection needs -->
-    <base href="/">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="unosquare, oss software, password change, active directory, mit license, password, account utilities, user account">
-    <meta name="MobileOptimized" content="320">
-    <meta name="description" content="PassCore is a self-service password change utility for Active Directory.">
-    <meta name="author" content="Unosquare, LLC">
-    <meta name="title" content="PassCore">
-    <meta name="theme-color" content="#3f51b5">
-    <meta name="msapplication-navbutton-color" content="#3f51b5">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#3f51b5">
-    <meta property="og:image" content="assets/images/passcore-logo.png">
-    <meta property="og:title" content="PassCore - Self-Service Password Change Utility">
 
-    <link href="manifest.json" rel="manifest">
+    <meta name="description" content="passcore">
+    <meta name="author" content="Unosquare">
+    <!-- <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> -->
 
-    <title>Loading . . .</title>
-    <style>
-        @font-face {
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 400;
-            src: local('Roboto'), local('Roboto-Regular'), url(assets/fonts/Roboto/latin.woff2) format('woff2'), url(assets/fonts/Roboto/Roboto-Regular.ttf) format('truetype');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #fafafa;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-
-    <link href="assets/styles/indigo-pink.css" rel="stylesheet" type="text/css">
-    <link href="assets/favicon.ico" rel="shortcut icon">
+    <title>passcorepro - Unosquare</title>
 </head>
 
-<body>
-    <app-root>
-        <style>
-            app-root {
-                font-family: 'Roboto', sans-serif;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                font-size: 2em;
-            }
-
-            @keyframes dots {
-                50% {
-                    transform: translateY(-.4rem);
-                }
-
-                100% {
-                    transform: translateY(0);
-                }
-            }
-
-            .d {
-                animation: dots 1.5s ease-out infinite;
-            }
-
-            .d-2 {
-                animation-delay: .5s;
-            }
-
-            .d-3 {
-                animation-delay: 1s;
-            }
-        </style>
-        Loading Pass
-        <strong class="core">core</strong>
-        <span class="d">.</span>
-        <span class="d d-2">.</span>
-        <span class="d d-3">.</span>
-    </app-root>
+<body style="height: 100%;">
+    <div id="rootNode" style="height: 100%;"></div>
+    <script src="./App.tsx"></script>
 </body>
 
 </html>
