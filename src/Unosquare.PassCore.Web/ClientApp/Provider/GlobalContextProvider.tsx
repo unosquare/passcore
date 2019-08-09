@@ -5,7 +5,7 @@ export const GlobalContextProvider: React.FunctionComponent<any> = ({
     children,
     settings,
 }) => {
-    const [getProviderValue, setProviderValue] = React.useState({ ...settings });
+    const [getProviderValue] = React.useState({ ...settings });
     return (
         <GlobalContext.Provider value={getProviderValue}>
             {children}

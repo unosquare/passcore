@@ -70,6 +70,14 @@ export const GlobalContext = React.createContext<IGlobalContext>({
     validationRegex: null,
 });
 
+interface ISnackbarContext {
+    sendMessage: (messageText: string, messageType?: string) => void;
+}
+
+export const SnackbarContext = React.createContext<ISnackbarContext>({
+    sendMessage: null,
+});
+
 interface IGlobalActionsContext {
     changePassword: any;
 }

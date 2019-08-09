@@ -128,7 +128,10 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                     newPassword={fields.NewPassword}
                 />
             }
-            <div dangerouslySetInnerHTML={{ __html: newPasswordHelpblock }}  style={{font: '12px Roboto,Helvetica, Arial, sans-serif'}}/>
+            <div
+                dangerouslySetInnerHTML={{ __html: newPasswordHelpblock }}
+                style={{ font: '12px Roboto,Helvetica, Arial, sans-serif' }}
+            />
             <TextValidator
                 label={newPasswordVerifyLabel}
 

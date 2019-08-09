@@ -7,6 +7,7 @@ import { useEffectWithLoading } from 'uno-react';
 import { EntryPoint } from './Components/EntryPoint';
 import { GlobalActionsProvider } from './Provider/GlobalActionsProvider';
 import { GlobalContextProvider } from './Provider/GlobalContextProvider';
+import { SnackbarContextProvider } from './Provider/SnackbarContextProvider';
 import { resolveAppSettings } from './Utils/AppSettings';
 
 export const Main: React.FunctionComponent<any> = () => {
@@ -36,7 +37,6 @@ export const Main: React.FunctionComponent<any> = () => {
                         <Typography
                             variant='h3'
                             align='center'
-                        // className={classes.loadingtitle}
                         >
                             Loading Passcore...
                         </Typography>
@@ -44,9 +44,7 @@ export const Main: React.FunctionComponent<any> = () => {
                     <Grid
                         item={true}
                     >
-                        <LoadingIcon
-                        // className={classes.loadingIcon}
-                        />
+                        <LoadingIcon />
                     </Grid>
                 </Grid>
             </React.Fragment>
@@ -55,9 +53,11 @@ export const Main: React.FunctionComponent<any> = () => {
 
     return (
         <GlobalContextProvider settings={settings}>
-            <GlobalActionsProvider>
-                <EntryPoint />
-            </GlobalActionsProvider>
+            <SnackbarContextProvider>
+                <GlobalActionsProvider>
+                    <EntryPoint />
+                </GlobalActionsProvider>
+            </SnackbarContextProvider>
         </GlobalContextProvider>
     );
 };

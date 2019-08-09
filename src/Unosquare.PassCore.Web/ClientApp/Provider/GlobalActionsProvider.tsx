@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { fetchController } from '../Utils/RequestController';
-import { GlobalActionsContext } from './GlobalContext';
+import { fetchRequest } from '../Utils/FetchRequest';
+import { GlobalActionsContext, GlobalContext, SnackbarContext } from './GlobalContext';
 
 const enum RequestMethod {
     Delete = 'DELETE',
@@ -9,42 +9,26 @@ const enum RequestMethod {
     Put = 'PUT',
 }
 
-const fetchRequest = async (
-    url: string,
-    method = RequestMethod.Get,
-    accessToken = '',
-    body?: any,
-) => {
-    try {
-        const data = await fetchController(
-            url,
-            accessToken,
-            method,
-            body);
-
-        if (!data || data.error) {
-            return null;
-        }
-
-        return data;
-    } catch (e) {
-
-    }
-};
-
 export const GlobalActionsProvider: React.FunctionComponent<any> = ({
     children,
 }) => {
 
+    const { alerts } = React.useContext(GlobalContext);
+    const { sendMessage } = React.useContext(SnackbarContext);
+
     const provActions = {
         // here should go all the actions.
         changePassword: async (data: any) => {
-            const response = await fetchRequest('api/password', RequestMethod.Post,
+            const response = await fetchRequest(
+                'api/password',
+                RequestMethod.Post,
                 JSON.stringify({
                     ...data,
                 }));
 
-            //ToDo: use response to see the possible error messages.
+            //if errors should call the snackbar message if there is no error, return response
+            //ToDo: use the sendMessage to show posible errors (using the alerts properties).
+            return response;
         },
     };
 
