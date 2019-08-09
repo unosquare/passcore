@@ -41,7 +41,7 @@
     "@angular/platform-browser-dynamic": "^6.0.0",
     "@angular/router": "^6.0.0",
     "@types/zxcvbn": "^4.4.0",
-    "core-js": "^2.5.5",
+    "core-js": "^3.2.0",
     "ng-recaptcha": "^4.0.0-beta.1",
     "promise-polyfill": "8.0.0",
     "reflect-metadata": "^0.1.12",
