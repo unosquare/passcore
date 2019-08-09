@@ -1,18 +1,12 @@
 import { createFetchController } from 'uno-react';
-import { AdminEndpoints } from './Routes';
 
 export const fetchController = createFetchController({
     headersResolver: (url: string, accessToken: string) => {
         const headers: Headers = new Headers();
 
-        if (url === AdminEndpoints.login) {
-            headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        }
-        else {
-            headers.append('Accept', 'application/json');
-            headers.append('Content-Type', 'application/json');
-            headers.append('Authorization', `Bearer ${accessToken}`);
-        }
+        headers.append('Accept', 'application/json');
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', `Bearer ${accessToken}`);
 
         return headers;
     },

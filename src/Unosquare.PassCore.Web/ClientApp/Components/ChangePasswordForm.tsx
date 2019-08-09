@@ -126,10 +126,9 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 showPasswordMeter &&
                 <PasswordStrengthBar
                     newPassword={fields.NewPassword}
-                // reset={}
                 />
             }
-            <div dangerouslySetInnerHTML={{ __html: newPasswordHelpblock }} />
+            <div dangerouslySetInnerHTML={{ __html: newPasswordHelpblock }}  style={{font: '12px Roboto,Helvetica, Arial, sans-serif'}}/>
             <TextValidator
                 label={newPasswordVerifyLabel}
 
