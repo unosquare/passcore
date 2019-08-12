@@ -73,7 +73,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
     return (
         <FormGroup
             row={false}
-            style={{ width: '80%', margin: '3.5% 0 0 10%' }}
+            style={{ width: '80%', margin: '15px 0 0 10%' }}
         >
             <TextValidator
                 autoFocus={true}
@@ -88,8 +88,8 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 validators={userNameValidations}
                 value={fields.Username}
                 style={{
+                    margin: '15px 0 50px 0'
                     height: '20px',
-                    marginBottom: '15%',
                 }}
                 fullWidth={true}
                 errorMessages={userNameErrorMessages}
@@ -108,7 +108,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 value={fields.CurrentPassword}
                 style={{
                     height: '20px',
-                    marginBottom: '15%',
+                    marginBottom: '50px',
                 }}
                 fullWidth={true}
                 errorMessages={[fieldRequired]}
@@ -126,7 +126,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 value={fields.NewPassword}
                 style={{
                     height: '20px',
-                    marginBottom: '6%',
+                    marginBottom: '30px',
                 }}
                 fullWidth={true}
                 errorMessages={[
@@ -141,7 +141,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
             }
             <div
                 dangerouslySetInnerHTML={{ __html: newPasswordHelpblock }}
-                style={{ font: '12px Roboto,Helvetica, Arial, sans-serif' }}
+                style={{ font: '12px Roboto,Helvetica, Arial, sans-serif', marginBottom: '15px' }}
             />
             <TextValidator
                 inputProps={{
@@ -157,7 +157,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 value={fields.NewPasswordVerify}
                 style={{
                     height: '20px',
-                    margin: '7% 0 15% 0',
+                    marginBottom: '50px',
                 }}
                 fullWidth={true}
                 errorMessages={[

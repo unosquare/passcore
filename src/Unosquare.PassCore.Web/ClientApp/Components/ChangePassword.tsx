@@ -88,9 +88,9 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
             < Paper
                 style={{
                     borderRadius: '10px',
-                    height: '600px',
-                    marginTop: '3.5%',
-                    width: '34%',
+                    height: '550px',
+                    marginTop: '75px',
+                    width: '650px',
                     zIndex: 1,
                 }}
                 elevation={6}
@@ -113,8 +113,8 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                         color='primary'
                         disabled={disabled}
                         style={{
-                            marginLeft: '35.5%',
-                            marginTop: '10%',
+                            margin: '100px 0 0 180px',
+                            width: '240px',
                         }}
                     >
                         {changePasswordButtonLabel}

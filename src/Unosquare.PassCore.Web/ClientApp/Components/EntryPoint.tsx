@@ -4,22 +4,15 @@ import { ClientAppBar } from './ClientAppBar';
 import { Footer } from './Footer';
 
 export const EntryPoint: React.FunctionComponent<any> = () => (
-    <div
-        style={{
-            height: '100%',
-        }}
-    >
+    <React.Fragment>
         <ClientAppBar />
         <main
             style={{
-                display: 'flex',
-                flexGrow: 1,
-                height: '100%',
-                justifyContent: 'center',
+                marginLeft: 'calc((100% - 650px)/2)',
             }}
         >
             <ChangePassword />
+            <Footer />
         </main>
-        <Footer />
-    </div>
+    </React.Fragment>
 );

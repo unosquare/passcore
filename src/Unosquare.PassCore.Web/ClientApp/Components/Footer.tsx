@@ -9,11 +9,8 @@ import passcoreLogo from '../assets/images/passcore-logo.png';
 export const Footer: React.FunctionComponent<any> = () => (
     <div
         style={{
-            left: '31.5%',
-            padding: '8px',
-            position: 'fixed',
-            top: '700px',
-            width: '34%',
+            marginTop: '40px',
+            width: '650px',
         }}
     >
         <Grid
@@ -26,7 +23,7 @@ export const Footer: React.FunctionComponent<any> = () => (
                 item={true}
                 xs={8}
             >
-                <img src={passcoreLogo} style={{ marginLeft: '40px', maxWidth: '125px' }} />
+                <img src={passcoreLogo} style={{ marginLeft: '15px', maxWidth: '125px' }} />
             </Grid>
             <Grid
                 item={true}
