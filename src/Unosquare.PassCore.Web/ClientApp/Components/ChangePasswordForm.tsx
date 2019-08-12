@@ -144,7 +144,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 value={fields.NewPasswordVerify}
                 style={{
                     height: '20px',
-                    marginBottom: '15%',
+                    margin: '7% 0 15% 0',
                 }}
                 fullWidth={true}
                 errorMessages={[

@@ -22,7 +22,7 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
 
     const toSubmitData = (formData: any) =>
         changePassword({ ...formData, Recaptcha: token }).then((response: any) => {
-            //ToDo: use the response to open the dialog if the change password was successful.
+            setDialog(response);
             setSubmit(false);
         });
 

@@ -9,26 +9,61 @@ const enum RequestMethod {
     Put = 'PUT',
 }
 
-export const GlobalActionsProvider: React.FunctionComponent<any> = ({
-    children,
-}) => {
+export const GlobalActionsProvider: React.FunctionComponent<any> = ({ children }) => {
 
     const { alerts } = React.useContext(GlobalContext);
     const { sendMessage } = React.useContext(SnackbarContext);
 
     const provActions = {
-        // here should go all the actions.
         changePassword: async (data: any) => {
             const response = await fetchRequest(
                 'api/password',
                 RequestMethod.Post,
-                JSON.stringify({
-                    ...data,
-                }));
+                JSON.stringify({ ...data },
+                ));
 
-            //if errors should call the snackbar message if there is no error, return response
-            //ToDo: use the sendMessage to show posible errors (using the alerts properties).
-            return response;
+            if (response.errors && response.errors.length) {
+                let errorAlertMessage = '';
+                response.errors.forEach((error: any) => {
+                    switch (error.errorCode) {
+                        case 0:
+                            errorAlertMessage += error.message;
+                            break;
+                        case 1:
+                            errorAlertMessage += alerts.errorFieldRequired;
+                            break;
+                        case 2:
+                            errorAlertMessage += alerts.errorFieldMismatch;
+                            break;
+                        case 3:
+                            errorAlertMessage += alerts.errorInvalidUser;
+                            break;
+                        case 4:
+                            errorAlertMessage += alerts.errorInvalidCredentials;
+                            break;
+                        case 5:
+                            errorAlertMessage += alerts.errorCaptcha;
+                            break;
+                        case 6:
+                            errorAlertMessage += alerts.errorPasswordChangeNotAllowed;
+                            break;
+                        case 7:
+                            errorAlertMessage += alerts.errorInvalidDomain;
+                            break;
+                        case 8:
+                            errorAlertMessage += alerts.errorConnectionLdap;
+                            break;
+                        case 9:
+                            errorAlertMessage += alerts.errorComplexPassword;
+                            break;
+                    }
+                });
+
+                sendMessage(errorAlertMessage, 'error');
+                return false;
+            }
+
+            return true;
         },
     };
 
