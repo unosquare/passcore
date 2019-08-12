@@ -5,7 +5,6 @@ import { loadReCaptcha } from 'react-recaptcha-v3';
 import { LoadingIcon } from 'uno-material-ui';
 import { useEffectWithLoading } from 'uno-react';
 import { EntryPoint } from './Components/EntryPoint';
-import { GlobalActionsProvider } from './Provider/GlobalActionsProvider';
 import { GlobalContextProvider } from './Provider/GlobalContextProvider';
 import { SnackbarContextProvider } from './Provider/SnackbarContextProvider';
 import { resolveAppSettings } from './Utils/AppSettings';
@@ -54,9 +53,7 @@ export const Main: React.FunctionComponent<any> = () => {
     return (
         <GlobalContextProvider settings={settings}>
             <SnackbarContextProvider>
-                <GlobalActionsProvider>
-                    <EntryPoint />
-                </GlobalActionsProvider>
+                <EntryPoint />
             </SnackbarContextProvider>
         </GlobalContextProvider>
     );

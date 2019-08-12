@@ -67,27 +67,31 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
     return (
         <FormGroup
             row={false}
-            style={{ width: '80%', marginLeft: '10%' }}
+            style={{ width: '80%', margin: '3.5% 0 0 10%' }}
         >
             <TextValidator
+                autoFocus={true}
+                inputProps={{
+                    tabIndex: 1,
+                }}
                 id='Username'
                 label={usernameLabel}
                 helperText={useEmail ? usernameHelpblock : usernameDefaultDomainHelperBlock}
                 name='Username'
                 onChange={handleChange}
-                validators={['required']} // ToDo: add the email validation if useEmail is active
+                validators={['required', `${useEmail ? 'isUserEmail' : 'isUserName'}`]}
                 value={fields.Username}
                 style={{
                     height: '20px',
                     marginBottom: '15%',
                 }}
                 fullWidth={true}
-                errorMessages={[
-                    fieldRequired,
-                    useEmail ? usernameEmailPattern : usernamePattern,
-                ]}
+                errorMessages={[fieldRequired, useEmail ? usernameEmailPattern : usernamePattern]}
             />
             <TextValidator
+                inputProps={{
+                    tabIndex: 2,
+                }}
                 label={currentPasswordLabel}
                 helperText={currentPasswordHelpblock}
                 id='CurrentPassword'
@@ -101,11 +105,12 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                     marginBottom: '15%',
                 }}
                 fullWidth={true}
-                errorMessages={[
-                    fieldRequired,
-                ]}
+                errorMessages={[fieldRequired]}
             />
             <TextValidator
+                inputProps={{
+                    tabIndex: 3,
+                }}
                 label={newPasswordLabel}
                 id='NewPassword'
                 name='NewPassword'
@@ -133,14 +138,16 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 style={{ font: '12px Roboto,Helvetica, Arial, sans-serif' }}
             />
             <TextValidator
+                inputProps={{
+                    tabIndex: 4
+                }}
                 label={newPasswordVerifyLabel}
-
                 helperText={newPasswordVerifyHelpblock}
                 id='NewPasswordVerify'
                 name='NewPasswordVerify'
                 onChange={handleChange}
                 type='password'
-                validators={['required']}
+                validators={['required', `isPasswordMatch:${fields.NewPassword}`]}
                 value={fields.NewPasswordVerify}
                 style={{
                     height: '20px',
@@ -149,7 +156,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 fullWidth={true}
                 errorMessages={[
                     fieldRequired,
-                    passwordMatch, /// ToDo: need to set the password match validation
+                    passwordMatch,
                 ]}
             />
         </FormGroup>

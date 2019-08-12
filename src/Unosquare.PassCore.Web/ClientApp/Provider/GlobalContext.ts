@@ -77,11 +77,3 @@ interface ISnackbarContext {
 export const SnackbarContext = React.createContext<ISnackbarContext>({
     sendMessage: null,
 });
-
-interface IGlobalActionsContext {
-    changePassword: any;
-}
-
-export const GlobalActionsContext = React.createContext<IGlobalActionsContext>({
-    changePassword: null,
-});
