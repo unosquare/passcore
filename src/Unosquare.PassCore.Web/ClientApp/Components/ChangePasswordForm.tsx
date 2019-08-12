@@ -56,13 +56,19 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
         usernamePattern,
     } = errorsPasswordForm;
 
+    const userNameValidations = ['required', `${useEmail ? 'isUserEmail' : 'isUserName'}`];
+    const userNameErrorMessages = [fieldRequired, useEmail ? usernameEmailPattern : usernamePattern];
+    const userNameHelperText = useEmail ? usernameHelpblock : usernameDefaultDomainHelperBlock;
+
     if (submitData) {
         toSubmitData(fields);
     }
 
-    if (parentRef.current && parentRef.current.isFormValid) {
-        parentRef.current.isFormValid().then((response: any) => onValidated(!response));
-    }
+    React.useEffect(() => {
+        if (parentRef.current && parentRef.current.isFormValid) {
+            parentRef.current.isFormValid().then((response: any) => onValidated(!response));
+        }
+    });
 
     return (
         <FormGroup
@@ -76,17 +82,17 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 }}
                 id='Username'
                 label={usernameLabel}
-                helperText={useEmail ? usernameHelpblock : usernameDefaultDomainHelperBlock}
+                helperText={userNameHelperText}
                 name='Username'
                 onChange={handleChange}
-                validators={['required', `${useEmail ? 'isUserEmail' : 'isUserName'}`]}
+                validators={userNameValidations}
                 value={fields.Username}
                 style={{
                     height: '20px',
                     marginBottom: '15%',
                 }}
                 fullWidth={true}
-                errorMessages={[fieldRequired, useEmail ? usernameEmailPattern : usernamePattern]}
+                errorMessages={userNameErrorMessages}
             />
             <TextValidator
                 inputProps={{
@@ -139,7 +145,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
             />
             <TextValidator
                 inputProps={{
-                    tabIndex: 4
+                    tabIndex: 4,
                 }}
                 label={newPasswordVerifyLabel}
                 helperText={newPasswordVerifyHelpblock}

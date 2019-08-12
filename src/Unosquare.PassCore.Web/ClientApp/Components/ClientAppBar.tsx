@@ -21,7 +21,7 @@ export const ClientAppBar: React.FunctionComponent<any> = () => {
         >
             <Grid
                 container={true}
-                style={{ height: '64px' }}
+                style={{ height: '64px', width: '100%' }}
                 direction='row'
                 justify='space-between'
                 alignItems='center'
@@ -31,6 +31,7 @@ export const ClientAppBar: React.FunctionComponent<any> = () => {
                     color='secondary'
                     style={{
                         paddingLeft: '1.5%',
+                        width: '70%',
                     }}
                 >
                     {changePasswordTitle}
