@@ -3,11 +3,12 @@
     "version": "1.0.0",
     "description": "PassCore is a self-service password change utility for Active Directory.",
     "main": "index.js",
-    "scripts": {
-        "lint": "tslint -e node_modules ./Components/*.ts ./**/*.tsx",
-        "lint:fix": "tslint ./Components/*.ts ./**/*.tsx --fix",
-        "start": "parcel index.html -d ../wwwroot --open --port 4040"
-    },
+  "scripts": {
+    "lint": "tslint -e node_modules ./Components/*.ts ./**/*.tsx",
+    "lint:fix": "tslint ./Components/*.ts ./**/*.tsx --fix",
+    "build": "parcel build index.html -d ../wwwroot --no-source-maps",
+    "start": "parcel index.html -d ../wwwroot --open --port 4040"
+  },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/unosquare/passcore.git"
