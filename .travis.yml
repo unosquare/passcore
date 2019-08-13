@@ -5,4 +5,8 @@ sudo: false
 install:
   - dotnet restore
 script:
+  - cd src/Unosquare.PassCore.Web/ClientApp
+  - npm install
+  - npm run lint
+  - cd ../../..
   - dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP 

@@ -8,9 +8,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3EA980E1-D295-4E61-B2EE-29CFE1EDB2F1}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		src\Unosquare.PassCore.Web\ClientApp\package.json = src\Unosquare.PassCore.Web\ClientApp\package.json
 		preview.png = preview.png
 		README.md = README.md
 		StyleCop.Analyzers.ruleset = StyleCop.Analyzers.ruleset
+		src\Unosquare.PassCore.Web\ClientApp\tsconfig.json = src\Unosquare.PassCore.Web\ClientApp\tsconfig.json
+		src\Unosquare.PassCore.Web\ClientApp\tslint.json = src\Unosquare.PassCore.Web\ClientApp\tslint.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unosquare.PassCore.Web", "src\Unosquare.PassCore.Web\Unosquare.PassCore.Web.csproj", "{22E2F79B-7816-4FAB-894D-112759551796}"
