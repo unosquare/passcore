@@ -1,5 +1,5 @@
 {
-    "name": "PassCore",
+    "name": "passcore",
     "version": "1.0.0",
     "description": "PassCore is a self-service password change utility for Active Directory.",
     "main": "index.js",

@@ -31,6 +31,10 @@ before_build:
 - dotnet restore --verbosity q
 - cmd: iisreset
 - cmd: net start W3SVC
+- cd src/Unosquare.PassCore.Web/ClientApp
+- npm install
+- npm run lint
+- cd ../../..
 build_script:
 - cmd: dotnet publish --configuration Release --runtime win-x64 --output "C:/passcore"
 - sh: dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP
