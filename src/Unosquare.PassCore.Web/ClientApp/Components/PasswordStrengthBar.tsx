@@ -25,7 +25,7 @@ const measureStrength = (password: string): number => Math.min(
     100,
 );
 
-export const PasswordStrengthBar: React.FunctionComponent<any> = ({ newPassword/*, reset*/ }) => {
+export const PasswordStrengthBar: React.FunctionComponent<any> = ({ newPassword }) => {
     const classes = useStyles();
 
     const getProgressColor = (strength: number) => ({
