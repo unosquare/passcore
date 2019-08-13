@@ -3,15 +3,8 @@ import * as React from 'react';
 import { TextValidator } from 'uno-material-ui';
 import { useStateForModel } from 'uno-react';
 import { GlobalContext } from '../Provider/GlobalContext';
+import { IChangePasswordFormInitialModel } from '../types/Components';
 import { PasswordStrengthBar } from './PasswordStrengthBar';
-
-interface IChangePasswordFormInitialModel {
-    CurrentPassword: string;
-    NewPassword: string;
-    NewPasswordVerify: string;
-    Recaptcha: string;
-    Username: string;
-}
 
 const defaultState: IChangePasswordFormInitialModel = {
     CurrentPassword: '',
@@ -26,6 +19,8 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
     toSubmitData,
     parentRef,
     onValidated,
+    shouldReset,
+    changeResetState,
 }) => {
 
     const [fields, handleChange] = useStateForModel({ ...defaultState });
@@ -70,6 +65,16 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
         }
     });
 
+    React.useEffect(() => {
+        if (shouldReset) {
+            handleChange({ ...defaultState });
+            changeResetState(false);
+            if (parentRef.current && parentRef.current.resetValidations) {
+                parentRef.current.resetValidations();
+            }
+        }
+    }, [shouldReset]);
+
     return (
         <FormGroup
             row={false}
@@ -88,8 +93,8 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 validators={userNameValidations}
                 value={fields.Username}
                 style={{
-                    margin: '15px 0 50px 0'
                     height: '20px',
+                    margin: '15px 0 50px 0',
                 }}
                 fullWidth={true}
                 errorMessages={userNameErrorMessages}

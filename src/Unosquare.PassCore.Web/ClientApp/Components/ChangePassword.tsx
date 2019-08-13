@@ -18,6 +18,7 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
     const { changePasswordButtonLabel } = changePasswordForm;
     const { siteKey } = recaptcha;
     const { sendMessage } = React.useContext(SnackbarContext);
+    const [shouldReset, setReset] = React.useState(false);
 
     const onSubmitValidatorForm = () => setSubmit(true);
 
@@ -28,7 +29,6 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
             JSON.stringify({ ...formData, Recaptcha: token }),
         ).then((response: any) => {
             setSubmit(false);
-
             if (response.errors && response.errors.length) {
                 let errorAlertMessage = '';
                 response.errors.forEach((error: any) => {
@@ -74,7 +74,10 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
         });
     };
 
-    const onCloseDialog = () => setDialog(false);
+    const onCloseDialog = () => {
+        setDialog(false);
+        setReset(true);
+    };
 
     ValidatorForm.addValidationRule('isUserName',
         (value: string) => new RegExp(validationRegex.usernameRegex).test(value));
@@ -106,6 +109,8 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                         toSubmitData={toSubmitData}
                         parentRef={validatorFormRef}
                         onValidated={setDisabled}
+                        shouldReset={shouldReset}
+                        changeResetState={setReset}
                     />
                     <Button
                         type='submit'
