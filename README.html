@@ -123,14 +123,14 @@ It allows users to change their Active Directory password on their own, provided
 <li>Make sure the <em>Domain</em> field contains the correct setting.</li>
 </ul>
 </li>
-<li>You need a Passcore copy to continue. We recommend to download the latest binary release of <a href="https://github.com/unosquare/passcore/releases/download/3.6.3/PassCore363.zip">PassCore</a>.</li>
+<li>You need a Passcore copy to continue. We recommend to download the latest binary release of <a href="https://github.com/unosquare/passcore/releases/download/4.0.0/PassCore400.zip">PassCore</a>.</li>
 <li><strong>NOTE:</strong> Before extracting the contents of the file, please right-click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.<ul>
 <li>If you download the source code you need to run the following command via an Command Prompt. Make sure you start the Command Prompt with the Administrator option.</li>
 <li><code>dotnet publish --configuration Release --runtime win-x64 --output &quot;&lt;path&gt;&quot;</code></li>
 <li>The <code>&lt;path&gt;</code> is the directory where you will be serving the website from.</li>
 </ul>
 </li>
-<li>Install the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.3-windows-hosting-bundle-installer">.NET Core 2.2.3 Windows Server Hosting bundle</a>.</li>
+<li>Install the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.6-windows-hosting-bundle-installer">.NET Core 2.2.6 Windows Server Hosting bundle</a>.</li>
 <li>Go to your <em>IIS Manager</em>, Right-click on <em>Application Pools</em> and select <em>Add Application Pool</em>.</li>
 <li>A dialog appears. Under Name enter <strong>PassCore Application Pool</strong>, Under .NET CLR Version select <strong>No Managed Code</strong> and finally, under Managed pipeline mode select <strong>Integrated</strong>. Click OK after all fields have been set.</li>
 <li>Now, right-click on the application pool you just created in the previous step and select <em>Advanced Settings ...</em>. Change the <em>Start Mode</em> to <strong>AlwaysRunning</strong>, and the <em>Idle Time-out (minutes)</em> to <strong>0</strong>. Click on <em>OK</em>. This will ensure PassCore stays responsive even after long periods of inactivity.</li>
@@ -285,7 +285,7 @@ This new, enhanced version of our self-service password manager comes with new f
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/passcore/blob/dependabot/npm_and_yarn/src/Unosquare.PassCore.Web/ClientApp/tslint-5.19.0/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/passcore/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
