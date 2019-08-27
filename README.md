@@ -8,21 +8,20 @@
 
 *:star: Please star this project if you find it useful!*
 
-- [PassCore: A self-service password change utility for Active Directory](#passcore-a-self-service-password-change-utility-for-active-directory)
-  - [Overview](#overview)
-    - [Features](#features)
-  - [Installation on IIS](#installation-on-iis)
-  - [PowerShell Installer](#powershell-installer)
-  - [Docker](#docker)
-  - [LDAP Provider](#ldap-provider)
-  - [Customization and Configuration](#customization-and-configuration)
-    - [Running as a sub application](#running-as-a-sub-application)
-  - [Troubleshooting](#troubleshooting)
-    - [LDAP Support](#ldap-support)
-  - [Build your own version](#build-your-own-version)
-  - [Create your own provider](#create-your-own-provider)
-  - [License](#license)
-  - [passcorepro](#passcorepro)
+- [Overview](#overview)
+  - [Features](#features)
+- [Installation on IIS](#installation-on-iis)
+- [PowerShell Installer](#powershell-installer)
+- [Docker](#docker)
+- [LDAP Provider](#ldap-provider)
+- [Customization and Configuration](#customization-and-configuration)
+  - [Running as a sub application](#running-as-a-sub-application)
+- [Troubleshooting](#troubleshooting)
+  - [LDAP Support](#ldap-support)
+- [Build your own version](#build-your-own-version)
+- [Create your own provider](#create-your-own-provider)
+- [License](#license)
+- [passcorepro](#passcorepro)
 
 ## Overview
 
