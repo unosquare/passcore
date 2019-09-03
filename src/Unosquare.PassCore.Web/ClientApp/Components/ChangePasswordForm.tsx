@@ -4,6 +4,7 @@ import { TextValidator } from 'uno-material-ui';
 import { useStateForModel } from 'uno-react';
 import { GlobalContext } from '../Provider/GlobalContext';
 import { IChangePasswordFormInitialModel } from '../types/Components';
+import { PasswordGenerator } from './PasswordGenerator';
 import { PasswordStrengthBar } from './PasswordStrengthBar';
 
 const defaultState: IChangePasswordFormInitialModel = {
@@ -28,6 +29,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
     const {
         changePasswordForm,
         errorsPasswordForm,
+        forcePasswordGeneration,
         useEmail,
         showPasswordMeter,
     } = React.useContext(GlobalContext);
@@ -118,58 +120,69 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 fullWidth={true}
                 errorMessages={[fieldRequired]}
             />
-            <TextValidator
-                inputProps={{
-                    tabIndex: 3,
-                }}
-                label={newPasswordLabel}
-                id='NewPassword'
-                name='NewPassword'
-                onChange={handleChange}
-                type='password'
-                validators={['required']}
-                value={fields.NewPassword}
-                style={{
-                    height: '20px',
-                    marginBottom: '30px',
-                }}
-                fullWidth={true}
-                errorMessages={[
-                    fieldRequired,
-                ]}
-            />
+
             {
-                showPasswordMeter &&
-                <PasswordStrengthBar
-                    newPassword={fields.NewPassword}
-                />
+                forcePasswordGeneration ?
+                    <PasswordGenerator />
+                    :
+                    (
+                        <>
+                            <TextValidator
+                                inputProps={{
+                                    tabIndex: 3,
+                                }}
+                                label={newPasswordLabel}
+                                id='NewPassword'
+                                name='NewPassword'
+                                onChange={handleChange}
+                                type='password'
+                                validators={['required']}
+                                value={fields.NewPassword}
+                                style={{
+                                    height: '20px',
+                                    marginBottom: '30px',
+                                }}
+                                fullWidth={true}
+                                errorMessages={[
+                                    fieldRequired,
+                                ]}
+                            />
+                            {
+                                showPasswordMeter &&
+                                <PasswordStrengthBar
+                                    newPassword={fields.NewPassword}
+                                />
+                            }
+                            <div
+                                dangerouslySetInnerHTML={{ __html: newPasswordHelpblock }}
+                                style={{ font: '12px Roboto,Helvetica, Arial, sans-serif', marginBottom: '15px' }}
+                            />
+                            <TextValidator
+                                inputProps={{
+                                    tabIndex: 4,
+                                }}
+                                label={newPasswordVerifyLabel}
+                                helperText={newPasswordVerifyHelpblock}
+                                id='NewPasswordVerify'
+                                name='NewPasswordVerify'
+                                onChange={handleChange}
+                                type='password'
+                                validators={['required', `isPasswordMatch:${fields.NewPassword}`]}
+                                value={fields.NewPasswordVerify}
+                                style={{
+                                    height: '20px',
+                                    marginBottom: '50px',
+                                }}
+                                fullWidth={true}
+                                errorMessages={[
+                                    fieldRequired,
+                                    passwordMatch,
+                                ]}
+                            />
+                        </>
+                    )
             }
-            <div
-                dangerouslySetInnerHTML={{ __html: newPasswordHelpblock }}
-                style={{ font: '12px Roboto,Helvetica, Arial, sans-serif', marginBottom: '15px' }}
-            />
-            <TextValidator
-                inputProps={{
-                    tabIndex: 4,
-                }}
-                label={newPasswordVerifyLabel}
-                helperText={newPasswordVerifyHelpblock}
-                id='NewPasswordVerify'
-                name='NewPasswordVerify'
-                onChange={handleChange}
-                type='password'
-                validators={['required', `isPasswordMatch:${fields.NewPassword}`]}
-                value={fields.NewPasswordVerify}
-                style={{
-                    height: '20px',
-                    marginBottom: '50px',
-                }}
-                fullWidth={true}
-                errorMessages={[
-                    fieldRequired,
-                    passwordMatch,
-                ]}
-            />
+
         </FormGroup>
     );
 };

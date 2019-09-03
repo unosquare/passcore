@@ -50,6 +50,7 @@ export interface IGlobalContext {
     applicationTitle: string;
     changePasswordForm: IChangePasswordForm;
     changePasswordTitle: string;
+    forcePasswordGeneration: boolean;
     errorsPasswordForm: IErrorsPasswordForm;
     recaptcha: IRecaptcha;
     showPasswordMeter: boolean;
