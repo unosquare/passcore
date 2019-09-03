@@ -120,7 +120,6 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 fullWidth={true}
                 errorMessages={[fieldRequired]}
             />
-
             {
                 forcePasswordGeneration ?
                     <PasswordGenerator />
@@ -182,7 +181,6 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                         </>
                     )
             }
-
         </FormGroup>
     );
 };
