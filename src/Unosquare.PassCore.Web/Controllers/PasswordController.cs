@@ -1,14 +1,16 @@
 namespace Unosquare.PassCore.Web.Controllers
 {
+    using System;
+    using System.Globalization;
+    using System.Net.Http;
+    using System.Threading.Tasks;
     using Common;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
     using Newtonsoft.Json;
-    using System;
-    using System.Net.Http;
-    using System.Threading.Tasks;
+    using Zxcvbn;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -18,7 +20,9 @@ namespace Unosquare.PassCore.Web.Controllers
     {
         private readonly ILogger _logger;
         private readonly ClientSettings _options;
+        private readonly string[] _words;
         private readonly IPasswordChangeProvider _passwordChangeProvider;
+        private readonly Random _random;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordController" /> class.
@@ -29,11 +33,15 @@ namespace Unosquare.PassCore.Web.Controllers
         public PasswordController(
             ILogger<PasswordController> logger,
             IOptions<ClientSettings> optionsAccessor,
+            IOptions<Words> wordsAccessor,
             IPasswordChangeProvider passwordChangeProvider)
         {
             _logger = logger;
             _options = optionsAccessor.Value;
+            _words = wordsAccessor.Value.WordsDictionary;
             _passwordChangeProvider = passwordChangeProvider;
+
+            if (_options.ForcePasswordGeneration) _random = new Random();
         }
 
         /// <summary>
@@ -42,6 +50,42 @@ namespace Unosquare.PassCore.Web.Controllers
         /// <returns>A Json representation of the ClientSettings object.</returns>
         [HttpGet]
         public IActionResult Get() => Json(_options);
+
+        /// <summary>
+        /// Returns generated password as a JSON string.
+        /// </summary>
+        /// <returns>A Json with a password property which contains a random generated password.</returns>
+        [HttpGet]
+        [Route("generatedPassword")]
+        public IActionResult GetGeeneratedPassword()
+        {
+            var score = 0;
+            var password = string.Empty;
+            var maxNumber = _words.Length;
+
+            do
+            {
+                var firstIndex = _random.Next(0, maxNumber);
+                var secondIndex = _random.Next(0, maxNumber);
+
+                // if both indexes have the same value, repeat the random
+                if (secondIndex == firstIndex) continue;
+
+                var firstWord = _words[firstIndex];
+                if (Int32.Parse(firstIndex.ToString().Substring(0, 1)) < 4)
+                    firstWord = char.ToUpper(firstWord[0], CultureInfo.InvariantCulture) + firstWord.Substring(1);
+
+                var secondWord = _words[secondIndex];
+                if (Int32.Parse(secondIndex.ToString().Substring(0, 1)) < 4)
+                    secondWord = char.ToUpper(secondWord[0], CultureInfo.InvariantCulture) + secondWord.Substring(1);
+
+                password = $"{firstWord}{secondIndex}_{secondWord}{firstIndex}";
+                score = Zxcvbn.MatchPassword(password).Score;
+            }
+            while (score < 4);
+
+            return Json(new { password });
+        }
 
         /// <summary>
         /// Given a POST request, processes and changes a User's password.

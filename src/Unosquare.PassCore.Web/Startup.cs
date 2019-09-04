@@ -10,6 +10,7 @@ namespace Unosquare.PassCore.Web
     using Models;
 #if DEBUG
     using Helpers;
+    using System.Collections.Generic;
 #elif PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
 #else
@@ -22,8 +23,8 @@ namespace Unosquare.PassCore.Web
     public class Startup
     {
         private const string AppSettingsJsonFilename = "appsettings.json";
+        private const string WordsJsonFilename = "words.json";
         private const string AppSettingsSectionName = "AppSettings";
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
         /// This class gets instantiated by the Main method. The hosting environment gets provided via DI.
@@ -32,6 +33,7 @@ namespace Unosquare.PassCore.Web
         {
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile(AppSettingsJsonFilename, false, true)
+                .AddJsonFile(WordsJsonFilename, false, true)
                 .AddEnvironmentVariables()
                 .Build();
         }
@@ -70,8 +72,8 @@ namespace Unosquare.PassCore.Web
             services.AddOptions();
             services.Configure<ClientSettings>(Configuration.GetSection(nameof(ClientSettings)));
             services.Configure<WebSettings>(Configuration.GetSection(nameof(WebSettings)));
+            services.Configure<Words>(Configuration.GetSection(nameof(Words)));
             services.AddMvc();
-
 #if DEBUG
             services.Configure<IAppSettings>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
