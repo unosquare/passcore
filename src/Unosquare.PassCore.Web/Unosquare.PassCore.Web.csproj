@@ -58,12 +58,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="zxcvbn-core">
-      <HintPath>..\..\..\..\zxcvbn-cs\zxcvbn-core\bin\Release\netstandard2.0\zxcvbn-core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="words.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

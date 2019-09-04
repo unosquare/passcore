@@ -77,6 +77,11 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
         }
     }, [shouldReset]);
 
+    const setGenerated = (password: any) => handleChange({
+        NewPassword: password,
+        NewPasswordVerify: password,
+    });
+
     return (
         <FormGroup
             row={false}
@@ -122,7 +127,10 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
             />
             {
                 forcePasswordGeneration ?
-                    <PasswordGenerator />
+                    <PasswordGenerator
+                        value={fields.NewPassword}
+                        setValue={setGenerated}
+                    />
                     :
                     (
                         <>
