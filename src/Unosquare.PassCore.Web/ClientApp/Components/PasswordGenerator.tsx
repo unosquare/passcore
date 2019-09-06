@@ -1,7 +1,7 @@
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import TextField from '@material-ui/core/TextField/TextField';
-import Save from '@material-ui/icons/Save';
+import FileCopy from '@material-ui/icons/FileCopy';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import * as React from 'react';
@@ -78,7 +78,7 @@ export const PasswordGenerator: React.FunctionComponent<any> = ({ value, setValu
                                     onClick={copyPassword}
                                     tabIndex={-1}
                                 >
-                                    <Save />
+                                    <FileCopy />
                                 </IconButton>
                             </InputAdornment>,
                     }}
