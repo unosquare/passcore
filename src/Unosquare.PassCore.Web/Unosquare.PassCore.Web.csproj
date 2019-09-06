@@ -27,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="zxcvbn-core" Version="2.1.44" />
   </ItemGroup>
 
   <ItemGroup>

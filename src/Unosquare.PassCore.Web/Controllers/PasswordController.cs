@@ -29,6 +29,7 @@ namespace Unosquare.PassCore.Web.Controllers
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="optionsAccessor">The options accessor.</param>
+        /// <param name="wordsAccessor">The words accessor.</param>
         /// <param name="passwordChangeProvider">The password change provider.</param>
         public PasswordController(
             ILogger<PasswordController> logger,
