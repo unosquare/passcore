@@ -73,11 +73,11 @@ namespace Unosquare.PassCore.Web.Controllers
                 if (secondIndex == firstIndex) continue;
 
                 var firstWord = _words[firstIndex];
-                if (Int32.Parse(firstIndex.ToString().Substring(0, 1)) < 4)
+                if (int.Parse(firstIndex.ToString().Substring(0, 1)) < 4)
                     firstWord = char.ToUpper(firstWord[0], CultureInfo.InvariantCulture) + firstWord.Substring(1);
 
                 var secondWord = _words[secondIndex];
-                if (Int32.Parse(secondIndex.ToString().Substring(0, 1)) < 4)
+                if (int.Parse(secondIndex.ToString().Substring(0, 1)) < 4)
                     secondWord = char.ToUpper(secondWord[0], CultureInfo.InvariantCulture) + secondWord.Substring(1);
 
                 password = $"{firstWord}{secondIndex}_{secondWord}{firstIndex}";
