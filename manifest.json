@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "HCipFrbpJoyApJXTFv59sA=="
+          "hash": "SSWdaqdns+ITvES0oo+9tA=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "zxjjCrlz4qN/tM3xo6BNOw=="
+          "hash": "o8+3nAgJiAGlFH0to2db/A=="
         }
       },
       "is_incremental": false,
@@ -206,7 +206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Controllers.PasswordController.html",
-          "hash": "m8nTOdvY2HkycDkA1BSihg=="
+          "hash": "sQpl9rXs02XBc4oVGjDw7w=="
         }
       },
       "is_incremental": false,
@@ -278,7 +278,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ClientSettings.html",
-          "hash": "iBeTSJ6bkLyIDLEje8Xxmw=="
+          "hash": "ssFAnLKsyza9Ojei9RZyMQ=="
         }
       },
       "is_incremental": false,
@@ -334,11 +334,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.Words.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Unosquare.PassCore.Web.Models.Words.html",
+          "hash": "isSHR/cngHd0y2et29FB7Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.yml",
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.html",
-          "hash": "R2IL6g6hbh1CLZ9Q/69TRA=="
+          "hash": "Ic0iuXeN61RieJyMjHlCxg=="
         }
       },
       "is_incremental": false,
@@ -398,7 +410,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Xg3bWXSOIVybZoWdkvELbg=="
+          "hash": "iQenKYAT0OIyxFlNPcls3g=="
         }
       },
       "is_incremental": false,
@@ -437,13 +449,6 @@
         "skipped_file_count": 0
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
@@ -453,12 +458,19 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 26,
-          "skipped_file_count": 26
+          "total_file_count": 27,
+          "skipped_file_count": 27
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
