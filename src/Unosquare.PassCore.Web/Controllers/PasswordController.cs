@@ -58,7 +58,7 @@ namespace Unosquare.PassCore.Web.Controllers
         /// <returns>A Json with a password property which contains a random generated password.</returns>
         [HttpGet]
         [Route("generated")]
-        public IActionResult GetGeeneratedPassword()
+        public IActionResult GetGeneratedPassword()
         {
             var score = 0;
             var password = string.Empty;
