@@ -516,19 +516,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Controllers.PasswordController.Get
   nameWithType: PasswordController.Get
-- uid: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeeneratedPassword
-  name: GetGeeneratedPassword()
-  href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController_GetGeeneratedPassword
-  commentId: M:Unosquare.PassCore.Web.Controllers.PasswordController.GetGeeneratedPassword
-  fullName: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeeneratedPassword()
-  nameWithType: PasswordController.GetGeeneratedPassword()
-- uid: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeeneratedPassword*
-  name: GetGeeneratedPassword
-  href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController_GetGeeneratedPassword_
-  commentId: Overload:Unosquare.PassCore.Web.Controllers.PasswordController.GetGeeneratedPassword
+- uid: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword
+  name: GetGeneratedPassword()
+  href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController_GetGeneratedPassword
+  commentId: M:Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword
+  fullName: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword()
+  nameWithType: PasswordController.GetGeneratedPassword()
+- uid: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword*
+  name: GetGeneratedPassword
+  href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController_GetGeneratedPassword_
+  commentId: Overload:Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword
   isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeeneratedPassword
-  nameWithType: PasswordController.GetGeeneratedPassword
+  fullName: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword
+  nameWithType: PasswordController.GetGeneratedPassword
 - uid: Unosquare.PassCore.Web.Controllers.PasswordController.Post(Unosquare.PassCore.Web.Models.ChangePasswordModel)
   name: Post(ChangePasswordModel)
   href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController_Post_Unosquare_PassCore_Web_Models_ChangePasswordModel_
