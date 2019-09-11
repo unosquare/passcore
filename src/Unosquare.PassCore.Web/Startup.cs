@@ -10,7 +10,6 @@ namespace Unosquare.PassCore.Web
     using Models;
 #if DEBUG
     using Helpers;
-    using System.Collections.Generic;
 #elif PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
 #else

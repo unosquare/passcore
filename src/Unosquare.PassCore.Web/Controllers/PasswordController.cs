@@ -3,6 +3,7 @@ namespace Unosquare.PassCore.Web.Controllers
     using System;
     using System.Globalization;
     using System.Net.Http;
+    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using Common;
     using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace Unosquare.PassCore.Web.Controllers
         private readonly ClientSettings _options;
         private readonly string[] _words;
         private readonly IPasswordChangeProvider _passwordChangeProvider;
-        private readonly Random _random;
+        private readonly RNGCryptoServiceProvider _rngCsp;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordController" /> class.
@@ -42,7 +43,7 @@ namespace Unosquare.PassCore.Web.Controllers
             _words = wordsAccessor.Value.WordsDictionary;
             _passwordChangeProvider = passwordChangeProvider;
 
-            if (_options.ForcePasswordGeneration) _random = new Random();
+            if (_options.ForcePasswordGeneration) _rngCsp = new RNGCryptoServiceProvider();
         }
 
         /// <summary>
@@ -58,35 +59,7 @@ namespace Unosquare.PassCore.Web.Controllers
         /// <returns>A Json with a password property which contains a random generated password.</returns>
         [HttpGet]
         [Route("generated")]
-        public IActionResult GetGeneratedPassword()
-        {
-            var score = 0;
-            var password = string.Empty;
-            var maxNumber = _words.Length;
-
-            do
-            {
-                var firstIndex = _random.Next(0, maxNumber);
-                var secondIndex = _random.Next(0, maxNumber);
-
-                // if both indexes have the same value, repeat the random
-                if (secondIndex == firstIndex) continue;
-
-                var firstWord = _words[firstIndex];
-                if (int.Parse(firstIndex.ToString().Substring(0, 1)) < 4)
-                    firstWord = char.ToUpper(firstWord[0], CultureInfo.InvariantCulture) + firstWord.Substring(1);
-
-                var secondWord = _words[secondIndex];
-                if (int.Parse(secondIndex.ToString().Substring(0, 1)) < 4)
-                    secondWord = char.ToUpper(secondWord[0], CultureInfo.InvariantCulture) + secondWord.Substring(1);
-
-                password = $"{firstWord}{secondIndex}_{secondWord}{firstIndex}";
-                score = Zxcvbn.MatchPassword(password).Score;
-            }
-            while (score < 4);
-
-            return Json(new { password });
-        }
+        public IActionResult GetGeneratedPassword() => Json(new { password = PassphraseGenerator() });
 
         /// <summary>
         /// Given a POST request, processes and changes a User's password.
@@ -171,6 +144,55 @@ namespace Unosquare.PassCore.Web.Controllers
                 dynamic validationResponse = JsonConvert.DeserializeObject(response);
                 return validationResponse.success;
             }
+        }
+
+        private string PassphraseGenerator()
+        {
+            var score = 0;
+            var password = string.Empty;
+            var maxNumber = _words.Length;
+
+            do
+            {
+                var firstIndex = GetRandomInteger(0, maxNumber, _rngCsp);
+                var secondIndex = GetRandomInteger(0, maxNumber, _rngCsp);
+
+                // if both indexes have the same value, repeat the random
+                if (secondIndex == firstIndex) continue;
+
+                var firstWord = _words[firstIndex];
+                if (int.Parse(firstIndex.ToString().Substring(0, 1)) < 4)
+                    firstWord = char.ToUpper(firstWord[0], CultureInfo.InvariantCulture) + firstWord.Substring(1);
+
+                var secondWord = _words[secondIndex];
+                if (int.Parse(secondIndex.ToString().Substring(0, 1)) < 4)
+                    secondWord = char.ToUpper(secondWord[0], CultureInfo.InvariantCulture) + secondWord.Substring(1);
+
+                password = $"{firstWord}{secondIndex}_{secondWord}{firstIndex}";
+                score = Zxcvbn.MatchPassword(password).Score;
+            }
+            while (score < 4); //ToDo: change for a setting
+
+            return password;
+        }
+
+        private string PassGenerator()
+        {
+            return string.Empty;
+        }
+
+        private int GetRandomInteger(int min, int max, RNGCryptoServiceProvider rngCsp)
+        {
+            uint scale = uint.MaxValue;
+            while (scale == uint.MaxValue)
+            {
+                byte[] four_bytes = new byte[4];
+                rngCsp.GetBytes(four_bytes);
+
+                scale = BitConverter.ToUInt32(four_bytes, 0);
+            }
+
+            return (int)(min + ((max - min) * (scale / (double)uint.MaxValue)));
         }
     }
 }
