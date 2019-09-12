@@ -56,7 +56,7 @@ namespace Unosquare.PassCore.Web.Controllers
         /// <returns>A Json with a password property which contains a random generated password.</returns>
         [HttpGet]
         [Route("generated")]
-        public IActionResult GetGeneratedPassword() => Json(new { password = PassGenerator() });
+        public IActionResult GetGeneratedPassword() => Json(new { password = PasswordGenerator.Generate(_rngCsp, _options.PasswordEntropy) });
 
         /// <summary>
         /// Given a POST request, processes and changes a User's password.
@@ -147,15 +147,6 @@ namespace Unosquare.PassCore.Web.Controllers
                 dynamic validationResponse = JsonConvert.DeserializeObject(response);
                 return validationResponse.success;
             }
-        }
-
-        private string PassGenerator()
-        {
-            var pswBytes = new byte[_options.PasswordEntropy];
-            _rngCsp.GetBytes(pswBytes);
-
-            var enconder = new Base85(Base85Alphabet.Ascii85);
-            return enconder.Encode(pswBytes);
         }
     }
 }
