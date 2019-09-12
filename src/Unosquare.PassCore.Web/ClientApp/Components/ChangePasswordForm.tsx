@@ -29,7 +29,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
     const {
         changePasswordForm,
         errorsPasswordForm,
-        forcePasswordGeneration,
+        usePasswordGeneration,
         useEmail,
         showPasswordMeter,
     } = React.useContext(GlobalContext);
@@ -126,7 +126,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                 errorMessages={[fieldRequired]}
             />
             {
-                forcePasswordGeneration ?
+                usePasswordGeneration ?
                     <PasswordGenerator
                         value={fields.NewPassword}
                         setValue={setGenerated}

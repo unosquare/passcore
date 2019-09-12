@@ -22,7 +22,6 @@ namespace Unosquare.PassCore.Web
     public class Startup
     {
         private const string AppSettingsJsonFilename = "appsettings.json";
-        private const string WordsJsonFilename = "words.json";
         private const string AppSettingsSectionName = "AppSettings";
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -32,7 +31,6 @@ namespace Unosquare.PassCore.Web
         {
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile(AppSettingsJsonFilename, false, true)
-                .AddJsonFile(WordsJsonFilename, false, true)
                 .AddEnvironmentVariables()
                 .Build();
         }
@@ -71,7 +69,6 @@ namespace Unosquare.PassCore.Web
             services.AddOptions();
             services.Configure<ClientSettings>(Configuration.GetSection(nameof(ClientSettings)));
             services.Configure<WebSettings>(Configuration.GetSection(nameof(WebSettings)));
-            services.Configure<Words>(Configuration.GetSection(nameof(Words)));
             services.AddMvc();
 #if DEBUG
             services.Configure<IAppSettings>(Configuration.GetSection(AppSettingsSectionName));

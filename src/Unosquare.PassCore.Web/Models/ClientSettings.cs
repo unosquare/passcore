@@ -8,7 +8,7 @@ namespace Unosquare.PassCore.Web.Models
     public class ClientSettings
     {
         public Alerts Alerts { get; set; }
-        public bool ForcePasswordGeneration { get; set; }
+        public bool UsePasswordGeneration { get; set; }
         public int PasswordLenght { get; set; }
         public bool ShowPasswordMeter { get; set; }
         public bool UseEmail { get; set; }

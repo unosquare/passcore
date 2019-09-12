@@ -20,8 +20,7 @@ namespace Unosquare.PassCore.Web.Controllers
     public class PasswordController : Controller
     {
         private readonly ILogger _logger;
-        private readonly ClientSettings _options;
-        private readonly string[] _words;
+        private readonly ClientSettings _options
         private readonly IPasswordChangeProvider _passwordChangeProvider;
         private readonly RNGCryptoServiceProvider _rngCsp;
 
@@ -35,15 +34,13 @@ namespace Unosquare.PassCore.Web.Controllers
         public PasswordController(
             ILogger<PasswordController> logger,
             IOptions<ClientSettings> optionsAccessor,
-            IOptions<Words> wordsAccessor,
             IPasswordChangeProvider passwordChangeProvider)
         {
             _logger = logger;
             _options = optionsAccessor.Value;
-            _words = wordsAccessor.Value.WordsDictionary;
             _passwordChangeProvider = passwordChangeProvider;
 
-            if (_options.ForcePasswordGeneration) _rngCsp = new RNGCryptoServiceProvider();
+            if (_options.UsePasswordGeneration) _rngCsp = new RNGCryptoServiceProvider();
         }
 
         /// <summary>
