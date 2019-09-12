@@ -59,11 +59,6 @@
     <ProjectReference Include="..\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="words.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <PropertyGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
     <DefineConstants>PASSCORE_LDAP_PROVIDER</DefineConstants>
   </PropertyGroup>
