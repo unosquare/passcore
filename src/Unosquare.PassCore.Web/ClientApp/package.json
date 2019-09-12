@@ -6,7 +6,7 @@
     "scripts": {
         "lint": "tslint -e node_modules ./Components/*.ts ./**/*.tsx",
         "lint:fix": "tslint ./Components/*.ts ./**/*.tsx --fix",
-        "build": "parcel build index.html -d ../wwwroot --no-minify",
+        "build": "parcel build index.html -d ../wwwroot --no-source-maps",
         "start": "parcel index.html -d ../wwwroot --open --port 4040"
     },
     "repository": {
