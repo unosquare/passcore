@@ -1078,19 +1078,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.ChangePasswordTitle
   nameWithType: ClientSettings.ChangePasswordTitle
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
-  name: CheckPasswordScore
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_CheckPasswordScore
-  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
-  nameWithType: ClientSettings.CheckPasswordScore
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore*
-  name: CheckPasswordScore
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_CheckPasswordScore_
-  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
-  nameWithType: ClientSettings.CheckPasswordScore
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.ErrorsPasswordForm
   name: ErrorsPasswordForm
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_ErrorsPasswordForm
@@ -1117,19 +1104,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
   nameWithType: ClientSettings.MinimumScore
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.PasswordLenght
-  name: PasswordLenght
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_PasswordLenght
-  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.PasswordLenght
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.PasswordLenght
-  nameWithType: ClientSettings.PasswordLenght
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.PasswordLenght*
-  name: PasswordLenght
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_PasswordLenght_
-  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.PasswordLenght
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
+  name: PasswordEntropy
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_PasswordEntropy
+  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
+  nameWithType: ClientSettings.PasswordEntropy
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy*
+  name: PasswordEntropy
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_PasswordEntropy_
+  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
   isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.PasswordLenght
-  nameWithType: ClientSettings.PasswordLenght
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
+  nameWithType: ClientSettings.PasswordEntropy
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.Recaptcha
   name: Recaptcha
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_Recaptcha
