@@ -487,15 +487,15 @@ references:
   commentId: T:Unosquare.PassCore.Web.Controllers.PasswordController
   fullName: Unosquare.PassCore.Web.Controllers.PasswordController
   nameWithType: PasswordController
-- uid: Unosquare.PassCore.Web.Controllers.PasswordController.#ctor(ILogger{Unosquare.PassCore.Web.Controllers.PasswordController},IOptions{Unosquare.PassCore.Web.Models.ClientSettings},IOptions{Unosquare.PassCore.Web.Models.Words},Unosquare.PassCore.Common.IPasswordChangeProvider)
-  name: PasswordController(ILogger<PasswordController>, IOptions<ClientSettings>, IOptions<Words>, IPasswordChangeProvider)
-  href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController__ctor_ILogger_Unosquare_PassCore_Web_Controllers_PasswordController__IOptions_Unosquare_PassCore_Web_Models_ClientSettings__IOptions_Unosquare_PassCore_Web_Models_Words__Unosquare_PassCore_Common_IPasswordChangeProvider_
-  commentId: M:Unosquare.PassCore.Web.Controllers.PasswordController.#ctor(ILogger{Unosquare.PassCore.Web.Controllers.PasswordController},IOptions{Unosquare.PassCore.Web.Models.ClientSettings},IOptions{Unosquare.PassCore.Web.Models.Words},Unosquare.PassCore.Common.IPasswordChangeProvider)
-  name.vb: PasswordController(ILogger(Of PasswordController), IOptions(Of ClientSettings), IOptions(Of Words), IPasswordChangeProvider)
-  fullName: Unosquare.PassCore.Web.Controllers.PasswordController.PasswordController(ILogger<Unosquare.PassCore.Web.Controllers.PasswordController>, IOptions<Unosquare.PassCore.Web.Models.ClientSettings>, IOptions<Unosquare.PassCore.Web.Models.Words>, Unosquare.PassCore.Common.IPasswordChangeProvider)
-  fullName.vb: Unosquare.PassCore.Web.Controllers.PasswordController.PasswordController(ILogger(Of Unosquare.PassCore.Web.Controllers.PasswordController), IOptions(Of Unosquare.PassCore.Web.Models.ClientSettings), IOptions(Of Unosquare.PassCore.Web.Models.Words), Unosquare.PassCore.Common.IPasswordChangeProvider)
-  nameWithType: PasswordController.PasswordController(ILogger<PasswordController>, IOptions<ClientSettings>, IOptions<Words>, IPasswordChangeProvider)
-  nameWithType.vb: PasswordController.PasswordController(ILogger(Of PasswordController), IOptions(Of ClientSettings), IOptions(Of Words), IPasswordChangeProvider)
+- uid: Unosquare.PassCore.Web.Controllers.PasswordController.#ctor(ILogger{Unosquare.PassCore.Web.Controllers.PasswordController},IOptions{Unosquare.PassCore.Web.Models.ClientSettings},Unosquare.PassCore.Common.IPasswordChangeProvider)
+  name: PasswordController(ILogger<PasswordController>, IOptions<ClientSettings>, IPasswordChangeProvider)
+  href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController__ctor_ILogger_Unosquare_PassCore_Web_Controllers_PasswordController__IOptions_Unosquare_PassCore_Web_Models_ClientSettings__Unosquare_PassCore_Common_IPasswordChangeProvider_
+  commentId: M:Unosquare.PassCore.Web.Controllers.PasswordController.#ctor(ILogger{Unosquare.PassCore.Web.Controllers.PasswordController},IOptions{Unosquare.PassCore.Web.Models.ClientSettings},Unosquare.PassCore.Common.IPasswordChangeProvider)
+  name.vb: PasswordController(ILogger(Of PasswordController), IOptions(Of ClientSettings), IPasswordChangeProvider)
+  fullName: Unosquare.PassCore.Web.Controllers.PasswordController.PasswordController(ILogger<Unosquare.PassCore.Web.Controllers.PasswordController>, IOptions<Unosquare.PassCore.Web.Models.ClientSettings>, Unosquare.PassCore.Common.IPasswordChangeProvider)
+  fullName.vb: Unosquare.PassCore.Web.Controllers.PasswordController.PasswordController(ILogger(Of Unosquare.PassCore.Web.Controllers.PasswordController), IOptions(Of Unosquare.PassCore.Web.Models.ClientSettings), Unosquare.PassCore.Common.IPasswordChangeProvider)
+  nameWithType: PasswordController.PasswordController(ILogger<PasswordController>, IOptions<ClientSettings>, IPasswordChangeProvider)
+  nameWithType.vb: PasswordController.PasswordController(ILogger(Of PasswordController), IOptions(Of ClientSettings), IPasswordChangeProvider)
 - uid: Unosquare.PassCore.Web.Controllers.PasswordController.#ctor*
   name: PasswordController
   href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController__ctor_
@@ -1072,19 +1072,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.ErrorsPasswordForm
   nameWithType: ClientSettings.ErrorsPasswordForm
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.ForcePasswordGeneration
-  name: ForcePasswordGeneration
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_ForcePasswordGeneration
-  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.ForcePasswordGeneration
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.ForcePasswordGeneration
-  nameWithType: ClientSettings.ForcePasswordGeneration
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.ForcePasswordGeneration*
-  name: ForcePasswordGeneration
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_ForcePasswordGeneration_
-  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.ForcePasswordGeneration
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.ForcePasswordGeneration
-  nameWithType: ClientSettings.ForcePasswordGeneration
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.PasswordLenght
   name: PasswordLenght
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_PasswordLenght
@@ -1137,6 +1124,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.UseEmail
   nameWithType: ClientSettings.UseEmail
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
+  name: UsePasswordGeneration
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_UsePasswordGeneration
+  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
+  nameWithType: ClientSettings.UsePasswordGeneration
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration*
+  name: UsePasswordGeneration
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_UsePasswordGeneration_
+  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
+  nameWithType: ClientSettings.UsePasswordGeneration
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.ValidationRegex
   name: ValidationRegex
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_ValidationRegex
@@ -1304,25 +1304,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.WebSettings.EnableHttpsRedirect
   nameWithType: WebSettings.EnableHttpsRedirect
-- uid: Unosquare.PassCore.Web.Models.Words
-  name: Words
-  href: api/Unosquare.PassCore.Web.Models.Words.html
-  commentId: T:Unosquare.PassCore.Web.Models.Words
-  fullName: Unosquare.PassCore.Web.Models.Words
-  nameWithType: Words
-- uid: Unosquare.PassCore.Web.Models.Words.WordsDictionary
-  name: WordsDictionary
-  href: api/Unosquare.PassCore.Web.Models.Words.html#Unosquare_PassCore_Web_Models_Words_WordsDictionary
-  commentId: P:Unosquare.PassCore.Web.Models.Words.WordsDictionary
-  fullName: Unosquare.PassCore.Web.Models.Words.WordsDictionary
-  nameWithType: Words.WordsDictionary
-- uid: Unosquare.PassCore.Web.Models.Words.WordsDictionary*
-  name: WordsDictionary
-  href: api/Unosquare.PassCore.Web.Models.Words.html#Unosquare_PassCore_Web_Models_Words_WordsDictionary_
-  commentId: Overload:Unosquare.PassCore.Web.Models.Words.WordsDictionary
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.Words.WordsDictionary
-  nameWithType: Words.WordsDictionary
 - uid: Zyborg.PassCore.PasswordProvider.LDAP
   name: Zyborg.PassCore.PasswordProvider.LDAP
   href: api/Zyborg.PassCore.PasswordProvider.LDAP.html

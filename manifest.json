@@ -206,7 +206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Controllers.PasswordController.html",
-          "hash": "HbpzyhI1HHD7G4IpHC0Biw=="
+          "hash": "pc/85aIFWxxlfQUJTnbhaQ=="
         }
       },
       "is_incremental": false,
@@ -278,7 +278,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ClientSettings.html",
-          "hash": "KpZlQFxNZ/juBCoGIIMgMg=="
+          "hash": "DyHp1qb/TDXWWHmSPQdLNg=="
         }
       },
       "is_incremental": false,
@@ -334,23 +334,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.Words.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Unosquare.PassCore.Web.Models.Words.html",
-          "hash": "o2FdYMUmZ2s6NpNnrPNBAw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.PassCore.Web.Models.yml",
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.html",
-          "hash": "fQYdrayvWe58hLIsmOXKWw=="
+          "hash": "EG+0r0J6vkOFnLRhp+jgfA=="
         }
       },
       "is_incremental": false,
@@ -410,7 +398,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "iQenKYAT0OIyxFlNPcls3g=="
+          "hash": "Xg3bWXSOIVybZoWdkvELbg=="
         }
       },
       "is_incremental": false,
@@ -456,11 +444,17 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 2,
+          "skipped_file_count": 2
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 27,
-          "skipped_file_count": 27
+          "total_file_count": 26,
+          "skipped_file_count": 26
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
@@ -468,12 +462,6 @@
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": true,
-          "incrementalPhase": "build",
-          "total_file_count": 2,
-          "skipped_file_count": 2
         }
       }
     },
