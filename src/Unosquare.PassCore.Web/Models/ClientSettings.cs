@@ -9,8 +9,7 @@ namespace Unosquare.PassCore.Web.Models
     {
         public Alerts Alerts { get; set; }
         public bool UsePasswordGeneration { get; set; }
-        public int PasswordLenght { get; set; }
-        public bool CheckPasswordScore { get; set; }
+        public int PasswordEntropy { get; set; }
         public int MinimumScore { get; set; }
         public bool ShowPasswordMeter { get; set; }
         public bool UseEmail { get; set; }

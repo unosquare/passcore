@@ -105,7 +105,7 @@ namespace Unosquare.PassCore.Web.Controllers
 
             try
             {
-                if (_options.CheckPasswordScore && (Zxcvbn.MatchPassword(model.NewPassword).Score < _options.MinimumScore))
+                if (Zxcvbn.MatchPassword(model.NewPassword).Score < _options.MinimumScore)
                 {
                     result.Errors.Add(new ApiErrorItem(ApiErrorCode.MinimumScore));
                     return BadRequest(result);
@@ -151,7 +151,7 @@ namespace Unosquare.PassCore.Web.Controllers
 
         private string PassGenerator()
         {
-            var pswBytes = new byte[_options.PasswordLenght];
+            var pswBytes = new byte[_options.PasswordEntropy];
             _rngCsp.GetBytes(pswBytes);
 
             var enconder = new Base85(Base85Alphabet.Ascii85);
