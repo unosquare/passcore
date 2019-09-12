@@ -67,6 +67,12 @@ references:
   commentId: F:Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
   fullName: Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
   nameWithType: ApiErrorCode.LdapProblem
+- uid: Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
+  name: MinimumScore
+  href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_MinimumScore
+  commentId: F:Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
+  fullName: Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
+  nameWithType: ApiErrorCode.MinimumScore
 - uid: Unosquare.PassCore.Common.ApiErrorCode.UserNotFound
   name: UserNotFound
   href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_UserNotFound
@@ -671,6 +677,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorPasswordChangeNotAllowed
   nameWithType: Alerts.ErrorPasswordChangeNotAllowed
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
+  name: ErrorScorePassowrd
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassowrd
+  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
+  nameWithType: Alerts.ErrorScorePassowrd
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd*
+  name: ErrorScorePassowrd
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassowrd_
+  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
+  nameWithType: Alerts.ErrorScorePassowrd
 - uid: Unosquare.PassCore.Web.Models.Alerts.SuccessAlertBody
   name: SuccessAlertBody
   href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_SuccessAlertBody
@@ -1059,6 +1078,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.ChangePasswordTitle
   nameWithType: ClientSettings.ChangePasswordTitle
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
+  name: CheckPasswordScore
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_CheckPasswordScore
+  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
+  nameWithType: ClientSettings.CheckPasswordScore
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore*
+  name: CheckPasswordScore
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_CheckPasswordScore_
+  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.CheckPasswordScore
+  nameWithType: ClientSettings.CheckPasswordScore
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.ErrorsPasswordForm
   name: ErrorsPasswordForm
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_ErrorsPasswordForm
@@ -1072,6 +1104,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.ErrorsPasswordForm
   nameWithType: ClientSettings.ErrorsPasswordForm
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
+  name: MinimumScore
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_MinimumScore
+  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
+  nameWithType: ClientSettings.MinimumScore
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore*
+  name: MinimumScore
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_MinimumScore_
+  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
+  nameWithType: ClientSettings.MinimumScore
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.PasswordLenght
   name: PasswordLenght
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_PasswordLenght

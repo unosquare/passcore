@@ -86,7 +86,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.ApiErrorCode.html",
-          "hash": "EDsg/ArB3Q+KSZVHzIojXw=="
+          "hash": "krvzvk0dw/ZVd2/X5S1dgA=="
         }
       },
       "is_incremental": false,
@@ -230,7 +230,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.Alerts.html",
-          "hash": "XUHOqNTusuQHU7h7TGxmZQ=="
+          "hash": "hLUPHSVVMUijxxG2U3Vvug=="
         }
       },
       "is_incremental": false,
@@ -278,7 +278,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ClientSettings.html",
-          "hash": "DyHp1qb/TDXWWHmSPQdLNg=="
+          "hash": "1ZxQmAwdVM5vFdg+1Qb19A=="
         }
       },
       "is_incremental": false,
@@ -437,6 +437,13 @@
         "skipped_file_count": 0
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
@@ -452,13 +459,6 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
