@@ -20,7 +20,7 @@ namespace Unosquare.PassCore.Web.Controllers
     public class PasswordController : Controller
     {
         private readonly ILogger _logger;
-        private readonly ClientSettings _options
+        private readonly ClientSettings _options;
         private readonly IPasswordChangeProvider _passwordChangeProvider;
         private readonly RNGCryptoServiceProvider _rngCsp;
 
