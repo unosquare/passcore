@@ -10,7 +10,6 @@ namespace Unosquare.PassCore.Web.Controllers
     using Microsoft.Extensions.Options;
     using Models;
     using Newtonsoft.Json;
-    using SimpleBase;
     using Zxcvbn;
 
     /// <summary>
