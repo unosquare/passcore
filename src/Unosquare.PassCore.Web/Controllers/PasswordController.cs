@@ -105,6 +105,12 @@ namespace Unosquare.PassCore.Web.Controllers
 
             try
             {
+                if (_options.CheckPasswordScore && (Zxcvbn.MatchPassword(model.NewPassword).Score < _options.MinimumScore))
+                {
+                    result.Errors.Add(new ApiErrorItem(ApiErrorCode.MinimumScore));
+                    return BadRequest(result);
+                }
+
                 var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(
                         model.Username,
                         model.CurrentPassword,

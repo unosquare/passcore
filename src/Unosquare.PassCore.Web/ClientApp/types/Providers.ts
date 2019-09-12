@@ -9,6 +9,7 @@ interface IAlerts {
     errorInvalidDomain: string;
     errorInvalidUser: string;
     errorPasswordChangeNotAllowed: string;
+    errorScorePassowrd: string;
     successAlertBody: string;
     successAlertTitle: string;
 }
