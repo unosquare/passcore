@@ -67,12 +67,6 @@ references:
   commentId: F:Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
   fullName: Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
   nameWithType: ApiErrorCode.LdapProblem
-- uid: Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
-  name: MinimumScore
-  href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_MinimumScore
-  commentId: F:Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
-  fullName: Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
-  nameWithType: ApiErrorCode.MinimumScore
 - uid: Unosquare.PassCore.Common.ApiErrorCode.UserNotFound
   name: UserNotFound
   href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_UserNotFound
@@ -522,19 +516,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Controllers.PasswordController.Get
   nameWithType: PasswordController.Get
-- uid: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword
-  name: GetGeneratedPassword()
-  href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController_GetGeneratedPassword
-  commentId: M:Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword
-  fullName: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword()
-  nameWithType: PasswordController.GetGeneratedPassword()
-- uid: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword*
-  name: GetGeneratedPassword
-  href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController_GetGeneratedPassword_
-  commentId: Overload:Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Controllers.PasswordController.GetGeneratedPassword
-  nameWithType: PasswordController.GetGeneratedPassword
 - uid: Unosquare.PassCore.Web.Controllers.PasswordController.Post(Unosquare.PassCore.Web.Models.ChangePasswordModel)
   name: Post(ChangePasswordModel)
   href: api/Unosquare.PassCore.Web.Controllers.PasswordController.html#Unosquare_PassCore_Web_Controllers_PasswordController_Post_Unosquare_PassCore_Web_Models_ChangePasswordModel_
@@ -677,19 +658,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorPasswordChangeNotAllowed
   nameWithType: Alerts.ErrorPasswordChangeNotAllowed
-- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  name: ErrorScorePassowrd
-  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassowrd
-  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  nameWithType: Alerts.ErrorScorePassowrd
-- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd*
-  name: ErrorScorePassowrd
-  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassowrd_
-  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  nameWithType: Alerts.ErrorScorePassowrd
 - uid: Unosquare.PassCore.Web.Models.Alerts.SuccessAlertBody
   name: SuccessAlertBody
   href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_SuccessAlertBody
@@ -1091,32 +1059,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.ErrorsPasswordForm
   nameWithType: ClientSettings.ErrorsPasswordForm
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
-  name: MinimumScore
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_MinimumScore
-  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
-  nameWithType: ClientSettings.MinimumScore
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore*
-  name: MinimumScore
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_MinimumScore_
-  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
-  nameWithType: ClientSettings.MinimumScore
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
-  name: PasswordEntropy
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_PasswordEntropy
-  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
-  nameWithType: ClientSettings.PasswordEntropy
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy*
-  name: PasswordEntropy
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_PasswordEntropy_
-  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.PasswordEntropy
-  nameWithType: ClientSettings.PasswordEntropy
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.Recaptcha
   name: Recaptcha
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_Recaptcha
@@ -1156,19 +1098,6 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.UseEmail
   nameWithType: ClientSettings.UseEmail
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
-  name: UsePasswordGeneration
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_UsePasswordGeneration
-  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
-  nameWithType: ClientSettings.UsePasswordGeneration
-- uid: Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration*
-  name: UsePasswordGeneration
-  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_UsePasswordGeneration_
-  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
-  isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.ClientSettings.UsePasswordGeneration
-  nameWithType: ClientSettings.UsePasswordGeneration
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.ValidationRegex
   name: ValidationRegex
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_ValidationRegex
