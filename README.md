@@ -38,6 +38,9 @@ PassCore has the following features:
 - Easily localizable (i.e. you can customize all of the strings in the UI -- see the section on Customization)
 - Supports [reCAPTCHA](https://www.google.com/recaptcha/intro/index.html)
 - Has a built-in password meter
+- Has a password generator
+- Has a server-side password entropy meter
+
 - Responsive design that works on mobiles, tablets, and desktops.
 - Works with Windows/Linux servers.
 
@@ -123,6 +126,11 @@ The most relevant configuration entries are shown below. Make sure you make your
   - Find the `LanguageCode` entry and enter [one of the options listed here](https://developers.google.com/recaptcha/docs/language). By default this is set to `en`
 - To enable/disable the password meter
   - Find the `ShowPasswordMeter` entry and set it to `true` or `false` (without quotes)
+- To enable enable/disable the password generator
+  - Find the `UsePasswordGeneration` entry and set it to `true` or `false` (without quotes)
+  - Find the `PasswordEntropy` entry and set it to a numeric value (without quotes) to set the entropy of the generated password
+- To enable server-side password entropy meter
+  - Find the `MinimumScore` entry and set it to a numeric value (without quotes) between 1 and 4, where 1 is a bit secure and 4 is the most secure. Set to 0, for deactivate the validation.
 - To enable restricted group checking
   1. Find the `RestrictedADGroups` entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.
 - Find the `DefaultDomain` entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names. **NOTE:** if you are using a subdomain, and you have errors, please try using your top-level domain. 
