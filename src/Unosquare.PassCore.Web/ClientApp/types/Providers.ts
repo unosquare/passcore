@@ -9,6 +9,7 @@ interface IAlerts {
     errorInvalidDomain: string;
     errorInvalidUser: string;
     errorPasswordChangeNotAllowed: string;
+    errorScorePassowrd: string;
     successAlertBody: string;
     successAlertTitle: string;
 }
@@ -50,6 +51,7 @@ export interface IGlobalContext {
     applicationTitle: string;
     changePasswordForm: IChangePasswordForm;
     changePasswordTitle: string;
+    usePasswordGeneration: boolean;
     errorsPasswordForm: IErrorsPasswordForm;
     recaptcha: IRecaptcha;
     showPasswordMeter: boolean;

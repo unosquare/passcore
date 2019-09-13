@@ -1,14 +1,16 @@
 namespace Unosquare.PassCore.Web.Controllers
 {
+    using System;
+    using System.Net.Http;
+    using System.Security.Cryptography;
+    using System.Threading.Tasks;
     using Common;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
     using Newtonsoft.Json;
-    using System;
-    using System.Net.Http;
-    using System.Threading.Tasks;
+    using Zxcvbn;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -19,12 +21,14 @@ namespace Unosquare.PassCore.Web.Controllers
         private readonly ILogger _logger;
         private readonly ClientSettings _options;
         private readonly IPasswordChangeProvider _passwordChangeProvider;
+        private readonly RNGCryptoServiceProvider _rngCsp;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordController" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="optionsAccessor">The options accessor.</param>
+        /// <param name="wordsAccessor">The words accessor.</param>
         /// <param name="passwordChangeProvider">The password change provider.</param>
         public PasswordController(
             ILogger<PasswordController> logger,
@@ -34,6 +38,8 @@ namespace Unosquare.PassCore.Web.Controllers
             _logger = logger;
             _options = optionsAccessor.Value;
             _passwordChangeProvider = passwordChangeProvider;
+
+            if (_options.UsePasswordGeneration) _rngCsp = new RNGCryptoServiceProvider();
         }
 
         /// <summary>
@@ -42,6 +48,14 @@ namespace Unosquare.PassCore.Web.Controllers
         /// <returns>A Json representation of the ClientSettings object.</returns>
         [HttpGet]
         public IActionResult Get() => Json(_options);
+
+        /// <summary>
+        /// Returns generated password as a JSON string.
+        /// </summary>
+        /// <returns>A Json with a password property which contains a random generated password.</returns>
+        [HttpGet]
+        [Route("generated")]
+        public IActionResult GetGeneratedPassword() => Json(new { password = PasswordGenerator.Generate(_rngCsp, _options.PasswordEntropy) });
 
         /// <summary>
         /// Given a POST request, processes and changes a User's password.
@@ -90,6 +104,12 @@ namespace Unosquare.PassCore.Web.Controllers
 
             try
             {
+                if (_options.MinimumScore > 0 && Zxcvbn.MatchPassword(model.NewPassword).Score < _options.MinimumScore)
+                {
+                    result.Errors.Add(new ApiErrorItem(ApiErrorCode.MinimumScore));
+                    return BadRequest(result);
+                }
+
                 var resultPasswordChange = _passwordChangeProvider.PerformPasswordChange(
                         model.Username,
                         model.CurrentPassword,

@@ -23,10 +23,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="SimpleBase" Version="1.8.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="zxcvbn-core" Version="2.1.44" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +58,7 @@
     <!-- Pure LDAP provider -->
     <ProjectReference Include="..\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj" />
   </ItemGroup>
+
   <PropertyGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
     <DefineConstants>PASSCORE_LDAP_PROVIDER</DefineConstants>
   </PropertyGroup>

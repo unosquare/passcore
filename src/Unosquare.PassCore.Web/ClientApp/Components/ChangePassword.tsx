@@ -63,6 +63,9 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                         case 9:
                             errorAlertMessage += alerts.errorComplexPassword;
                             break;
+                        case 10:
+                            errorAlertMessage += alerts.errorScorePassowrd;
+                            break;
                     }
                 });
 

@@ -49,10 +49,15 @@
         /// LDAP problem connection
         /// </summary>
         LdapProblem = 8,
-        
+
         /// <summary>
         /// Complex password issue
         /// </summary>
-        ComplexPassword = 9
+        ComplexPassword = 9,
+
+        /// <summary>
+        /// The score is minor than the Minimum Score  
+        /// </summary>
+        MinimumScore = 10,
     }
 }
