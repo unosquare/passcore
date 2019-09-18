@@ -127,10 +127,12 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
             />
             {
                 usePasswordGeneration ?
-                    <PasswordGenerator
-                        value={fields.NewPassword}
-                        setValue={setGenerated}
-                    />
+                    (
+                        <PasswordGenerator
+                            value={fields.NewPassword}
+                            setValue={setGenerated}
+                        />
+                    )
                     :
                     (
                         <>
@@ -156,9 +158,11 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                             />
                             {
                                 showPasswordMeter &&
-                                <PasswordStrengthBar
-                                    newPassword={fields.NewPassword}
-                                />
+                                (
+                                    <PasswordStrengthBar
+                                        newPassword={fields.NewPassword}
+                                    />
+                                )
                             }
                             <div
                                 dangerouslySetInnerHTML={{ __html: newPasswordHelpblock }}

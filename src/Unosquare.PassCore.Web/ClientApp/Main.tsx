@@ -22,31 +22,29 @@ export const Main: React.FunctionComponent<any> = () => {
 
     if (isLoading) {
         return (
-            <React.Fragment>
+            <Grid
+                container={true}
+                alignItems='center'
+                direction='column'
+                justify='center'
+            >
                 <Grid
-                    container={true}
-                    alignItems='center'
-                    direction='column'
-                    justify='center'
+                    item={true}
+                    key='title'
                 >
-                    <Grid
-                        item={true}
-                        key='title'
+                    <Typography
+                        variant='h3'
+                        align='center'
                     >
-                        <Typography
-                            variant='h3'
-                            align='center'
-                        >
-                            Loading Passcore...
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item={true}
-                    >
-                        <LoadingIcon />
-                    </Grid>
+                        Loading Passcore...
+                    </Typography>
                 </Grid>
-            </React.Fragment>
+                <Grid
+                    item={true}
+                >
+                    <LoadingIcon />
+                </Grid>
+            </Grid>
         );
     }
 

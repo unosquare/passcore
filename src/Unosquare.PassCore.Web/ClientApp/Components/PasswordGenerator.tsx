@@ -61,26 +61,28 @@ export const PasswordGenerator: React.FunctionComponent<any> = ({ value, setValu
                     }}
                     InputProps={{
                         endAdornment:
-                            <InputAdornment position='end'>
-                                <IconButton
-                                    aria-label='Toggle password visibility'
-                                    onMouseDown={onMouseDownVisibility}
-                                    onMouseUp={onMouseUpVisibility}
-                                    tabIndex={-1}
+                            (
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        aria-label='Toggle password visibility'
+                                        onMouseDown={onMouseDownVisibility}
+                                        onMouseUp={onMouseUpVisibility}
+                                        tabIndex={-1}
 
-                                >
-                                    {
-                                        visibility ? <Visibility /> : <VisibilityOff />
-                                    }
-                                </IconButton>
-                                <IconButton
-                                    aria-label='Copy password to clipboard'
-                                    onClick={copyPassword}
-                                    tabIndex={-1}
-                                >
-                                    <FileCopy />
-                                </IconButton>
-                            </InputAdornment>,
+                                    >
+                                        {
+                                            visibility ? <Visibility /> : <VisibilityOff />
+                                        }
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label='Copy password to clipboard'
+                                        onClick={copyPassword}
+                                        tabIndex={-1}
+                                    >
+                                        <FileCopy />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
                     }}
                 />
             )

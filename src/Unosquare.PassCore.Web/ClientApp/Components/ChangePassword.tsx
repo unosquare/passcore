@@ -91,7 +91,7 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
 
     return (
         <React.Fragment>
-            < Paper
+            <Paper
                 style={{
                     borderRadius: '10px',
                     height: '550px',
@@ -129,13 +129,16 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                     </Button>
                 </ValidatorForm>
                 {
-                    (siteKey && siteKey !== '') &&
-                    <ReCaptchaComponent
-                        siteKey={siteKey}
-                        setToken={setToken}
-                    />
+                    (siteKey && siteKey !== '' &&
+                        (
+                        <ReCaptchaComponent
+                            siteKey={siteKey}
+                            setToken={setToken}
+                        />
+                        )
+                    )
                 }
-            </Paper >
+            </Paper>
             <ChangePasswordDialog
                 open={dialogIsOpen}
                 onClose={onCloseDialog}
