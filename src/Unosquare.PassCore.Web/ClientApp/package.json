@@ -31,7 +31,7 @@
         "zxcvbn": "^4.4.2"
     },
     "devDependencies": {
-        "@types/react": "^16.9.2",
+        "@types/react": "^16.9.3",
         "@types/react-router-dom": "^4.3.5",
         "parcel-bundler": "^1.12.3",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
