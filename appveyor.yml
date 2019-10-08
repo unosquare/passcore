@@ -1,6 +1,6 @@
 version: '3.6.{build}'
 image: 
-- Visual Studio 2017
+- Visual Studio 2019
 - Ubuntu
 platform: Any CPU
 stack: node 9
@@ -19,7 +19,7 @@ install:
 - ps: |
         if($isWindows)
         {
-            Install-Product node 8
+            Install-Product node 9
         }
 before_build:
 - ps: |
