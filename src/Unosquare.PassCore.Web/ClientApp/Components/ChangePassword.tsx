@@ -6,7 +6,7 @@ import { ChangePasswordDialog } from '../Dialogs/ChangePasswordDialog';
 import { GlobalContext, SnackbarContext } from '../Provider/GlobalContext';
 import { fetchRequest } from '../Utils/FetchRequest';
 import { ChangePasswordForm } from './ChangePasswordForm';
-import { ReCaptchaComponent } from './ReCaptcha';
+import ReCaptcha from './ReCaptcha';
 
 export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
     const [disabled, setDisabled] = React.useState(true);
@@ -131,10 +131,11 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                 {
                     (siteKey && siteKey !== '' &&
                         (
-                        <ReCaptchaComponent
-                            siteKey={siteKey}
-                            setToken={setToken}
-                        />
+                            <ReCaptcha
+                                siteKey={siteKey}
+                                shouldReset={false}
+                                setToken={setToken}
+                            />
                         )
                     )
                 }
