@@ -17,8 +17,8 @@
     {
         private readonly PasswordChangeOptions _options;
         private readonly ILogger _logger;
-        private IdentityType _idType = IdentityType.UserPrincipalName;
         private readonly DomainPasswordInformation? _domainPasswordInfo;
+        private IdentityType _idType = IdentityType.UserPrincipalName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordChangeProvider"/> class.
@@ -50,7 +50,6 @@
 
             try
             {
-
                 using (var principalContext = AcquirePrincipalContext())
                 {
                     var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
@@ -63,7 +62,10 @@
                         return new ApiErrorItem(ApiErrorCode.UserNotFound);
                     }
 
-                    ValidateGroups(userPrincipal);
+                    var item = ValidateGroups(userPrincipal);
+
+                    if (item != null)
+                        return item;
 
                     // Check if password change is allowed
                     if (userPrincipal.UserCannotChangePassword)
@@ -97,7 +99,7 @@
             catch (PasswordException passwordEx)
             {
                 var item = new ApiErrorItem(ApiErrorCode.ComplexPassword, passwordEx.Message);
-                
+
                 _logger.LogWarning(item.Message, passwordEx);
 
                 return item;
@@ -146,46 +148,35 @@
             return string.IsNullOrWhiteSpace(domain) || parts.Length > 1 ? username : $"{username}@{domain}";
         }
 
-        private void ValidateGroups(UserPrincipal userPrincipal)
+        private ApiErrorItem ValidateGroups(UserPrincipal userPrincipal)
         {
             try
             {
-                if (!userPrincipal.GetGroups().ToList().Any()) return;
+                if (!userPrincipal.GetGroups().Any()) return null;
 
                 if (_options.RestrictedADGroups?.Any() == true)
                 {
-                    foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
+                    if (userPrincipal.GetAuthorizationGroups().Any(x => _options.RestrictedADGroups.Contains(x.Name)))
                     {
-                        if (_options.RestrictedADGroups.Contains(userPrincipalAuthGroup.Name))
-                        {
-                            throw new ApiErrorException("The User principal is listed as restricted",
-                                ApiErrorCode.ChangeNotPermitted);
-                        }
+                        return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted,
+                            "The User principal is listed as restricted");
                     }
                 }
 
-                if (_options.AllowedADGroups?.Any() != true) return;
+                if (_options.AllowedADGroups?.Any() != true) return null;
 
-                foreach (var userPrincipalAuthGroup in userPrincipal.GetAuthorizationGroups())
-                {
-                    if (_options.AllowedADGroups.Contains(userPrincipalAuthGroup.Name))
-                    {
-                        return;
-                    }
-                }
+                return userPrincipal.GetAuthorizationGroups().Any(x => _options.AllowedADGroups.Contains(x.Name))
+                    ? null
+                    : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
 
                 // If after iterate the user groups the user cannot change password.
-                throw new ApiErrorException("The User principal is not listed as allowed",
-                    ApiErrorCode.ChangeNotPermitted);
-            }
-            catch (ApiErrorException)
-            {
-                throw;
             }
             catch (Exception exception)
             {
                 _logger.LogError(new EventId(888), exception, nameof(ValidateGroups));
             }
+
+            return null;
         }
 
         private DomainPasswordInformation? GetDomainPasswordInformation()
