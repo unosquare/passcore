@@ -16,7 +16,6 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
     const validatorFormRef = React.useRef(null);
     const { alerts, changePasswordForm, recaptcha, validationRegex } = React.useContext(GlobalContext);
     const { changePasswordButtonLabel } = changePasswordForm;
-    const { siteKey } = recaptcha;
     const { sendMessage } = React.useContext(SnackbarContext);
     const [shouldReset, setReset] = React.useState(false);
 
@@ -129,12 +128,11 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                     </Button>
                 </ValidatorForm>
                 {
-                    (siteKey && siteKey !== '' &&
+                    (recaptcha.siteKey && recaptcha.siteKey !== '' &&
                         (
                             <ReCaptcha
-                                siteKey={siteKey}
-                                shouldReset={false}
                                 setToken={setToken}
+                                shouldReset={false}
                             />
                         )
                     )
