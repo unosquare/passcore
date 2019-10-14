@@ -124,9 +124,7 @@
             if (principalContext.ValidateCredentials(upn, currentPassword))
                 return true;
 
-            var tmpAuthority = upn?.Contains('@') == true ? upn.Split('@').Last() : string.Empty;
-
-            if (LogonUser(upn, tmpAuthority, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
+            if (LogonUser(upn, string.Empty, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                 return true;
 
             var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
