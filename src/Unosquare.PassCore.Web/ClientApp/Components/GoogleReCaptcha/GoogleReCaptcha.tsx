@@ -56,7 +56,7 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
     public isReady = () =>
         typeof window !== 'undefined' &&
         typeof window.grecaptcha !== 'undefined' &&
-        typeof window.grecaptcha.render === 'function';
+        typeof window.grecaptcha.render === 'function'
 
     public componentWillUnmount() {
         clearInterval(this.readyIntervalId);
