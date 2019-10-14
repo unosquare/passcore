@@ -131,7 +131,7 @@
 <li>The <code>&lt;path&gt;</code> is the directory where you will be serving the website from.</li>
 </ul>
 </li>
-<li>Install the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.6-windows-hosting-bundle-installer">.NET Core 2.2.6 Windows Server Hosting bundle</a>.</li>
+<li>Install the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.0.0-windows-hosting-bundle-installer">.NET Core 3.0.0 Windows Server Hosting bundle</a>.</li>
 <li>Go to your <em>IIS Manager</em>, Right-click on <em>Application Pools</em> and select <em>Add Application Pool</em>.</li>
 <li>A dialog appears. Under Name enter <strong>PassCore Application Pool</strong>, Under .NET CLR Version select <strong>No Managed Code</strong> and finally, under Managed pipeline mode select <strong>Integrated</strong>. Click OK after all fields have been set.</li>
 <li>Now, right-click on the application pool you just created in the previous step and select <em>Advanced Settings ...</em>. Change the <em>Start Mode</em> to <strong>AlwaysRunning</strong>, and the <em>Idle Time-out (minutes)</em> to <strong>0</strong>. Click on <em>OK</em>. This will ensure PassCore stays responsive even after long periods of inactivity.</li>
@@ -149,7 +149,8 @@
 </ol>
 <p><strong>NOTE:</strong> If you have a previous version, you <strong>can not</strong> use the same <code>appsettings.json</code> file. Please update your settings manually editing the new file.</p>
 <h2 id="powershell-installer">PowerShell Installer</h2>
-<p>Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.3-windows-hosting-bundle-installer">.NET Core 2.2.3 Windows Server Hosting bundle</a> and enabled World Wide Web publishing service:</p>
+<p>Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.0.0-windows-hosting-bundle-installer">.NET Core 3.0.0 Windows Server Hosting bundle</a> 
+and enabled World Wide Web publishing service:</p>
 <pre><code class="lang-powershell">Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1&#39;))
 </code></pre><p>Using the command shown above will install to the folder <code>C:\passcore</code> and using the HTTP Port 8080 with the default (localhost) binding. </p>
 <p>If you want to customize your installation please download the <a href="https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1">installer script</a> and 
@@ -228,7 +229,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 <pre><code class="lang-html">&lt;base href=&quot;/PassCore/&quot; /&gt;
 </code></pre><h2 id="troubleshooting">Troubleshooting</h2>
 <ul>
-<li>At first run if you find an error (e.g. <strong>HTTP Error 502.5</strong>) first ensure you have installed <a href="https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.1-windows-hosting-bundle-installer">.NET Core 2.1.1 Windows Server Hosting bundle</a>, or better.</li>
+<li>At first run if you find an error (e.g. <strong>HTTP Error 502.5</strong>) first ensure you have installed <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.0.0-windows-hosting-bundle-installer">.NET Core 3.0.0 Windows Server Hosting bundle</a>, or better.</li>
 <li>If you find an <a href="https://stackoverflow.com/questions/45415832/http-error-500-19-in-iis-10-and-visual-studio-2017">HTTP Error 500</a> you can try<ol>
 <li>Press Win Key+R to Open Run Window</li>
 <li>in the Run Window, enter &quot;OptionalFeatures.exe&quot;</li>
