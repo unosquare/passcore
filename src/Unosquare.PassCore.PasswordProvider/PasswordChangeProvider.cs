@@ -126,7 +126,7 @@
             if (principalContext.ValidateCredentials(upn, currentPassword))
                 return true;
 
-            var tmpAuthority = upn?.Split('@').Last();
+            var tmpAuthority = upn?.Contains('@') == true ? upn.Split('@').Last() : string.Empty;
 
             if (LogonUser(upn, tmpAuthority, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
                 return true;
