@@ -25,7 +25,6 @@
         "@material-ui/styles": "^4.5.0",
         "react": "^16.10.2",
         "react-dom": "^16.10.2",
-        "react-recaptcha-v3": "^1.1.0",
         "uno-material-ui": "^1.5.4",
         "uno-react": "^0.10.2",
         "zxcvbn": "^4.4.2"
