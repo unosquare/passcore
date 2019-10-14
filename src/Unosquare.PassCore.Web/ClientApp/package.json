@@ -20,12 +20,12 @@
     },
     "homepage": "https://github.com/unosquare/passcore",
     "dependencies": {
-        "@material-ui/core": "^4.5.0",
-        "@material-ui/icons": "^4.4.3",
+        "@material-ui/core": "^4.5.1",
+        "@material-ui/icons": "^4.5.1",
         "@material-ui/styles": "^4.5.0",
         "react": "^16.10.2",
         "react-dom": "^16.10.2",
-        "uno-material-ui": "^1.5.4",
+        "uno-material-ui": "^1.6.1",
         "uno-react": "^0.10.2",
         "zxcvbn": "^4.4.2"
     },

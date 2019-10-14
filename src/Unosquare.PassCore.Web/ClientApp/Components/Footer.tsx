@@ -44,7 +44,7 @@ export const Footer: React.FunctionComponent<any> = () => (
                 align='center'
                 variant='caption'
             >
-                Powered by PassCore v4.1.0 - Open Source Initiative and MIT Licensed
+                Powered by PassCore v4.2.0 - Open Source Initiative and MIT Licensed
             </Typography>
             <Typography
                 align='center'

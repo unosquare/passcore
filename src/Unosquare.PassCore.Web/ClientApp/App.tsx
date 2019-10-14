@@ -1,3 +1,5 @@
+import './vendor';
+
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import responsiveFontSizes from '@material-ui/core/styles/responsiveFontSizes';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
