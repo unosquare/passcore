@@ -21,18 +21,16 @@ namespace Unosquare.PassCore.Web
     /// </summary>
     public class Startup
     {
-        private const string AppSettingsJsonFilename = "appsettings.json";
         private const string AppSettingsSectionName = "AppSettings";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
         /// This class gets instantiated by the Main method. The hosting environment gets provided via DI.
         /// </summary>
-        public Startup()
+        /// <param name="config">The configuration.</param>
+        public Startup(IConfiguration config)
         {
-            Configuration = new ConfigurationBuilder()
-                .AddJsonFile(AppSettingsJsonFilename, false, true)
-                .AddEnvironmentVariables()
-                .Build();
+            Configuration = config;
         }
 
         /// <summary>
@@ -41,7 +39,7 @@ namespace Unosquare.PassCore.Web
         /// <value>
         /// The configuration.
         /// </value>
-        public IConfigurationRoot Configuration { get; set; }
+        public IConfiguration Configuration { get; }
 
         /// <summary>
         /// Application's entry point.
@@ -66,10 +64,8 @@ namespace Unosquare.PassCore.Web
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions();
             services.Configure<ClientSettings>(Configuration.GetSection(nameof(ClientSettings)));
             services.Configure<WebSettings>(Configuration.GetSection(nameof(WebSettings)));
-            services.AddMvc();
 #if DEBUG
             services.Configure<IAppSettings>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, DebugPasswordChangeProvider>();
@@ -80,6 +76,9 @@ namespace Unosquare.PassCore.Web
             services.Configure<PasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
 #endif
+
+            // Add framework services.
+            services.AddControllers();
         }
 
         /// <summary>
@@ -95,11 +94,13 @@ namespace Unosquare.PassCore.Web
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            
+            app.UseRouting();
 
-            // The default route for all non-api routes is the Home controller which in turn, simply outputs the contents of the root
-            // index.html file. This makes the SPA always get back to the index route.
-            // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.0
-            app.UseMvcWithDefaultRoute();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

@@ -36,7 +36,7 @@
         }
 
         /// <inheritdoc />
-        public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
+        public ApiErrorItem? PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             var fixedUsername = FixUsernameWithDomain(username);
             _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
@@ -50,51 +50,49 @@
 
             try
             {
-                using (var principalContext = AcquirePrincipalContext())
+                using var principalContext = AcquirePrincipalContext();
+                var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
+
+                // Check if the user principal exists
+                if (userPrincipal == null)
                 {
-                    var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
+                    _logger.LogWarning($"The User principal ({fixedUsername}) doesn't exist");
 
-                    // Check if the user principal exists
-                    if (userPrincipal == null)
-                    {
-                        _logger.LogWarning($"The User principal ({fixedUsername}) doesn't exist");
-
-                        return new ApiErrorItem(ApiErrorCode.UserNotFound);
-                    }
-
-                    var item = ValidateGroups(userPrincipal);
-
-                    if (item != null)
-                        return item;
-
-                    // Check if password change is allowed
-                    if (userPrincipal.UserCannotChangePassword)
-                    {
-                        _logger.LogWarning("The User principal cannot change the password");
-
-                        return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted);
-                    }
-
-                    // Check if password expired or must be changed
-                    if (_options.UpdateLastPassword && userPrincipal.LastPasswordSet == null)
-                    {
-                        SetLastPassword(userPrincipal);
-                    }
-
-                    // Use always UPN for password check.
-                    if (!ValidateUserCredentials(userPrincipal.UserPrincipalName, currentPassword, principalContext))
-                    {
-                        _logger.LogWarning("The User principal password is not valid");
-
-                        return new ApiErrorItem(ApiErrorCode.InvalidCredentials);
-                    }
-
-                    // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
-                    ChangePassword(currentPassword, newPassword, userPrincipal);
-
-                    userPrincipal.Save();
-                    _logger.LogDebug("The User principal password updated with setPassword");
+                    return new ApiErrorItem(ApiErrorCode.UserNotFound);
                 }
+
+                var item = ValidateGroups(userPrincipal);
+
+                if (item != null)
+                    return item;
+
+                // Check if password change is allowed
+                if (userPrincipal.UserCannotChangePassword)
+                {
+                    _logger.LogWarning("The User principal cannot change the password");
+
+                    return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted);
+                }
+
+                // Check if password expired or must be changed
+                if (_options.UpdateLastPassword && userPrincipal.LastPasswordSet == null)
+                {
+                    SetLastPassword(userPrincipal);
+                }
+
+                // Use always UPN for password check.
+                if (!ValidateUserCredentials(userPrincipal.UserPrincipalName, currentPassword, principalContext))
+                {
+                    _logger.LogWarning("The User principal password is not valid");
+
+                    return new ApiErrorItem(ApiErrorCode.InvalidCredentials);
+                }
+
+                // Change the password via 2 different methods. Try SetPassword if ChangePassword fails.
+                ChangePassword(currentPassword, newPassword, userPrincipal);
+
+                userPrincipal.Save();
+                _logger.LogDebug("The User principal password updated with setPassword");
             }
             catch (PasswordException passwordEx)
             {
@@ -118,7 +116,7 @@
             return null;
         }
 
-        private static bool ValidateUserCredentials(
+        private bool ValidateUserCredentials(
             string upn,
             string currentPassword,
             PrincipalContext principalContext)
@@ -132,6 +130,8 @@
                 return true;
 
             var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+
+            _logger.LogDebug($"ValidateUserCredentials GetLastWin32Error {errorCode}");
 
             // Both of these means that the password CAN change and that we got the correct password
             return errorCode == ErrorPasswordMustChange || errorCode == ErrorPasswordExpired;
@@ -148,7 +148,7 @@
             return string.IsNullOrWhiteSpace(domain) || parts.Length > 1 ? username : $"{username}@{domain}";
         }
 
-        private ApiErrorItem ValidateGroups(UserPrincipal userPrincipal)
+        private ApiErrorItem? ValidateGroups(UserPrincipal userPrincipal)
         {
             try
             {

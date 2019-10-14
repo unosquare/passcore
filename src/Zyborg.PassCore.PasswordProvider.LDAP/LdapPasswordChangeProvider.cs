@@ -61,7 +61,7 @@
         ///
         /// Check the above links for more information.
         /// </remarks>
-        public ApiErrorItem PerformPasswordChange(
+        public ApiErrorItem? PerformPasswordChange(
             string username,
             string currentPassword,
             string newPassword)
@@ -72,53 +72,51 @@
 
                 var searchFilter = _options.LdapSearchFilter.Replace("{Username}", cleanUsername);
 
-                using (var ldap = BindToLdap())
+                using var ldap = BindToLdap();
+                var search = ldap.Search(
+                    _options.LdapSearchBase,
+                    LdapConnection.SCOPE_SUB,
+                    searchFilter,
+                    new[] { "distinguishedName" },
+                    false,
+                    _searchConstraints);
+
+                // We cannot use search.Count here -- apparently it does not
+                // wait for the results to return before resolving the count
+                // but fortunately hasMore seems to block until final result
+                if (!search.hasMore())
                 {
-                    var search = ldap.Search(
-                        _options.LdapSearchBase,
-                        LdapConnection.SCOPE_SUB,
-                        searchFilter,
-                        new[] { "distinguishedName" },
-                        false,
-                        _searchConstraints);
+                    _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
 
-                    // We cannot use search.Count here -- apparently it does not
-                    // wait for the results to return before resolving the count
-                    // but fortunately hasMore seems to block until final result
-                    if (!search.hasMore())
-                    {
-                        _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
-
-                        return new ApiErrorItem(
-                            _options.HideUserNotFound ? ApiErrorCode.InvalidCredentials : ApiErrorCode.UserNotFound,
-                            _options.HideUserNotFound ? "invalid credentials" : "username could not be located");
-                    }
-
-                    if (search.Count > 1)
-                    {
-                        _logger.LogWarning("found multiple with same username: [{0}]", cleanUsername);
-
-                        // Hopefully this should not ever happen if AD is preserving SAM Account Name
-                        // uniqueness constraint, but just in case, handling this corner case
-                        return new ApiErrorItem(ApiErrorCode.UserNotFound, "multiple matching user entries resolved");
-                    }
-
-                    var userDN = search.next().DN;
-
-                    if (_options.LdapChangePasswordWithDelAdd)
-                    {
-                        ChangePasswordDelAdd(currentPassword, newPassword, ldap, userDN);
-                    }
-                    else
-                    {
-                        ChangePasswordReplace(newPassword, ldap, userDN);
-                    }
-
-                    if (_options.LdapStartTls)
-                        ldap.StopTls();
-
-                    ldap.Disconnect();
+                    return new ApiErrorItem(
+                        _options.HideUserNotFound ? ApiErrorCode.InvalidCredentials : ApiErrorCode.UserNotFound,
+                        _options.HideUserNotFound ? "invalid credentials" : "username could not be located");
                 }
+
+                if (search.Count > 1)
+                {
+                    _logger.LogWarning("found multiple with same username: [{0}]", cleanUsername);
+
+                    // Hopefully this should not ever happen if AD is preserving SAM Account Name
+                    // uniqueness constraint, but just in case, handling this corner case
+                    return new ApiErrorItem(ApiErrorCode.UserNotFound, "multiple matching user entries resolved");
+                }
+
+                var userDN = search.next().DN;
+
+                if (_options.LdapChangePasswordWithDelAdd)
+                {
+                    ChangePasswordDelAdd(currentPassword, newPassword, ldap, userDN);
+                }
+                else
+                {
+                    ChangePasswordReplace(newPassword, ldap, userDN);
+                }
+
+                if (_options.LdapStartTls)
+                    ldap.StopTls();
+
+                ldap.Disconnect();
             }
             catch (LdapException ex)
             {
@@ -187,7 +185,7 @@
             }
 
             var errCodeString = m.Groups[1].Value;
-            var errCode = int.Parse(errCodeString, NumberStyles.HexNumber);
+            var errCode = int.Parse(errCodeString, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
             var err = Win32ErrorCode.ByCode(errCode);
 
             return err == null
@@ -308,7 +306,7 @@
 
             ldap.SecureSocketLayer = _options.LdapSecureSocketLayer;
 
-            string bindHostname = null;
+            string? bindHostname = null;
 
             foreach (var h in _options.LdapHostnames)
             {

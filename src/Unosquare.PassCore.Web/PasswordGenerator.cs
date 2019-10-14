@@ -10,8 +10,8 @@
             var pswBytes = new byte[entropy];
             provider.GetBytes(pswBytes);
 
-            var enconder = new Base85(Base85Alphabet.Ascii85);
-            return enconder.Encode(pswBytes);
+            var encoder = new Base85(Base85Alphabet.Ascii85);
+            return encoder.Encode(pswBytes);
         }
     }
 }
