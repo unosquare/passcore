@@ -83,7 +83,9 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
     }
 
     public reset = () => {
-        this.grecaptcha().reset(this.widgetId);
+        if (this.isReady()) {
+            this.grecaptcha().reset(this.widgetId);
+        }
     }
 
     public execute = () => {

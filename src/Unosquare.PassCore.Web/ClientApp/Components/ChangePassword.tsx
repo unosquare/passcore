@@ -6,7 +6,7 @@ import { ChangePasswordDialog } from '../Dialogs/ChangePasswordDialog';
 import { GlobalContext, SnackbarContext } from '../Provider/GlobalContext';
 import { fetchRequest } from '../Utils/FetchRequest';
 import { ChangePasswordForm } from './ChangePasswordForm';
-import ReCaptcha from './ReCaptcha';
+import { ReCaptcha } from './ReCaptcha';
 
 export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
     const [disabled, setDisabled] = React.useState(true);
@@ -81,6 +81,8 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
         setReset(true);
     };
 
+    const marginButton = recaptcha.siteKey && recaptcha.siteKey !== '' ? '25px 0 0 180px' : '100px 0 0 180px';
+
     ValidatorForm.addValidationRule('isUserName',
         (value: string) => new RegExp(validationRegex.usernameRegex).test(value));
     ValidatorForm.addValidationRule('isUserEmail',
@@ -114,29 +116,30 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                         shouldReset={shouldReset}
                         changeResetState={setReset}
                     />
+                    {
+                        (recaptcha.siteKey && recaptcha.siteKey !== '' &&
+                            (
+                                <ReCaptcha
+                                    setToken={setToken}
+                                    shouldReset={false}
+                                />
+
+                            )
+                        )
+                    }
                     <Button
                         type='submit'
                         variant='contained'
                         color='primary'
                         disabled={disabled}
                         style={{
-                            margin: '100px 0 0 180px',
+                            margin: marginButton,
                             width: '240px',
                         }}
                     >
                         {changePasswordButtonLabel}
                     </Button>
                 </ValidatorForm>
-                {
-                    (recaptcha.siteKey && recaptcha.siteKey !== '' &&
-                        (
-                            <ReCaptcha
-                                setToken={setToken}
-                                shouldReset={false}
-                            />
-                        )
-                    )
-                }
             </Paper>
             <ChangePasswordDialog
                 open={dialogIsOpen}

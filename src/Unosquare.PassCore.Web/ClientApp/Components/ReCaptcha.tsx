@@ -2,7 +2,7 @@ import * as React from 'react';
 import { GlobalContext } from '../Provider/GlobalContext';
 import GoogleReCaptcha from './GoogleReCaptcha';
 
-const ReCaptchaComponent: React.FunctionComponent<any> = ({ setToken, shouldReset }) => {
+export const ReCaptcha: React.FunctionComponent<any> = ({ setToken, shouldReset }) => {
 
   // tslint:disable-next-line
   let captchaRef: any;
@@ -24,15 +24,20 @@ const ReCaptchaComponent: React.FunctionComponent<any> = ({ setToken, shouldRese
   const verifyCallback = (recaptchaToken: any) => setToken(recaptchaToken);
 
   return (
-    <GoogleReCaptcha
-      ref={(el: any) => { captchaRef = el; }}
-      size='normal'
-      render='explicit'
-      sitekey={siteKey}
-      onloadCallback={onLoadRecaptcha}
-      verifyCallback={verifyCallback}
-    />
+    <div
+      style={{
+        marginLeft: 'calc(100% - 481px)',
+        marginTop: '25px',
+      }}
+    >
+      <GoogleReCaptcha
+        ref={(el: any) => { captchaRef = el; }}
+        size='normal'
+        render='explicit'
+        sitekey={siteKey}
+        onloadCallback={onLoadRecaptcha}
+        verifyCallback={verifyCallback}
+      />
+    </div>
   );
 };
-
-export default ReCaptchaComponent;
