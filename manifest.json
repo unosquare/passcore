@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "xNBm4vLsEUN5na1cG4m95A=="
+          "hash": "F+wDUcvtibQdWb0Av1asJQ=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "SNqQYu5+F7AK8BzTVaUJoA=="
+          "hash": "YLZFSOk9z30LgTS7LCqrxQ=="
         }
       },
       "is_incremental": false,
@@ -437,6 +437,13 @@
         "skipped_file_count": 0
       },
       "processors": {
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
@@ -448,13 +455,6 @@
           "incrementalPhase": "build",
           "total_file_count": 26,
           "skipped_file_count": 26
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
