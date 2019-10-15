@@ -22,7 +22,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         public string DefaultDomain { get; set; }
 
         /// <inheritdoc />
-        public int LdapPort { get; set; } = LdapConnection.DEFAULT_SSL_PORT;
+        public int LdapPort { get; set; } = LdapConnection.DefaultSslPort;
 
         /// <summary>
         /// Gets or sets a value indicating whether [LDAP uses SSL].
