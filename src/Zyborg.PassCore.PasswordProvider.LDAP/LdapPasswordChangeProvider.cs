@@ -27,7 +27,7 @@
         private readonly LdapSearchConstraints _searchConstraints = new LdapSearchConstraints(
                 0,
                 0,
-                LdapSearchConstraints.DEREF_NEVER,
+                LdapSearchConstraints.DerefNever,
                 1000,
                 true,
                 1,
@@ -75,7 +75,7 @@
                 using var ldap = BindToLdap();
                 var search = ldap.Search(
                     _options.LdapSearchBase,
-                    LdapConnection.SCOPE_SUB,
+                    LdapConnection.ScopeSub,
                     searchFilter,
                     new[] { "distinguishedName" },
                     false,
@@ -84,7 +84,7 @@
                 // We cannot use search.Count here -- apparently it does not
                 // wait for the results to return before resolving the count
                 // but fortunately hasMore seems to block until final result
-                if (!search.hasMore())
+                if (!search.HasMore())
                 {
                     _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
 
@@ -102,7 +102,7 @@
                     return new ApiErrorItem(ApiErrorCode.UserNotFound, "multiple matching user entries resolved");
                 }
 
-                var userDN = search.next().DN;
+                var userDN = search.Next().Dn;
 
                 if (_options.LdapChangePasswordWithDelAdd)
                 {
@@ -146,22 +146,20 @@
             // If you don't have the rights to Add and/or Delete the Attribute, you might have the right to change the password-attribute.
             // In this case uncomment the next 2 lines and comment the region 'Change Password by Delete/Add'
             var attribute = new LdapAttribute("userPassword", newPassword);
-            var ldapReplace = new LdapModification(LdapModification.REPLACE, attribute);
+            var ldapReplace = new LdapModification(LdapModification.Replace, attribute);
             ldap.Modify(userDN, new[] { ldapReplace }); // Change with Replace
         }
 
         private static void ChangePasswordDelAdd(string currentPassword, string newPassword, ILdapConnection ldap, string userDN)
         {
-            var oldPassBytes = Encoding.Unicode.GetBytes($@"""{currentPassword}""")
-                .Select(x => (sbyte)x).ToArray();
-            var newPassBytes = Encoding.Unicode.GetBytes($@"""{newPassword}""")
-                .Select(x => (sbyte)x).ToArray();
+            var oldPassBytes = Encoding.Unicode.GetBytes($@"""{currentPassword}""");
+            var newPassBytes = Encoding.Unicode.GetBytes($@"""{newPassword}""");
 
             var oldAttr = new LdapAttribute("unicodePwd", oldPassBytes);
             var newAttr = new LdapAttribute("unicodePwd", newPassBytes);
 
-            var ldapDel = new LdapModification(LdapModification.DELETE, oldAttr);
-            var ldapAdd = new LdapModification(LdapModification.ADD, newAttr);
+            var ldapDel = new LdapModification(LdapModification.Delete, oldAttr);
+            var ldapAdd = new LdapModification(LdapModification.Add, newAttr);
             ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
         }
         
@@ -291,10 +289,10 @@
             else if (!_options.LdapIgnoreTlsValidation)
                 _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsValidation)}] is ENABLED; untrusted certificate roots will be allowed");
 
-            if (_options.LdapPort == LdapConnection.DEFAULT_SSL_PORT && !_options.LdapSecureSocketLayer)
+            if (_options.LdapPort == LdapConnection.DefaultSslPort && !_options.LdapSecureSocketLayer)
                 _logger.LogWarning($"option [{nameof(_options.LdapSecureSocketLayer)}] is DISABLED in combination with standard SSL port [{_options.LdapPort}]");
 
-            if (_options.LdapPort != LdapConnection.DEFAULT_SSL_PORT && !_options.LdapStartTls)
+            if (_options.LdapPort != LdapConnection.DefaultSslPort && !_options.LdapStartTls)
                 _logger.LogWarning($"option [{nameof(_options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{_options.LdapPort}]");
         }
 
