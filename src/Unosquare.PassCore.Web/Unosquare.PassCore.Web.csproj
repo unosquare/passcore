@@ -42,17 +42,17 @@
     <ProjectReference Include="..\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(PASSCORE_PROVIDER)' == ''">
+  <ItemGroup Condition="'$(RuntimeIdentifier)' != 'linux-x64'">
     <!-- Default Password Provider - Win32 -->
     <ProjectReference Include="..\Unosquare.PassCore.PasswordProvider\Unosquare.PassCore.PasswordProvider.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
     <!-- Pure LDAP provider -->
     <ProjectReference Include="..\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
     <DefineConstants>PASSCORE_LDAP_PROVIDER</DefineConstants>
   </PropertyGroup>
 
