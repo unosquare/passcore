@@ -23,7 +23,7 @@
         "@material-ui/core": "^4.5.1",
         "@material-ui/icons": "^4.5.1",
         "@material-ui/styles": "^4.5.0",
-        "react": "^16.10.2",
+        "react": "^16.11.0",
         "react-dom": "^16.10.2",
         "uno-material-ui": "^1.6.2",
         "uno-react": "^0.10.3",
