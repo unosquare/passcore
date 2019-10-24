@@ -177,14 +177,13 @@
             return null;
         }
 
-        private DomainPasswordInformation? GetDomainPasswordInformation()
+        private static DomainPasswordInformation? GetDomainPasswordInformation()
         {
             using (var server = new SamServer())
             {
                 foreach (var domain in server.EnumerateDomains())
                 {
                     if (domain == "Builtin") continue;
-                    if (!string.IsNullOrEmpty(_options.DefaultDomain) && !_options.DefaultDomain.Contains(domain)) continue;
 
                     var sid = server.GetDomainSid(domain);
                     return server.GetDomainPasswordInformation(sid);
