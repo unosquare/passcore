@@ -2,8 +2,7 @@ version: '3.6.{build}'
 image: 
 - Visual Studio 2019
 - Ubuntu
-platform: Any CPU
-stack: node 9
+stack: node 10
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   op_build_user: "Geo Perez"
@@ -19,7 +18,7 @@ install:
 - ps: |
         if($isWindows)
         {
-            Install-Product node 9
+            Install-Product node 10
         }
 before_build:
 - ps: |
@@ -32,12 +31,12 @@ before_build:
 - cmd: iisreset
 - cmd: net start W3SVC
 - cd src/Unosquare.PassCore.Web/ClientApp
-- npm install
+- npm ci
 - npm run lint
 - cd ../../..
 build_script:
 - cmd: dotnet publish --configuration Release --runtime win-x64 --output "C:/passcore"
-- sh: dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP
+- sh: dotnet publish --configuration Release --runtime linux-x64
 - ps: |
         if($isWindows)
         {
