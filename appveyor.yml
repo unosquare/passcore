@@ -36,7 +36,7 @@ before_build:
 - cd ../../..
 build_script:
 - cmd: dotnet publish --configuration Release --runtime win-x64 --output "C:/passcore"
-- sh: dotnet publish --configuration Release --runtime linux-x64
+- sh: dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP
 - ps: |
         if($isWindows)
         {
