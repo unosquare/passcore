@@ -17,7 +17,7 @@
     /// <summary>
     /// Represents a LDAP password change provider using Novell LDAP Connection.
     /// </summary>
-    /// <seealso cref="Unosquare.PassCore.Common.IPasswordChangeProvider" />
+    /// <seealso cref="IPasswordChangeProvider" />
     public class LdapPasswordChangeProvider : IPasswordChangeProvider
     {
         private readonly LdapPasswordChangeOptions _options;
@@ -42,7 +42,7 @@
         /// <param name="logger">The logger.</param>
         /// <param name="options">The _options.</param>
         public LdapPasswordChangeProvider(
-            ILogger<LdapPasswordChangeProvider> logger,
+            ILogger logger,
             IOptions<LdapPasswordChangeOptions> options)
         {
             _logger = logger;
@@ -72,6 +72,8 @@
 
                 var searchFilter = _options.LdapSearchFilter.Replace("{Username}", cleanUsername);
 
+                _logger.LogWarning("LDAP query: {0}", searchFilter);
+
                 using var ldap = BindToLdap();
                 var search = ldap.Search(
                     _options.LdapSearchBase,
@@ -86,20 +88,20 @@
                 // but fortunately hasMore seems to block until final result
                 if (!search.HasMore())
                 {
-                    _logger.LogWarning("unable to find username: [{0}]", cleanUsername);
+                    _logger.LogWarning("Unable to find username: [{0}]", cleanUsername);
 
                     return new ApiErrorItem(
                         _options.HideUserNotFound ? ApiErrorCode.InvalidCredentials : ApiErrorCode.UserNotFound,
-                        _options.HideUserNotFound ? "invalid credentials" : "username could not be located");
+                        _options.HideUserNotFound ? "Invalid credentials" : "Username could not be located");
                 }
 
                 if (search.Count > 1)
                 {
-                    _logger.LogWarning("found multiple with same username: [{0}]", cleanUsername);
+                    _logger.LogWarning("Found multiple with same username: [{0}] - Count {1}", cleanUsername, search.Count);
 
                     // Hopefully this should not ever happen if AD is preserving SAM Account Name
                     // uniqueness constraint, but just in case, handling this corner case
-                    return new ApiErrorItem(ApiErrorCode.UserNotFound, "multiple matching user entries resolved");
+                    return new ApiErrorItem(ApiErrorCode.UserNotFound, "Multiple matching user entries resolved");
                 }
 
                 var userDN = search.Next().Dn;
@@ -126,7 +128,9 @@
 
                 return item;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
@@ -206,7 +210,7 @@
 
             if (cleanUsername.IndexOfAny(invalidChars) >= 0)
             {
-                throw new ApiErrorException("username contains one or more invalid characters", ApiErrorCode.InvalidCredentials);
+                throw new ApiErrorException("Username contains one or more invalid characters", ApiErrorCode.InvalidCredentials);
             }
 
             // LDAP filters require escaping of some special chars:
@@ -214,24 +218,25 @@
             var escape = "()&|=><!*/\\".ToCharArray();
             var escapeIndex = cleanUsername.IndexOfAny(escape);
 
-            if (escapeIndex >= 0)
-            {
-                var buff = new StringBuilder();
-                var maxLen = cleanUsername.Length;
-                var copyFrom = 0;
-                while (escapeIndex >= 0)
-                {
-                    buff.Append(cleanUsername.Substring(copyFrom, escapeIndex));
-                    buff.Append(string.Format("\\{0:X}", (int)cleanUsername[escapeIndex]));
-                    copyFrom = escapeIndex + 1;
-                    escapeIndex = cleanUsername.IndexOfAny(escape, copyFrom);
-                }
+            if (escapeIndex < 0) 
+                return cleanUsername;
 
-                if (copyFrom < maxLen)
-                    buff.Append(cleanUsername.Substring(copyFrom));
-                cleanUsername = buff.ToString();
-                _logger.LogWarning("had to clean username: [{0}] => [{1}]", username, cleanUsername);
+            var buff = new StringBuilder();
+            var maxLen = cleanUsername.Length;
+            var copyFrom = 0;
+
+            while (escapeIndex >= 0)
+            {
+                buff.Append(cleanUsername.Substring(copyFrom, escapeIndex));
+                buff.Append(string.Format("\\{0:X}", (int)cleanUsername[escapeIndex]));
+                copyFrom = escapeIndex + 1;
+                escapeIndex = cleanUsername.IndexOfAny(escape, copyFrom);
             }
+
+            if (copyFrom < maxLen)
+                buff.Append(cleanUsername.Substring(copyFrom));
+            cleanUsername = buff.ToString();
+            _logger.LogWarning("Had to clean username: [{0}] => [{1}]", username, cleanUsername);
 
             return cleanUsername;
         }
@@ -244,56 +249,56 @@
 
             if (_options.LdapHostnames?.Length < 1)
             {
-                throw new ArgumentException("_options must specify at least one LDAP hostname",
+                throw new ArgumentException("Options must specify at least one LDAP hostname",
                     nameof(_options.LdapHostnames));
             }
 
             if (string.IsNullOrEmpty(_options.LdapUsername))
             {
-                throw new ArgumentException("_options missing or invalid LDAP bind distinguished name (DN)",
+                throw new ArgumentException("Options missing or invalid LDAP bind distinguished name (DN)",
                     nameof(_options.LdapUsername));
             }
 
             if (string.IsNullOrEmpty(_options.LdapPassword))
             {
-                throw new ArgumentException("_options missing or invalid LDAP bind password",
+                throw new ArgumentException("Options missing or invalid LDAP bind password",
                     nameof(_options.LdapPassword));
             }
 
             if (string.IsNullOrEmpty(_options.LdapSearchBase))
             {
-                throw new ArgumentException("_options must specify LDAP search base",
+                throw new ArgumentException("Options must specify LDAP search base",
                     nameof(_options.LdapSearchBase));
             }
 
             if (string.IsNullOrWhiteSpace(_options.LdapSearchFilter))
             {
                 throw new ArgumentException(
-                    "No ldapSearchFilter is set. Fill attribute ldapSearchFilter in file appsettings.json",
+                    $"No {nameof(_options.LdapSearchFilter)} is set. Fill attribute {nameof(_options.LdapSearchFilter)} in file appsettings.json",
                     nameof(_options.LdapSearchFilter));
             }
 
             if (!_options.LdapSearchFilter.Contains("{Username}"))
             {
                 throw new ArgumentException(
-                    "The ldapSearchFilter should include {{Username}} value in the template string",
+                    $"The {nameof(_options.LdapSearchFilter)} should include {{Username}} value in the template string",
                     nameof(_options.LdapSearchFilter));
             }
 
             // All other configuration is optional, but some may warrant attention
             if (!_options.HideUserNotFound)
-                _logger.LogWarning($"option [{nameof(_options.HideUserNotFound)}] is DISABLED; the presence or absence of usernames can be harvested");
+                _logger.LogWarning($"Option [{nameof(_options.HideUserNotFound)}] is DISABLED; the presence or absence of usernames can be harvested");
 
-            if (!_options.LdapIgnoreTlsErrors)
-                _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsErrors)}] is ENABLED; invalid certificates will be allowed");
-            else if (!_options.LdapIgnoreTlsValidation)
-                _logger.LogWarning($"option [{nameof(_options.LdapIgnoreTlsValidation)}] is ENABLED; untrusted certificate roots will be allowed");
+            if (_options.LdapIgnoreTlsErrors)
+                _logger.LogWarning($"Option [{nameof(_options.LdapIgnoreTlsErrors)}] is ENABLED; invalid certificates will be allowed");
+            else if (_options.LdapIgnoreTlsValidation)
+                _logger.LogWarning($"Option [{nameof(_options.LdapIgnoreTlsValidation)}] is ENABLED; untrusted certificate roots will be allowed");
 
             if (_options.LdapPort == LdapConnection.DefaultSslPort && !_options.LdapSecureSocketLayer)
-                _logger.LogWarning($"option [{nameof(_options.LdapSecureSocketLayer)}] is DISABLED in combination with standard SSL port [{_options.LdapPort}]");
+                _logger.LogWarning($"Option [{nameof(_options.LdapSecureSocketLayer)}] is DISABLED in combination with standard SSL port [{_options.LdapPort}]");
 
             if (_options.LdapPort != LdapConnection.DefaultSslPort && !_options.LdapStartTls)
-                _logger.LogWarning($"option [{nameof(_options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{_options.LdapPort}]");
+                _logger.LogWarning($"Option [{nameof(_options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{_options.LdapPort}]");
         }
 
         private LdapConnection BindToLdap()
@@ -314,15 +319,17 @@
                     bindHostname = h;
                     break;
                 }
+#pragma warning disable CA1031 // Do not catch general exception types
                 catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
                 {
-                    _logger.LogWarning($"failed to connect to host [{h}]", ex);
+                    _logger.LogWarning($"Failed to connect to host [{h}]", ex);
                 }
             }
 
             if (string.IsNullOrEmpty(bindHostname))
             {
-                throw new ApiErrorException("failed to connect to any configured hostname", ApiErrorCode.InvalidCredentials);
+                throw new ApiErrorException("Failed to connect to any configured hostname", ApiErrorCode.InvalidCredentials);
             }
 
             if (_options.LdapStartTls)
@@ -347,23 +354,12 @@
                     object sender,
                     X509Certificate certificate,
                     X509Chain chain,
-                    SslPolicyErrors sslPolicyErrors)
-        {
-            if (_options.LdapIgnoreTlsErrors || sslPolicyErrors == SslPolicyErrors.None)
-                return true;
-
-            var errorStatuses = chain.ChainStatus
-                .Where(x =>
+                    SslPolicyErrors sslPolicyErrors) =>
+            _options.LdapIgnoreTlsErrors || sslPolicyErrors == SslPolicyErrors.None || chain.ChainStatus
+                .Any(x => x.Status switch
                 {
-                    if (x.Status == X509ChainStatusFlags.UntrustedRoot
-                        && _options.LdapIgnoreTlsValidation)
-                        return false;
-
-                    return x.Status != X509ChainStatusFlags.NoError;
-                })
-                .ToArray();
-
-            return errorStatuses.Length > 0;
-        }
+                    X509ChainStatusFlags.UntrustedRoot when _options.LdapIgnoreTlsValidation => true,
+                    _ => x.Status == X509ChainStatusFlags.NoError
+                });
     }
 }
