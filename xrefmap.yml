@@ -1523,15 +1523,15 @@ references:
   commentId: T:Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider
   fullName: Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider
   nameWithType: LdapPasswordChangeProvider
-- uid: Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.#ctor(ILogger{Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider},IOptions{Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions})
-  name: LdapPasswordChangeProvider(ILogger<LdapPasswordChangeProvider>, IOptions<LdapPasswordChangeOptions>)
-  href: api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.html#Zyborg_PassCore_PasswordProvider_LDAP_LdapPasswordChangeProvider__ctor_ILogger_Zyborg_PassCore_PasswordProvider_LDAP_LdapPasswordChangeProvider__IOptions_Zyborg_PassCore_PasswordProvider_LDAP_LdapPasswordChangeOptions__
-  commentId: M:Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.#ctor(ILogger{Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider},IOptions{Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions})
-  name.vb: LdapPasswordChangeProvider(ILogger(Of LdapPasswordChangeProvider), IOptions(Of LdapPasswordChangeOptions))
-  fullName: Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.LdapPasswordChangeProvider(ILogger<Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider>, IOptions<Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions>)
-  fullName.vb: Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.LdapPasswordChangeProvider(ILogger(Of Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider), IOptions(Of Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions))
-  nameWithType: LdapPasswordChangeProvider.LdapPasswordChangeProvider(ILogger<LdapPasswordChangeProvider>, IOptions<LdapPasswordChangeOptions>)
-  nameWithType.vb: LdapPasswordChangeProvider.LdapPasswordChangeProvider(ILogger(Of LdapPasswordChangeProvider), IOptions(Of LdapPasswordChangeOptions))
+- uid: Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.#ctor(ILogger,IOptions{Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions})
+  name: LdapPasswordChangeProvider(ILogger, IOptions<LdapPasswordChangeOptions>)
+  href: api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.html#Zyborg_PassCore_PasswordProvider_LDAP_LdapPasswordChangeProvider__ctor_ILogger_IOptions_Zyborg_PassCore_PasswordProvider_LDAP_LdapPasswordChangeOptions__
+  commentId: M:Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.#ctor(ILogger,IOptions{Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions})
+  name.vb: LdapPasswordChangeProvider(ILogger, IOptions(Of LdapPasswordChangeOptions))
+  fullName: Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.LdapPasswordChangeProvider(ILogger, IOptions<Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions>)
+  fullName.vb: Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.LdapPasswordChangeProvider(ILogger, IOptions(Of Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions))
+  nameWithType: LdapPasswordChangeProvider.LdapPasswordChangeProvider(ILogger, IOptions<LdapPasswordChangeOptions>)
+  nameWithType.vb: LdapPasswordChangeProvider.LdapPasswordChangeProvider(ILogger, IOptions(Of LdapPasswordChangeOptions))
 - uid: Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.#ctor*
   name: LdapPasswordChangeProvider
   href: api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.html#Zyborg_PassCore_PasswordProvider_LDAP_LdapPasswordChangeProvider__ctor_
