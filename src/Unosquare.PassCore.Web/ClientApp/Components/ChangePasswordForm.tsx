@@ -12,7 +12,7 @@ const defaultState: IChangePasswordFormInitialModel = {
     NewPassword: '',
     NewPasswordVerify: '',
     Recaptcha: '',
-    Username: '',
+    Username: new URLSearchParams(window.location.search).get('userName') || '',
 };
 
 export const ChangePasswordForm: React.FunctionComponent<any> = ({
