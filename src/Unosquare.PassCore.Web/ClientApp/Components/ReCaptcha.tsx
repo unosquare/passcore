@@ -26,7 +26,7 @@ export const ReCaptcha: React.FunctionComponent<any> = ({ setToken, shouldReset 
   return (
     <div
       style={{
-        marginLeft: 'calc(100% - 481px)',
+        marginLeft: 'calc(100% - 440px)',
         marginTop: '25px',
       }}
     >
@@ -36,7 +36,7 @@ export const ReCaptcha: React.FunctionComponent<any> = ({ setToken, shouldReset 
         render='explicit'
         sitekey={siteKey}
         onloadCallback={onLoadRecaptcha}
-        verifyCallback={verifyCallback}
+        onSuccess={verifyCallback}
       />
     </div>
   );
