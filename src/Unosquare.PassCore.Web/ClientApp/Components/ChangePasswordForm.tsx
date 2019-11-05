@@ -6,6 +6,7 @@ import { GlobalContext } from '../Provider/GlobalContext';
 import { IChangePasswordFormInitialModel } from '../types/Components';
 import { PasswordGenerator } from './PasswordGenerator';
 import { PasswordStrengthBar } from './PasswordStrengthBar';
+import { ReCaptcha } from './ReCaptcha';
 
 const defaultState: IChangePasswordFormInitialModel = {
     CurrentPassword: '',
@@ -22,6 +23,8 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
     onValidated,
     shouldReset,
     changeResetState,
+    setReCaptchaToken,
+    ReCaptchaToken,
 }) => {
 
     const [fields, handleChange] = useStateForModel({ ...defaultState });
@@ -32,6 +35,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
         usePasswordGeneration,
         useEmail,
         showPasswordMeter,
+        recaptcha,
     } = React.useContext(GlobalContext);
 
     const {
@@ -62,8 +66,15 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
     }
 
     React.useEffect(() => {
-        if (parentRef.current && parentRef.current.isFormValid) {
-            parentRef.current.isFormValid().then((response: any) => onValidated(!response));
+        if (parentRef.current !== null && parentRef.current.isFormValid !== null) {
+
+            parentRef.current.isFormValid().then((response: any) => {
+                let validated = response;
+                if (recaptcha.siteKey && recaptcha.siteKey !== '') {
+                    validated = validated && ReCaptchaToken !== '';
+                }
+                onValidated(!validated);
+            });
         }
     });
 
@@ -193,6 +204,19 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
                         </>
                     )
             }
+
+            {
+                (recaptcha.siteKey && recaptcha.siteKey !== '' &&
+                    (
+                        <ReCaptcha
+                            setToken={setReCaptchaToken}
+                            shouldReset={false}
+                        />
+
+                    )
+                )
+            }
+
         </FormGroup>
     );
 };

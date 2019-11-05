@@ -6,7 +6,6 @@ import { ChangePasswordDialog } from '../Dialogs/ChangePasswordDialog';
 import { GlobalContext, SnackbarContext } from '../Provider/GlobalContext';
 import { fetchRequest } from '../Utils/FetchRequest';
 import { ChangePasswordForm } from './ChangePasswordForm';
-import { ReCaptcha } from './ReCaptcha';
 
 export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
     const [disabled, setDisabled] = React.useState(true);
@@ -91,7 +90,7 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
         (value: string, comparedValue: any) => value === comparedValue);
 
     return (
-        <React.Fragment>
+        <>
             <Paper
                 style={{
                     borderRadius: '10px',
@@ -115,18 +114,9 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                         onValidated={setDisabled}
                         shouldReset={shouldReset}
                         changeResetState={setReset}
+                        setReCaptchaToken={setToken}
+                        ReCaptchaToken={token}
                     />
-                    {
-                        (recaptcha.siteKey && recaptcha.siteKey !== '' &&
-                            (
-                                <ReCaptcha
-                                    setToken={setToken}
-                                    shouldReset={false}
-                                />
-
-                            )
-                        )
-                    }
                     <Button
                         type='submit'
                         variant='contained'
@@ -145,6 +135,6 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                 open={dialogIsOpen}
                 onClose={onCloseDialog}
             />
-        </React.Fragment>
+        </>
     );
 };

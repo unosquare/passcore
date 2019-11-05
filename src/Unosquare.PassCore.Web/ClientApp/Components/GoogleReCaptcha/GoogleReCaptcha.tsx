@@ -9,9 +9,8 @@ interface IReCaptchaProps {
     onError: () => any;
     onExpired: () => any;
     onLoad: () => any;
-    onSuccess: () => any;
     onloadCallback: () => any;
-    verifyCallback: (recaptchaToken: string) => any;
+    onSuccess: (recaptchaToken: string) => any;
     render: string;
     sitekey: string;
     size: 'compact' | 'normal' | 'invisible';
@@ -62,23 +61,13 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
         clearInterval(this.readyIntervalId);
     }
 
+    public componentDidMount() {
+        this.renderManually();
+    }
+
     public componentDidUpdate(_prevProps: IReCaptchaProps, prevState: any) {
         if (!prevState.ready && this.state.ready) {
-            this.widgetId = this.grecaptcha().render(
-                this.recaptcha.current,
-                {
-                    'badge': this.props.badge,
-                    'callback': this.props.onSuccess,
-                    'error-callback': this.props.onError,
-                    'expired-callback': this.props.onExpired,
-                    'isolated': this.props.isolated,
-                    'sitekey': this.props.sitekey,
-                    'size': this.props.size,
-                    'tabindex': this.props.tabIndex,
-                    'theme': this.props.theme,
-                },
-                this.props.inherit,
-            );
+            this.renderManually();
         }
     }
 
@@ -128,6 +117,26 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
     }
 
     private grecaptcha = () => window.grecaptcha;
+
+    private renderManually = () => {
+        if (this.grecaptcha() && this.grecaptcha().render && this.widgetId === undefined) {
+            this.widgetId = this.grecaptcha().render(
+                this.recaptcha.current,
+                {
+                    'badge': this.props.badge,
+                    'callback': this.props.onSuccess,
+                    'error-callback': this.props.onError,
+                    'expired-callback': this.props.onExpired,
+                    'isolated': this.props.isolated,
+                    'sitekey': this.props.sitekey,
+                    'size': this.props.size,
+                    'tabindex': this.props.tabIndex,
+                    'theme': this.props.theme,
+                },
+                this.props.inherit,
+            );
+        }
+    }
 
     private _updateReadyState = () => {
         if (this.isReady()) {
