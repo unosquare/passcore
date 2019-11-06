@@ -34,7 +34,7 @@
         "@types/react-dom": "^16.9.3",
         "parcel-bundler": "^1.12.4",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
-        "tslint": "^5.20.0",
+        "tslint": "^5.20.1",
         "tslint-react": "^4.1.0",
         "typescript": "^3.6.4"
     },
