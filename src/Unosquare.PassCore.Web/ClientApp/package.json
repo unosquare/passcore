@@ -20,9 +20,9 @@
     },
     "homepage": "https://github.com/unosquare/passcore",
     "dependencies": {
-        "@material-ui/core": "^4.5.2",
+        "@material-ui/core": "^4.6.0",
         "@material-ui/icons": "^4.5.1",
-        "@material-ui/styles": "^4.5.2",
+        "@material-ui/styles": "^4.6.0",
         "react": "^16.11.0",
         "react-dom": "^16.11.0",
         "uno-material-ui": "^1.6.6",
@@ -31,12 +31,12 @@
     },
     "devDependencies": {
         "@types/react": "^16.9.11",
-        "@types/react-dom": "^16.9.3",
+        "@types/react-dom": "^16.9.4",
         "parcel-bundler": "^1.12.4",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
-        "tslint": "^5.20.0",
+        "tslint": "^5.20.1",
         "tslint-react": "^4.1.0",
-        "typescript": "^3.6.4"
+        "typescript": "^3.7.2"
     },
     "parcelCleanPaths": [
         "../wwwroot"
