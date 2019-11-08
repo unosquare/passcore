@@ -12,6 +12,7 @@ about: Create a report to help us improve
 
 **Describe the bug**
 A clear and concise description of what the bug is.
+*Note:* If you want to report an issue of passcorepro, please use the proper bug report form at https://store.unosquare.com/passcorepro
 
 **To Reproduce**
 Steps to reproduce the behavior:
