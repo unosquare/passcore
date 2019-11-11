@@ -46,7 +46,7 @@
             IOptions<LdapPasswordChangeOptions> options)
         {
             _logger = logger;
-            _options = options?.Value;
+            _options = options.Value;
 
             Init();
         }

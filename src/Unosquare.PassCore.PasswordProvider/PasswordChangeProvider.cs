@@ -179,15 +179,14 @@
 
         private static DomainPasswordInformation? GetDomainPasswordInformation()
         {
-            using (var server = new SamServer())
-            {
-                foreach (var domain in server.EnumerateDomains())
-                {
-                    if (domain == "Builtin") continue;
+            using var server = new SamServer();
 
-                    var sid = server.GetDomainSid(domain);
-                    return server.GetDomainPasswordInformation(sid);
-                }
+            foreach (var domain in server.EnumerateDomains())
+            {
+                if (domain == "Builtin") continue;
+
+                var sid = server.GetDomainSid(domain);
+                return server.GetDomainPasswordInformation(sid);
             }
 
             return null;
