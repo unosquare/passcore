@@ -12,6 +12,7 @@ namespace Unosquare.PassCore.Web
     using Helpers;
 #elif PASSCORE_LDAP_PROVIDER
     using Zyborg.PassCore.PasswordProvider.LDAP;
+    using Microsoft.Extensions.Logging;
 #else
     using PasswordProvider;
 #endif
@@ -72,6 +73,12 @@ namespace Unosquare.PassCore.Web
 #elif PASSCORE_LDAP_PROVIDER
             services.Configure<LdapPasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, LdapPasswordChangeProvider>();
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger), sp =>
+            {
+                var loggerFactory = sp.GetService<ILoggerFactory>();
+                return loggerFactory.CreateLogger("PassCoreLDAPProvider");
+            });
 #else
             services.Configure<PasswordChangeOptions>(Configuration.GetSection(AppSettingsSectionName));
             services.AddSingleton<IPasswordChangeProvider, PasswordChangeProvider>();
