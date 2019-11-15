@@ -24,7 +24,7 @@
         "@material-ui/icons": "^4.5.1",
         "@material-ui/styles": "^4.6.0",
         "react": "^16.11.0",
-        "react-dom": "^16.11.0",
+        "react-dom": "^16.12.0",
         "uno-material-ui": "^1.6.6",
         "uno-react": "^0.10.4",
         "zxcvbn": "^4.4.2"
