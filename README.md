@@ -18,8 +18,6 @@
   - [Running as a sub application](#running-as-a-sub-application)
 - [Troubleshooting](#troubleshooting)
   - [LDAP Support](#ldap-support)
-- [Build your own version](#build-your-own-version)
-- [Create your own provider](#create-your-own-provider)
 - [License](#license)
 - [passcorepro](#passcorepro)
 
@@ -30,6 +28,8 @@ PassCore is a very simple 1-page web application written in [C#](https://docs.mi
 It allows users to change their Active Directory/LDAP password on their own, provided the user is not disabled.
 
 PassCore does not require any configuration, as it obtains the principal context from the current domain. I wrote this because a number of people have requested several features that the [original version](http://unopasscore.codeplex.com/) did not have. The original version of this tool was downloaded around 8000 times in 2.5 years. My hope is that the new version continues to be just as popular. There really is no free alternative out there (that I know of) so hopefully this saves someone else some time and money.
+
+You can check [the wiki section](https://github.com/unosquare/passcore/wiki) for additional content related to development of this project.
 
 ### Features
 
@@ -182,39 +182,6 @@ icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>:M" /t
   1. Ensure `LdapPassword` is set to the correct password for the admin user mentioned above
   1. User @gadams65 suggests the following: Use the FQDN of your LDAP host. Enter the LDAP username without any other prefix or suffix such as `domain\\` or `@domain`. Only the username.
 - You can also opt to use the Linux or macOS version of PassCore. This version includes a LDAP Provider based on Novell. The same provider can be used with Windows, you must build it by yourself.
-
-
-## Build your own version
-
-If you need to modify the source code (either backend or frontend). You may require to install [.NET Core SDK](https://dotnet.microsoft.com/download) and [Node.js](https://nodejs.org/en/download/). Run the following command according to your target platform.
-
-### Windows
-```
-dotnet publish --configuration Release --runtime win-x64 --output "<path>"
-```
-
-### Linux (portable)
-```
-dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
-```
-
-### MacOS (OS X)
-```
-dotnet publish --configuration Release --runtime osx-x64 /p:PASSCORE_PROVIDER=LDAP --output "<path>"
-```
-
-*Note* - The `PASSCORE_PROVIDER` modifier will use the LDAP Provider instead of Active Directory Provider.
-
-
-## Create your own provider
-
-If you wish to create your own provider, you need use our interface and common classes. You can use the following nuget to install them:
-
-[![NuGet version](https://badge.fury.io/nu/Unosquare.PassCore.Common.svg)](https://badge.fury.io/nu/Unosquare.PassCore.Common)
-
-```
-PM> Install-Package Unosquare.PassCore.Common
-```
 
 ## License
 
