@@ -93,8 +93,6 @@
 <li><a href="#ldap-support">LDAP Support</a></li>
 </ul>
 </li>
-<li><a href="#build-your-own-version">Build your own version</a></li>
-<li><a href="#create-your-own-provider">Create your own provider</a></li>
 <li><a href="#license">License</a></li>
 <li><a href="#passcorepro">passcorepro</a></li>
 </ul>
@@ -102,6 +100,7 @@
 <p>PassCore is a very simple 1-page web application written in <a href="https://docs.microsoft.com/en-us/dotnet/csharp/">C#</a>, using <a href="https://docs.microsoft.com/en-us/aspnet/core/getting-started?view=aspnetcore-2.0">ASP.NET Core</a>, <a href="https://material-ui.com/">Material UI (React Components)</a>, and <a href="https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices">Microsoft Directory Services</a> (Default provider). </p>
 <p>It allows users to change their Active Directory/LDAP password on their own, provided the user is not disabled.</p>
 <p>PassCore does not require any configuration, as it obtains the principal context from the current domain. I wrote this because a number of people have requested several features that the <a href="http://unopasscore.codeplex.com/">original version</a> did not have. The original version of this tool was downloaded around 8000 times in 2.5 years. My hope is that the new version continues to be just as popular. There really is no free alternative out there (that I know of) so hopefully this saves someone else some time and money.</p>
+<p>You can check <a href="https://github.com/unosquare/passcore/wiki">the wiki section</a> for additional content related to development of this project.</p>
 <h3 id="features">Features</h3>
 <p>PassCore has the following features:</p>
 <ul>
@@ -255,20 +254,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 </li>
 <li>You can also opt to use the Linux or macOS version of PassCore. This version includes a LDAP Provider based on Novell. The same provider can be used with Windows, you must build it by yourself.</li>
 </ul>
-<h2 id="build-your-own-version">Build your own version</h2>
-<p>If you need to modify the source code (either backend or frontend). You may require to install <a href="https://dotnet.microsoft.com/download">.NET Core SDK</a> and <a href="https://nodejs.org/en/download/">Node.js</a>. Run the following command according to your target platform.</p>
-<h3 id="windows">Windows</h3>
-<pre><code>dotnet publish --configuration Release --runtime win-x64 --output &quot;&lt;path&gt;&quot;
-</code></pre><h3 id="linux-portable">Linux (portable)</h3>
-<pre><code>dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP --output &quot;&lt;path&gt;&quot;
-</code></pre><h3 id="macos-os-x">MacOS (OS X)</h3>
-<pre><code>dotnet publish --configuration Release --runtime osx-x64 /p:PASSCORE_PROVIDER=LDAP --output &quot;&lt;path&gt;&quot;
-</code></pre><p><em>Note</em> - The <code>PASSCORE_PROVIDER</code> modifier will use the LDAP Provider instead of Active Directory Provider.</p>
-<h2 id="create-your-own-provider">Create your own provider</h2>
-<p>If you wish to create your own provider, you need use our interface and common classes. You can use the following nuget to install them:</p>
-<p><a href="https://badge.fury.io/nu/Unosquare.PassCore.Common"><img src="https://badge.fury.io/nu/Unosquare.PassCore.Common.svg" alt="NuGet version"></a></p>
-<pre><code>PM&gt; Install-Package Unosquare.PassCore.Common
-</code></pre><h2 id="license">License</h2>
+<h2 id="license">License</h2>
 <p>PassCore is open source software and MIT licensed. Please star this project if you like it.</p>
 <h2 id="passcorepro">passcorepro</h2>
 <p>PassCore is free and will continue to be free forever.
