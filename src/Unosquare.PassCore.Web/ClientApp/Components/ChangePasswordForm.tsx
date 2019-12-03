@@ -57,7 +57,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
         usernamePattern,
     } = errorsPasswordForm;
 
-    const userNameValidations = ['required', `${useEmail ? 'isUserEmail' : 'isUserName'}`];
+    const userNameValidations = ['required', useEmail ? 'isUserEmail' : 'isUserName'];
     const userNameErrorMessages = [fieldRequired, useEmail ? usernameEmailPattern : usernamePattern];
     const userNameHelperText = useEmail ? usernameHelpblock : usernameDefaultDomainHelperBlock;
 
