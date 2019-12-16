@@ -197,8 +197,8 @@ This new, enhanced version of our self-service password manager comes with new f
 
 *	Display and manage your Active Directory information with our user profile system.
 *	Search for any staff member with the new Directory grid.
-*	Forgot your password? We help you reset it via Email or SMS (via [Twillio](https://www.twilio.com/)).
+*	Forgot your password? We help you reset it via Email or SMS (via [Twillio Verify API](https://www.twilio.com/docs/verify/api) or custom SMS Gateway).
 *	Administrate your AD using our new Dashboard tool.
 *	Parlez-vous français? You can now add any language to PassCorePro!
 
-Go to our store: https://store.unosquare.com/PasscorePro
+Go to our store and download a free trial: https://store.unosquare.com/PasscorePro
