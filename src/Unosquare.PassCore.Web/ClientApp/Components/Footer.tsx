@@ -13,43 +13,21 @@ export const Footer: React.FunctionComponent<any> = () => (
             width: '650px',
         }}
     >
-        <Grid
-            alignItems='center'
-            container={true}
-            direction='row'
-            justify='space-between'
-        >
-            <Grid
-                item={true}
-                xs={8}
-            >
+        <Grid alignItems="center" container={true} direction="row" justify="space-between">
+            <Grid item={true} xs={8}>
                 <img src={passcoreLogo} style={{ marginLeft: '15px', maxWidth: '125px' }} />
             </Grid>
-            <Grid
-                item={true}
-                xs={4}
-            >
+            <Grid item={true} xs={4}>
                 <img src={osiLogo} style={{ margin: '0 10px 0 40px', maxHeight: '30px' }} />
                 <img src={mitLogo} style={{ marginRight: '10px', maxHeight: '30px' }} />
                 <img src={uslogo} style={{ maxHeight: '30px' }} />
             </Grid>
         </Grid>
-        <Grid
-            alignItems='center'
-            container={true}
-            direction='column'
-            justify='space-evenly'
-        >
-            <Typography
-                align='center'
-                variant='caption'
-            >
+        <Grid alignItems="center" container={true} direction="column" justify="space-evenly">
+            <Typography align="center" variant="caption">
                 Powered by PassCore v4.2.0 - Open Source Initiative and MIT Licensed
             </Typography>
-            <Typography
-                align='center'
-                variant='caption'
-            >
+            <Typography align="center" variant="caption">
                 Copyright © 2016-2019 Unosquare
             </Typography>
         </Grid>

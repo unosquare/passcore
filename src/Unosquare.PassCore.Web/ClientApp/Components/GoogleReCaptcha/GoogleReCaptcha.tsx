@@ -24,7 +24,6 @@ interface IReCaptchaState {
 }
 
 class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptchaState> {
-
     protected static defaultProps: Partial<IReCaptchaProps> = {
         badge: 'bottomright',
         hl: 'en',
@@ -55,7 +54,7 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
     public isReady = () =>
         typeof window !== 'undefined' &&
         typeof window.grecaptcha !== 'undefined' &&
-        typeof window.grecaptcha.render === 'function'
+        typeof window.grecaptcha.render === 'function';
 
     public componentWillUnmount() {
         clearInterval(this.readyIntervalId);
@@ -75,11 +74,11 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
         if (this.isReady()) {
             this.grecaptcha().reset(this.widgetId);
         }
-    }
+    };
 
     public execute = () => {
         this.grecaptcha().execute(this.widgetId);
-    }
+    };
 
     public shouldComponentUpdate(_nextProps: any, nextState: IReCaptchaState) {
         return !this.state.ready && nextState.ready;
@@ -104,6 +103,7 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
 
         return (
             <div
+                // @ts-ignore
                 ref={this.recaptcha}
                 data-sitekey={sitekey}
                 data-theme={theme}
@@ -123,20 +123,20 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
             this.widgetId = this.grecaptcha().render(
                 this.recaptcha.current,
                 {
-                    'badge': this.props.badge,
-                    'callback': this.props.onSuccess,
+                    badge: this.props.badge,
+                    callback: this.props.onSuccess,
                     'error-callback': this.props.onError,
                     'expired-callback': this.props.onExpired,
-                    'isolated': this.props.isolated,
-                    'sitekey': this.props.sitekey,
-                    'size': this.props.size,
-                    'tabindex': this.props.tabIndex,
-                    'theme': this.props.theme,
+                    isolated: this.props.isolated,
+                    sitekey: this.props.sitekey,
+                    size: this.props.size,
+                    tabindex: this.props.tabIndex,
+                    theme: this.props.theme,
                 },
                 this.props.inherit,
             );
         }
-    }
+    };
 
     private _updateReadyState = () => {
         if (this.isReady()) {
@@ -146,7 +146,7 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
             clearInterval(this.readyIntervalId);
             this.props.onLoad();
         }
-    }
+    };
 }
 
 export default GoogleReCaptcha;

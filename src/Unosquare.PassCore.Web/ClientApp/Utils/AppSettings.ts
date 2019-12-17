@@ -1,4 +1,3 @@
-
 export async function resolveAppSettings(): Promise<any> {
     const response = await fetch('api/password');
 

@@ -23,10 +23,7 @@ export const PasswordGenerator: React.FunctionComponent<any> = ({ value, setValu
     };
 
     const retrievePassword = () => {
-        fetchRequest(
-            'api/password/generated',
-            'GET',
-        ).then((response: any) => {
+        fetchRequest('api/password/generated', 'GET').then((response: any) => {
             if (response && response.password) {
                 setValue(response.password);
                 setLoading(false);
@@ -38,53 +35,38 @@ export const PasswordGenerator: React.FunctionComponent<any> = ({ value, setValu
         retrievePassword();
     }, []);
 
-    return (
-        isLoading ?
-            (
-                <div
-                    style={{ paddingTop: '30px' }}
-                >
-                    <LoadingIcon />
-                </div>
-            )
-            :
-            (
-                <TextField
-                    id='generatedPassword'
-                    disabled={true}
-                    label='New Password'
-                    value={value}
-                    type={visibility ? 'text' : 'Password'}
-                    style={{
-                        height: '20px',
-                        margin: '30px 0 30px 0',
-                    }}
-                    InputProps={{
-                        endAdornment:
-                            (
-                                <InputAdornment position='end'>
-                                    <IconButton
-                                        aria-label='Toggle password visibility'
-                                        onMouseDown={onMouseDownVisibility}
-                                        onMouseUp={onMouseUpVisibility}
-                                        tabIndex={-1}
-
-                                    >
-                                        {
-                                            visibility ? <Visibility /> : <VisibilityOff />
-                                        }
-                                    </IconButton>
-                                    <IconButton
-                                        aria-label='Copy password to clipboard'
-                                        onClick={copyPassword}
-                                        tabIndex={-1}
-                                    >
-                                        <FileCopy />
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                    }}
-                />
-            )
+    return isLoading ? (
+        <div style={{ paddingTop: '30px' }}>
+            <LoadingIcon />
+        </div>
+    ) : (
+        <TextField
+            id="generatedPassword"
+            disabled={true}
+            label="New Password"
+            value={value}
+            type={visibility ? 'text' : 'Password'}
+            style={{
+                height: '20px',
+                margin: '30px 0 30px 0',
+            }}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <IconButton
+                            aria-label="Toggle password visibility"
+                            onMouseDown={onMouseDownVisibility}
+                            onMouseUp={onMouseUpVisibility}
+                            tabIndex={-1}
+                        >
+                            {visibility ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                        <IconButton aria-label="Copy password to clipboard" onClick={copyPassword} tabIndex={-1}>
+                            <FileCopy />
+                        </IconButton>
+                    </InputAdornment>
+                ),
+            }}
+        />
     );
 };

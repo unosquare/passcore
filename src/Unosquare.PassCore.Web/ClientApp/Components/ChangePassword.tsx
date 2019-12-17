@@ -7,7 +7,7 @@ import { GlobalContext, SnackbarContext } from '../Provider/GlobalContext';
 import { fetchRequest } from '../Utils/FetchRequest';
 import { ChangePasswordForm } from './ChangePasswordForm';
 
-export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
+export const ChangePassword: React.FunctionComponent<{}> = () => {
     const [disabled, setDisabled] = React.useState(true);
     const [submit, setSubmit] = React.useState(false);
     const [dialogIsOpen, setDialog] = React.useState(false);
@@ -20,59 +20,57 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
 
     const onSubmitValidatorForm = () => setSubmit(true);
 
-    const toSubmitData = (formData: any) => {
-        fetchRequest(
-            'api/password',
-            'POST',
-            JSON.stringify({ ...formData, Recaptcha: token }),
-        ).then((response: any) => {
-            setSubmit(false);
-            if (response.errors && response.errors.length) {
-                let errorAlertMessage = '';
-                response.errors.forEach((error: any) => {
-                    switch (error.errorCode) {
-                        case 0:
-                            errorAlertMessage += error.message;
-                            break;
-                        case 1:
-                            errorAlertMessage += alerts.errorFieldRequired;
-                            break;
-                        case 2:
-                            errorAlertMessage += alerts.errorFieldMismatch;
-                            break;
-                        case 3:
-                            errorAlertMessage += alerts.errorInvalidUser;
-                            break;
-                        case 4:
-                            errorAlertMessage += alerts.errorInvalidCredentials;
-                            break;
-                        case 5:
-                            errorAlertMessage += alerts.errorCaptcha;
-                            break;
-                        case 6:
-                            errorAlertMessage += alerts.errorPasswordChangeNotAllowed;
-                            break;
-                        case 7:
-                            errorAlertMessage += alerts.errorInvalidDomain;
-                            break;
-                        case 8:
-                            errorAlertMessage += alerts.errorConnectionLdap;
-                            break;
-                        case 9:
-                            errorAlertMessage += alerts.errorComplexPassword;
-                            break;
-                        case 10:
-                            errorAlertMessage += alerts.errorScorePassowrd;
-                            break;
-                    }
-                });
+    const toSubmitData = (formData: {}) => {
+        fetchRequest('api/password', 'POST', JSON.stringify({ ...formData, Recaptcha: token })).then(
+            (response: any) => {
+                setSubmit(false);
+                if (response.errors && response.errors.length) {
+                    let errorAlertMessage = '';
+                    response.errors.forEach((error: any) => {
+                        switch (error.errorCode) {
+                            case 0:
+                                errorAlertMessage += error.message;
+                                break;
+                            case 1:
+                                errorAlertMessage += alerts.errorFieldRequired;
+                                break;
+                            case 2:
+                                errorAlertMessage += alerts.errorFieldMismatch;
+                                break;
+                            case 3:
+                                errorAlertMessage += alerts.errorInvalidUser;
+                                break;
+                            case 4:
+                                errorAlertMessage += alerts.errorInvalidCredentials;
+                                break;
+                            case 5:
+                                errorAlertMessage += alerts.errorCaptcha;
+                                break;
+                            case 6:
+                                errorAlertMessage += alerts.errorPasswordChangeNotAllowed;
+                                break;
+                            case 7:
+                                errorAlertMessage += alerts.errorInvalidDomain;
+                                break;
+                            case 8:
+                                errorAlertMessage += alerts.errorConnectionLdap;
+                                break;
+                            case 9:
+                                errorAlertMessage += alerts.errorComplexPassword;
+                                break;
+                            case 10:
+                                errorAlertMessage += alerts.errorScorePassowrd;
+                                break;
+                        }
+                    });
 
-                sendMessage(errorAlertMessage, 'error');
-                return;
-            }
+                    sendMessage(errorAlertMessage, 'error');
+                    return;
+                }
 
-            setDialog(true);
-        });
+                setDialog(true);
+            },
+        );
     };
 
     const onCloseDialog = () => {
@@ -82,12 +80,15 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
 
     const marginButton = recaptcha.siteKey && recaptcha.siteKey !== '' ? '25px 0 0 180px' : '100px 0 0 180px';
 
-    ValidatorForm.addValidationRule('isUserName',
-        (value: string) => new RegExp(validationRegex.usernameRegex).test(value));
-    ValidatorForm.addValidationRule('isUserEmail',
-        (value: string) => new RegExp(validationRegex.emailRegex).test(value));
-    ValidatorForm.addValidationRule('isPasswordMatch',
-        (value: string, comparedValue: any) => value === comparedValue);
+    ValidatorForm.addValidationRule('isUserName', (value: string) =>
+        new RegExp(validationRegex.usernameRegex).test(value),
+    );
+
+    ValidatorForm.addValidationRule('isUserEmail', (value: string) =>
+        new RegExp(validationRegex.emailRegex).test(value),
+    );
+
+    ValidatorForm.addValidationRule('isPasswordMatch', (value: string, comparedValue: any) => value === comparedValue);
 
     return (
         <>
@@ -103,7 +104,7 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
             >
                 <ValidatorForm
                     ref={validatorFormRef}
-                    autoComplete='off'
+                    autoComplete="off"
                     instantValidate={true}
                     onSubmit={onSubmitValidatorForm}
                 >
@@ -118,9 +119,9 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                         ReCaptchaToken={token}
                     />
                     <Button
-                        type='submit'
-                        variant='contained'
-                        color='primary'
+                        type="submit"
+                        variant="contained"
+                        color="primary"
                         disabled={disabled}
                         style={{
                             margin: marginButton,
@@ -131,10 +132,7 @@ export const ChangePassword: React.FunctionComponent<any> = ({ }) => {
                     </Button>
                 </ValidatorForm>
             </Paper>
-            <ChangePasswordDialog
-                open={dialogIsOpen}
-                onClose={onCloseDialog}
-            />
+            <ChangePasswordDialog open={dialogIsOpen} onClose={onCloseDialog} />
         </>
     );
 };

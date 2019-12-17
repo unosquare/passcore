@@ -22,26 +22,13 @@ export const Main: React.FunctionComponent<any> = () => {
 
     if (isLoading) {
         return (
-            <Grid
-                container={true}
-                alignItems='center'
-                direction='column'
-                justify='center'
-            >
-                <Grid
-                    item={true}
-                    key='title'
-                >
-                    <Typography
-                        variant='h3'
-                        align='center'
-                    >
+            <Grid container={true} alignItems="center" direction="column" justify="center">
+                <Grid item={true} key="title">
+                    <Typography variant="h3" align="center">
                         Loading Passcore...
                     </Typography>
                 </Grid>
-                <Grid
-                    item={true}
-                >
+                <Grid item={true}>
                     <LoadingIcon />
                 </Grid>
             </Grid>

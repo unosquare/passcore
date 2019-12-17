@@ -9,21 +9,13 @@ import { GlobalContext } from '../Provider/GlobalContext';
 export const ChangePasswordDialog: React.FunctionComponent<any> = ({ open, onClose }) => {
     const { successAlertBody, successAlertTitle } = React.useContext(GlobalContext).alerts;
     return (
-        <Dialog
-            open={open}
-            disableEscapeKeyDown={true}
-            disableBackdropClick={true}
-        >
+        <Dialog open={open} disableEscapeKeyDown={true} disableBackdropClick={true}>
             <DialogTitle>{successAlertTitle}</DialogTitle>
             <DialogContent>
-                <Typography
-                    variant='subtitle1'
-                >
-                    {successAlertBody}
-                </Typography >
+                <Typography variant="subtitle1">{successAlertBody}</Typography>
                 <Button
-                    variant='contained'
-                    color='primary'
+                    variant="contained"
+                    color="primary"
                     onClick={onClose}
                     style={{
                         margin: '10px 0 0 75%',

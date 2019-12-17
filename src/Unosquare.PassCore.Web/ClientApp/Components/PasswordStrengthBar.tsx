@@ -20,18 +20,23 @@ const useStyles = makeStyles({
     },
 });
 
-const measureStrength = (password: string): number => Math.min(
-    zxcvbn.default(password).guesses_log10 * 10,
-    100,
-);
+const measureStrength = (password: string): number =>
+    Math.min(
+        // @ts-ignore
+        zxcvbn.default(password).guesses_log10 * 10,
+        100,
+    );
 
 export const PasswordStrengthBar: React.FunctionComponent<any> = ({ newPassword }) => {
-    const classes = useStyles();
+    const classes = useStyles({});
 
     const getProgressColor = (strength: number) => ({
-            barColorPrimary: strength < 33 ? classes.progressBarColor_LOW :
-                strength < 66 ? classes.progressBarColor_MEDIUM :
-                    classes.progressBarColor_HIGH,
+        barColorPrimary:
+            strength < 33
+                ? classes.progressBarColor_LOW
+                : strength < 66
+                ? classes.progressBarColor_MEDIUM
+                : classes.progressBarColor_HIGH,
     });
 
     const newStrength = measureStrength(newPassword);
@@ -40,7 +45,7 @@ export const PasswordStrengthBar: React.FunctionComponent<any> = ({ newPassword 
     return (
         <LinearProgress
             classes={primeColor}
-            variant='determinate'
+            variant="determinate"
             value={newStrength}
             className={classes.progressBar}
         />

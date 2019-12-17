@@ -12,7 +12,7 @@ export const ClientAppBar: React.FunctionComponent<any> = () => {
 
     return (
         <AppBar
-            position='fixed'
+            position="fixed"
             style={{
                 backgroundColor: '#304FF3',
                 height: '64px',
@@ -22,13 +22,13 @@ export const ClientAppBar: React.FunctionComponent<any> = () => {
             <Grid
                 container={true}
                 style={{ height: '64px', width: '100%' }}
-                direction='row'
-                justify='space-between'
-                alignItems='center'
+                direction="row"
+                justify="space-between"
+                alignItems="center"
             >
                 <Typography
-                    variant='h6'
-                    color='secondary'
+                    variant="h6"
+                    color="secondary"
                     style={{
                         paddingLeft: '1.5%',
                         width: '70%',
@@ -36,13 +36,10 @@ export const ClientAppBar: React.FunctionComponent<any> = () => {
                 >
                     {changePasswordTitle}
                 </Typography>
-                <Tooltip
-                    title={helpText}
-                    placement='left'
-                >
-                    <HelpIcon color='secondary' style={{ paddingRight: '1%' }} />
+                <Tooltip title={helpText} placement="left">
+                    <HelpIcon color="secondary" style={{ paddingRight: '1%' }} />
                 </Tooltip>
             </Grid>
-        </AppBar >
+        </AppBar>
     );
 };

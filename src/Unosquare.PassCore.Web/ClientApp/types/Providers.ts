@@ -1,4 +1,3 @@
-
 interface IAlerts {
     errorCaptcha: string;
     errorComplexPassword: string;

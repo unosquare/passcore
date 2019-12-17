@@ -4,8 +4,8 @@
     "description": "PassCore is a self-service password change utility for Active Directory.",
     "main": "index.js",
     "scripts": {
-        "lint": "tslint -e node_modules ./Components/*.ts ./**/*.tsx",
-        "lint:fix": "tslint ./Components/*.ts ./**/*.tsx --fix",
+        "lint": "tsc --noEmit && eslint ./**/*.{js,ts,tsx}  --quiet",
+        "lint:fix": "eslint ./**/*.{js,ts,tsx}  --quiet --fix",
         "build": "parcel build index.html -d ../wwwroot --no-source-maps",
         "build:tsc": "tsc",
         "start": "parcel index.html -d ../wwwroot --open --port 4040"
@@ -23,21 +23,25 @@
     "dependencies": {
         "@material-ui/core": "^4.8.0",
         "@material-ui/icons": "^4.5.1",
-        "@material-ui/styles": "^4.7.1",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
-        "uno-material-ui": "^1.7.11",
-        "uno-react": "^0.10.10",
+        "uno-material-ui": "^1.7.12",
+        "uno-react": "^0.11.1",
         "zxcvbn": "^4.4.2"
     },
     "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.12.0",
+        "@typescript-eslint/parser": "^2.12.0",
+        "eslint": "^6.7.2",
+        "eslint-config-prettier": "^6.7.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-react": "^7.17.0",
         "@types/react": "^16.9.16",
         "@types/react-dom": "^16.9.4",
         "@types/zxcvbn": "^4.4.0",
         "parcel-bundler": "^1.12.4",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
-        "tslint": "^5.20.1",
-        "tslint-react": "^4.1.0",
+        "prettier": "^1.19.1",
         "typescript": "^3.7.3"
     },
     "parcelCleanPaths": [

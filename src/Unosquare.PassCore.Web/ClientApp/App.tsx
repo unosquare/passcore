@@ -31,9 +31,8 @@ const theme = createMuiTheme({
 const passcoreTheme = responsiveFontSizes(theme);
 
 render(
-    (
-        <ThemeProvider theme={passcoreTheme} >
-            <Main />
-        </ThemeProvider>
-    ), document.getElementById('rootNode'),
+    <ThemeProvider theme={passcoreTheme}>
+        <Main />
+    </ThemeProvider>,
+    document.getElementById('rootNode'),
 );
