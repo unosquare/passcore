@@ -6,7 +6,7 @@
     "scripts": {
         "lint": "tsc --noEmit && eslint ./**/*.{js,ts,tsx}  --quiet",
         "lint:fix": "eslint ./**/*.{js,ts,tsx}  --quiet --fix",
-        "build": "parcel build index.html -d ../wwwroot --no-source-maps",
+        "build": "parcel build index.html -d ../wwwroot ",
         "build:tsc": "tsc",
         "start": "parcel index.html -d ../wwwroot --open --port 4040"
     },
@@ -30,15 +30,15 @@
         "zxcvbn": "^4.4.2"
     },
     "devDependencies": {
+        "@types/react": "^16.9.16",
+        "@types/react-dom": "^16.9.4",
+        "@types/zxcvbn": "^4.4.0",
         "@typescript-eslint/eslint-plugin": "^2.12.0",
         "@typescript-eslint/parser": "^2.12.0",
         "eslint": "^6.7.2",
         "eslint-config-prettier": "^6.7.0",
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.17.0",
-        "@types/react": "^16.9.16",
-        "@types/react-dom": "^16.9.4",
-        "@types/zxcvbn": "^4.4.0",
         "parcel-bundler": "^1.12.4",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
         "prettier": "^1.19.1",

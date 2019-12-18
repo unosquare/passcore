@@ -40,7 +40,7 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
     };
 
     public readyIntervalId = setInterval(() => this._updateReadyState(), 1000);
-    public recaptcha = React.createRef();
+    public recaptcha = React.createRef<HTMLDivElement>();
 
     private widgetId: string;
 
@@ -103,7 +103,6 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
 
         return (
             <div
-                // @ts-ignore
                 ref={this.recaptcha}
                 data-sitekey={sitekey}
                 data-theme={theme}
