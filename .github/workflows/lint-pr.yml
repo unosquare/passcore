@@ -14,6 +14,7 @@ jobs:
           restore-keys: |
             node-
       - run: npm ci
+        working-directory: src/Unosquare.PassCore.Web/ClientApp
       - name: Lint
         uses: a-b-r-o-w-n/eslint-action@v1
         with:
