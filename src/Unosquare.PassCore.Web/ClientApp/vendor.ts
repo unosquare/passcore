@@ -1,3 +1,6 @@
-//import('react');
-//import('react-dom');
-//import('zxcvbn');
+// @ts-ignore
+import('react');
+// @ts-ignore
+import('react-dom');
+// @ts-ignore
+import('zxcvbn');
