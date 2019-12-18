@@ -6,7 +6,7 @@
     "scripts": {
         "lint": "tsc --noEmit && eslint ./**/*.{js,ts,tsx}  --quiet",
         "lint:fix": "eslint ./**/*.{js,ts,tsx}  --quiet --fix",
-        "build": "parcel build index.html -d ../wwwroot ",
+        "build": "parcel build index.html -d ../wwwroot --no-source-maps",
         "build:tsc": "tsc",
         "start": "parcel index.html -d ../wwwroot --open --port 4040"
     },

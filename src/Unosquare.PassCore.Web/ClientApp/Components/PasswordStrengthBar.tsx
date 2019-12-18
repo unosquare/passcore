@@ -20,7 +20,12 @@ const useStyles = makeStyles({
     },
 });
 
-const measureStrength = (password: string): number => Math.min(zxcvbn(password).guesses_log10 * 10, 100);
+const measureStrength = (password: string): number =>
+    Math.min(
+        // @ts-ignore
+        zxcvbn.default(password).guesses_log10 * 10,
+        100,
+    );
 
 interface IStrengthBarProps {
     newPassword: string;
