@@ -2,7 +2,12 @@ import * as React from 'react';
 import { GlobalContext } from '../Provider/GlobalContext';
 import GoogleReCaptcha from './GoogleReCaptcha';
 
-export const ReCaptcha: React.FunctionComponent<any> = ({ setToken, shouldReset }) => {
+interface IRecaptchaProps {
+    setToken: any;
+    shouldReset: boolean;
+}
+
+export const ReCaptcha: React.FunctionComponent<IRecaptchaProps> = ({ setToken, shouldReset }: IRecaptchaProps) => {
     // tslint:disable-next-line
     let captchaRef: any;
 

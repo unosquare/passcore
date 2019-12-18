@@ -6,7 +6,15 @@ import Typography from '@material-ui/core/Typography/Typography';
 import * as React from 'react';
 import { GlobalContext } from '../Provider/GlobalContext';
 
-export const ChangePasswordDialog: React.FunctionComponent<any> = ({ open, onClose }) => {
+interface IChangePasswordDialogProps {
+    open: boolean;
+    onClose: any;
+}
+
+export const ChangePasswordDialog: React.FunctionComponent<IChangePasswordDialogProps> = ({
+    open,
+    onClose,
+}: IChangePasswordDialogProps) => {
     const { successAlertBody, successAlertTitle } = React.useContext(GlobalContext).alerts;
     return (
         <Dialog open={open} disableEscapeKeyDown={true} disableBackdropClick={true}>
