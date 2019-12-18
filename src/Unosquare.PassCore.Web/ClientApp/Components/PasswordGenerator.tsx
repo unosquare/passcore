@@ -7,9 +7,13 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import * as React from 'react';
 import { LoadingIcon } from 'uno-material-ui/dist/LoadingIcon';
 import { SnackbarContext } from '../Provider/GlobalContext';
+import { IPasswordGenProps } from '../types/Components';
 import { fetchRequest } from '../Utils/FetchRequest';
 
-export const PasswordGenerator: React.FunctionComponent<any> = ({ value, setValue }) => {
+export const PasswordGenerator: React.FunctionComponent<IPasswordGenProps> = ({
+    value,
+    setValue,
+}: IPasswordGenProps) => {
     const { sendMessage } = React.useContext(SnackbarContext);
     const [visibility, setVisibility] = React.useState(false);
     const [isLoading, setLoading] = React.useState(true);

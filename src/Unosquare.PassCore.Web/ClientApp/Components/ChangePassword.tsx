@@ -67,7 +67,6 @@ export const ChangePassword: React.FunctionComponent<{}> = () => {
                     sendMessage(errorAlertMessage, 'error');
                     return;
                 }
-
                 setDialog(true);
             },
         );

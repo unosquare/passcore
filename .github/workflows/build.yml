@@ -13,6 +13,17 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.100
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          node-
+    - name: npm build
+      run: |
+        npm ci
+        npm run lint
+      working-directory: src/Unosquare.PassCore.Web/ClientApp
     - name: Build with dotnet Windows Provider
       run: dotnet build --configuration Release
     - name: Build with dotnet Novell Provider

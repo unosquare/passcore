@@ -9,13 +9,13 @@ const useStyles = makeStyles({
         display: 'flex',
         flexGrow: 1,
     },
-    progressBarColor_HIGH: {
+    progressBarColorHigh: {
         backgroundColor: '#4caf50',
     },
-    progressBarColor_LOW: {
+    progressBarColorLow: {
         backgroundColor: '#ff5722',
     },
-    progressBarColor_MEDIUM: {
+    progressBarColorMedium: {
         backgroundColor: '#ffc107',
     },
 });
@@ -27,16 +27,20 @@ const measureStrength = (password: string): number =>
         100,
     );
 
-export const PasswordStrengthBar: React.FunctionComponent<any> = ({ newPassword }) => {
+interface IStrengthBarProps {
+    newPassword: string;
+}
+
+export const PasswordStrengthBar: React.FunctionComponent<IStrengthBarProps> = ({ newPassword }: IStrengthBarProps) => {
     const classes = useStyles({});
 
     const getProgressColor = (strength: number) => ({
         barColorPrimary:
             strength < 33
-                ? classes.progressBarColor_LOW
+                ? classes.progressBarColorLow
                 : strength < 66
-                ? classes.progressBarColor_MEDIUM
-                : classes.progressBarColor_HIGH,
+                ? classes.progressBarColorMedium
+                : classes.progressBarColorHigh,
     });
 
     const newStrength = measureStrength(newPassword);

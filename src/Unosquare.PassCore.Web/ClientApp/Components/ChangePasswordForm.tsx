@@ -3,7 +3,7 @@ import * as React from 'react';
 import { TextValidator } from 'uno-material-ui';
 import { useStateForModel } from 'uno-react';
 import { GlobalContext } from '../Provider/GlobalContext';
-import { IChangePasswordFormInitialModel } from '../types/Components';
+import { IChangePasswordFormInitialModel, IChangePasswordFormProps } from '../types/Components';
 import { PasswordGenerator } from './PasswordGenerator';
 import { PasswordStrengthBar } from './PasswordStrengthBar';
 import { ReCaptcha } from './ReCaptcha';
@@ -16,7 +16,7 @@ const defaultState: IChangePasswordFormInitialModel = {
     Username: new URLSearchParams(window.location.search).get('userName') || '',
 };
 
-export const ChangePasswordForm: React.FunctionComponent<any> = ({
+export const ChangePasswordForm: React.FunctionComponent<IChangePasswordFormProps> = ({
     submitData,
     toSubmitData,
     parentRef,
@@ -25,7 +25,7 @@ export const ChangePasswordForm: React.FunctionComponent<any> = ({
     changeResetState,
     setReCaptchaToken,
     ReCaptchaToken,
-}) => {
+}: IChangePasswordFormProps) => {
     const [fields, handleChange] = useStateForModel({ ...defaultState });
 
     const {
