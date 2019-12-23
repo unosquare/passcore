@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "0Yezt98S78EzwlQNWvXXNQ=="
+          "hash": "PnxDrQg9YPy2R6ZCu3sfLg=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "CONTRIBUTING.html",
-          "hash": "EFRL+geNJJjr4bkHfho8Ug=="
+          "hash": "uDL/aWlA8J0ulzoOdiu1Kw=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "PhwJb6qEwNpDSX52+1li1Q=="
+          "hash": "bqwJTUN8AhOfnHIOe22kGQ=="
         }
       },
       "is_incremental": false,
@@ -449,11 +449,12 @@
         "skipped_file_count": 0
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 26,
-          "skipped_file_count": 26
+          "total_file_count": 0,
+          "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
@@ -461,12 +462,11 @@
           "total_file_count": 3,
           "skipped_file_count": 3
         },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
+          "total_file_count": 26,
+          "skipped_file_count": 26
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
