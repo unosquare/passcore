@@ -26,7 +26,7 @@
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
         "uno-material-ui": "^1.7.20",
-        "uno-react": "^0.11.5",
+        "uno-react": "^0.11.6",
         "zxcvbn": "^4.4.2"
     },
     "devDependencies": {
