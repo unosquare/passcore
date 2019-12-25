@@ -21,12 +21,12 @@
     },
     "homepage": "https://github.com/unosquare/passcore",
     "dependencies": {
-        "@material-ui/core": "^4.8.0",
+        "@material-ui/core": "^4.8.1",
         "@material-ui/icons": "^4.5.1",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
-        "uno-material-ui": "^1.7.20",
-        "uno-react": "^0.11.5",
+        "uno-material-ui": "^1.7.21",
+        "uno-react": "^0.11.6",
         "zxcvbn": "^4.4.2"
     },
     "devDependencies": {
@@ -36,7 +36,7 @@
         "@typescript-eslint/eslint-plugin": "^2.13.0",
         "@typescript-eslint/parser": "^2.13.0",
         "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.7.0",
+        "eslint-config-prettier": "^6.8.0",
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.17.0",
         "parcel-bundler": "^1.12.4",
