@@ -33,7 +33,7 @@
         "@types/react": "^16.9.17",
         "@types/react-dom": "^16.9.4",
         "@types/zxcvbn": "^4.4.0",
-        "@typescript-eslint/eslint-plugin": "^2.14.0",
+        "@typescript-eslint/eslint-plugin": "^2.15.0",
         "@typescript-eslint/parser": "^2.14.0",
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.9.0",
