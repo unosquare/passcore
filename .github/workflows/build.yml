@@ -36,3 +36,5 @@ jobs:
         sleep 20
         jobs
         curl http://localhost:5000
+      env:
+        ASPNETCORE_ENVIRONMENT: Development
