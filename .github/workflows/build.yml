@@ -28,3 +28,11 @@ jobs:
       run: dotnet build --configuration Release
     - name: Build with dotnet Novell Provider
       run: dotnet build --configuration Release /p:PASSCORE_PROVIDER=LDAP
+    - name: Test with Selenium
+      working-directory: src/Unosquare.PassCore.Web
+      continue-on-error: true
+      run: |
+        dotnet run &
+        sleep 20
+        jobs
+        curl http://localhost:5000
