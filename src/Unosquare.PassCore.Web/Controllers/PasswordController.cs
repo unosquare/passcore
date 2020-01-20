@@ -13,6 +13,7 @@ namespace Unosquare.PassCore.Web.Controllers
     using System.Threading.Tasks;
     using Zxcvbn;
     using Helpers;
+    using Swan.Net;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -142,13 +143,13 @@ namespace Unosquare.PassCore.Web.Controllers
             if (string.IsNullOrEmpty(recaptchaResponse))
                 return false;
 
-            var requestUrl = new Uri($"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}");
+            var requestUrl = new Uri(
+                $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}");
 
-            using var client = new HttpClient();
-            var response = await client.GetStringAsync(requestUrl);
-            var validationResponse = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
+            var validationResponse = await JsonClient.Get<Dictionary<string, object>>(requestUrl)
+                .ConfigureAwait(false);
 
-            return validationResponse.ContainsKey("success") && bool.TryParse(validationResponse["success"], out var result) && result;
+            return Convert.ToBoolean(validationResponse["success"], System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }
