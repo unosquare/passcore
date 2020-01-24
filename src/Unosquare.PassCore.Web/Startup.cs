@@ -96,8 +96,10 @@ namespace Unosquare.PassCore.Web
         /// <param name="settings">The settings.</param>
         public void Configure(IApplicationBuilder app, IOptions<WebSettings> settings)
         {
+#if !DEBUG
             if (settings.Value.EnableHttpsRedirect)
                 app.UseHttpsRedirection();
+#endif
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
