@@ -12,6 +12,8 @@ namespace Unosquare.PassCore.Web.Controllers
     using System.Text.Json;
     using System.Threading.Tasks;
     using Zxcvbn;
+    using Helpers;
+    using Swan.Net;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -22,7 +24,6 @@ namespace Unosquare.PassCore.Web.Controllers
         private readonly ILogger _logger;
         private readonly ClientSettings _options;
         private readonly IPasswordChangeProvider _passwordChangeProvider;
-        private readonly RNGCryptoServiceProvider? _rngCsp;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordController" /> class.
@@ -38,8 +39,6 @@ namespace Unosquare.PassCore.Web.Controllers
             _logger = logger;
             _options = optionsAccessor.Value;
             _passwordChangeProvider = passwordChangeProvider;
-
-            if (_options.UsePasswordGeneration) _rngCsp = new RNGCryptoServiceProvider();
         }
 
         /// <summary>
@@ -57,10 +56,8 @@ namespace Unosquare.PassCore.Web.Controllers
         [Route("generated")]
         public IActionResult GetGeneratedPassword()
         {
-            if (_rngCsp == null)
-                return NotFound();
-
-            return Json(new {password = PasswordGenerator.Generate(_rngCsp, _options.PasswordEntropy)});
+            using var generator = new PasswordGenerator();
+            return Json(new { password = generator.Generate(_options.PasswordEntropy) });
         }
 
         /// <summary>
@@ -121,7 +118,7 @@ namespace Unosquare.PassCore.Web.Controllers
                         model.CurrentPassword,
                         model.NewPassword);
 
-                if (resultPasswordChange == null) 
+                if (resultPasswordChange == null)
                     return Json(result);
 
                 result.Errors.Add(resultPasswordChange);
@@ -146,13 +143,13 @@ namespace Unosquare.PassCore.Web.Controllers
             if (string.IsNullOrEmpty(recaptchaResponse))
                 return false;
 
-            var requestUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}";
+            var requestUrl = new Uri(
+                $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}");
 
-            using var client = new HttpClient();
-            var response = await client.GetStringAsync(requestUrl);
-            var validationResponse = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
+            var validationResponse = await JsonClient.Get<Dictionary<string, object>>(requestUrl)
+                .ConfigureAwait(false);
 
-            return validationResponse.ContainsKey("success") && bool.TryParse(validationResponse["success"], out var result) && result;
+            return Convert.ToBoolean(validationResponse["success"], System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }

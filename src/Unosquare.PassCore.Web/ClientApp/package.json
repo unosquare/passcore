@@ -25,13 +25,13 @@
         "@material-ui/icons": "^4.5.1",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
-        "uno-material-ui": "^1.7.26",
+        "uno-material-ui": "^1.7.27",
         "uno-react": "^0.11.8",
         "zxcvbn": "^4.4.2"
     },
     "devDependencies": {
         "@types/react": "^16.9.17",
-        "@types/react-dom": "^16.9.4",
+        "@types/react-dom": "^16.9.5",
         "@types/zxcvbn": "^4.4.0",
         "@typescript-eslint/eslint-plugin": "^2.15.0",
         "@typescript-eslint/parser": "^2.15.0",
@@ -42,7 +42,7 @@
         "parcel-bundler": "^1.12.4",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
         "prettier": "^1.19.1",
-        "typescript": "^3.7.4"
+        "typescript": "^3.7.5"
     },
     "parcelCleanPaths": [
         "../wwwroot"
