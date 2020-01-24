@@ -175,9 +175,16 @@
                 }
                 catch
                 {
-                    return userPrincipal.GetGroups().Any(x => _options.AllowedADGroups.Contains(x.Name))
-                     ? null
-                     : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
+                    try
+                    {
+                        return userPrincipal.GetGroups().Any(x => _options.AllowedADGroups.Contains(x.Name))
+                         ? null
+                         : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
+                    }
+                    catch
+                    {
+
+                    }
                 }
                 // If after iterate the user groups the user cannot change password.
             }
