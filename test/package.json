@@ -1,0 +1,16 @@
+{
+  "name": "selenium",
+  "version": "1.0.0",
+  "description": "In this file are the test for the wizard,",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "curl https://localhost:44352",
+    "test": "selenium-side-runner -c 'browserName=firefox moz:firefoxOptions.args=[-headless]' *.side"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "geckodriver": "^1.19.1",
+    "selenium-side-runner": "^3.16.0"
+  }
+}

@@ -35,6 +35,8 @@ jobs:
         dotnet run &
         sleep 20
         jobs
-        curl http://localhost:5000
+        cd ../../test
+        npm ci
+        npm test
       env:
         ASPNETCORE_ENVIRONMENT: Development
