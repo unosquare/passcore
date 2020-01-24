@@ -4,7 +4,7 @@
   "description": "In this file are the test for the wizard,",
   "main": "index.js",
   "scripts": {
-    "pretest": "curl https://localhost:5001",
+    "pretest": "curl http://localhost:5000",
     "test": "selenium-side-runner -c 'browserName=firefox moz:firefoxOptions.args=[-headless]' *.side"
   },
   "author": "",
