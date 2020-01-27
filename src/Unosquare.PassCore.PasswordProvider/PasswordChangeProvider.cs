@@ -154,9 +154,6 @@
 
                 if (_options.RestrictedADGroups?.Any() == true)
                 {
-
-                    userPrincipal.GetGroups();
-
                     if (userPrincipal.GetAuthorizationGroups().Any(x => _options.RestrictedADGroups.Contains(x.Name)))
                     {
                         return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted,
