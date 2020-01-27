@@ -180,10 +180,9 @@
                     }
                     catch
                     {
-
+                        //swallow
                     }
                 }
-                // If after iterate the user groups the user cannot change password.
             }
             catch (Exception exception)
             {
@@ -263,40 +262,28 @@
         /// </summary>
         private void SetIdType()
         {
-            switch (_options.IdTypeForUser?.Trim().ToLower())
+            _idType = _options.IdTypeForUser?.Trim().ToLower() switch
             {
-                case "distinguishedname":
-                case "distinguished name":
-                case "dn":
-                    _idType = IdentityType.DistinguishedName;
-                    break;
-                case "globally unique identifier":
-                case "globallyuniqueidentifier":
-                case "guid":
-                    _idType = IdentityType.Guid;
-                    break;
-                case "name":
-                case "nm":
-                    _idType = IdentityType.Name;
-                    break;
-                case "samaccountname":
-                case "accountname":
-                case "sam account":
-                case "sam account name":
-                case "sam":
-                    _idType = IdentityType.SamAccountName;
-                    break;
-                case "securityidentifier":
-                case "securityid":
-                case "secid":
-                case "security identifier":
-                case "sid":
-                    _idType = IdentityType.Sid;
-                    break;
-                default:
-                    _idType = IdentityType.UserPrincipalName;
-                    break;
-            }
+                "distinguishedname" => IdentityType.DistinguishedName,
+                "distinguished name" => IdentityType.DistinguishedName,
+                "dn" => IdentityType.DistinguishedName,
+                "globally unique identifier" => IdentityType.Guid,
+                "globallyuniqueidentifier" => IdentityType.Guid,
+                "guid" => IdentityType.Guid,
+                "name" => IdentityType.Name,
+                "nm" => IdentityType.Name,
+                "samaccountname" => IdentityType.SamAccountName,
+                "accountname" => IdentityType.SamAccountName,
+                "sam account" => IdentityType.SamAccountName,
+                "sam account name" => IdentityType.SamAccountName,
+                "sam" => IdentityType.SamAccountName,
+                "securityidentifier" => IdentityType.Sid,
+                "securityid" => IdentityType.Sid,
+                "secid" => IdentityType.Sid,
+                "security identifier" => IdentityType.Sid,
+                "sid" => IdentityType.Sid,
+                _ => IdentityType.UserPrincipalName
+            };
         }
 
         private PrincipalContext AcquirePrincipalContext()
