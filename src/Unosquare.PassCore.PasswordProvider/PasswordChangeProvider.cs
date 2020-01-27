@@ -150,39 +150,24 @@
         {
             try
             {
-                if (!userPrincipal.GetGroups().Any()) return null;
-
-                if (_options.RestrictedADGroups?.Any() == true)
-                {
-                    if (userPrincipal.GetAuthorizationGroups().Any(x => _options.RestrictedADGroups.Contains(x.Name)))
-                    {
-                        return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted,
-                            "The User principal is listed as restricted");
-                    }
-                }
-
-                if (_options.AllowedADGroups?.Any() != true) return null;
-
+                PrincipalSearchResult<Principal> groups;
                 try
                 {
-                    return userPrincipal.GetAuthorizationGroups().Any(x => _options.AllowedADGroups.Contains(x.Name))
-                        ? null
-                        : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
-
+                    groups = userPrincipal.GetGroups();
                 }
                 catch
                 {
-                    try
-                    {
-                        return userPrincipal.GetGroups().Any(x => _options.AllowedADGroups.Contains(x.Name))
-                         ? null
-                         : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
-                    }
-                    catch
-                    {
-                        //swallow
-                    }
+                    groups = userPrincipal.GetAuthorizationGroups();
                 }
+
+                if (groups.Any(x => _options.RestrictedADGroups.Contains(x.Name)))
+                {
+                    return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted,
+                        "The User principal is listed as restricted");
+                }
+
+                return groups.Any(x => _options.AllowedADGroups.Contains(x.Name)) ? null : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
+
             }
             catch (Exception exception)
             {
