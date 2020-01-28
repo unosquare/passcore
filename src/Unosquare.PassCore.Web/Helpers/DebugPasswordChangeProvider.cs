@@ -5,35 +5,25 @@
 
     internal class DebugPasswordChangeProvider : IPasswordChangeProvider
     {
-        public ApiErrorItem PerformPasswordChange(string username, string currentPassword, string newPassword)
+        public ApiErrorItem? PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
             var currentUsername = username.IndexOf("@", StringComparison.Ordinal) > 0
                 ? username.Substring(0, username.IndexOf("@", StringComparison.Ordinal))
                 : username;
 
-            switch (currentUsername)
+            return currentUsername switch
             {
-                case "error":
-                    return new ApiErrorItem(ApiErrorCode.Generic, "Error");
-                case "changeNotPermitted":
-                    return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted);
-                case "fieldMismatch":
-                    return new ApiErrorItem(ApiErrorCode.FieldMismatch);
-                case "fieldRequired":
-                    return new ApiErrorItem(ApiErrorCode.FieldRequired);
-                case "invalidCaptcha":
-                    return new ApiErrorItem(ApiErrorCode.InvalidCaptcha);
-                case "invalidCredentials":
-                    return new ApiErrorItem(ApiErrorCode.InvalidCredentials);
-                case "invalidDomain":
-                    return new ApiErrorItem(ApiErrorCode.InvalidDomain);
-                case "userNotFound":
-                    return new ApiErrorItem(ApiErrorCode.UserNotFound);
-                case "ldapProblem":
-                    return new ApiErrorItem(ApiErrorCode.LdapProblem);
-                default:
-                    return null;
-            }
+                "error" => new ApiErrorItem(ApiErrorCode.Generic, "Error"),
+                "changeNotPermitted" => new ApiErrorItem(ApiErrorCode.ChangeNotPermitted),
+                "fieldMismatch" => new ApiErrorItem(ApiErrorCode.FieldMismatch),
+                "fieldRequired" => new ApiErrorItem(ApiErrorCode.FieldRequired),
+                "invalidCaptcha" => new ApiErrorItem(ApiErrorCode.InvalidCaptcha),
+                "invalidCredentials" => new ApiErrorItem(ApiErrorCode.InvalidCredentials),
+                "invalidDomain" => new ApiErrorItem(ApiErrorCode.InvalidDomain),
+                "userNotFound" => new ApiErrorItem(ApiErrorCode.UserNotFound),
+                "ldapProblem" => new ApiErrorItem(ApiErrorCode.LdapProblem),
+                _ => null
+            };
         }
     }
 }

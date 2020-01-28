@@ -1,19 +1,16 @@
 namespace Unosquare.PassCore.Web.Controllers
 {
     using Common;
+    using Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
+    using Swan.Net;
     using System;
     using System.Collections.Generic;
-    using System.Net.Http;
-    using System.Security.Cryptography;
-    using System.Text.Json;
     using System.Threading.Tasks;
     using Zxcvbn;
-    using Helpers;
-    using Swan.Net;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
