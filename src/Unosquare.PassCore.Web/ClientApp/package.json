@@ -36,7 +36,7 @@
         "@typescript-eslint/eslint-plugin": "^2.15.0",
         "@typescript-eslint/parser": "^2.15.0",
         "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.9.0",
+        "eslint-config-prettier": "^6.10.0",
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.17.0",
         "parcel-bundler": "^1.12.4",
