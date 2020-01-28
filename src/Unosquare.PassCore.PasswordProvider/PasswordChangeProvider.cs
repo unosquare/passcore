@@ -43,7 +43,8 @@
 
             if (_domainPasswordInfo != null && newPassword.Length < _domainPasswordInfo.Value.MinPasswordLength)
             {
-                _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
+                _logger.LogError(
+                    "Failed due to password complex policies: New password length is shorter than AD minimum password length");
 
                 return new ApiErrorItem(ApiErrorCode.ComplexPassword);
             }
@@ -140,7 +141,7 @@
             if (_idType != IdentityType.UserPrincipalName) return username;
 
             // Check for default domain: if none given, ensure EFLD can be used as an override.
-            var parts = username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = username.Split(new[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
             var domain = parts.Length > 1 ? parts[1] : _options.DefaultDomain;
 
             return string.IsNullOrWhiteSpace(domain) || parts.Length > 1 ? username : $"{username}@{domain}";
@@ -151,12 +152,15 @@
             try
             {
                 PrincipalSearchResult<Principal> groups;
+
                 try
                 {
                     groups = userPrincipal.GetGroups();
                 }
-                catch
+                catch (Exception exception)
                 {
+                    _logger.LogError(new EventId(887), exception, nameof(ValidateGroups));
+
                     groups = userPrincipal.GetAuthorizationGroups();
                 }
 
@@ -166,8 +170,9 @@
                         "The User principal is listed as restricted");
                 }
 
-                return groups.Any(x => _options.AllowedADGroups.Contains(x.Name)) ? null : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
-
+                return groups.Any(x => _options.AllowedADGroups.Contains(x.Name))
+                    ? null
+                    : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
             }
             catch (Exception exception)
             {
@@ -194,7 +199,7 @@
 
         private void SetLastPassword(Principal userPrincipal)
         {
-            var directoryEntry = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
+            var directoryEntry = (DirectoryEntry) userPrincipal.GetUnderlyingObject();
             var prop = directoryEntry.Properties["pwdLastSet"];
 
             if (prop == null)
