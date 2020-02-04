@@ -24,6 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="zxcvbn-core" Version="2.1.44" />
+    <PackageReference Include="Unosquare.Swan" Version="2.4.3" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="ClientApp\**" />
