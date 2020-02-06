@@ -51,16 +51,13 @@
                     return new ApiErrorItem(ApiErrorCode.UserNotFound);
                 }
 
-                using (var directoryEntry = AcquireDirectoryEntry())
+                var minPwdLength = AcquireDomainPasswordLength();
+
+                if (newPassword.Length < minPwdLength)
                 {
-                    var minPwdLength = (int)directoryEntry.Properties["minPwdLength"].Value;
+                    _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
 
-                    if (newPassword.Length < minPwdLength)
-                    {
-                        _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
-
-                        return new ApiErrorItem(ApiErrorCode.ComplexPassword);
-                    }
+                    return new ApiErrorItem(ApiErrorCode.ComplexPassword);
                 }
 
                 _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
@@ -282,19 +279,22 @@
                 _options.LdapPassword);
         }
 
-        private DirectoryEntry AcquireDirectoryEntry()
+        private int AcquireDomainPasswordLength()
         {
+            DirectoryEntry entry;
             if (_options.UseAutomaticContext)
             {
-                _logger.LogWarning("Using AutomaticContext");
-                return Domain.GetCurrentDomain().GetDirectoryEntry();
+                entry = Domain.GetCurrentDomain().GetDirectoryEntry();
             }
-
-            var domain = $"{_options.LdapHostnames.First()}:{_options.LdapPort}";
-
-            _logger.LogWarning($"Not using AutomaticContext  {domain}");
-
-            return new DirectoryEntry(domain, _options.LdapUsername, _options.LdapPassword);
+            else
+            {
+                entry = new DirectoryEntry(
+                    $"{_options.LdapHostnames.First()}:{_options.LdapPort}",
+                    _options.LdapUsername,
+                    _options.LdapPassword
+                    );
+            }
+            return (int)entry.Properties["minPwdLength"].Value;
         }
     }
 }
