@@ -6,6 +6,7 @@
     using System;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
+    using System.DirectoryServices.ActiveDirectory;
     using System.Linq;
 
     /// <inheritdoc />
@@ -50,17 +51,19 @@
                     return new ApiErrorItem(ApiErrorCode.UserNotFound);
                 }
 
-                var directoryEntry = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
-                var minPwdLength = (int)directoryEntry.Properties["minPwdLength"].Value;
+                using (var directoryEntry = AcquireDirectoryEntry())
+                {
+                    var minPwdLength = (int)directoryEntry.Properties["minPwdLength"].Value;
+
+                    if (newPassword.Length < minPwdLength)
+                    {
+                        _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
+
+                        return new ApiErrorItem(ApiErrorCode.ComplexPassword);
+                    }
+                }
 
                 _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
-
-                if (newPassword.Length < minPwdLength)
-                {
-                    _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
-
-                    return new ApiErrorItem(ApiErrorCode.ComplexPassword);
-                }
 
                 var item = ValidateGroups(userPrincipal);
 
@@ -141,7 +144,7 @@
             if (_idType != IdentityType.UserPrincipalName) return username;
 
             // Check for default domain: if none given, ensure EFLD can be used as an override.
-            var parts = username.Split(new[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
+            var parts = username.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
             var domain = parts.Length > 1 ? parts[1] : _options.DefaultDomain;
 
             return string.IsNullOrWhiteSpace(domain) || parts.Length > 1 ? username : $"{username}@{domain}";
@@ -184,7 +187,7 @@
 
         private void SetLastPassword(Principal userPrincipal)
         {
-            var directoryEntry = (DirectoryEntry) userPrincipal.GetUnderlyingObject();
+            var directoryEntry = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
             var prop = directoryEntry.Properties["pwdLastSet"];
 
             if (prop == null)
@@ -277,6 +280,21 @@
                 domain,
                 _options.LdapUsername,
                 _options.LdapPassword);
+        }
+
+        private DirectoryEntry AcquireDirectoryEntry()
+        {
+            if (_options.UseAutomaticContext)
+            {
+                _logger.LogWarning("Using AutomaticContext");
+                return Domain.GetCurrentDomain().GetDirectoryEntry();
+            }
+
+            var domain = $"{_options.LdapHostnames.First()}:{_options.LdapPort}";
+
+            _logger.LogWarning($"Not using AutomaticContext  {domain}");
+
+            return new DirectoryEntry(domain, _options.LdapUsername, _options.LdapPassword);
         }
     }
 }
