@@ -17,7 +17,6 @@
     {
         private readonly PasswordChangeOptions _options;
         private readonly ILogger _logger;
-        private readonly DomainPasswordInformation? _domainPasswordInfo;
         private IdentityType _idType = IdentityType.UserPrincipalName;
 
         /// <summary>
@@ -32,25 +31,14 @@
             _logger = logger;
             _options = options.Value;
             SetIdType();
-            _domainPasswordInfo = GetDomainPasswordInformation();
         }
 
         /// <inheritdoc />
         public ApiErrorItem? PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            var fixedUsername = FixUsernameWithDomain(username);
-            _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
-
-            if (_domainPasswordInfo != null && newPassword.Length < _domainPasswordInfo.Value.MinPasswordLength)
-            {
-                _logger.LogError(
-                    "Failed due to password complex policies: New password length is shorter than AD minimum password length");
-
-                return new ApiErrorItem(ApiErrorCode.ComplexPassword);
-            }
-
             try
             {
+                var fixedUsername = FixUsernameWithDomain(username);
                 using var principalContext = AcquirePrincipalContext();
                 var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
 
@@ -60,6 +48,18 @@
                     _logger.LogWarning($"The User principal ({fixedUsername}) doesn't exist");
 
                     return new ApiErrorItem(ApiErrorCode.UserNotFound);
+                }
+
+                var directoryEntry = (DirectoryEntry)userPrincipal.GetUnderlyingObject();
+                var minPwdLength = (int)directoryEntry.Properties["minPwdLength"].Value;
+
+                _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
+
+                if (newPassword.Length < minPwdLength)
+                {
+                    _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
+
+                    return new ApiErrorItem(ApiErrorCode.ComplexPassword);
                 }
 
                 var item = ValidateGroups(userPrincipal);
@@ -177,21 +177,6 @@
             catch (Exception exception)
             {
                 _logger.LogError(new EventId(888), exception, nameof(ValidateGroups));
-            }
-
-            return null;
-        }
-
-        private static DomainPasswordInformation? GetDomainPasswordInformation()
-        {
-            using var server = new SamServer();
-
-            foreach (var domain in server.EnumerateDomains())
-            {
-                if (domain == "Builtin") continue;
-
-                var sid = server.GetDomainSid(domain);
-                return server.GetDomainPasswordInformation(sid);
             }
 
             return null;
