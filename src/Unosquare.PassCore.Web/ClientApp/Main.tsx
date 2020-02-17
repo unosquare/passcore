@@ -35,6 +35,8 @@ export const Main: React.FunctionComponent<any> = () => {
         );
     }
 
+    document.getElementById('title').innerHTML = settings.applicationTitle;
+
     return (
         <GlobalContextProvider settings={settings}>
             <SnackbarContextProvider>
