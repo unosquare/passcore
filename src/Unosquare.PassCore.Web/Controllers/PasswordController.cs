@@ -1,19 +1,16 @@
 namespace Unosquare.PassCore.Web.Controllers
 {
     using Common;
+    using Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Models;
+    using Swan.Net;
     using System;
     using System.Collections.Generic;
-    using System.Net.Http;
-    using System.Security.Cryptography;
-    using System.Text.Json;
     using System.Threading.Tasks;
     using Zxcvbn;
-    using Helpers;
-    using Swan.Net;
 
     /// <summary>
     /// Represents a controller class holding all of the server-side functionality of this tool.
@@ -97,7 +94,9 @@ namespace Unosquare.PassCore.Web.Controllers
                 if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
                     throw new InvalidOperationException("Invalid Recaptcha response");
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 _logger.LogWarning(ex, "Invalid Recaptcha");
                 return BadRequest(ApiResult.InvalidCaptcha());
@@ -123,7 +122,9 @@ namespace Unosquare.PassCore.Web.Controllers
 
                 result.Errors.Add(resultPasswordChange);
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 _logger.LogError(ex, "Failed to update password");
 

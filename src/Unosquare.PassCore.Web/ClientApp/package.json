@@ -21,28 +21,28 @@
     },
     "homepage": "https://github.com/unosquare/passcore",
     "dependencies": {
-        "@material-ui/core": "^4.8.3",
-        "@material-ui/icons": "^4.5.1",
+        "@material-ui/core": "^4.9.3",
+        "@material-ui/icons": "^4.9.1",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
-        "uno-material-ui": "^1.7.27",
-        "uno-react": "^0.11.8",
+        "uno-material-ui": "^1.7.36",
+        "uno-react": "^0.12.8",
         "zxcvbn": "^4.4.2"
     },
     "devDependencies": {
-        "@types/react": "^16.9.17",
+        "@types/react": "^16.9.22",
         "@types/react-dom": "^16.9.5",
         "@types/zxcvbn": "^4.4.0",
-        "@typescript-eslint/eslint-plugin": "^2.15.0",
-        "@typescript-eslint/parser": "^2.15.0",
+        "@typescript-eslint/eslint-plugin": "^2.20.0",
+        "@typescript-eslint/parser": "^2.20.0",
         "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.9.0",
+        "eslint-config-prettier": "^6.10.0",
         "eslint-plugin-prettier": "^3.1.2",
-        "eslint-plugin-react": "^7.17.0",
+        "eslint-plugin-react": "^7.18.3",
         "parcel-bundler": "^1.12.4",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
         "prettier": "^1.19.1",
-        "typescript": "^3.7.5"
+        "typescript": "^3.8.2"
     },
     "parcelCleanPaths": [
         "../wwwroot"

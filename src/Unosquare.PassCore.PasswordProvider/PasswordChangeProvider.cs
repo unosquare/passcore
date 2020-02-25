@@ -6,6 +6,7 @@
     using System;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
+    using System.DirectoryServices.ActiveDirectory;
     using System.Linq;
 
     /// <inheritdoc />
@@ -17,7 +18,6 @@
     {
         private readonly PasswordChangeOptions _options;
         private readonly ILogger _logger;
-        private readonly DomainPasswordInformation? _domainPasswordInfo;
         private IdentityType _idType = IdentityType.UserPrincipalName;
 
         /// <summary>
@@ -32,24 +32,14 @@
             _logger = logger;
             _options = options.Value;
             SetIdType();
-            _domainPasswordInfo = GetDomainPasswordInformation();
         }
 
         /// <inheritdoc />
         public ApiErrorItem? PerformPasswordChange(string username, string currentPassword, string newPassword)
         {
-            var fixedUsername = FixUsernameWithDomain(username);
-            _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
-
-            if (_domainPasswordInfo != null && newPassword.Length < _domainPasswordInfo.Value.MinPasswordLength)
-            {
-                _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
-
-                return new ApiErrorItem(ApiErrorCode.ComplexPassword);
-            }
-
             try
             {
+                var fixedUsername = FixUsernameWithDomain(username);
                 using var principalContext = AcquirePrincipalContext();
                 var userPrincipal = UserPrincipal.FindByIdentity(principalContext, _idType, fixedUsername);
 
@@ -60,6 +50,17 @@
 
                     return new ApiErrorItem(ApiErrorCode.UserNotFound);
                 }
+
+                var minPwdLength = AcquireDomainPasswordLength();
+
+                if (newPassword.Length < minPwdLength)
+                {
+                    _logger.LogError("Failed due to password complex policies: New password length is shorter than AD minimum password length");
+
+                    return new ApiErrorItem(ApiErrorCode.ComplexPassword);
+                }
+
+                _logger.LogInformation($"PerformPasswordChange for user {fixedUsername}");
 
                 var item = ValidateGroups(userPrincipal);
 
@@ -150,43 +151,32 @@
         {
             try
             {
-                if (!userPrincipal.GetGroups().Any()) return null;
+                PrincipalSearchResult<Principal> groups;
 
-                if (_options.RestrictedADGroups?.Any() == true)
+                try
                 {
-                    if (userPrincipal.GetAuthorizationGroups().Any(x => _options.RestrictedADGroups.Contains(x.Name)))
-                    {
-                        return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted,
-                            "The User principal is listed as restricted");
-                    }
+                    groups = userPrincipal.GetGroups();
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(new EventId(887), exception, nameof(ValidateGroups));
+
+                    groups = userPrincipal.GetAuthorizationGroups();
                 }
 
-                if (_options.AllowedADGroups?.Any() != true) return null;
+                if (groups.Any(x => _options.RestrictedADGroups.Contains(x.Name)))
+                {
+                    return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted,
+                        "The User principal is listed as restricted");
+                }
 
-                return userPrincipal.GetAuthorizationGroups().Any(x => _options.AllowedADGroups.Contains(x.Name))
+                return groups.Any(x => _options.AllowedADGroups.Contains(x.Name))
                     ? null
                     : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
-
-                // If after iterate the user groups the user cannot change password.
             }
             catch (Exception exception)
             {
                 _logger.LogError(new EventId(888), exception, nameof(ValidateGroups));
-            }
-
-            return null;
-        }
-
-        private static DomainPasswordInformation? GetDomainPasswordInformation()
-        {
-            using var server = new SamServer();
-
-            foreach (var domain in server.EnumerateDomains())
-            {
-                if (domain == "Builtin") continue;
-
-                var sid = server.GetDomainSid(domain);
-                return server.GetDomainPasswordInformation(sid);
             }
 
             return null;
@@ -247,40 +237,28 @@
         /// </summary>
         private void SetIdType()
         {
-            switch (_options.IdTypeForUser?.Trim().ToLower())
+            _idType = _options.IdTypeForUser?.Trim().ToLower() switch
             {
-                case "distinguishedname":
-                case "distinguished name":
-                case "dn":
-                    _idType = IdentityType.DistinguishedName;
-                    break;
-                case "globally unique identifier":
-                case "globallyuniqueidentifier":
-                case "guid":
-                    _idType = IdentityType.Guid;
-                    break;
-                case "name":
-                case "nm":
-                    _idType = IdentityType.Name;
-                    break;
-                case "samaccountname":
-                case "accountname":
-                case "sam account":
-                case "sam account name":
-                case "sam":
-                    _idType = IdentityType.SamAccountName;
-                    break;
-                case "securityidentifier":
-                case "securityid":
-                case "secid":
-                case "security identifier":
-                case "sid":
-                    _idType = IdentityType.Sid;
-                    break;
-                default:
-                    _idType = IdentityType.UserPrincipalName;
-                    break;
-            }
+                "distinguishedname" => IdentityType.DistinguishedName,
+                "distinguished name" => IdentityType.DistinguishedName,
+                "dn" => IdentityType.DistinguishedName,
+                "globally unique identifier" => IdentityType.Guid,
+                "globallyuniqueidentifier" => IdentityType.Guid,
+                "guid" => IdentityType.Guid,
+                "name" => IdentityType.Name,
+                "nm" => IdentityType.Name,
+                "samaccountname" => IdentityType.SamAccountName,
+                "accountname" => IdentityType.SamAccountName,
+                "sam account" => IdentityType.SamAccountName,
+                "sam account name" => IdentityType.SamAccountName,
+                "sam" => IdentityType.SamAccountName,
+                "securityidentifier" => IdentityType.Sid,
+                "securityid" => IdentityType.Sid,
+                "secid" => IdentityType.Sid,
+                "security identifier" => IdentityType.Sid,
+                "sid" => IdentityType.Sid,
+                _ => IdentityType.UserPrincipalName
+            };
         }
 
         private PrincipalContext AcquirePrincipalContext()
@@ -299,6 +277,24 @@
                 domain,
                 _options.LdapUsername,
                 _options.LdapPassword);
+        }
+
+        private int AcquireDomainPasswordLength()
+        {
+            DirectoryEntry entry;
+            if (_options.UseAutomaticContext)
+            {
+                entry = Domain.GetCurrentDomain().GetDirectoryEntry();
+            }
+            else
+            {
+                entry = new DirectoryEntry(
+                    $"{_options.LdapHostnames.First()}:{_options.LdapPort}",
+                    _options.LdapUsername,
+                    _options.LdapPassword
+                    );
+            }
+            return (int)entry.Properties["minPwdLength"].Value;
         }
     }
 }

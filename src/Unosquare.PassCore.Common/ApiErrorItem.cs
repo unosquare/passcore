@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
-        public ApiErrorItem(ApiErrorCode errorCode, string message = null)
+        public ApiErrorItem(ApiErrorCode errorCode, string? message = null)
         {
             ErrorCode = errorCode;
             Message = message;
@@ -30,7 +30,7 @@
         /// <value>
         /// The name of the field.
         /// </value>
-        public string FieldName { get; set; }
+        public string? FieldName { get; set; }
 
         /// <summary>
         /// Gets the message.
@@ -38,6 +38,6 @@
         /// <value>
         /// The message.
         /// </value>
-        public string Message { get; }
+        public string? Message { get; }
     }
 }
