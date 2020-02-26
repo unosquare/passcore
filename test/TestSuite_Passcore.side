@@ -94,7 +94,7 @@
       "id": "8ccf5111-5795-46f4-b419-eb69cb6579aa",
       "comment": "",
       "command": "click",
-      "target": "//form/button[@type=\"submit\"]",
+      "target": "//div[@id='rootNode']//form/button[@type='submit']",
       "targets": [],
       "value": ""
     }, {
