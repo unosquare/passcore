@@ -2,7 +2,7 @@
   "id": "d8001152-6d78-41a1-834a-09689b93b808",
   "version": "2.0",
   "name": "TestSuite_Passcore",
-  "url": "https://localhost:5001/",
+  "url": "http://localhost:5000",
   "tests": [{
     "id": "e5001338-ffd3-49b7-adfd-f7e0f108d81d",
     "name": "ChangePassword_Success",
@@ -2183,6 +2183,6 @@
     "timeout": 300,
     "tests": ["e5001338-ffd3-49b7-adfd-f7e0f108d81d"]
   }],
-  "urls": ["http://localhost:5000/"],
+  "urls": ["http://localhost:5000/", "localhost:5000"],
   "plugins": []
 }
