@@ -2,7 +2,7 @@
   "id": "d8001152-6d78-41a1-834a-09689b93b808",
   "version": "2.0",
   "name": "TestSuite_Passcore",
-  "url": "http://localhost:5000",
+  "url": "https://localhost:5001/",
   "tests": [{
     "id": "e5001338-ffd3-49b7-adfd-f7e0f108d81d",
     "name": "ChangePassword_Success",
@@ -17,7 +17,7 @@
       "id": "b1043a8c-1237-42f4-8bed-7a9698660cb4",
       "comment": "",
       "command": "setWindowSize",
-      "target": "1365x727",
+      "target": "1936x1056",
       "targets": [],
       "value": ""
     }, {
@@ -94,7 +94,7 @@
       "id": "8ccf5111-5795-46f4-b419-eb69cb6579aa",
       "comment": "",
       "command": "click",
-      "target": "form > .Mui-disabled.MuiButton-contained.MuiButton-containedPrimary.MuiButton-root.MuiButtonBase-root",
+      "target": "//div[@id='rootNode']//form/button[@type='submit']",
       "targets": [],
       "value": ""
     }, {
@@ -2068,6 +2068,111 @@
       "target": "css=.MuiTypography-body1.MuiTypography-root.jss390",
       "targets": [],
       "value": "Error"
+    }]
+  }, {
+    "id": "087edce5-8b17-4d88-9716-f9c5bcdb4d0b",
+    "name": "test",
+    "commands": [{
+      "id": "c5a38b52-5782-416f-b058-341070ab6c25",
+      "comment": "",
+      "command": "open",
+      "target": "https://localhost:5001/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "dd31d2c0-d370-46ed-b460-b70d6a41e868",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3e2677b0-227b-4c0f-a718-7c9161847bfd",
+      "comment": "",
+      "command": "type",
+      "target": "id=Username",
+      "targets": [
+        ["id=Username", "id"],
+        ["name=Username", "name"],
+        ["css=#Username", "css:finder"],
+        ["xpath=//input[@id='Username']", "xpath:attributes"],
+        ["xpath=//div[@id='rootNode']/main/div/form/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "sofi@milan"
+    }, {
+      "id": "7b42f89a-2d1e-465c-b447-4b8b9a278721",
+      "comment": "",
+      "command": "type",
+      "target": "id=CurrentPassword",
+      "targets": [
+        ["id=CurrentPassword", "id"],
+        ["name=CurrentPassword", "name"],
+        ["css=#CurrentPassword", "css:finder"],
+        ["xpath=//input[@id='CurrentPassword']", "xpath:attributes"],
+        ["xpath=//div[@id='rootNode']/main/div/form/div/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "abc123"
+    }, {
+      "id": "347d2b89-a9f8-4c69-82cc-c399d510e4ee",
+      "comment": "",
+      "command": "type",
+      "target": "id=NewPassword",
+      "targets": [
+        ["id=NewPassword", "id"],
+        ["name=NewPassword", "name"],
+        ["css=#NewPassword", "css:finder"],
+        ["xpath=//input[@id='NewPassword']", "xpath:attributes"],
+        ["xpath=//div[@id='rootNode']/main/div/form/div/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": "abc123"
+    }, {
+      "id": "07a4661e-0007-4205-b534-86ac0452b7cf",
+      "comment": "",
+      "command": "type",
+      "target": "id=NewPasswordVerify",
+      "targets": [
+        ["id=NewPasswordVerify", "id"],
+        ["name=NewPasswordVerify", "name"],
+        ["css=#NewPasswordVerify", "css:finder"],
+        ["xpath=//input[@id='NewPasswordVerify']", "xpath:attributes"],
+        ["xpath=//div[@id='rootNode']/main/div/form/div/div[6]/div/input", "xpath:idRelative"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "abc123"
+    }, {
+      "id": "98b13c0d-8110-4ad1-b66f-6461558c0d4b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-label",
+      "targets": [
+        ["css=.MuiButton-label", "css:finder"],
+        ["xpath=//div[@id='rootNode']/main/div/form/button/span", "xpath:idRelative"],
+        ["xpath=//span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "19890113-3366-4331-a355-7819705e11ff",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiDialogContent-root .MuiButton-label",
+      "targets": [
+        ["css=.MuiDialogContent-root .MuiButton-label", "css:finder"],
+        ["xpath=//div[2]/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "404e22ca-9dea-40af-bd62-7ce46a2b726b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDialogContent-root .MuiButton-label",
+      "targets": [
+        ["css=.MuiDialogContent-root .MuiButton-label", "css:finder"],
+        ["xpath=//div[2]/button/span", "xpath:position"]
+      ],
+      "value": ""
     }]
   }],
   "suites": [{
