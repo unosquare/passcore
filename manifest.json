@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "/yzR6KMzxE7uV3z51P80sw=="
+          "hash": "A7A1xKsKiP8uPpdF1AkTnQ=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "CONTRIBUTING.html",
-          "hash": "UttIPhyBslP+h8BcFzen4A=="
+          "hash": "1/aNyXKBn6NlVGK5cUJ6UA=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "TvIGZJyAuJJxZ3sBx61v4Q=="
+          "hash": "O6lokn+66F7tdLJubN5V/g=="
         }
       },
       "is_incremental": false,
@@ -98,7 +98,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.ApiErrorCode.html",
-          "hash": "EN843UNcBHHW2uQVqmrY4Q=="
+          "hash": "+2krjHrMZcAzOzZ9z7SOxg=="
         }
       },
       "is_incremental": false,
@@ -110,7 +110,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.ApiErrorException.html",
-          "hash": "OFk+mNJDeE9iSwK2J2guqw=="
+          "hash": "+h/Rku2JAE3jT27ePJAEaA=="
         }
       },
       "is_incremental": false,
@@ -122,7 +122,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.ApiErrorItem.html",
-          "hash": "pX4qAZMBz6BOASY0eHhHdQ=="
+          "hash": "QO22Nc4vfeqzWhV+KMQkVQ=="
         }
       },
       "is_incremental": false,
@@ -134,7 +134,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.IAppSettings.html",
-          "hash": "gFaL8XIPN3kDntQCVxIQ7A=="
+          "hash": "+TOa5hP0ZKskQP+ylSSpbQ=="
         }
       },
       "is_incremental": false,
@@ -146,7 +146,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.IPasswordChangeProvider.html",
-          "hash": "qHnZzTKvr373byp4duMf8w=="
+          "hash": "RrXmoeUPPyhYgVwn4rHPcA=="
         }
       },
       "is_incremental": false,
@@ -158,7 +158,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.html",
-          "hash": "ASQaNumoLslwwst689wyTA=="
+          "hash": "r+WECGwG+LP+s0JFnj7UtQ=="
         }
       },
       "is_incremental": false,
@@ -170,7 +170,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.PasswordProvider.PasswordChangeOptions.html",
-          "hash": "mLigEq5GhKPm5Ck4vZuziQ=="
+          "hash": "xM4qi8Vb9fus8D/RthWesQ=="
         }
       },
       "is_incremental": false,
@@ -182,7 +182,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.PasswordProvider.PasswordChangeProvider.html",
-          "hash": "bAZKFKTftD8bijwY626n1g=="
+          "hash": "rRNijohFY3iMODkJ4poCHw=="
         }
       },
       "is_incremental": false,
@@ -194,7 +194,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.PasswordProvider.html",
-          "hash": "srw82PyNuBJDYqPIqXnbBA=="
+          "hash": "GxAVdI+w5rWIlz5GWHWO1g=="
         }
       },
       "is_incremental": false,
@@ -206,7 +206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Controllers.HomeController.html",
-          "hash": "vdqd2j72JCKAZ51+/CzFvA=="
+          "hash": "CPrrKVUZTfn+aXzIOajk7g=="
         }
       },
       "is_incremental": false,
@@ -218,7 +218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Controllers.PasswordController.html",
-          "hash": "7AhxSWUKL/TG4gHBE1IX4Q=="
+          "hash": "IpQrlhSX22bmkQyLSL0Rng=="
         }
       },
       "is_incremental": false,
@@ -230,7 +230,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Controllers.html",
-          "hash": "ecQosHh9sg5g+9ChmHil+w=="
+          "hash": "bWOd8gs6J3JDWIR/gN8tEg=="
         }
       },
       "is_incremental": false,
@@ -242,7 +242,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.Alerts.html",
-          "hash": "fnWZsPzzzf+AIJ6LBu5kLg=="
+          "hash": "w79Vcx/MA7kdOAQQS7RbiQ=="
         }
       },
       "is_incremental": false,
@@ -254,7 +254,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ApiResult.html",
-          "hash": "9/3z5IWAzJaomblTGE2hew=="
+          "hash": "nIy9HkXtT7Dt7Eja+K0Wew=="
         }
       },
       "is_incremental": false,
@@ -266,7 +266,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ChangePasswordForm.html",
-          "hash": "8nki4Ej9gVdpcD7jUCq1rw=="
+          "hash": "OXpb1Lj1tNUtJXCTMMU/hQ=="
         }
       },
       "is_incremental": false,
@@ -278,7 +278,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ChangePasswordModel.html",
-          "hash": "J2VXDoB/NvnzGMqzx9Fo8g=="
+          "hash": "B//72LPjEfq8O6o+w6xqRA=="
         }
       },
       "is_incremental": false,
@@ -290,7 +290,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ClientSettings.html",
-          "hash": "5bfHOEkJtUDxdJjp/lS8Dw=="
+          "hash": "FuOeKjoQd1Lk7Ih2YdQz7g=="
         }
       },
       "is_incremental": false,
@@ -302,7 +302,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ErrorsPasswordForm.html",
-          "hash": "TdnXAh/dyA+FEVx2Xx4ESQ=="
+          "hash": "vqaPUKwxQMhrjbByYtsQvg=="
         }
       },
       "is_incremental": false,
@@ -314,7 +314,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.Recaptcha.html",
-          "hash": "D4VvPtoH5ss5CxjTUddi3g=="
+          "hash": "NqyL6goKXW4EWaoVfWd9pQ=="
         }
       },
       "is_incremental": false,
@@ -326,7 +326,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ValidationRegex.html",
-          "hash": "fENLvc13DqWvnX+d2O8j0Q=="
+          "hash": "WJhpmIH9OOaRnWe2TJCjWA=="
         }
       },
       "is_incremental": false,
@@ -338,7 +338,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.WebSettings.html",
-          "hash": "jMRxMe30w2JmVu4Mkp/HKg=="
+          "hash": "JzJp9RgstVCLMNJo9WGfbw=="
         }
       },
       "is_incremental": false,
@@ -350,7 +350,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.html",
-          "hash": "9wjHkA2HqKI3Q+29AzStIQ=="
+          "hash": "jRgANnOBfLuDWCZ8UJYrfg=="
         }
       },
       "is_incremental": false,
@@ -362,7 +362,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeOptions.html",
-          "hash": "Eql0roiRghKd9H+x11p13A=="
+          "hash": "Fgg7TYfcIS99IAaO+arOLA=="
         }
       },
       "is_incremental": false,
@@ -374,7 +374,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Zyborg.PassCore.PasswordProvider.LDAP.LdapPasswordChangeProvider.html",
-          "hash": "B30rvF2q+vDad+d6iriAlA=="
+          "hash": "4sukFUzRict87PUiev8B8g=="
         }
       },
       "is_incremental": false,
@@ -386,7 +386,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Zyborg.PassCore.PasswordProvider.LDAP.Win32ErrorCode.html",
-          "hash": "wvD29rcgw1d49R0VIR0FaA=="
+          "hash": "CKKGb0FJZKPGbt6YWkGglA=="
         }
       },
       "is_incremental": false,
@@ -398,7 +398,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Zyborg.PassCore.PasswordProvider.LDAP.html",
-          "hash": "9S/1/wJIh158PmEn1bewzg=="
+          "hash": "31L8ibNPK+BelgF/FUwFXQ=="
         }
       },
       "is_incremental": false,
@@ -443,36 +443,34 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot build incrementally because last build info is missing.",
+        "can_incremental": true,
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0,
-        "full_build_reason_code": "NoAvailableBuildCache"
+        "skipped_file_count": 0
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 3,
-          "skipped_file_count": 0
+          "skipped_file_count": 3
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 26,
-          "skipped_file_count": 0
+          "skipped_file_count": 26
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
