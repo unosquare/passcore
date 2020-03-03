@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "8ZYhTH3kYaGD0cw19eHbgQ=="
+          "hash": "5qz5OtcbuREDGNBOR01A7Q=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "CONTRIBUTING.html",
-          "hash": "inqeVMiXL301tRm7NSORCg=="
+          "hash": "JFgDlkMD0s32pMFAfM/N+w=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "PySgOSFpkHuxq3lHUWipIA=="
+          "hash": "T6rFxRBDZddV2SiKfFrkMA=="
         }
       },
       "is_incremental": false,
