@@ -59,5 +59,10 @@
         /// The score is minor than the Minimum Score  
         /// </summary>
         MinimumScore = 10,
+
+        /// <summary>
+        /// The score is minor than the Minimum Score  
+        /// </summary>
+        MinimumDistance = 11,
     }
 }

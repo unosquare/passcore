@@ -9,6 +9,7 @@ namespace Unosquare.PassCore.Web.Models
     {
         public Alerts Alerts { get; set; }
         public bool UsePasswordGeneration { get; set; }
+        public int MinimumDistance { get; set; }
         public int PasswordEntropy { get; set; }
         public int MinimumScore { get; set; }
         public bool ShowPasswordMeter { get; set; }
@@ -43,7 +44,8 @@ namespace Unosquare.PassCore.Web.Models
         public string ErrorFieldMismatch { get; set; }
         public string ErrorComplexPassword { get; set; }
         public string ErrorConnectionLdap { get; set; }
-        public string ErrorScorePassowrd { get; set; }
+        public string ErrorScorePassword { get; set; }
+        public string ErrorDistancePassword { get; set; }
     }
 
     public class ErrorsPasswordForm

@@ -27,6 +27,7 @@ export const ChangePassword: React.FunctionComponent<{}> = () => {
                 if (response.errors && response.errors.length) {
                     let errorAlertMessage = '';
                     response.errors.forEach((error: any) => {
+                  
                         switch (error.errorCode) {
                             case 0:
                                 errorAlertMessage += error.message;
@@ -59,7 +60,10 @@ export const ChangePassword: React.FunctionComponent<{}> = () => {
                                 errorAlertMessage += alerts.errorComplexPassword;
                                 break;
                             case 10:
-                                errorAlertMessage += alerts.errorScorePassowrd;
+                                errorAlertMessage += alerts.errorScorePassword;
+                                break;
+                            case 11:
+                                errorAlertMessage += alerts.errorDistancePassword;
                                 break;
                         }
                     });

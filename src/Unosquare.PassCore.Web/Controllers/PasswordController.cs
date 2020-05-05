@@ -104,8 +104,17 @@ namespace Unosquare.PassCore.Web.Controllers
 
             var result = new ApiResult();
 
+            //use the new flag here, before sending info to password change provider.
+
             try
             {
+                if (_options.MinimumDistance > 0 &&
+                    _passwordChangeProvider.MeasureNewPasswordDistance(model.CurrentPassword, model.NewPassword) < _options.MinimumDistance)
+                {
+                    result.Errors.Add(new ApiErrorItem(ApiErrorCode.MinimumDistance));
+                    return BadRequest(result);
+                }
+
                 if (_options.MinimumScore > 0 && Zxcvbn.MatchPassword(model.NewPassword).Score < _options.MinimumScore)
                 {
                     result.Errors.Add(new ApiErrorItem(ApiErrorCode.MinimumScore));
