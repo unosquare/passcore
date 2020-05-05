@@ -27,7 +27,6 @@ export const ChangePassword: React.FunctionComponent<{}> = () => {
                 if (response.errors && response.errors.length) {
                     let errorAlertMessage = '';
                     response.errors.forEach((error: any) => {
-                  
                         switch (error.errorCode) {
                             case 0:
                                 errorAlertMessage += error.message;
