@@ -98,7 +98,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.ApiErrorCode.html",
-          "hash": "KSvEDBYyojF9S13UPxEzZQ=="
+          "hash": "7/ZbaVOZf/0J4funZqSApw=="
         }
       },
       "is_incremental": false,
@@ -146,7 +146,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.IPasswordChangeProvider.html",
-          "hash": "UsSKUf/nj4PedA0wmyaFvg=="
+          "hash": "+L6oYLoyOQYlePmt8AQQ9w=="
         }
       },
       "is_incremental": false,
@@ -242,7 +242,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.Alerts.html",
-          "hash": "At5neOAwFJzaZ9fEqWvhSA=="
+          "hash": "CWuAVQReRPRrc9plp7FAAA=="
         }
       },
       "is_incremental": false,
@@ -290,7 +290,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.ClientSettings.html",
-          "hash": "K6KIoeQeYgHGdlcdBpgjMA=="
+          "hash": "eGdhI74Aq4JVKvg2w6P7yg=="
         }
       },
       "is_incremental": false,

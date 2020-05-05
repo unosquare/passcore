@@ -67,6 +67,12 @@ references:
   commentId: F:Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
   fullName: Unosquare.PassCore.Common.ApiErrorCode.LdapProblem
   nameWithType: ApiErrorCode.LdapProblem
+- uid: Unosquare.PassCore.Common.ApiErrorCode.MinimumDistance
+  name: MinimumDistance
+  href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_MinimumDistance
+  commentId: F:Unosquare.PassCore.Common.ApiErrorCode.MinimumDistance
+  fullName: Unosquare.PassCore.Common.ApiErrorCode.MinimumDistance
+  nameWithType: ApiErrorCode.MinimumDistance
 - uid: Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
   name: MinimumScore
   href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_MinimumScore
@@ -272,6 +278,19 @@ references:
   commentId: T:Unosquare.PassCore.Common.IPasswordChangeProvider
   fullName: Unosquare.PassCore.Common.IPasswordChangeProvider
   nameWithType: IPasswordChangeProvider
+- uid: Unosquare.PassCore.Common.IPasswordChangeProvider.MeasureNewPasswordDistance(System.String,System.String)
+  name: MeasureNewPasswordDistance(String, String)
+  href: api/Unosquare.PassCore.Common.IPasswordChangeProvider.html#Unosquare_PassCore_Common_IPasswordChangeProvider_MeasureNewPasswordDistance_System_String_System_String_
+  commentId: M:Unosquare.PassCore.Common.IPasswordChangeProvider.MeasureNewPasswordDistance(System.String,System.String)
+  fullName: Unosquare.PassCore.Common.IPasswordChangeProvider.MeasureNewPasswordDistance(System.String, System.String)
+  nameWithType: IPasswordChangeProvider.MeasureNewPasswordDistance(String, String)
+- uid: Unosquare.PassCore.Common.IPasswordChangeProvider.MeasureNewPasswordDistance*
+  name: MeasureNewPasswordDistance
+  href: api/Unosquare.PassCore.Common.IPasswordChangeProvider.html#Unosquare_PassCore_Common_IPasswordChangeProvider_MeasureNewPasswordDistance_
+  commentId: Overload:Unosquare.PassCore.Common.IPasswordChangeProvider.MeasureNewPasswordDistance
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Common.IPasswordChangeProvider.MeasureNewPasswordDistance
+  nameWithType: IPasswordChangeProvider.MeasureNewPasswordDistance
 - uid: Unosquare.PassCore.Common.IPasswordChangeProvider.PerformPasswordChange(System.String,System.String,System.String)
   name: PerformPasswordChange(String, String, String)
   href: api/Unosquare.PassCore.Common.IPasswordChangeProvider.html#Unosquare_PassCore_Common_IPasswordChangeProvider_PerformPasswordChange_System_String_System_String_System_String_
@@ -599,6 +618,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorConnectionLdap
   nameWithType: Alerts.ErrorConnectionLdap
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorDistancePassword
+  name: ErrorDistancePassword
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorDistancePassword
+  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorDistancePassword
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorDistancePassword
+  nameWithType: Alerts.ErrorDistancePassword
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorDistancePassword*
+  name: ErrorDistancePassword
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorDistancePassword_
+  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorDistancePassword
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorDistancePassword
+  nameWithType: Alerts.ErrorDistancePassword
 - uid: Unosquare.PassCore.Web.Models.Alerts.ErrorFieldMismatch
   name: ErrorFieldMismatch
   href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorFieldMismatch
@@ -677,19 +709,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorPasswordChangeNotAllowed
   nameWithType: Alerts.ErrorPasswordChangeNotAllowed
-- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  name: ErrorScorePassowrd
-  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassowrd
-  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  nameWithType: Alerts.ErrorScorePassowrd
-- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd*
-  name: ErrorScorePassowrd
-  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassowrd_
-  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassword
+  name: ErrorScorePassword
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassword
+  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassword
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassword
+  nameWithType: Alerts.ErrorScorePassword
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassword*
+  name: ErrorScorePassword
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassword_
+  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassword
   isSpec: "True"
-  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassowrd
-  nameWithType: Alerts.ErrorScorePassowrd
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassword
+  nameWithType: Alerts.ErrorScorePassword
 - uid: Unosquare.PassCore.Web.Models.Alerts.SuccessAlertBody
   name: SuccessAlertBody
   href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_SuccessAlertBody
@@ -1091,6 +1123,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.ClientSettings.ErrorsPasswordForm
   nameWithType: ClientSettings.ErrorsPasswordForm
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.MinimumDistance
+  name: MinimumDistance
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_MinimumDistance
+  commentId: P:Unosquare.PassCore.Web.Models.ClientSettings.MinimumDistance
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.MinimumDistance
+  nameWithType: ClientSettings.MinimumDistance
+- uid: Unosquare.PassCore.Web.Models.ClientSettings.MinimumDistance*
+  name: MinimumDistance
+  href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_MinimumDistance_
+  commentId: Overload:Unosquare.PassCore.Web.Models.ClientSettings.MinimumDistance
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Web.Models.ClientSettings.MinimumDistance
+  nameWithType: ClientSettings.MinimumDistance
 - uid: Unosquare.PassCore.Web.Models.ClientSettings.MinimumScore
   name: MinimumScore
   href: api/Unosquare.PassCore.Web.Models.ClientSettings.html#Unosquare_PassCore_Web_Models_ClientSettings_MinimumScore
