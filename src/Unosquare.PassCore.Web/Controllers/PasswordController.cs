@@ -104,8 +104,6 @@ namespace Unosquare.PassCore.Web.Controllers
 
             var result = new ApiResult();
 
-            //use the new flag here, before sending info to password change provider.
-
             try
             {
                 if (_options.MinimumDistance > 0 &&
