@@ -38,7 +38,7 @@ if([string]::IsNullOrEmpty($netCoreHost)) {
 
 # IIS setup script
 # Comment or delete the follow lines if you are making a custom installation and setup
-Write-Host "IIS setup runnig"
+Write-Host "IIS setup running"
 $iisSetup = (new-object net.webclient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1')
 
 Invoke-Command -ScriptBlock ([scriptblock]::Create($iisSetup)) -ArgumentList $directory
