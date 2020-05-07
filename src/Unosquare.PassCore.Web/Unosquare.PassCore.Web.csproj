@@ -36,6 +36,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PwnedPasswordsSearch\PwnedPasswordsSearch.csproj" />
     <ProjectReference Include="..\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(PASSCORE_PROVIDER)' == ''">
