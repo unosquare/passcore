@@ -14,6 +14,7 @@
 - [PowerShell Installer](#powershell-installer)
 - [Docker](#docker)
 - [LDAP Provider](#ldap-provider)
+- [Pwned Password Support](#pwned-password)
 - [Customization and Configuration](#customization-and-configuration)
   - [Running as a sub application](#running-as-a-sub-application)
 - [Troubleshooting](#troubleshooting)
@@ -114,6 +115,11 @@ PassCore was created to use the Microsoft Active Directory Services provided by 
 The configuration of the LDAP Provider is slightly different. for example, the AutomaticContext is not available and you need to supply credentials.
 
 *WIP*
+
+## Pwned Password Support
+Sometimes a simple set of checks and some custom logic is enough to rule out non-secure trivial passwords. Those checks are always performed locally. There are, however, many more unsafe passwords that cannot be ruled out programatically. For those cases there are no simple set of rules that could be used to check those passwords that should never be used: You either need a local DB with a list of banned passwords or use an external API service.
+
+Here is where Pwned Password API comes into play. Pwned Passwords are more than half a billion passwords which have previously been exposed in different data breaches along the years. The use of this service is free and secure. You can read more about this service in [Pwned Passwords overview](https://haveibeenpwned.com/API/v2#PwnedPasswords)
 
 ## Customization and Configuration
 
