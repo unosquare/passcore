@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,7 +12,7 @@ namespace PwnedPasswordsSearch
     {
         /// <summary>
         /// Makes a call to Pwned Passwords API, asking for a set of hashes of publicly known passwords that match a partial hash of a given password.
-        /// If any of the hashes returned by the API call fully matches the hash of the plaintext, it would mean that the password has been exposed 
+        /// If any of the hashes returned by the API call fully matches the hash of the plaintext, it would mean that the password has been exposed
         /// in publicly known data breaches and thus is not safe to use.
         /// See https://haveibeenpwned.com/API/v2#PwnedPasswords
         /// </summary>
