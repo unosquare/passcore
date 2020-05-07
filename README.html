@@ -85,6 +85,7 @@
 <li><a href="#powershell-installer">PowerShell Installer</a></li>
 <li><a href="#docker">Docker</a></li>
 <li><a href="#ldap-provider">LDAP Provider</a></li>
+<li><a href="#pwned-password-support">Pwned Password Support</a></li>
 <li><a href="#customization-and-configuration">Customization and Configuration</a><ul>
 <li><a href="#running-as-a-sub-application">Running as a sub application</a></li>
 </ul>
@@ -172,6 +173,9 @@ passcore:latest
 <p>PassCore was created to use the Microsoft Active Directory Services provided by .NET Framework, but a new Provider using <a href="https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard">Novell LDAP Client</a> can be used instead. This provider is the default when PassCore is running at Linux or macOS since Microsoft AD Services are NOT available.</p>
 <p>The configuration of the LDAP Provider is slightly different. for example, the AutomaticContext is not available and you need to supply credentials.</p>
 <p><em>WIP</em></p>
+<h2 id="pwned-password-support">Pwned Password Support</h2>
+<p>Sometimes a simple set of checks and some custom logic is enough to rule out non-secure trivial passwords. Those checks are always performed locally. There are, however, many more unsafe passwords that cannot be ruled out programatically. For those cases there are no simple set of rules that could be used to check those passwords that should never be used: You either need a local DB with a list of banned passwords or use an external API service.</p>
+<p>Here is where Pwned Password API comes into play. Pwned Passwords are more than half a billion passwords which have previously been exposed in different data breaches along the years. The use of this service is free and secure. You can read more about this service in <a href="https://haveibeenpwned.com/API/v2#PwnedPasswords">Pwned Passwords overview</a></p>
 <h2 id="customization-and-configuration">Customization and Configuration</h2>
 <p>All server-side settings and client-side settings are stored in the <code>/appsettings.json</code> file.
 The most relevant configuration entries are shown below. Make sure you make your changes to the <code>appsettings.json</code> file using a regular text editor like <a href="https://code.visualstudio.com">Visual Studio Code</a></p>

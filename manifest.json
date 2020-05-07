@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "JSvCxiuRymBl0wimDHbB6g=="
+          "hash": "sj+3WImv/cCDz5eeXvAbtw=="
         }
       },
       "is_incremental": false,
@@ -94,11 +94,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/PwnedPasswordsSearch.PwnedSearch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PwnedPasswordsSearch.PwnedSearch.html",
+          "hash": "jr3ci4WlzATofAGaTHNerQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/PwnedPasswordsSearch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PwnedPasswordsSearch.html",
+          "hash": "X4itDH1++aSfGwtDhgCaNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Unosquare.PassCore.Common.ApiErrorCode.yml",
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Common.ApiErrorCode.html",
-          "hash": "7/ZbaVOZf/0J4funZqSApw=="
+          "hash": "vpYAk4F8cVJEZfewa0sdcQ=="
         }
       },
       "is_incremental": false,
@@ -242,7 +266,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Unosquare.PassCore.Web.Models.Alerts.html",
-          "hash": "CWuAVQReRPRrc9plp7FAAA=="
+          "hash": "4iIVse/GzrpmtIK/KedKDg=="
         }
       },
       "is_incremental": false,
@@ -410,7 +434,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Xg3bWXSOIVybZoWdkvELbg=="
+          "hash": "llLoUR0Jg9qbNbAgUmAbEQ=="
         }
       },
       "is_incremental": false,
@@ -433,7 +457,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "UHFHKqwjYgBDeN0kO7hcbQ=="
+          "hash": "lTkCthPoBHaac6tCSb7B9w=="
         }
       },
       "is_incremental": false,
@@ -458,8 +482,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 26,
-          "skipped_file_count": 26
+          "total_file_count": 28,
+          "skipped_file_count": 28
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

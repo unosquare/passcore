@@ -1,6 +1,31 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
+- uid: PwnedPasswordsSearch
+  name: PwnedPasswordsSearch
+  href: api/PwnedPasswordsSearch.html
+  commentId: N:PwnedPasswordsSearch
+  fullName: PwnedPasswordsSearch
+  nameWithType: PwnedPasswordsSearch
+- uid: PwnedPasswordsSearch.PwnedSearch
+  name: PwnedSearch
+  href: api/PwnedPasswordsSearch.PwnedSearch.html
+  commentId: T:PwnedPasswordsSearch.PwnedSearch
+  fullName: PwnedPasswordsSearch.PwnedSearch
+  nameWithType: PwnedSearch
+- uid: PwnedPasswordsSearch.PwnedSearch.IsPwnedPassword(System.String)
+  name: IsPwnedPassword(String)
+  href: api/PwnedPasswordsSearch.PwnedSearch.html#PwnedPasswordsSearch_PwnedSearch_IsPwnedPassword_System_String_
+  commentId: M:PwnedPasswordsSearch.PwnedSearch.IsPwnedPassword(System.String)
+  fullName: PwnedPasswordsSearch.PwnedSearch.IsPwnedPassword(System.String)
+  nameWithType: PwnedSearch.IsPwnedPassword(String)
+- uid: PwnedPasswordsSearch.PwnedSearch.IsPwnedPassword*
+  name: IsPwnedPassword
+  href: api/PwnedPasswordsSearch.PwnedSearch.html#PwnedPasswordsSearch_PwnedSearch_IsPwnedPassword_
+  commentId: Overload:PwnedPasswordsSearch.PwnedSearch.IsPwnedPassword
+  isSpec: "True"
+  fullName: PwnedPasswordsSearch.PwnedSearch.IsPwnedPassword
+  nameWithType: PwnedSearch.IsPwnedPassword
 - uid: Unosquare.PassCore.Common
   name: Unosquare.PassCore.Common
   href: api/Unosquare.PassCore.Common.html
@@ -79,6 +104,12 @@ references:
   commentId: F:Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
   fullName: Unosquare.PassCore.Common.ApiErrorCode.MinimumScore
   nameWithType: ApiErrorCode.MinimumScore
+- uid: Unosquare.PassCore.Common.ApiErrorCode.PwnedPassword
+  name: PwnedPassword
+  href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_PwnedPassword
+  commentId: F:Unosquare.PassCore.Common.ApiErrorCode.PwnedPassword
+  fullName: Unosquare.PassCore.Common.ApiErrorCode.PwnedPassword
+  nameWithType: ApiErrorCode.PwnedPassword
 - uid: Unosquare.PassCore.Common.ApiErrorCode.UserNotFound
   name: UserNotFound
   href: api/Unosquare.PassCore.Common.ApiErrorCode.html#Unosquare_PassCore_Common_ApiErrorCode_UserNotFound
@@ -709,6 +740,19 @@ references:
   isSpec: "True"
   fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorPasswordChangeNotAllowed
   nameWithType: Alerts.ErrorPasswordChangeNotAllowed
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorPwnedPassword
+  name: ErrorPwnedPassword
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorPwnedPassword
+  commentId: P:Unosquare.PassCore.Web.Models.Alerts.ErrorPwnedPassword
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorPwnedPassword
+  nameWithType: Alerts.ErrorPwnedPassword
+- uid: Unosquare.PassCore.Web.Models.Alerts.ErrorPwnedPassword*
+  name: ErrorPwnedPassword
+  href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorPwnedPassword_
+  commentId: Overload:Unosquare.PassCore.Web.Models.Alerts.ErrorPwnedPassword
+  isSpec: "True"
+  fullName: Unosquare.PassCore.Web.Models.Alerts.ErrorPwnedPassword
+  nameWithType: Alerts.ErrorPwnedPassword
 - uid: Unosquare.PassCore.Web.Models.Alerts.ErrorScorePassword
   name: ErrorScorePassword
   href: api/Unosquare.PassCore.Web.Models.Alerts.html#Unosquare_PassCore_Web_Models_Alerts_ErrorScorePassword
