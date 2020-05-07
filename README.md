@@ -14,7 +14,7 @@
 - [PowerShell Installer](#powershell-installer)
 - [Docker](#docker)
 - [LDAP Provider](#ldap-provider)
-- [Pwned Password Support](#pwned-password)
+- [Pwned Password Support](#pwned-password-support)
 - [Customization and Configuration](#customization-and-configuration)
   - [Running as a sub application](#running-as-a-sub-application)
 - [Troubleshooting](#troubleshooting)
