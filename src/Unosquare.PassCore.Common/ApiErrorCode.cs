@@ -64,5 +64,10 @@
         /// The score is minor than the Minimum Score  
         /// </summary>
         MinimumDistance = 11,
+
+        /// <summary>
+        /// The password is in Pwned database
+        /// </summary>
+        PwnedPassword = 12,
     }
 }

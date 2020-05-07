@@ -11,6 +11,10 @@
                 ? username.Substring(0, username.IndexOf("@", StringComparison.Ordinal))
                 : username;
 
+            // Even in DEBUG, it is safe to make this call and check the password anyway
+            if (PwnedPasswordsSearch.PwnedSearch.IsPwnedPassword(newPassword))
+                return new ApiErrorItem(ApiErrorCode.PwnedPassword);
+
             return currentUsername switch
             {
                 "error" => new ApiErrorItem(ApiErrorCode.Generic, "Error"),
@@ -22,6 +26,7 @@
                 "invalidDomain" => new ApiErrorItem(ApiErrorCode.InvalidDomain),
                 "userNotFound" => new ApiErrorItem(ApiErrorCode.UserNotFound),
                 "ldapProblem" => new ApiErrorItem(ApiErrorCode.LdapProblem),
+                "pwnedPassword" => new ApiErrorItem(ApiErrorCode.PwnedPassword),
                 _ => null
             };
         }
