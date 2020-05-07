@@ -8,7 +8,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <IsPackable>false</IsPackable>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
-    <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.8</TypeScriptToolsVersion>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <RootNamespace>Unosquare.PassCore.Web</RootNamespace>
     <LangVersion>8.0</LangVersion>

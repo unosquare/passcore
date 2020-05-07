@@ -12,6 +12,7 @@ interface IAlerts {
     errorDistancePassword: string;
     successAlertBody: string;
     successAlertTitle: string;
+    errorPwnedPassword: string;
 }
 
 interface IChangePasswordForm {

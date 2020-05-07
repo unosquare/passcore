@@ -46,6 +46,7 @@ namespace Unosquare.PassCore.Web.Models
         public string ErrorConnectionLdap { get; set; }
         public string ErrorScorePassword { get; set; }
         public string ErrorDistancePassword { get; set; }
+        public string ErrorPwnedPassword { get; set; }
     }
 
     public class ErrorsPasswordForm
