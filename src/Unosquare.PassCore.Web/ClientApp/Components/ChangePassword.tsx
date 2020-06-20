@@ -21,6 +21,7 @@ export const ChangePassword: React.FunctionComponent<{}> = () => {
     const onSubmitValidatorForm = () => setSubmit(true);
 
     const toSubmitData = (formData: {}) => {
+        setDisabled(true);
         fetchRequest('api/password', 'POST', JSON.stringify({ ...formData, Recaptcha: token })).then(
             (response: any) => {
                 setSubmit(false);
@@ -74,6 +75,7 @@ export const ChangePassword: React.FunctionComponent<{}> = () => {
                     return;
                 }
                 setDialog(true);
+                setDisabled(false);
             },
         );
     };

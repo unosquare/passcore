@@ -178,7 +178,7 @@
                         "The User principal is listed as restricted");
                 }
 
-                return groups.Any(x => _options.AllowedADGroups.Contains(x.Name))
+                return groups?.Any(x => _options.AllowedADGroups?.Contains(x.Name))
                     ? null
                     : new ApiErrorItem(ApiErrorCode.ChangeNotPermitted, "The User principal is not listed as allowed");
             }
