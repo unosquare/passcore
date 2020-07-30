@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:$DOTNET_VERSION-alpine3.9 AS build
 # Disable the invariant mode (set in base image)
 RUN apk add --no-cache \
     icu-libs \
-    nodejs=10.14.2-r0 \
+    nodejs=10.19.0-r0 \
     nodejs-npm
 
 WORKDIR /build
