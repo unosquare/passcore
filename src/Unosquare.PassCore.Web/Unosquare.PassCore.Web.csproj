@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;node_modules\**</DefaultItemExcludes>
-    <Copyright>Copyright (c) 2018-2019 - Unosquare</Copyright>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Copyright>Copyright (c) 2018-2020 - Unosquare</Copyright>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Unosquare.PassCore.Web</AssemblyName>
     <PackageId>Unosquare.PassCore.Web</PackageId>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>

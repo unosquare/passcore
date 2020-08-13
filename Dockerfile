@@ -1,4 +1,4 @@
-ARG DOTNET_VERSION=3.0
+ARG DOTNET_VERSION=3.1
 FROM mcr.microsoft.com/dotnet/core/sdk:$DOTNET_VERSION-alpine3.9 AS build
 
 # Disable the invariant mode (set in base image)

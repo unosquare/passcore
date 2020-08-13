@@ -29,11 +29,11 @@ namespace PwnedPasswordsSearch
                 var sBuilder = new StringBuilder();
                 for (int i = 0; i < data.Length; i++)
                     sBuilder.Append(data[i].ToString("x2"));
-                string result = sBuilder.ToString().ToUpper();
-                //System.Diagnostics.Debug.Print($"The SHA-1 hash of {plaintext} is: {result}");
 
+                var result = sBuilder.ToString().ToUpper();
+                
                 // Get a list of all the possible password hashes where the first 5 bytes of the hash are the same
-                string url = "https://api.pwnedpasswords.com/range/" + result.Substring(0, 5);
+                var url = "https://api.pwnedpasswords.com/range/" + result.Substring(0, 5);
                 WebRequest request = WebRequest.Create(url);
                 using (Stream response = request.GetResponse().GetResponseStream())
                 {
