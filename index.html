@@ -71,7 +71,6 @@
 
 <p><a href="https://ci.appveyor.com/project/geoperez/passcore/branch/master"><img src="https://ci.appveyor.com/api/projects/status/76nxqw893mk7xfb9/branch/master?svg=true" alt="Build status"></a>
 <a href="https://github.com/unosquare/passcore/releases"><img src="https://img.shields.io/github/downloads/unosquare/passcore/total.svg" alt="Github All Releases"></a>
-<a href="https://github.com/igrigorik/ga-beacon"><img src="https://ga-beacon.appspot.com/UA-8535255-2/unosquare/passcore/" alt="Analytics"></a>
 <img src="https://github.com/unosquare/passcore/workflows/ASP.NET%20Core%20CI/badge.svg" alt="Buils status"></p>
 <p><img src="https://github.com/unosquare/passcore/raw/master/src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png" alt="Passcore Logo"></p>
 <h1 id="passcore-a-self-service-password-change-utility-for-active-directory">PassCore: A self-service password change utility for Active Directory</h1>
@@ -98,7 +97,7 @@
 <li><a href="#passcorepro">passcorepro</a></li>
 </ul>
 <h2 id="overview">Overview</h2>
-<p>PassCore is a very simple 1-page web application written in <a href="https://docs.microsoft.com/en-us/dotnet/csharp/">C#</a>, using <a href="https://docs.microsoft.com/en-us/aspnet/core/getting-started?view=aspnetcore-2.0">ASP.NET Core</a>, <a href="https://material-ui.com/">Material UI (React Components)</a>, and <a href="https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices">Microsoft Directory Services</a> (Default provider). </p>
+<p>PassCore is a very simple 1-page web application written in <a href="https://docs.microsoft.com/en-us/dotnet/csharp/">C#</a>, using <a href="https://docs.microsoft.com/en-us/aspnet/core/getting-started/">ASP.NET Core</a>, <a href="https://material-ui.com/">Material UI (React Components)</a>, and <a href="https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices">Microsoft Directory Services</a> (Default provider). </p>
 <p>It allows users to change their Active Directory/LDAP password on their own, provided the user is not disabled.</p>
 <p>PassCore does not require any configuration, as it obtains the principal context from the current domain. I wrote this because a number of people have requested several features that the <a href="http://unopasscore.codeplex.com/">original version</a> did not have. The original version of this tool was downloaded around 8000 times in 2.5 years. My hope is that the new version continues to be just as popular. There really is no free alternative out there (that I know of) so hopefully this saves someone else some time and money.</p>
 <p>You can check <a href="https://github.com/unosquare/passcore/wiki">the wiki section</a> for additional content related to development of this project.</p>
@@ -124,14 +123,14 @@
 <li>Make sure the <em>Domain</em> field contains the correct setting.</li>
 </ul>
 </li>
-<li>You need a Passcore copy to continue. We recommend to download the latest binary release of <a href="https://github.com/unosquare/passcore/releases/download/4.2.3/PassCore423.zip">PassCore</a>.</li>
+<li>You need a Passcore copy to continue. We recommend to download the latest binary release of <a href="https://github.com/unosquare/passcore/releases/download/4.2.4/PassCore424.zip">PassCore</a>.</li>
 <li><strong>NOTE:</strong> Before extracting the contents of the file, please right-click on it, select Properties and make sure the file is Unblocked (Click on the Unblock button at the bottom of the dialog if it is available). Then, extract the contents of the zip file to the directory where you will be serving the website from.<ul>
 <li>If you download the source code you need to run the following command via an Command Prompt. Make sure you start the Command Prompt with the Administrator option.</li>
 <li><code>dotnet publish --configuration Release --runtime win-x64 --output &quot;&lt;path&gt;&quot;</code></li>
 <li>The <code>&lt;path&gt;</code> is the directory where you will be serving the website from.</li>
 </ul>
 </li>
-<li>Install the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.0.0-windows-hosting-bundle-installer">.NET Core 3.0.0 Windows Server Hosting bundle</a>.</li>
+<li>Install the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.1.0-windows-hosting-bundle-installer">.NET Core 3.1.0 Windows Server Hosting bundle</a>.</li>
 <li>Go to your <em>IIS Manager</em>, Right-click on <em>Application Pools</em> and select <em>Add Application Pool</em>.</li>
 <li>A dialog appears. Under Name enter <strong>PassCore Application Pool</strong>, Under .NET CLR Version select <strong>No Managed Code</strong> and finally, under Managed pipeline mode select <strong>Integrated</strong>. Click OK after all fields have been set.</li>
 <li>Now, right-click on the application pool you just created in the previous step and select <em>Advanced Settings ...</em>. Change the <em>Start Mode</em> to <strong>AlwaysRunning</strong>, and the <em>Idle Time-out (minutes)</em> to <strong>0</strong>. Click on <em>OK</em>. This will ensure PassCore stays responsive even after long periods of inactivity.</li>
@@ -149,8 +148,7 @@
 </ol>
 <p><strong>NOTE:</strong> If you have a previous version, you <strong>can not</strong> use the same <code>appsettings.json</code> file. Please update your settings manually editing the new file.</p>
 <h2 id="powershell-installer">PowerShell Installer</h2>
-<p>Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.0.0-windows-hosting-bundle-installer">.NET Core 3.0.0 Windows Server Hosting bundle</a> 
-and enabled World Wide Web publishing service:</p>
+<p>Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.1.0-windows-hosting-bundle-installer">.NET Core 3.1.0 Windows Server Hosting bundle</a> and enabled World Wide Web publishing service:</p>
 <pre><code class="lang-powershell">Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1&#39;))
 </code></pre><p>Using the command shown above will install to the folder <code>C:\passcore</code> and using the HTTP Port 8080 with the default (localhost) binding. </p>
 <p>If you want to customize your installation please download the <a href="https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1">installer script</a> and 
@@ -232,7 +230,7 @@ The most relevant configuration entries are shown below. Make sure you make your
 <pre><code class="lang-html">&lt;base href=&quot;/PassCore/&quot; /&gt;
 </code></pre><h2 id="troubleshooting">Troubleshooting</h2>
 <ul>
-<li>At first run if you find an error (e.g. <strong>HTTP Error 502.5</strong>) first ensure you have installed <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.0.0-windows-hosting-bundle-installer">.NET Core 3.0.0 Windows Server Hosting bundle</a>, or better.</li>
+<li>At first run if you find an error (e.g. <strong>HTTP Error 502.5</strong>) first ensure you have installed <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.1.0-windows-hosting-bundle-installer">.NET Core 3.1.0 Windows Server Hosting bundle</a>, or better.</li>
 <li>If you find an <a href="https://stackoverflow.com/questions/45415832/http-error-500-19-in-iis-10-and-visual-studio-2017">HTTP Error 500</a> you can try<ol>
 <li>Press Win Key+R to Open Run Window</li>
 <li>in the Run Window, enter &quot;OptionalFeatures.exe&quot;</li>
