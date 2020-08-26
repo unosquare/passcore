@@ -83,6 +83,7 @@
 <li><a href="#installation-on-iis">Installation on IIS</a></li>
 <li><a href="#powershell-installer">PowerShell Installer</a></li>
 <li><a href="#docker">Docker</a></li>
+<li><a href="#linux">Linux</a></li>
 <li><a href="#ldap-provider">LDAP Provider</a></li>
 <li><a href="#pwned-password-support">Pwned Password Support</a></li>
 <li><a href="#customization-and-configuration">Customization and Configuration</a><ul>
@@ -155,9 +156,71 @@
 the <a href="https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1">IIS setup script</a>.</p>
 <p><strong>NOTE:</strong> You need <a href="https://docs.microsoft.com/en-us/powershell/scripting/setup/windows-powershell-system-requirements?view=powershell-6">PowerShell version 5 or better</a> 
 to execute the script.</p>
-<h2 id="docker">Docker</h2>
-<p>You can use the Alpine Docker Builder image and then copy the assets over to an Alpine container. You can pass environment attributes directly into docker without modifying the appsettings.json</p>
-<pre><code>docker build --rm -t passcore .
+<h2 id="linux">Linux</h2>
+<p>You can install and run PassCore on Ubuntu 18.04</p>
+<ol>
+<li>Update your system
+<code>sudo apt-get update &amp;&amp; sudo apt-get dist-upgrade</code></li>
+<li>Install .net core 3.1 and npm
+<code>wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+sudo apt-get update
+sudo apt-get install -y apt-transport-https &amp;&amp; sudo apt-get update &amp;&amp; sudo apt-get install -y dotnet-sdk-3.1 npm</code></li>
+<li>Download and deploy PassCore</li>
+</ol>
+<pre><code>sudo -s
+mkdir /opt/passcore
+cd /opt/passcore
+wget https://github.com/unosquare/passcore/archive/x.x.x.tar.gz
+tar vzfx x.x.x.tar.gz
+cd passcore-x.x.x
+dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP --output &quot;/opt/passcore/&quot;
+</code></pre><ol>
+<li>Create systemd service, enable it and start PassCore applikation</li>
+</ol>
+<p>Create /etc/systemd/system/passcore.service file with this content:</p>
+<pre><code>[Unit]
+Description=PassCore
+
+[Service]
+WorkingDirectory=/opt/passcore
+ExecStart=/usr/bin/dotnet /opt/passcore/Unosquare.PassCore.Web.dll
+Restart=always
+# Restart service after 20 seconds if the dotnet service crashes:
+RestartSec=20
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-passcore
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+[Install]
+WantedBy=multi-user.target
+</code></pre><pre><code>systemctl enable passcore.service
+systemctl start passcore.service
+</code></pre><ol>
+<li><p>Install and configure apache2 (or nginx) as Porxy
+your apache vhost should look something like this (Please use SSL):</p>
+<pre><code>&lt;VirtualHost *:80&gt;
+
+ RequestHeader set &quot;X-Forwarded-Proto&quot; expr=%{REQUEST_SCHEME}
+ ProxyPreserveHost On
+ ProxyPass / http://127.0.0.1:5000/
+ ProxyPassReverse / http://127.0.0.1:5000/
+ ServerName passcore.company.com
+
+      ErrorLog /var/log/apache2/passcoreerror.log
+      CustomLog /var/log/apache2/passcoreaccess.log combined
+</code></pre></li>
+</ol>
+<p>
+<pre><code>
+
+6. Edit your /opt/passcore/appsettings.json file restart the service and Enjoy!
+
+
+## Docker
+
+You can use the Alpine Docker Builder image and then copy the assets over to an Alpine container. You can pass environment attributes directly into docker without modifying the appsettings.json
+</code></pre><p>docker build --rm -t passcore .
 docker run \
 -e AppSettings__LdapHostnames__0=&#39;ad001.example.com&#39; \
 -e AppSettings__LdapHostnames__1=&#39;ad002.example.com&#39; \
@@ -165,69 +228,63 @@ docker run \
 -e AppSettings__LdapUsername=&#39;CN=First Last,OU=Users,DC=example,DC=com&#39; \
 -it \
 -p 80:80 \
-passcore:latest
-</code></pre><p><strong>NOTE:</strong> Docker image contains a build using the LDAP Provider (see below).</p>
-<h2 id="ldap-provider">LDAP Provider</h2>
-<p>PassCore was created to use the Microsoft Active Directory Services provided by .NET Framework, but a new Provider using <a href="https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard">Novell LDAP Client</a> can be used instead. This provider is the default when PassCore is running at Linux or macOS since Microsoft AD Services are NOT available.</p>
-<p>The configuration of the LDAP Provider is slightly different. for example, the AutomaticContext is not available and you need to supply credentials.</p>
-<p><em>WIP</em></p>
-<h2 id="pwned-password-support">Pwned Password Support</h2>
-<p>Sometimes a simple set of checks and some custom logic is enough to rule out non-secure trivial passwords. Those checks are always performed locally. There are, however, many more unsafe passwords that cannot be ruled out programatically. For those cases there are no simple set of rules that could be used to check those passwords that should never be used: You either need a local DB with a list of banned passwords or use an external API service.</p>
-<p>Here is where Pwned Password API comes into play. Pwned Passwords are more than half a billion passwords which have previously been exposed in different data breaches along the years. The use of this service is free and secure. You can read more about this service in <a href="https://haveibeenpwned.com/API/v2#PwnedPasswords">Pwned Passwords overview</a></p>
-<h2 id="customization-and-configuration">Customization and Configuration</h2>
-<p>All server-side settings and client-side settings are stored in the <code>/appsettings.json</code> file.
-The most relevant configuration entries are shown below. Make sure you make your changes to the <code>appsettings.json</code> file using a regular text editor like <a href="https://code.visualstudio.com">Visual Studio Code</a></p>
-<ul>
-<li>To enable reCAPTCHA<ol>
-<li>Find the <code>PrivateKey</code> entry and enter your private key within double quotes (<code>&quot;</code>)</li>
-<li>Find the <code>SiteKey</code> entry and enter your Site Key within double quotes (<code>&quot;</code>)</li>
-</ol>
-</li>
-<li>To change the language of the reCAPTCHA widget<ul>
-<li>Find the <code>LanguageCode</code> entry and enter <a href="https://developers.google.com/recaptcha/docs/language">one of the options listed here</a>. By default this is set to <code>en</code></li>
-</ul>
-</li>
-<li>To enable/disable the password meter<ul>
-<li>Find the <code>ShowPasswordMeter</code> entry and set it to <code>true</code> or <code>false</code> (without quotes)</li>
-</ul>
-</li>
-<li>To enable enable/disable the password generator<ul>
-<li>Find the <code>UsePasswordGeneration</code> entry and set it to <code>true</code> or <code>false</code> (without quotes)</li>
-<li>Find the <code>PasswordEntropy</code> entry and set it to a numeric value (without quotes) to set the entropy of the generated password</li>
-</ul>
-</li>
-<li>To enable server-side password entropy meter<ul>
-<li>Find the <code>MinimumScore</code> entry and set it to a numeric value (without quotes) between 1 and 4, where 1 is a bit secure and 4 is the most secure. Set to 0, for deactivate the validation.</li>
-</ul>
-</li>
-<li>To enable restricted group checking<ol>
-<li>Find the <code>RestrictedADGroups</code> entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.</li>
-</ol>
-</li>
-<li>Find the <code>DefaultDomain</code> entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names. <strong>NOTE:</strong> if you are using a subdomain, and you have errors, please try using your top-level domain. </li>
-<li>To provide an optional parameter to the URL to set the username text box automatically<ol>
-<li><code>http://mypasscore.com/?userName=someusername</code></li>
-<li>This helps the user in case they forgot their username and, also comes in handy when sending a link to the application or having it embedded into another application where the user is already signed in.</li>
-</ol>
-</li>
-<li>To specify which (DC) attribute is used to search for the specific user.<ul>
-<li>With the <code>IdTypeForUser</code> it is possible to select one of six Attributes that will be used to search for the specifiv user.</li>
-<li>The possible values are:<ul>
-<li><code>DistinguishedName</code> or <code>DN</code></li>
-<li><code>GloballyUniqueIdentifier</code> or <code>GUID</code></li>
-<li><code>Name</code></li>
-<li><code>SamAccountName</code> or <code>SAM</code></li>
-<li><code>SecurityIdentifier</code> or <code>SID</code></li>
-<li><code>UserPrincipalName</code> or <code>UPN</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>The rest of the configuration entries are all pretty much all UI strings. Change them to localize, or to brand this utility, to meet your needs.</li>
-</ul>
-<h3 id="running-as-a-sub-application">Running as a sub-application</h3>
-<p>To run as a sub-application you need to modify the <code>base href=&quot;/&quot;</code> value in the <code>wwwroot/index.html</code> file to be the base URL for PassCore. For example you might have PassCore setup at /PassCore so you would put</p>
-<pre><code class="lang-html">&lt;base href=&quot;/PassCore/&quot; /&gt;
+passcore:latest</p>
+<pre><code>
+**NOTE:** Docker image contains a build using the LDAP Provider (see below).
+
+## LDAP Provider
+
+PassCore was created to use the Microsoft Active Directory Services provided by .NET Framework, but a new Provider using [Novell LDAP Client](https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard) can be used instead. This provider is the default when PassCore is running at Linux or macOS since Microsoft AD Services are NOT available.
+
+The configuration of the LDAP Provider is slightly different. for example, the AutomaticContext is not available and you need to supply credentials.
+
+*WIP*
+
+## Pwned Password Support
+Sometimes a simple set of checks and some custom logic is enough to rule out non-secure trivial passwords. Those checks are always performed locally. There are, however, many more unsafe passwords that cannot be ruled out programatically. For those cases there are no simple set of rules that could be used to check those passwords that should never be used: You either need a local DB with a list of banned passwords or use an external API service.
+
+Here is where Pwned Password API comes into play. Pwned Passwords are more than half a billion passwords which have previously been exposed in different data breaches along the years. The use of this service is free and secure. You can read more about this service in [Pwned Passwords overview](https://haveibeenpwned.com/API/v2#PwnedPasswords)
+
+## Customization and Configuration
+
+All server-side settings and client-side settings are stored in the `/appsettings.json` file.
+The most relevant configuration entries are shown below. Make sure you make your changes to the `appsettings.json` file using a regular text editor like [Visual Studio Code](https://code.visualstudio.com)
+
+- To enable reCAPTCHA
+  1. Find the `PrivateKey` entry and enter your private key within double quotes (`&quot;`)
+  2. Find the `SiteKey` entry and enter your Site Key within double quotes (`&quot;`)
+- To change the language of the reCAPTCHA widget
+  - Find the `LanguageCode` entry and enter [one of the options listed here](https://developers.google.com/recaptcha/docs/language). By default this is set to `en`
+- To enable/disable the password meter
+  - Find the `ShowPasswordMeter` entry and set it to `true` or `false` (without quotes)
+- To enable enable/disable the password generator
+  - Find the `UsePasswordGeneration` entry and set it to `true` or `false` (without quotes)
+  - Find the `PasswordEntropy` entry and set it to a numeric value (without quotes) to set the entropy of the generated password
+- To enable server-side password entropy meter
+  - Find the `MinimumScore` entry and set it to a numeric value (without quotes) between 1 and 4, where 1 is a bit secure and 4 is the most secure. Set to 0, for deactivate the validation.
+- To enable restricted group checking
+  1. Find the `RestrictedADGroups` entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.
+- Find the `DefaultDomain` entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names. **NOTE:** if you are using a subdomain, and you have errors, please try using your top-level domain. 
+- To provide an optional parameter to the URL to set the username text box automatically
+  1. `http://mypasscore.com/?userName=someusername`
+  2. This helps the user in case they forgot their username and, also comes in handy when sending a link to the application or having it embedded into another application where the user is already signed in.
+- To specify which (DC) attribute is used to search for the specific user.
+  - With the `IdTypeForUser` it is possible to select one of six Attributes that will be used to search for the specifiv user.
+  - The possible values are:
+    - `DistinguishedName` or `DN`
+    - `GloballyUniqueIdentifier` or `GUID`
+    - `Name`
+    - `SamAccountName` or `SAM`
+    - `SecurityIdentifier` or `SID`
+    - `UserPrincipalName` or `UPN`
+- The rest of the configuration entries are all pretty much all UI strings. Change them to localize, or to brand this utility, to meet your needs.
+
+### Running as a sub-application
+
+To run as a sub-application you need to modify the `base href=&quot;/&quot;` value in the `wwwroot/index.html` file to be the base URL for PassCore. For example you might have PassCore setup at /PassCore so you would put
+
+```html
+&lt;base href=&quot;/PassCore/&quot; /&gt;
 </code></pre><h2 id="troubleshooting">Troubleshooting</h2>
 <ul>
 <li>At first run if you find an error (e.g. <strong>HTTP Error 502.5</strong>) first ensure you have installed <a href="https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.1.0-windows-hosting-bundle-installer">.NET Core 3.1.0 Windows Server Hosting bundle</a>, or better.</li>
