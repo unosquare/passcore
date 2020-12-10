@@ -14,7 +14,7 @@ namespace Unosquare.PassCore.Web.Models
         /// Initializes a new instance of the <see cref="ApiResult"/> class.
         /// </summary>
         /// <param name="payload">The payload.</param>
-        public ApiResult(object payload = null)
+        public ApiResult(object? payload = null)
         {
             Errors = new List<ApiErrorItem>();
             Payload = payload;
@@ -28,7 +28,7 @@ namespace Unosquare.PassCore.Web.Models
         /// <summary>
         /// Gets or sets the payload.
         /// </summary>
-        public object Payload { get;  }
+        public object? Payload { get;  }
 
         /// <summary>
         /// Creates a generic invalid request response.

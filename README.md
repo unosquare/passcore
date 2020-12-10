@@ -1,4 +1,3 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/76nxqw893mk7xfb9/branch/master?svg=true)](https://ci.appveyor.com/project/geoperez/passcore/branch/master)
 [![Github All Releases](https://img.shields.io/github/downloads/unosquare/passcore/total.svg)](https://github.com/unosquare/passcore/releases)
 ![Buils status](https://github.com/unosquare/passcore/workflows/ASP.NET%20Core%20CI/badge.svg)
 
@@ -59,7 +58,7 @@ PassCore has the following features:
     - If you download the source code you need to run the following command via an Command Prompt. Make sure you start the Command Prompt with the Administrator option.
     - `dotnet publish --configuration Release --runtime win-x64 --output "<path>"`
     - The `<path>` is the directory where you will be serving the website from.
-1. Install the [.NET Core 3.1.0 Windows Server Hosting bundle](https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.1.0-windows-hosting-bundle-installer).
+1. Install the [.NET Core 5.0.1 Windows Server Hosting bundle](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-aspnetcore-5.0.1-windows-hosting-bundle-installer).
 1. Go to your *IIS Manager*, Right-click on *Application Pools* and select *Add Application Pool*.
 1. A dialog appears. Under Name enter **PassCore Application Pool**, Under .NET CLR Version select **No Managed Code** and finally, under Managed pipeline mode select **Integrated**. Click OK after all fields have been set.
 1. Now, right-click on the application pool you just created in the previous step and select *Advanced Settings ...*. Change the *Start Mode* to **AlwaysRunning**, and the *Idle Time-out (minutes)* to **0**. Click on *OK*. This will ensure PassCore stays responsive even after long periods of inactivity.
@@ -75,7 +74,7 @@ PassCore has the following features:
 
 ## PowerShell Installer
 
-Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 3.1.0 Windows Server Hosting bundle](https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.1.0-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
+Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 5.0.1 Windows Server Hosting bundle](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-aspnetcore-5.0.1-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))
@@ -90,76 +89,7 @@ the [IIS setup script](https://raw.githubusercontent.com/unosquare/passcore/mast
 to execute the script.
 
 ## Linux
-You can install and run PassCore on Ubuntu 18.04
-1. Update your system
-```
-sudo apt-get update && sudo apt-get dist-upgrade
-```
-2. Install .net core 3.1 and npm
-```
-wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-sudo apt-get update
-sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-get install -y dotnet-sdk-3.1 npm
-```
-3. Download and deploy PassCore
-
-```
-sudo -s
-mkdir /opt/passcore
-cd /opt/passcore
-wget https://github.com/unosquare/passcore/archive/x.x.x.tar.gz
-tar vzfx x.x.x.tar.gz
-cd passcore-x.x.x
-dotnet publish --configuration Release --runtime linux-x64 /p:PASSCORE_PROVIDER=LDAP --output "/opt/passcore/"
-
-``` 
-4. Create systemd service, enable it and start PassCore applikation
-
-Create /etc/systemd/system/passcore.service file with this content:
-``` 
-[Unit]
-Description=PassCore
-
-[Service]
-WorkingDirectory=/opt/passcore
-ExecStart=/usr/bin/dotnet /opt/passcore/Unosquare.PassCore.Web.dll
-Restart=always
-# Restart service after 20 seconds if the dotnet service crashes:
-RestartSec=20
-KillSignal=SIGINT
-SyslogIdentifier=dotnet-passcore
-User=www-data
-Environment=ASPNETCORE_ENVIRONMENT=Production
-[Install]
-WantedBy=multi-user.target
-
-``` 
-```
-systemctl enable passcore.service
-systemctl start passcore.service
-```
-
-5. Install and configure apache2 (or nginx) as Porxy
-your apache vhost should look something like this (Please use SSL):
-```
-<VirtualHost *:80>
-
-    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
-    ProxyPreserveHost On
-    ProxyPass / http://127.0.0.1:5000/
-    ProxyPassReverse / http://127.0.0.1:5000/
-    ServerName passcore.company.com
-
-         ErrorLog /var/log/apache2/passcoreerror.log
-         CustomLog /var/log/apache2/passcoreaccess.log combined
-
-</VirtualHost>
-```
-
-
-6. Edit your /opt/passcore/appsettings.json file restart the service and Enjoy!
-
+We recommend use the docker image and redirect the traffic to ngix.
 
 ## Docker
 
