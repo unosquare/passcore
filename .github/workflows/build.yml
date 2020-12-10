@@ -8,23 +8,28 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - uses: actions/checkout@v2
+    - name: Setup docker
+      uses: docker/setup-buildx-action@v1
+    - name: Cache Docker layers
+      uses: actions/cache@v2
       with:
-        dotnet-version: 3.1.100
-    - uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: node-${{ hashFiles('**/package-lock.json') }}
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
         restore-keys: |
-          node-
-    - name: npm build
-      run: |
-        npm ci
-        npm run lint
-      working-directory: src/Unosquare.PassCore.Web/ClientApp
-    - name: Build with dotnet Windows Provider
-      run: dotnet build --configuration Release
-    - name: Build with dotnet Novell Provider
-      run: dotnet build --configuration Release /p:PASSCORE_PROVIDER=LDAP
+          ${{ runner.os }}-buildx-
+    - name: Login to GitHub Packages Docker Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GH_PAT }}
+    - name: Build docker image dev
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ghcr.io/unosquare/core.api-dev:${{ github.sha }}
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache
+        build-args: |
+            TOKEN=${{ secrets.GH_PAT }}

@@ -1,10 +1,11 @@
+FROM node:latest AS node_base
+
+RUN echo "NODE Version:" && node --version
+RUN echo "NPM Version:" && npm --version
+
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
-# Disable the invariant mode (set in base image)
-RUN apk add --no-cache \
-    icu-libs \
-    nodejs=10.19.0-r0 \
-    nodejs-npm
+COPY --from=node_base . .
 
 WORKDIR /src
 COPY ./ ./
