@@ -14,10 +14,7 @@
         /// <param name="message">The message.</param>
         /// <param name="errorCode">The error code.</param>
         public ApiErrorException(string message, ApiErrorCode errorCode = ApiErrorCode.Generic)
-        : base(message)
-        {
-            ErrorCode = errorCode;
-        }
+        : base(message) => ErrorCode = errorCode;
 
         /// <summary>
         /// Gets or sets the error code.

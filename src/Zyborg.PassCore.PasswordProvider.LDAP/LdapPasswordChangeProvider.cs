@@ -128,9 +128,7 @@
 
                 return item;
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
@@ -166,7 +164,7 @@
             var ldapAdd = new LdapModification(LdapModification.Add, newAttr);
             ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
         }
-        
+
         private static ApiErrorItem ParseLdapException(LdapException ex)
         {
             // If the LDAP server returned an error, it will be formatted
@@ -177,7 +175,7 @@
             if (ex.LdapErrorMessage == null)
             {
                 return new ApiErrorItem(ApiErrorCode.LdapProblem, "Unexpected null exception");
-            } 
+            }
 
             var m = Regex.Match(ex.LdapErrorMessage, "([0-9a-fA-F]+):");
 
@@ -218,7 +216,7 @@
             var escape = "()&|=><!*/\\".ToCharArray();
             var escapeIndex = cleanUsername.IndexOfAny(escape);
 
-            if (escapeIndex < 0) 
+            if (escapeIndex < 0)
                 return cleanUsername;
 
             var buff = new StringBuilder();
@@ -319,9 +317,7 @@
                     bindHostname = h;
                     break;
                 }
-#pragma warning disable CA1031 // Do not catch general exception types
                 catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
                 {
                     _logger.LogWarning($"Failed to connect to host [{h}]", ex);
                 }

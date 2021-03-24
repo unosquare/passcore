@@ -14,7 +14,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
 
         /// <inheritdoc />
         public string LdapPassword { get; set; }
-        
+
         /// <inheritdoc />
         public string LdapUsername { get; set; }
 

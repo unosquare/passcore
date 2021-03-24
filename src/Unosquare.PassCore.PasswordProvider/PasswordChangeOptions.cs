@@ -51,16 +51,16 @@
 
         /// <inheritdoc />
         public string DefaultDomain { get; set; }
-        
+
         /// <inheritdoc />
         public int LdapPort { get; set; }
-        
+
         /// <inheritdoc />
         public string[] LdapHostnames { get; set; }
-        
+
         /// <inheritdoc />
         public string LdapPassword { get; set; }
-        
+
         /// <inheritdoc />
         public string LdapUsername { get; set; }
     }

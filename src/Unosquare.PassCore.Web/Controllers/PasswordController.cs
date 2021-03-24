@@ -1,4 +1,4 @@
-namespace Unosquare.PassCore.Web.Controllers
+﻿namespace Unosquare.PassCore.Web.Controllers
 {
     using Common;
     using Helpers;
@@ -94,9 +94,7 @@ namespace Unosquare.PassCore.Web.Controllers
                 if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
                     throw new InvalidOperationException("Invalid Recaptcha response");
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 _logger.LogWarning(ex, "Invalid Recaptcha");
                 return BadRequest(ApiResult.InvalidCaptcha());
@@ -129,9 +127,7 @@ namespace Unosquare.PassCore.Web.Controllers
 
                 result.Errors.Add(resultPasswordChange);
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 _logger.LogError(ex, "Failed to update password");
 

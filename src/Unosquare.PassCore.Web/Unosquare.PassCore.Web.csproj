@@ -15,11 +15,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SimpleBase" Version="3.0.1" />
+    <PackageReference Include="SimpleBase" Version="3.0.2" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="zxcvbn-core" Version="6.0.84" />
+    <PackageReference Include="zxcvbn-core" Version="7.0.92" />
     <PackageReference Include="Unosquare.Swan" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>

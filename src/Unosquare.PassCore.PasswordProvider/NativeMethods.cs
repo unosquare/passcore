@@ -1,5 +1,4 @@
-﻿#pragma warning disable SA1310 // Field names must not contain underscore
-namespace Unosquare.PassCore.PasswordProvider
+﻿namespace Unosquare.PassCore.PasswordProvider
 {
     using System;
 
@@ -42,7 +41,7 @@ namespace Unosquare.PassCore.PasswordProvider
             Default = 0,
         }
 
-        [System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError = true)]
+        [System.Runtime.InteropServices.DllImport("advapi32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
         internal static extern bool LogonUser(
             string principal,
             string authority,
@@ -52,4 +51,3 @@ namespace Unosquare.PassCore.PasswordProvider
             out IntPtr token);
     }
 }
-#pragma warning restore SA1310 // Field names must not contain underscore
