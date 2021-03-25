@@ -137,23 +137,20 @@
             return BadRequest(result);
         }
 
-        private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
+        private async Task<bool> ValidateRecaptcha(string? recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(_options.Recaptcha.PrivateKey))
+            if ((_options.Recaptcha != null) && string.IsNullOrWhiteSpace(_options.Recaptcha.PrivateKey))
                 return true;
-
-            // immediately return false because we don't 
-            if (string.IsNullOrEmpty(recaptchaResponse))
-                return false;
-
-            var requestUrl = new Uri(
-                $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}");
-
-            var validationResponse = await JsonClient.Get<Dictionary<string, object>>(requestUrl)
-                .ConfigureAwait(false);
-
-            return Convert.ToBoolean(validationResponse["success"], System.Globalization.CultureInfo.InvariantCulture);
+            else if ((_options.Recaptcha != null) && (string.IsNullOrEmpty(recaptchaResponse) != false))
+            {
+                var requestUrl = new Uri(
+                    $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}");
+                var validationResponse = await JsonClient.Get<Dictionary<string, object>>(requestUrl)
+                    .ConfigureAwait(false);
+                return Convert.ToBoolean(validationResponse["success"], System.Globalization.CultureInfo.InvariantCulture);
+            }
+            return false;
         }
     }
 }

@@ -115,7 +115,9 @@
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => obj != null
-                && obj is Win32ErrorCode err && Code == err.Code;
+        public override bool Equals(object? obj)
+        {
+            return obj != null && obj is Win32ErrorCode err && Code == err.Code;
+        }
     }
 }
