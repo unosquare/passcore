@@ -172,11 +172,12 @@
                     groups = userPrincipal.GetAuthorizationGroups();
                 }
 
-                if (groups.Any(x => _options.RestrictedADGroups.Contains(x.Name)))
-                {
-                    return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted,
-                        "The User principal is listed as restricted");
-                }
+                if (_options.RestrictedADGroups != null)
+                    if (groups.Any(x => _options.RestrictedADGroups.Contains(x.Name)))
+                    {
+                        return new ApiErrorItem(ApiErrorCode.ChangeNotPermitted,
+                            "The User principal is listed as restricted");
+                    }
 
                 return groups?.Any(x => _options.AllowedADGroups?.Contains(x.Name) == true) == true
                     ? null

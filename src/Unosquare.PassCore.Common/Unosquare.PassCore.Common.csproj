@@ -5,6 +5,7 @@
     <Copyright>Copyright (c) 2018-2021 - Unosquare</Copyright>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <NullableReferenceTypes>true</NullableReferenceTypes>
     <Version>1.0.0</Version>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

@@ -34,7 +34,9 @@
                 null,
                 10);
 
-        private LdapRemoteCertificateValidationCallback _ldapRemoteCertValidator;
+        // TODO: is this related to https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard/issues/101 at all???
+        // Had to mark this as nullable.
+        private LdapRemoteCertificateValidationCallback? _ldapRemoteCertValidator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LdapPasswordChangeProvider"/> class.
@@ -47,7 +49,6 @@
         {
             _logger = logger;
             _options = options.Value;
-
             Init();
         }
 
@@ -218,7 +219,7 @@
             var escapeIndex = cleanUsername.IndexOfAny(escape);
 
             if (escapeIndex < 0)
-                return cleanUsername;
+                return cleanUsername ?? string.Empty;
 
             var buff = new StringBuilder();
             var maxLen = cleanUsername.Length;
@@ -237,7 +238,7 @@
             cleanUsername = buff.ToString();
             _logger.LogWarning("Had to clean username: [{0}] => [{1}]", username, cleanUsername);
 
-            return cleanUsername;
+            return cleanUsername ?? string.Empty;
         }
 
         private void Init()
