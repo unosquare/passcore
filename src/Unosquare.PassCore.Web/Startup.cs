@@ -1,4 +1,4 @@
-namespace Unosquare.PassCore.Web
+﻿namespace Unosquare.PassCore.Web
 {
     using Common;
     using Microsoft.AspNetCore;
@@ -8,6 +8,7 @@ namespace Unosquare.PassCore.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
     using Models;
+    using System.Threading.Tasks;
 #if DEBUG
     using Helpers;
 #elif PASSCORE_LDAP_PROVIDER
@@ -29,10 +30,7 @@ namespace Unosquare.PassCore.Web
         /// This class gets instantiated by the Main method. The hosting environment gets provided via DI.
         /// </summary>
         /// <param name="config">The configuration.</param>
-        public Startup(IConfiguration config)
-        {
-            Configuration = config;
-        }
+        public Startup(IConfiguration config) => Configuration = config;
 
         /// <summary>
         /// Gets or sets the configuration.
@@ -46,8 +44,7 @@ namespace Unosquare.PassCore.Web
         /// Application's entry point.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        public static void Main(string[] args) =>
-            CreateWebHostBuilder(args).Build().Run();
+        public static async Task Main(string[] args) => await WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().Build().RunAsync();
 
         /// <summary>
         /// Creates the web host builder.
@@ -101,7 +98,7 @@ namespace Unosquare.PassCore.Web
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

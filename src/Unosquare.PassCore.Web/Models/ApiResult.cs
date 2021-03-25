@@ -28,7 +28,7 @@ namespace Unosquare.PassCore.Web.Models
         /// <summary>
         /// Gets or sets the payload.
         /// </summary>
-        public object? Payload { get;  }
+        public object? Payload { get; }
 
         /// <summary>
         /// Creates a generic invalid request response.

@@ -1,5 +1,4 @@
-#pragma warning disable SA1117 // Parameters should be on same line or separate lines
-namespace Zyborg.PassCore.PasswordProvider.LDAP
+﻿namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
     using System.Collections.Generic;
 
@@ -10,7 +9,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
     {
         /// <summary>
         /// Based on
-        /// <a href="https://msdn.microsoft.com/en-us/library/cc231199.aspx?f=255&and;MSPPError=-2147217396">docs.</a>
+        /// <a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/18d8fbe8-a967-4f1c-ae50-99ca8e491d2d?redirectedfrom=MSDN">docs.</a>
         /// provides a list of commonly anticipated error codes from a password change request.
         /// </summary>
         public static readonly IEnumerable<Win32ErrorCode> Codes = new[]
@@ -98,7 +97,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// </summary>
         /// <param name="code">The code.</param>
         /// <returns>A Win32ErrorCode from the code.</returns>
-        public static Win32ErrorCode ByCode(int code) =>
+        public static Win32ErrorCode? ByCode(int code) =>
             ErrorByCode.TryGetValue(code, out var err) ? err : null;
 
         /// <summary>
@@ -116,8 +115,9 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => obj != null
-                && obj is Win32ErrorCode err && Code == err.Code;
+        public override bool Equals(object? obj)
+        {
+            return obj != null && obj is Win32ErrorCode err && Code == err.Code;
+        }
     }
 }
-#pragma warning restore SA1117 // Parameters should be on same line or separate lines

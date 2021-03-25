@@ -33,16 +33,24 @@
         "@types/react": "^16.9.23",
         "@types/react-dom": "^16.9.5",
         "@types/zxcvbn": "^4.4.0",
-        "@typescript-eslint/eslint-plugin": "^2.22.0",
+        "@typescript-eslint/eslint-plugin": "^4.19.0",
         "@typescript-eslint/parser": "^2.22.0",
-        "eslint": "7.15.0",
+        "eslint": "^7.22.0",
         "eslint-config-prettier": "7.0.0",
+        "eslint-config-standard-react": "^11.0.1",
+        "eslint-config-standard-with-typescript": "^20.0.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-prettier": "3.2.0",
+        "eslint-plugin-promise": "^4.3.1",
         "eslint-plugin-react": "7.21.5",
-        "parcel-bundler": "^1.12.4",
+        "minimist": "^1.2.5",
+        "node-forge": "^0.10.0",
+        "parcel-bundler": "^1.12.5",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
         "prettier": "^1.19.1",
-        "typescript": "^4.1.2"
+        "ts-standard": "^10.0.0",
+        "typescript": "~4.2.3"
     },
     "parcelCleanPaths": [
         "../wwwroot"

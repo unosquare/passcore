@@ -34,7 +34,9 @@
                 null,
                 10);
 
-        private LdapRemoteCertificateValidationCallback _ldapRemoteCertValidator;
+        // TODO: is this related to https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard/issues/101 at all???
+        // Had to mark this as nullable.
+        private LdapRemoteCertificateValidationCallback? _ldapRemoteCertValidator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LdapPasswordChangeProvider"/> class.
@@ -47,7 +49,6 @@
         {
             _logger = logger;
             _options = options.Value;
-
             Init();
         }
 
@@ -61,6 +62,7 @@
         ///
         /// Check the above links for more information.
         /// </remarks>
+        [Obsolete]
         public ApiErrorItem? PerformPasswordChange(
             string username,
             string currentPassword,
@@ -128,9 +130,7 @@
 
                 return item;
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 var item = ex is ApiErrorException apiError
                     ? apiError.ToApiErrorItem()
@@ -166,7 +166,7 @@
             var ldapAdd = new LdapModification(LdapModification.Add, newAttr);
             ldap.Modify(userDN, new[] { ldapDel, ldapAdd }); // Change with Delete/Add
         }
-        
+
         private static ApiErrorItem ParseLdapException(LdapException ex)
         {
             // If the LDAP server returned an error, it will be formatted
@@ -177,7 +177,7 @@
             if (ex.LdapErrorMessage == null)
             {
                 return new ApiErrorItem(ApiErrorCode.LdapProblem, "Unexpected null exception");
-            } 
+            }
 
             var m = Regex.Match(ex.LdapErrorMessage, "([0-9a-fA-F]+):");
 
@@ -218,8 +218,8 @@
             var escape = "()&|=><!*/\\".ToCharArray();
             var escapeIndex = cleanUsername.IndexOfAny(escape);
 
-            if (escapeIndex < 0) 
-                return cleanUsername;
+            if (escapeIndex < 0)
+                return cleanUsername ?? string.Empty;
 
             var buff = new StringBuilder();
             var maxLen = cleanUsername.Length;
@@ -238,7 +238,7 @@
             cleanUsername = buff.ToString();
             _logger.LogWarning("Had to clean username: [{0}] => [{1}]", username, cleanUsername);
 
-            return cleanUsername;
+            return cleanUsername ?? string.Empty;
         }
 
         private void Init()
@@ -301,6 +301,7 @@
                 _logger.LogWarning($"Option [{nameof(_options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{_options.LdapPort}]");
         }
 
+        [Obsolete]
         private LdapConnection BindToLdap()
         {
             var ldap = new LdapConnection();
@@ -319,9 +320,7 @@
                     bindHostname = h;
                     break;
                 }
-#pragma warning disable CA1031 // Do not catch general exception types
                 catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
                 {
                     _logger.LogWarning($"Failed to connect to host [{h}]", ex);
                 }

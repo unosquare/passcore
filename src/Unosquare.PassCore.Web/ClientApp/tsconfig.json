@@ -1,33 +1,20 @@
 {
-  "compilerOptions": {
-    "sourceMap": false,
-    "noImplicitAny": true,
-    "module": "esnext",
-    "target": "es5",
-    "jsx": "react",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "moduleResolution": "node",
-    "strictNullChecks": false,
-    "noImplicitReturns": true,
-    "forceConsistentCasingInFileNames": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noEmit": true,
-    "noUnusedLocals": true
-  },
-  "include": [
-    "./**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-  ],
-  "types": [
-    "typesPatches"
-  ]
+    "compilerOptions": {
+        "sourceMap": false,
+        "noImplicitAny": true,
+        "module": "esnext",
+        "target": "es5",
+        "jsx": "react",
+        "lib": ["esnext", "dom"],
+        "moduleResolution": "node",
+        "strictNullChecks": false,
+        "noImplicitReturns": true,
+        "forceConsistentCasingInFileNames": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noEmit": true,
+        "noUnusedLocals": true
+    },
+    "include": ["./**/*"],
+    "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack"],
+    "types": ["typesPatches"]
 }

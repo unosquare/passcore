@@ -31,37 +31,34 @@ namespace PwnedPasswordsSearch
                     sBuilder.Append(data[i].ToString("x2"));
 
                 var result = sBuilder.ToString().ToUpper();
-                
+
                 // Get a list of all the possible password hashes where the first 5 bytes of the hash are the same
                 var url = "https://api.pwnedpasswords.com/range/" + result.Substring(0, 5);
                 WebRequest request = WebRequest.Create(url);
-                using (Stream response = request.GetResponse().GetResponseStream())
+                using var response = request.GetResponse().GetResponseStream();
+                using var reader = new StreamReader(response);
+                // Iterate through all possible matches and compare the rest of the hash to see if there is a full match
+                // TODO: optimize-async this
+                string hashToCheck = result.Substring(5);
+                string line = null;
+                do
                 {
-                    using (StreamReader reader = new StreamReader(response))
+                    line = reader.ReadLine();
+                    if (line != null)
                     {
-                        // Iterate through all possible matches and compare the rest of the hash to see if there is a full match
-                        string hashToCheck = result.Substring(5);
-                        string line = null;
-                        do
+                        string[] parts = line.Split(':');
+                        if (parts[0] == hashToCheck) // This is a full match: plaintext compromised!!!!
                         {
-                            line = reader.ReadLine();
-                            if (line != null)
-                            {
-                                string[] parts = line.Split(':');
-                                if (parts[0] == hashToCheck) // This is a full match: plaintext compromised!!!!
-                                {
-                                    System.Diagnostics.Debug.Print("The password '{plaintext}' is publicly known and can be used in dictionary attacks");
-                                    return true;
-                                }
-                            }
-                        } while (line != null);
-
-                        // We've run through all the candidates and none of them is a full match
-                        return false; // This plaintext is not publicly known
+                            System.Diagnostics.Debug.Print("The password '{plaintext}' is publicly known and can be used in dictionary attacks");
+                            return true;
+                        }
                     }
-                }
+                } while (line != null);
+
+                // We've run through all the candidates and none of them is a full match
+                return false; // This plaintext is not publicly known
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // If any weird things happens, it is safer to suppose this plaintext is compromised (hence not to be used).
                 return true; // Better safe than sorry.

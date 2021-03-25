@@ -1,4 +1,4 @@
-namespace Zyborg.PassCore.PasswordProvider.LDAP
+﻿namespace Zyborg.PassCore.PasswordProvider.LDAP
 {
     using Novell.Directory.Ldap;
     using Unosquare.PassCore.Common;
@@ -9,17 +9,38 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
     /// <seealso cref="Unosquare.PassCore.Common.IAppSettings" />
     public class LdapPasswordChangeOptions : IAppSettings
     {
-        /// <inheritdoc />
-        public string[] LdapHostnames { get; set; }
+        private string[]? ldapHostnames;
+        private string? ldapPassword;
+        private string? ldapUsername;
+        private string? defaultDomain;
 
         /// <inheritdoc />
-        public string LdapPassword { get; set; }
-        
-        /// <inheritdoc />
-        public string LdapUsername { get; set; }
+        public string[] LdapHostnames
+        {
+            get => ldapHostnames ?? new string[] { };
+            set => ldapHostnames = value;
+        }
 
         /// <inheritdoc />
-        public string DefaultDomain { get; set; }
+        public string LdapPassword
+        {
+            get => ldapPassword ?? string.Empty;
+            set => ldapPassword = value;
+        }
+
+        /// <inheritdoc />
+        public string LdapUsername
+        {
+            get => ldapUsername ?? string.Empty;
+            set => ldapUsername = value;
+        }
+
+        /// <inheritdoc />
+        public string DefaultDomain
+        {
+            get => defaultDomain ?? string.Empty;
+            set => defaultDomain = value;
+        }
 
         /// <inheritdoc />
         public int LdapPort { get; set; } = LdapConnection.DefaultSslPort;
@@ -83,7 +104,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP
         /// <value>
         /// The LDAP search base.
         /// </value>
-        public string LdapSearchBase { get; set; }
+        public string? LdapSearchBase { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [hide user not found].

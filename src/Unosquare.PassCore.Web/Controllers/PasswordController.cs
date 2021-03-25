@@ -1,4 +1,4 @@
-namespace Unosquare.PassCore.Web.Controllers
+﻿namespace Unosquare.PassCore.Web.Controllers
 {
     using Common;
     using Helpers;
@@ -94,9 +94,7 @@ namespace Unosquare.PassCore.Web.Controllers
                 if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
                     throw new InvalidOperationException("Invalid Recaptcha response");
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 _logger.LogWarning(ex, "Invalid Recaptcha");
                 return BadRequest(ApiResult.InvalidCaptcha());
@@ -129,9 +127,7 @@ namespace Unosquare.PassCore.Web.Controllers
 
                 result.Errors.Add(resultPasswordChange);
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 _logger.LogError(ex, "Failed to update password");
 
@@ -141,23 +137,20 @@ namespace Unosquare.PassCore.Web.Controllers
             return BadRequest(result);
         }
 
-        private async Task<bool> ValidateRecaptcha(string recaptchaResponse)
+        private async Task<bool> ValidateRecaptcha(string? recaptchaResponse)
         {
             // skip validation if we don't enable recaptcha
-            if (string.IsNullOrWhiteSpace(_options.Recaptcha.PrivateKey))
+            if ((_options.Recaptcha != null) && string.IsNullOrWhiteSpace(_options.Recaptcha.PrivateKey))
                 return true;
-
-            // immediately return false because we don't 
-            if (string.IsNullOrEmpty(recaptchaResponse))
-                return false;
-
-            var requestUrl = new Uri(
-                $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}");
-
-            var validationResponse = await JsonClient.Get<Dictionary<string, object>>(requestUrl)
-                .ConfigureAwait(false);
-
-            return Convert.ToBoolean(validationResponse["success"], System.Globalization.CultureInfo.InvariantCulture);
+            else if ((_options.Recaptcha != null) && (string.IsNullOrEmpty(recaptchaResponse) != false))
+            {
+                var requestUrl = new Uri(
+                    $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}");
+                var validationResponse = await JsonClient.Get<Dictionary<string, object>>(requestUrl)
+                    .ConfigureAwait(false);
+                return Convert.ToBoolean(validationResponse["success"], System.Globalization.CultureInfo.InvariantCulture);
+            }
+            return false;
         }
     }
 }
