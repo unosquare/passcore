@@ -97,7 +97,7 @@
         /// </summary>
         /// <param name="code">The code.</param>
         /// <returns>A Win32ErrorCode from the code.</returns>
-        public static Win32ErrorCode ByCode(int code) =>
+        public static Win32ErrorCode? ByCode(int code) =>
             ErrorByCode.TryGetValue(code, out var err) ? err : null;
 
         /// <summary>

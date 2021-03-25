@@ -61,6 +61,7 @@
         ///
         /// Check the above links for more information.
         /// </remarks>
+        [Obsolete]
         public ApiErrorItem? PerformPasswordChange(
             string username,
             string currentPassword,
@@ -299,6 +300,7 @@
                 _logger.LogWarning($"Option [{nameof(_options.LdapStartTls)}] is DISABLED in combination with non-standard TLS port [{_options.LdapPort}]");
         }
 
+        [Obsolete]
         private LdapConnection BindToLdap()
         {
             var ldap = new LdapConnection();

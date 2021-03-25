@@ -133,7 +133,7 @@
             if (principalContext.ValidateCredentials(upn, currentPassword))
                 return true;
 
-            if (LogonUser(upn, string.Empty, currentPassword, LogonTypes.Network, LogonProviders.Default, out _))
+            if (NativeMethods.LogonUser(upn, string.Empty, currentPassword, NativeMethods.LogonTypes.Network, NativeMethods.LogonProviders.Default, out _))
                 return true;
 
             var errorCode = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
@@ -141,7 +141,7 @@
             _logger.LogDebug($"ValidateUserCredentials GetLastWin32Error {errorCode}");
 
             // Both of these means that the password CAN change and that we got the correct password
-            return errorCode == ErrorPasswordMustChange || errorCode == ErrorPasswordExpired;
+            return errorCode == NativeMethods.ErrorPasswordMustChange || errorCode == NativeMethods.ErrorPasswordExpired;
         }
 
         private string FixUsernameWithDomain(string username)
