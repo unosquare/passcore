@@ -142,7 +142,7 @@
             // skip validation if we don't enable recaptcha
             if ((_options.Recaptcha != null) && string.IsNullOrWhiteSpace(_options.Recaptcha.PrivateKey))
                 return true;
-            else if ((_options.Recaptcha != null) && (string.IsNullOrEmpty(recaptchaResponse) != false))
+            else if ((_options.Recaptcha != null) && (string.IsNullOrEmpty(recaptchaResponse) != true))
             {
                 var requestUrl = new Uri(
                     $"https://www.google.com/recaptcha/api/siteverify?secret={_options.Recaptcha.PrivateKey}&response={recaptchaResponse}");
