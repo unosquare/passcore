@@ -89,7 +89,7 @@ the [IIS setup script](https://raw.githubusercontent.com/unosquare/passcore/mast
 to execute the script.
 
 ## Linux
-We recommend use the docker image and redirect the traffic to ngix.
+We recommend use the docker image and redirect the traffic to nginx.
 
 ## Docker
 
