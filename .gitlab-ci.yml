@@ -1,0 +1,80 @@
+# This is a simple gitlab continuous integration example project (compatible with the shared runner provided on gitlab.com)
+# using the official debian linux based dotnet docker image to build a .NET Core project.
+#
+# MyProject.sln
+#   MyProject\
+#      MyProject.csproj (console application)
+#   MyProject.Test\
+#      MyProject.Test.csproj (test library)
+#
+# Please find the full example project here:
+# https://gitlab.com/tobiaskoch/gitlab-ci-example-dotnetcore
+
+# see https://hub.docker.com/r/microsoft/dotnet/
+image: mcr.microsoft.com/dotnet/core/sdk:2.2.301
+
+
+
+stages:
+  - test
+  - deploy
+
+release:
+  stage: deploy
+  only:
+    - master
+  artifacts:
+    paths:
+      - publish/
+  script:
+    # The output path is relative to the position of the csproj-file
+    - dotnet publish -c Release -o ../../publish src/PwnedPasswordsSearch/PwnedPasswordsSearch.csproj
+    
+debug:
+  before_script:
+   - 'echo | dotnet --version' # must be v 2.2.300 or later for reporter tool to work
+   - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+  stage: test
+  script:
+    - dotnet test --logger "junit" --collect:"XPlat Code Coverage"
+    # each reporttype must be a separate line, doesn't work together ; separated
+    - ls -ld ${CI_PROJECT_DIR}/**/TestResults/*
+    - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:Reports_Coverage" -reportTypes:TextSummary;
+    - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:Reports_Coverage" -reportTypes:Html;
+    - ls Reports_Coverage
+    - cat ./Reports_Coverage/Summary.txt
+    - echo 'End Summary'
+  coverage: /Line coverage[\s\S].+%/
+  artifacts:
+    paths:
+      - Reports_Coverage/
+    reports:
+      junit:
+        - '*.Test/TestResults/TestResults.xml'
+
+# takes upwards of 10 minutes, make manual
+code_quality:
+  stage: test
+  when: manual
+  image: docker:latest
+  variables:
+    DOCKER_DRIVER: overlay
+  services:
+    - docker:dind
+  script:
+    - docker pull codeclimate/codeclimate
+    - docker run 
+       --env CODECLIMATE_DEBUG=1 
+       --env CODECLIMATE_CODE="$PWD" 
+       --volume "$PWD":/code 
+       --volume /var/run/docker.sock:/var/run/docker.sock 
+       --volume /tmp/cc:/tmp/cc 
+       codeclimate/codeclimate analyze -f html > report.html
+    #- cat report.html
+
+  artifacts:
+    paths: [report.html]
+  dependencies: []
+  except:
+    variables:
+      - $CODE_QUALITY_DISABLED
