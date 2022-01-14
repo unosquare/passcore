@@ -45,7 +45,7 @@
         "eslint-plugin-promise": "^4.3.1",
         "eslint-plugin-react": "7.21.5",
         "minimist": "^1.2.5",
-        "node-forge": "^0.10.0",
+        "node-forge": "^1.0.0",
         "parcel-bundler": "^1.12.5",
         "parcel-plugin-clean-easy-unsafe": "^1.0.2",
         "prettier": "^1.19.1",
