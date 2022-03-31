@@ -1,0 +1,48 @@
+name: Build Windows Binaries
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Windows Binaries on Windows Latest
+    runs-on: windows-latest
+
+    steps:
+    - name: Cancel previous runs on the same branch
+      if: ${{ github.ref != 'refs/heads/main' }}
+      uses: styfle/cancel-workflow-action@0.9.1
+      with:
+        access_token: ${{ github.token }}
+
+    - name: Checkout Code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: Set git urls to https instead of ssh
+      run: |
+        git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v2.0.0
+
+    - name: Build Windows binaries with build_scripts\build_windows.ps1
+      run: |
+        $env:path="C:\Program` Files` (x86)\Microsoft` Visual` Studio\2019\Enterprise\SDK\ScopeCppSDK\vc15\VC\bin\;$env:path"
+        dotnet publish --configuration Release --runtime win-x64 --output ".\passcore_output\"
+        ls ${{ github.workspace }}\passcore_output\
+
+    - name: Upload Windows binaries to artifacts
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: passcore
+        path: ${{ github.workspace }}\passcore_output\
+
+    - name: Get tag name
+      if: startsWith(github.ref, 'refs/tags/')
+      id: tag-name
+      run: |
+        echo "::set-output name=TAG_NAME::$(echo ${{ github.ref }} | cut -d'/' -f 3)"
+        echo "::set-output name=REPO_NAME::$(echo ${{ github.repository }} | cut -d'/' -f 2)"
