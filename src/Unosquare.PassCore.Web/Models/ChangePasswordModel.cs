@@ -1,49 +1,47 @@
-﻿namespace Unosquare.PassCore.Web.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Unosquare.PassCore.Web.Models;
+
+public class ChangePasswordModel
 {
-    using Common;
-    using System.ComponentModel.DataAnnotations;
+    private string? _username;
+    private string? _currentPassword;
+    private string? _newPassword;
+    private string? _newPasswordVerify;
+    private string? _recaptcha;
 
-    public class ChangePasswordModel
+    [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
+    public string Username
     {
-        private string? username;
-        private string? currentPassword;
-        private string? newPassword;
-        private string? newPasswordVerify;
-        private string? recaptcha;
+        get => _username ?? string.Empty;
+        set => _username = value;
+    }
 
-        [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
-        public string Username
-        {
-            get => username ?? string.Empty;
-            set => username = value;
-        }
+    [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
+    public string CurrentPassword
+    {
+        get => _currentPassword ?? string.Empty;
+        set => _currentPassword = value;
+    }
 
-        [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
-        public string CurrentPassword
-        {
-            get => currentPassword ?? string.Empty;
-            set => currentPassword = value;
-        }
+    [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
+    public string NewPassword
+    {
+        get => _newPassword ?? string.Empty;
+        set => _newPassword = value;
+    }
 
-        [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
-        public string NewPassword
-        {
-            get => newPassword ?? string.Empty;
-            set => newPassword = value;
-        }
+    [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
+    [Compare(nameof(NewPassword), ErrorMessage = nameof(ApiErrorCode.FieldMismatch))]
+    public string NewPasswordVerify
+    {
+        get => _newPasswordVerify ?? string.Empty;
+        set => _newPasswordVerify = value;
+    }
 
-        [Required(ErrorMessage = nameof(ApiErrorCode.FieldRequired))]
-        [Compare(nameof(NewPassword), ErrorMessage = nameof(ApiErrorCode.FieldMismatch))]
-        public string NewPasswordVerify
-        {
-            get => newPasswordVerify ?? string.Empty;
-            set => newPasswordVerify = value;
-        }
-
-        public string Recaptcha
-        {
-            get => recaptcha ?? string.Empty;
-            set => recaptcha = value;
-        }
+    public string Recaptcha
+    {
+        get => _recaptcha ?? string.Empty;
+        set => _recaptcha = value;
     }
 }

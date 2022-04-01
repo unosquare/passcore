@@ -1,66 +1,64 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-  <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;node_modules\**</DefaultItemExcludes>
-    <Copyright>Copyright (c) 2018-2021 - Unosquare</Copyright>
-    <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>Unosquare.PassCore.Web</AssemblyName>
-    <PackageId>Unosquare.PassCore.Web</PackageId>
-    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-    <IsPackable>false</IsPackable>
-    <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
-    <TypeScriptToolsVersion>4.2</TypeScriptToolsVersion>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RootNamespace>Unosquare.PassCore.Web</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <NullableReferenceTypes>true</NullableReferenceTypes>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="SimpleBase" Version="3.0.2" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="zxcvbn-core" Version="7.0.92" />
-    <PackageReference Include="Unosquare.Swan" Version="3.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="ClientApp\**" />
-    <Content Include="ClientApp\package.json" />
-    <Content Include="ClientApp\tsconfig.json" />
-    <Content Update="wwwroot/**/*.map" CopyToPublishDirectory="Never" />
-    <None Include="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PwnedPasswordsSearch\PwnedPasswordsSearch.csproj" />
-    <ProjectReference Include="..\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(PASSCORE_PROVIDER)' == ''">
-    <!-- Default Password Provider - Win32 -->
-    <ProjectReference Include="..\Unosquare.PassCore.PasswordProvider\Unosquare.PassCore.PasswordProvider.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
-    <!-- Pure LDAP provider -->
-    <ProjectReference Include="..\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj" />
-  </ItemGroup>
-  <PropertyGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
-    <DefineConstants>PASSCORE_LDAP_PROVIDER</DefineConstants>
-  </PropertyGroup>
-  <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\ClientApp\node_modules')">
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Exec Command="npm install" WorkingDirectory=".\ClientApp" />
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <Message Importance="high" Text="Performing first-run npm install..." />
-  </Target>
-  <Target Name="Parcel" DependsOnTargets="NpmInstall" BeforeTargets="Build">
-    <Message Importance="high" Text="Performing run Parcel build..." />
-    <Exec Command="npm run build" WorkingDirectory=".\ClientApp" />
-  </Target>
+	<PropertyGroup>
+		<DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;node_modules\**</DefaultItemExcludes>
+		<Copyright>Copyright (c) 2018-2021 - Unosquare</Copyright>
+		<TargetFramework>net6.0</TargetFramework>
+		<AssemblyName>Unosquare.PassCore.Web</AssemblyName>
+		<PackageId>Unosquare.PassCore.Web</PackageId>
+		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+		<IsPackable>false</IsPackable>
+		<TypeScriptToolsVersion>4.2</TypeScriptToolsVersion>
+		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+		<RootNamespace>Unosquare.PassCore.Web</RootNamespace>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<Nullable>enable</Nullable>
+		<NullableReferenceTypes>true</NullableReferenceTypes>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.6.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="SimpleBase" Version="3.0.2" />
+		<PackageReference Include="zxcvbn-core" Version="7.0.92" />
+		<PackageReference Include="Unosquare.Swan" Version="3.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Remove="ClientApp\**" />
+		<Content Include="ClientApp\package.json" />
+		<Content Include="ClientApp\tsconfig.json" />
+		<Content Update="wwwroot/**/*.map" CopyToPublishDirectory="Never" />
+		<None Include="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PwnedPasswordsSearch\PwnedPasswordsSearch.csproj" />
+		<ProjectReference Include="..\Unosquare.PassCore.Common\Unosquare.PassCore.Common.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(PASSCORE_PROVIDER)' == ''">
+		<!-- Default Password Provider - Win32 -->
+		<ProjectReference Include="..\Unosquare.PassCore.PasswordProvider\Unosquare.PassCore.PasswordProvider.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
+		<!-- Pure LDAP provider -->
+		<ProjectReference Include="..\Zyborg.PassCore.PasswordProvider.LDAP\Zyborg.PassCore.PasswordProvider.LDAP.csproj" />
+	</ItemGroup>
+	<PropertyGroup Condition="'$(PASSCORE_PROVIDER)' == 'LDAP'">
+		<DefineConstants>PASSCORE_LDAP_PROVIDER</DefineConstants>
+	</PropertyGroup>
+	<Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('.\ClientApp\node_modules')">
+		<Exec Command="node --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Exec Command="npm install" WorkingDirectory=".\ClientApp" />
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Performing first-run npm install..." />
+	</Target>
+	<Target Name="Parcel" DependsOnTargets="NpmInstall" BeforeTargets="Build">
+		<Message Importance="high" Text="Performing run Parcel build..." />
+		<Exec Command="npm run build" WorkingDirectory=".\ClientApp" />
+	</Target>
 </Project>

@@ -1,21 +1,20 @@
-﻿namespace Unosquare.PassCore.Web.Helpers
+﻿using SimpleBase;
+using System.Security.Cryptography;
+
+namespace Unosquare.PassCore.Web.Helpers;
+
+internal class PasswordGenerator : System.IDisposable
 {
-    using SimpleBase;
-    using System.Security.Cryptography;
+    private readonly RNGCryptoServiceProvider _rngCsp = new();
 
-    internal class PasswordGenerator : System.IDisposable
+    public string Generate(int entropy)
     {
-        private readonly RNGCryptoServiceProvider _rngCsp = new RNGCryptoServiceProvider();
+        var pswBytes = new byte[entropy];
+        _rngCsp.GetBytes(pswBytes);
 
-        public string Generate(int entropy)
-        {
-            var pswBytes = new byte[entropy];
-            _rngCsp.GetBytes(pswBytes);
-
-            var encoder = new Base85(Base85Alphabet.Ascii85);
-            return encoder.Encode(pswBytes);
-        }
-
-        public void Dispose() => _rngCsp.Dispose();
+        var encoder = new Base85(Base85Alphabet.Ascii85);
+        return encoder.Encode(pswBytes);
     }
+
+    public void Dispose() => _rngCsp.Dispose();
 }

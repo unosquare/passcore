@@ -25,10 +25,10 @@ export const Footer: React.FunctionComponent<any> = () => (
         </Grid>
         <Grid alignItems="center" container={true} direction="column" justify="space-evenly">
             <Typography align="center" variant="caption">
-                Powered by PassCore v4.3.0 - Open Source Initiative and MIT Licensed
+                Powered by PassCore v4.5.0 - Open Source Initiative and MIT Licensed
             </Typography>
             <Typography align="center" variant="caption">
-                Copyright © 2016-2020 Unosquare
+                Copyright © 2016-2022 Unosquare
             </Typography>
         </Grid>
     </div>
