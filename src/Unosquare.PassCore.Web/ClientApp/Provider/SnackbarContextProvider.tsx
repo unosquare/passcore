@@ -10,8 +10,8 @@ export const SnackbarContextProvider: React.FunctionComponent<ISnackbarProvdierP
     children,
 }: ISnackbarProvdierProps) => {
     const [providerValue] = React.useState({
-        sendMessage: (messageText: string, messageType = 'success') =>
-            snackbarService.showSnackbar(messageText, messageType),
+        sendMessage: async (messageText: string, messageType = 'success') =>
+            await snackbarService.showSnackbar(messageText, messageType),
     });
 
     return (

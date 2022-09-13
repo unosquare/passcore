@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 
 const measureStrength = (password: string): number =>
     Math.min(
-        // @ts-ignore
+        // @ts-expect-error
         zxcvbn.default(password).guesses_log10 * 10,
         100,
     );

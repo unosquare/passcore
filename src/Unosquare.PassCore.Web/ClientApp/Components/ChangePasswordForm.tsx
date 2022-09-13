@@ -28,14 +28,8 @@ export const ChangePasswordForm: React.FunctionComponent<IChangePasswordFormProp
 }: IChangePasswordFormProps) => {
     const [fields, handleChange] = useStateForModel({ ...defaultState });
 
-    const {
-        changePasswordForm,
-        errorsPasswordForm,
-        usePasswordGeneration,
-        useEmail,
-        showPasswordMeter,
-        recaptcha,
-    } = React.useContext(GlobalContext);
+    const { changePasswordForm, errorsPasswordForm, usePasswordGeneration, useEmail, showPasswordMeter, recaptcha } =
+        React.useContext(GlobalContext);
 
     const {
         currentPasswordHelpblock,

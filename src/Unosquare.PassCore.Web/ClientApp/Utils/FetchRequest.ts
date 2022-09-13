@@ -4,7 +4,7 @@ export async function fetchRequest(url: string, requestMethod: string, requestBo
     headers.append('Content-Type', 'application/json');
 
     const init = {
-        body: requestBody ? requestBody : null,
+        body: requestBody || null,
         headers,
         method: requestMethod,
     };

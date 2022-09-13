@@ -115,9 +115,9 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
         );
     }
 
-    private grecaptcha = () => window.grecaptcha;
+    private readonly grecaptcha = () => window.grecaptcha;
 
-    private renderManually = () => {
+    private readonly renderManually = () => {
         if (this.grecaptcha() && this.grecaptcha().render && this.widgetId === undefined) {
             this.widgetId = this.grecaptcha().render(
                 this.recaptcha.current,
@@ -137,7 +137,7 @@ class GoogleReCaptcha extends React.Component<Partial<IReCaptchaProps>, IReCaptc
         }
     };
 
-    private _updateReadyState = () => {
+    private readonly _updateReadyState = () => {
         if (this.isReady()) {
             this.setState(() => ({
                 ready: true,
