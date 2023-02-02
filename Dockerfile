@@ -12,8 +12,7 @@ COPY ./ ./
 
 COPY . .
 
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app /p:PASSCORE_PROVIDER=LDAP --no-restore
+RUN dotnet publish -c Release -o /app /p:PASSCORE_PROVIDER=LDAP
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
